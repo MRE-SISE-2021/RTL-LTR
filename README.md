@@ -1,4 +1,4 @@
 # RTL-LTR
 
-Back - Python 
-Front - Reactjs
+* Back - Python 
+* Front - Reactjs
