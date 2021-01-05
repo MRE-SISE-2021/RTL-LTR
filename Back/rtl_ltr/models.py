@@ -24,7 +24,7 @@ class Component(models.Model):
 
 class HciBackground(models.Model):
     hci_background_id = models.AutoField(db_column='HciBackgroundId', primary_key=True)
-    description = models.CharField(db_column='Description', max_length=50)
+    hci_background_description = models.CharField(db_column='HciBackgroundDescription', max_length=50)
 
     class Meta:
         db_table = 'HciBackground'
@@ -49,7 +49,7 @@ class Language(models.Model):
 
 class QuestionnaireType(models.Model):
     questionnaire_type_id = models.AutoField(db_column='QuestionnaireTypeId', primary_key=True)
-    name = models.CharField(db_column='Name', max_length=50)
+    questionnaire_type_name = models.CharField(db_column='QuestionnaireTypeName', max_length=50)
 
     class Meta:
         db_table = 'QuestionnaireType'
@@ -57,10 +57,13 @@ class QuestionnaireType(models.Model):
 
 class Task(models.Model):
     task_id = models.AutoField(db_column='TaskId', primary_key=True)
-    title = models.CharField(db_column='Title', max_length=100)
+    task_title = models.CharField(db_column='TaskTitle', max_length=100)
     task_content = models.TextField(db_column='TaskContent', blank=True, null=True)
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     is_required = models.BooleanField(db_column='IsRequired')
+
+    components = models.ManyToManyField(Component, through='TaskComponent')
+    images = models.ManyToManyField(Image, through='TaskImage')
 
     class Meta:
         db_table = 'Task'
@@ -112,7 +115,7 @@ class AnswerTask(models.Model):
 
 
 class ParticipantLanguageProficiency(models.Model):
-    participant_id = models.OneToOneField(Participant, models.DO_NOTHING, db_column='ParticipantId', primary_key=True)
+    participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     proficiency = models.IntegerField(db_column='Proficiency')
 
@@ -122,7 +125,7 @@ class ParticipantLanguageProficiency(models.Model):
 
 
 class TaskParticipant(models.Model):
-    participant_id = models.OneToOneField(Participant, models.DO_NOTHING, db_column='ParticipantId', primary_key=True)
+    participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
     task_direction = models.CharField(db_column='TaskDirection', max_length=10, blank=True, null=True)
     task_time = models.TimeField(db_column='TaskTime')
@@ -138,21 +141,21 @@ class TaskParticipant(models.Model):
 
 class Questionnaire(models.Model):
     questionnaire_id = models.AutoField(db_column='QuestionnaireId', primary_key=True)
-    name = models.CharField(db_column='Name', max_length=100, blank=True, null=True)
+    questionnaire_name = models.CharField(db_column='QuestionnaireName', max_length=100, blank=True, null=True)
     hosted_link = models.TextField(db_column='HostedLink', blank=True, null=True)
     is_active = models.BooleanField(db_column='IsActive')
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
-    creation_date = models.DateTimeField(db_column='CreationDate', blank=True, null=True)
+    creation_date = models.DateTimeField(db_column='CreationDate', auto_now_add=True)
     questionnaire_type_id = models.ForeignKey(QuestionnaireType, models.DO_NOTHING, db_column='QuestionnaireTypeId',
                                               blank=True, null=True)
+    tasks = models.ManyToManyField(Task, through='QuestionnaireTask')
 
     class Meta:
         db_table = 'Questionnaire'
 
 
 class QuestionnaireParticipant(models.Model):
-    questionnaire_id = models.OneToOneField(Questionnaire, models.DO_NOTHING, db_column='QuestionnaireId',
-                                            primary_key=True)
+    questionnaire_id = models.ForeignKey(Questionnaire, models.DO_NOTHING, db_column='QuestionnaireId')
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     questionnaire_start = models.TimeField(db_column='QuestionnaireStart')
     questionnaire_finish = models.TimeField(db_column='QuestionnaireFinish')
@@ -165,9 +168,8 @@ class QuestionnaireParticipant(models.Model):
 
 
 class QuestionnaireTask(models.Model):
-    questionnaire_id = models.OneToOneField(Questionnaire, models.DO_NOTHING, db_column='QuestionnaireId',
-                                            primary_key=True)
-    task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
+    questionnaire_id = models.ForeignKey(Questionnaire, models.DO_NOTHING, db_column='QuestionnaireId')
+    task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId', )
 
     class Meta:
         db_table = 'QuestionnaireTask'
@@ -175,7 +177,7 @@ class QuestionnaireTask(models.Model):
 
 
 class TaskComponent(models.Model):
-    task_id = models.OneToOneField(Task, models.DO_NOTHING, db_column='TaskId', primary_key=True)
+    task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
     component_id = models.ForeignKey(Component, models.DO_NOTHING, db_column='ComponentId')
     direction = models.CharField(db_column='Direction', max_length=10)
 
@@ -185,7 +187,7 @@ class TaskComponent(models.Model):
 
 
 class TaskImage(models.Model):
-    task_id = models.OneToOneField(Task, models.DO_NOTHING, db_column='TaskId', primary_key=True)
+    task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
     image_id = models.ForeignKey(Image, models.DO_NOTHING, db_column='ImageId')
 
     class Meta:
