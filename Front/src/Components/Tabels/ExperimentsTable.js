@@ -8,8 +8,13 @@ import * as actionTypes from "../../store/actions";
 import { Table, Button } from "react-bootstrap";
 
 import ExperimentsResponse from "../../Api/mocks/ExperimentsResponse";
+import axios from "axios";
 
 class Navigation extends Component {
+  state = {
+    data: "",
+  };
+
   resize = () => {
     const contentWidth = document.getElementById("root").clientWidth;
 
@@ -21,6 +26,12 @@ class Navigation extends Component {
   componentDidMount() {
     this.resize();
     window.addEventListener("resize", this.resize);
+
+    axios.get(`http://127.0.0.1:8000/viewset/questionnaire`).then((res) => {
+      const persons = res.data[0];
+      this.setState(persons);
+      console.log(this.state);
+    });
   }
 
   componentWillUnmount() {
