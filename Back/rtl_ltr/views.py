@@ -3,6 +3,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
 
 # Component
@@ -69,10 +70,6 @@ class TaskParticipantViewSet(viewsets.ModelViewSet):
 class QuestionnaireViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireSerializer
     queryset = Questionnaire.objects.all()
-
-    @action(methods=['GET'], detail=True)
-    def names(self):
-        books = self.get_queryset()
 
 
 # QuestionnaireParticipant
