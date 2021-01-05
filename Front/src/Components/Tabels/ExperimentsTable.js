@@ -27,11 +27,15 @@ class Navigation extends Component {
     this.resize();
     window.addEventListener("resize", this.resize);
 
-    axios.get(`http://127.0.0.1:8000/viewset/questionnaire`).then((res) => {
-      const persons = res.data[0];
-      this.setState(persons);
-      console.log(this.state);
-    });
+    axios
+      .get(`http://127.0.0.1:8000/viewset/questionnaire`, {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      })
+      .then((res) => {
+        const persons = res.data[0];
+        this.setState(persons);
+        console.log(this.state);
+      });
   }
 
   componentWillUnmount() {
