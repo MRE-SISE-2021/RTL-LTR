@@ -144,10 +144,10 @@ class Questionnaire(models.Model):
     questionnaire_name = models.CharField(db_column='QuestionnaireName', max_length=100, blank=True, null=True)
     hosted_link = models.TextField(db_column='HostedLink', blank=True, null=True)
     is_active = models.BooleanField(db_column='IsActive')
-    language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
+    language = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     creation_date = models.DateTimeField(db_column='CreationDate', auto_now_add=True)
-    questionnaire_type_id = models.ForeignKey(QuestionnaireType, models.DO_NOTHING, db_column='QuestionnaireTypeId',
-                                              blank=True, null=True)
+    questionnaire_type = models.ForeignKey(QuestionnaireType, models.DO_NOTHING, db_column='QuestionnaireTypeId',
+                                           blank=True, null=True)
     tasks = models.ManyToManyField(Task, through='QuestionnaireTask')
 
     class Meta:

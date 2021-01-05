@@ -84,4 +84,6 @@ urlpatterns = [
     path('viewset/', include(router_questionnaire_task.urls)),
     path('viewset/', include(router_task_component.urls)),
     path('viewset/', include(router_task_image.urls)),
+
+    path('questionnaire-names/', get_questionnaire_list),
 ]
