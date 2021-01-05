@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.relations import PrimaryKeyRelatedField
+
 from .models import *
 
 
@@ -6,7 +8,7 @@ from .models import *
 # AutoField fields will be set to read-only by default
 
 # Dynamic include/exclude fields to/from JSON via Query Params
-# Example for url to get only language_name field: http://127.0.0.1:8000/viewset/language/?fields=language_name
+# Example get : http://127.0.0.1:8000/viewset/language/?fields=language_name
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
     """
     A ModelSerializer that takes an additional `fields` argument that
@@ -112,11 +114,15 @@ class TaskParticipantSerializer(DynamicFieldsModelSerializer):
 
 
 class QuestionnaireSerializer(DynamicFieldsModelSerializer):
+    creation_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+
     class Meta:
         model = Questionnaire
         fields = '__all__'
-        # fields = ['questionnaire_id', 'name', 'hosted_link', 'is_active', 'language_id', 'creation_date',
-        #           'questionnaire_type_id']
+        depth = 1
+        # fields = ('questionnaire_id', 'questionnaire_name', 'hosted_link', 'is_active', 'category_name',
+        #           'creation_date',
+        #           'questionnaire_type_id',)
 
 
 class QuestionnaireParticipantSerializer(DynamicFieldsModelSerializer):

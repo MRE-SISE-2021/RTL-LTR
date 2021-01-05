@@ -4,8 +4,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
 
 
+####### MODEL VIEWSETS #######
 # Component
 class ComponentViewSet(viewsets.ModelViewSet):
     serializer_class = ComponentSerializer
@@ -94,3 +97,19 @@ class TaskComponentViewSet(viewsets.ModelViewSet):
 class TaskImageViewSet(viewsets.ModelViewSet):
     serializer_class = TaskImageSerializer
     queryset = TaskImage.objects.all()
+
+
+####### DECORATORS #######
+
+# get list of questionnaire name for main page
+@api_view(['GET'])
+def get_questionnaire_list(request):
+    if request.method == "GET":
+        queryset = Questionnaire.objects.all()
+        data = QuestionnaireSerializer(queryset, many=True).data
+
+        names_list = []
+        for value in data:
+            names_list.append(value['questionnaire_name'])
+
+        return Response(names_list, status=status.HTTP_200_OK)
