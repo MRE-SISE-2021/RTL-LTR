@@ -41,6 +41,7 @@
     "highcharts-react-official": "^2.2.2",
     "jodit-react": "^1.0.26",
     "jszip": "^3.2.2",
+    "mdbreact": "^5.0.1",
     "moment": "^2.24.0",
     "nib-core": "^2.3.6",
     "pdfmake": "^0.1.62",
