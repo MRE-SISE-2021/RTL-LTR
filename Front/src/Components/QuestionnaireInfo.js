@@ -1,11 +1,9 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-// import windowSize from "react-window-size";
 import { Row, Col } from "react-bootstrap";
 import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import QuestionaireInfoResponse from "../Api/mocks/QuestionaireInfoResponse";
 class QuestionaireInfo extends Component {
   UNSAFE_componentWillMount() {
     if (

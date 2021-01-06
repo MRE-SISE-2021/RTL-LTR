@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-// import windowSize from "react-window-size";
 import Modal from "../Modals/ModalNewExperiment";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import { Table, Button } from "react-bootstrap";
 
-import ExperimentsResponse from "../../Api/mocks/ExperimentsResponse";
 import QuestionnaireInfo from "../QuestionnaireInfo";
 
-class Navigation extends Component {
+class ExperimentTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -80,15 +78,6 @@ class Navigation extends Component {
     alert("Hello!");
   }
 
-  // console.log(rows);
-  // async getData() {
-  //   const res = await axios(`http://127.0.0.1:8000/viewset/questionnaire`);
-  //   console.log(res);
-  //   this.setState(res.data);
-  //   console.log(this.state);
-  //   // return res.data;
-  // }
-
   render() {
     let navClass = ["pcoded-navbar"];
 
@@ -115,12 +104,12 @@ class Navigation extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
-    let navBarClass = ["navbar-wrapper", "content-main"];
-    if (this.props.fullWidthLayout) {
-      navBarClass = [...navBarClass, "container-fluid"];
-    } else {
-      navBarClass = [...navBarClass, "container"];
-    }
+    // let navBarClass = ["navbar-wrapper", "content-main"];
+    // if (this.props.fullWidthLayout) {
+    //   navBarClass = [...navBarClass, "container-fluid"];
+    // } else {
+    //   navBarClass = [...navBarClass, "container"];
+    // }
     ///////////////////////////////
 
     ///////////////////////////
@@ -147,8 +136,6 @@ class Navigation extends Component {
         );
     };
     const names = this.state.items;
-    // console.log(this.state);
-    // this.getData();
 
     return (
       <Aux>
@@ -208,5 +195,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Navigation)
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentTable)
 );

@@ -1,14 +1,9 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-// import windowSize from "react-window-size";
-import { Row, Col, Tabs, Tab, Button, Form } from "react-bootstrap";
+import { Tabs, Tab, Button } from "react-bootstrap";
 import Card from "../../App/components/MainCard";
 import { MDBIcon } from "mdbreact";
 import Input from "../QuestionsInput";
-// import NavBar from "./NavBar";
-// import Configuration from "./Configuration";
-// import Loader from "../Loader";
-// import routes from "../../../routes";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 
@@ -70,12 +65,12 @@ class ComponentsTable extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
-    let navBarClass = ["navbar-wrapper", "content-main"];
-    if (this.props.fullWidthLayout) {
-      navBarClass = [...navBarClass, "container-fluid"];
-    } else {
-      navBarClass = [...navBarClass, "container"];
-    }
+    // let navBarClass = ["navbar-wrapper", "content-main"];
+    // if (this.props.fullWidthLayout) {
+    //   navBarClass = [...navBarClass, "container-fluid"];
+    // } else {
+    //   navBarClass = [...navBarClass, "container"];
+    // }
 
     console.log(this.props.match);
     return (

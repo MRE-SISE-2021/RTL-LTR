@@ -1,10 +1,9 @@
-import React, { Component, Suspense } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import { Row, Col, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import AllCkEditor from "../App/components/AllCkEditor";
-import Breadcrumb from "../App/components/Breadcrumb";
 
 class Input extends React.Component {
   constructor(props) {

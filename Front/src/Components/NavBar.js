@@ -1,14 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
-// import NavLeft from "./NavLeft";
-// import NavRight from "./NavRight";
 import Aux from "../hoc/_Aux";
 import DEMO from "../store/constant";
 import * as actionTypes from "../store/actions";
-
-import logo from "../assets/images/logo.png";
-import darkLogo from "../assets/images/logo-dark.png";
 
 class NavBar extends Component {
   render() {
@@ -25,11 +19,6 @@ class NavBar extends Component {
     let toggleClass = ["mobile-menu"];
     if (this.props.collapseMenu) {
       toggleClass = [...toggleClass, "on"];
-    }
-
-    let mainLogo = logo;
-    if (this.props.headerBackColor === "") {
-      mainLogo = darkLogo;
     }
 
     let mainHeaderClass = ["content-main"];

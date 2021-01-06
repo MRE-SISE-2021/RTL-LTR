@@ -1,19 +1,8 @@
 import React from "react";
-import {
-  Row,
-  Col,
-  Card,
-  Modal,
-  Button,
-  OverlayTrigger,
-  Tooltip,
-  Container,
-  Form,
-} from "react-bootstrap";
-
+import { Col, Modal, Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-class BasicModals extends React.Component {
+class NewExperimentModal extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -105,7 +94,6 @@ class BasicModals extends React.Component {
                 </Col>
               </Form.Group>
 
-              {/* <Button variant="primary" hre>Create</Button> */}
               <Link
                 to={
                   "/create/" +
@@ -131,4 +119,4 @@ class BasicModals extends React.Component {
     );
   }
 }
-export default BasicModals;
+export default NewExperimentModal;

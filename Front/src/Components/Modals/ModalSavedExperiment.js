@@ -1,21 +1,8 @@
 import React from "react";
-import {
-  Row,
-  Col,
-  Card,
-  Modal,
-  Button,
-  OverlayTrigger,
-  Tooltip,
-  Container,
-  Form,
-} from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Modal, Button } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 
-import Aux from "../../hoc/_Aux";
-
-class BasicModals extends React.Component {
+class SaveModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +20,7 @@ class BasicModals extends React.Component {
     this.getLangId = this.getLangId.bind(this);
   }
 
-  getLangId(event) {
+  getLangId() {
     switch (this.state.lang) {
       case "eng":
         return "2";
@@ -47,7 +34,7 @@ class BasicModals extends React.Component {
         return "2";
     }
   }
-  onAddBtnClick(event) {
+  onAddBtnClick() {
     const langId = this.getLangId();
     console.log(this.props.data);
     const response = {
@@ -107,4 +94,4 @@ class BasicModals extends React.Component {
   }
 }
 
-export default BasicModals;
+export default SaveModal;

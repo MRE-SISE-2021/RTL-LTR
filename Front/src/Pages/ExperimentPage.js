@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import NavBar from "../Components/NavBarExp";
 import ComponentsTable from "../Components/Tabels/ComponentsTable";
@@ -23,12 +23,6 @@ class ExperimentPage extends Component {
   }
 
   render() {
-    let mainClass = ["content-main"];
-    if (this.props.fullWidthLayout) {
-      mainClass = [...mainClass, "container-fluid"];
-    } else {
-      mainClass = [...mainClass, "container"];
-    }
     console.log(this.props.match);
     return (
       <Aux>

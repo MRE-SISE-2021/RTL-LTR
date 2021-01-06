@@ -1,17 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Table, Button, Col, Row } from "react-bootstrap";
+import { Button, Col } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Link } from "react-router-dom";
 import Modal from "./Modals/ModalSavedExperiment";
-// import NavLeft from "./NavLeft";
-// import NavRight from "./NavRight";
 import Aux from "../hoc/_Aux";
 import DEMO from "../store/constant";
 import * as actionTypes from "../store/actions";
-
-import logo from "../assets/images/logo.png";
-import darkLogo from "../assets/images/logo-dark.png";
 
 class NavBar extends Component {
   render() {
@@ -23,16 +18,6 @@ class NavBar extends Component {
     ];
     if (this.props.headerFixedLayout) {
       headerClass = [...headerClass, "headerpos-fixed"];
-    }
-
-    let toggleClass = ["mobile-menu"];
-    if (this.props.collapseMenu) {
-      toggleClass = [...toggleClass, "on"];
-    }
-
-    let mainLogo = logo;
-    if (this.props.headerBackColor === "") {
-      mainLogo = darkLogo;
     }
 
     let mainHeaderClass = ["content-main"];
