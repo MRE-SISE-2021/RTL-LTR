@@ -2,7 +2,7 @@
   "name": "react-mintone",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://html.phoenixcoded.net/mintone/react/default",
+  "homepage": "http://html.phoenixcoded.net/",
   "dependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^12.0.0",
     "@ckeditor/ckeditor5-build-classic": "^12.0.0",

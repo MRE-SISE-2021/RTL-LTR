@@ -10,16 +10,32 @@ import {
   Container,
   Form,
 } from "react-bootstrap";
+
+import { Link } from "react-router-dom";
+
 class BasicModals extends React.Component {
-  state = {
-    isBasic: false,
-    isVertically: false,
-    isTooltip: false,
-    isGrid: false,
-    isScrolling: false,
-    isLarge: false,
-    title: "",
-  };
+  constructor() {
+    super();
+    this.state = {
+      isBasic: false,
+      isVertically: false,
+      isTooltip: false,
+      isGrid: false,
+      isScrolling: false,
+      isLarge: false,
+      title: "",
+      chosenRadio: "eng",
+      expName: "exp",
+    };
+    this.onInputchange = this.onInputchange.bind(this);
+  }
+
+  onInputchange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
+
   render() {
     return (
       <div>
@@ -41,8 +57,10 @@ class BasicModals extends React.Component {
               <Form.Group controlId="formExpName">
                 <Form.Label>Experiment Name</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="Enter name of experiment"
+                  type="text"
+                  placeholder="experiment"
+                  name="expName"
+                  onChange={this.onInputchange}
                 />
               </Form.Group>
 
@@ -61,29 +79,43 @@ class BasicModals extends React.Component {
                     label="Arabic"
                     name="Lang"
                     id="aLangId"
+                    onClick={() => this.setState({ chosenRadio: "ar" })}
                   />
                   <Form.Check
                     type="radio"
                     label="English"
                     name="Lang"
                     id="eLangId"
+                    onClick={() => this.setState({ chosenRadio: "eng" })}
                   />
                   <Form.Check
                     type="radio"
                     label="Hebrew"
                     name="Lang"
                     id="hLangId"
+                    onClick={() => this.setState({ chosenRadio: "heb" })}
                   />
                   <Form.Check
                     type="radio"
                     label="Russian"
                     name="Lang"
                     id="rLangId"
+                    onClick={() => this.setState({ chosenRadio: "ru" })}
                   />
                 </Col>
               </Form.Group>
 
-              <Button variant="primary">Cteate</Button>
+              {/* <Button variant="primary" hre>Create</Button> */}
+              <Link
+                to={
+                  "/create/" +
+                  this.state.expName +
+                  "/exp/" +
+                  this.state.chosenRadio
+                }
+              >
+                <Button variant="primary">Create</Button>
+              </Link>
             </Form>
           </Modal.Body>
           <Modal.Footer>

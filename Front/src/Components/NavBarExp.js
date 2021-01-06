@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Table, Button, Col, Row } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
+import { Link } from "react-router-dom";
 
 // import NavLeft from "./NavLeft";
 // import NavRight from "./NavRight";
@@ -47,7 +48,9 @@ class NavBar extends Component {
           <div className="m-header">
             <a href={DEMO.BLANK_LINK} className="b-brand">
               {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
-              <h3>RTL-LTR</h3>
+              <Link to="/">
+                <button type="button">Click Me!</button>
+              </Link>
             </a>
           </div>
           <a className="mobile-menu" id="mobile-header" href={DEMO.BLANK_LINK}>
@@ -59,7 +62,7 @@ class NavBar extends Component {
             </Col>
             <Col lg={2}>
               <Button className="btn-square" variant="light">
-                Default Name 2
+                {this.props.name}
               </Button>
             </Col>
             <Col lg={1}>
@@ -67,7 +70,7 @@ class NavBar extends Component {
             </Col>
             <Col lg={2}>
               <Button className="btn-square" variant="light">
-                Experiment
+                {this.props.type}
               </Button>
             </Col>
             <Col lg={1}>
@@ -75,7 +78,7 @@ class NavBar extends Component {
             </Col>
             <Col>
               <Button className="btn-square" variant="light">
-                English
+                {this.props.lang}
               </Button>
             </Col>
             <Col>

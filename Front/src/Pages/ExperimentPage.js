@@ -50,9 +50,14 @@ class ExperimentPage extends Component {
     } else {
       mainClass = [...mainClass, "container"];
     }
+    console.log(this.props.match);
     return (
       <Aux>
-        <NavBar />
+        <NavBar
+          name={this.props.match.params.name}
+          type={this.props.match.params.type}
+          lang={this.props.match.params.language}
+        />
 
         <div className="pcoded-content">
           <Col lg={3}>
