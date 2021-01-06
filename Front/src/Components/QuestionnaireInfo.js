@@ -24,6 +24,7 @@ class QuestionaireInfo extends Component {
   }
 
   render() {
+    // console.log(this.props.chosen);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
@@ -31,7 +32,8 @@ class QuestionaireInfo extends Component {
       mainClass = [...mainClass, "container"];
     }
 
-    const data = QuestionaireInfoResponse;
+    // const data = QuestionaireInfoResponse;
+    const data = this.props.chosen;
     return (
       <Aux>
         {/* <NavBar /> */}
@@ -45,7 +47,10 @@ class QuestionaireInfo extends Component {
                       <Aux>
                         <Row>
                           <Col>
-                            <Card title={data.name} isOption>
+                            <Card
+                              title={this.props.questionnaire_name}
+                              isOption
+                            >
                               <Row>
                                 <Col>Created: {data.creation_date}</Col>
                                 <Col>Language: {data.language}</Col>

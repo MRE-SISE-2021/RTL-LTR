@@ -8,12 +8,18 @@ import * as actionTypes from "../../store/actions";
 import { Table, Button } from "react-bootstrap";
 
 import ExperimentsResponse from "../../Api/mocks/ExperimentsResponse";
-import axios from "axios";
+import QuestionnaireInfo from "../QuestionnaireInfo";
 
 class Navigation extends Component {
-  state = {
-    data: "",
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      chosen: {},
+      error: null,
+      isLoaded: false,
+      items: [],
+    };
+  }
 
   resize = () => {
     const contentWidth = document.getElementById("root").clientWidth;
@@ -24,14 +30,29 @@ class Navigation extends Component {
   };
 
   componentDidMount() {
+    //////
+    fetch("http://127.0.0.1:8000/viewset/questionnaire")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          // console.log(result);
+          this.setState({
+            isLoaded: true,
+            items: result,
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        }
+      );
     this.resize();
     window.addEventListener("resize", this.resize);
-
-    axios.get(`http://127.0.0.1:8000/viewset/questionnaire`).then((res) => {
-      const persons = res.data[0];
-      this.setState(persons);
-      console.log(this.state);
-    });
   }
 
   componentWillUnmount() {
@@ -58,6 +79,16 @@ class Navigation extends Component {
   sayHello() {
     alert("Hello!");
   }
+
+  // console.log(rows);
+  // async getData() {
+  //   const res = await axios(`http://127.0.0.1:8000/viewset/questionnaire`);
+  //   console.log(res);
+  //   this.setState(res.data);
+  //   console.log(this.state);
+  //   // return res.data;
+  // }
+
   render() {
     let navClass = ["pcoded-navbar"];
 
@@ -91,14 +122,38 @@ class Navigation extends Component {
       navBarClass = [...navBarClass, "container"];
     }
     ///////////////////////////////
-    const handleClick = (value) => {
-      alert(value);
-    };
 
-    const names = ExperimentsResponse;
+    ///////////////////////////
+    const handleClick = (value) => {
+      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            // console.log(result);
+            this.setState({
+              isLoaded: true,
+              chosen: result,
+            });
+          },
+          // Note: it's important to handle errors here
+          // instead of a catch() block so that we don't swallow
+          // exceptions from actual bugs in components.
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
+    };
+    const names = this.state.items;
+    // console.log(this.state);
+    // this.getData();
 
     return (
       <Aux>
+        <QuestionnaireInfo chosen={this.state.chosen} />
+
         <nav className={navClass.join(" ")}>
           <h5>My Experiments</h5>
           <Modal />
@@ -117,9 +172,9 @@ class Navigation extends Component {
                     <td>
                       <Button
                         variant="outline-*"
-                        onClick={() => handleClick(value)}
+                        onClick={() => handleClick(value.questionnaire_id)}
                       >
-                        {value}
+                        {value.questionnaire_name}
                       </Button>
                     </td>
                   </tr>

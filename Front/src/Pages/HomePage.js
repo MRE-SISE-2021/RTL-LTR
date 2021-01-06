@@ -53,7 +53,6 @@ class AdminLayout extends Component {
       <Aux>
         {/* <NavBar /> */}
         <div className={mainClass.join(" ")}>
-          <QuestionnaireInfo />
           <ExperimentsTable />
         </div>
         {/* <Configuration /> */}
