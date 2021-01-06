@@ -2,8 +2,10 @@ import React, { Component, Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 // import windowSize from "react-window-size";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Tabs, Tab } from "react-bootstrap";
 import Card from "../App/components/MainCard";
+import { MDBIcon } from "mdbreact";
+import NavBar from "../Components/NavBarExp";
 
 // import NavBar from "./NavBar";
 // import Configuration from "./Configuration";
@@ -50,39 +52,62 @@ class ExperimentPage extends Component {
     }
     return (
       <Aux>
-        <div className={mainClass.join(" ")}>
-          <Col lg={3} md={3} className="mail-list">
-            <Card>
-              <ul className="list-group list-group-full">
-                <h5>Genral forms</h5>
-                <li className="list-group-item">
-                  <a href="#" className="text-muted">
-                    <i className="feather icon-file-text" /> Welcome Page
-                  </a>{" "}
-                </li>
-                <li className="list-group-item">
-                  <a href="#" className="text-muted">
-                    <i className="feather icon-file-text" /> Explanation page
-                  </a>{" "}
-                </li>
-                <li className="list-group-item">
-                  <a href="#" className="text-muted">
-                    <i className="feather icon-file-text" /> Thank you page
-                  </a>{" "}
-                </li>
-                <br />
-                <h5>Text Based</h5>
-                <li className="list-group-item">
-                  <a href="#" className="text-muted">
-                    <i className="feather icon-file" /> Text Box
-                  </a>
-                </li>
-                <li className="list-group-item">
-                  <a href="#" className="text-muted">
-                    <i className="feather icon-file" /> Number
-                  </a>
-                </li>
-              </ul>
+        <NavBar />
+
+        <div className="pcoded-content">
+          <Col lg={3}>
+            <Card class="exp">
+              <Tabs defaultActiveKey="home" className="mb-3">
+                <Tab eventKey="home" title={<MDBIcon icon="plus" />}>
+                  <ul className="list-group list-group-full">
+                    <h5>Genral forms</h5>
+                    <li className="list-group-item">
+                      <a href="#" className="text-muted">
+                        <i className="feather icon-file-text" /> Welcome Page
+                      </a>{" "}
+                    </li>
+                    <li className="list-group-item">
+                      <a href="#" className="text-muted">
+                        <i className="feather icon-file-text" /> Explanation
+                        page
+                      </a>{" "}
+                    </li>
+                    <li className="list-group-item">
+                      <a href="#" className="text-muted">
+                        <i className="feather icon-file-text" /> Thank you page
+                      </a>{" "}
+                    </li>
+                    <br />
+                    <h5>Text Based</h5>
+                    <li className="list-group-item">
+                      <a href="#" className="text-muted">
+                        <i className="feather icon-file" /> Text Box
+                      </a>
+                    </li>
+                    <li className="list-group-item">
+                      <a href="#" className="text-muted">
+                        <i className="feather icon-file" /> Number
+                      </a>
+                    </li>
+                  </ul>{" "}
+                </Tab>
+                <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
+                  <p>
+                    Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+                    single-origin coffee squid. Exercitation +1 labore velit,
+                    blog sartorial PBR leggings next level wes anderson artisan
+                    four loko farm-to-table craft beer twee. Qui photo booth
+                    letterpress, commodo enim craft beer mlkshk aliquip jean
+                    shorts ullamco ad vinyl cillum PBR. Homo nostrud organic,
+                    assumenda labore aesthetic magna delectus mollit. Keytar
+                    helvetica VHS salvia yr, vero magna velit sapiente labore
+                    stumptown. Vegan fanny pack odio cillum wes anderson 8-bit,
+                    sustainable jean shorts beard ut DIY ethical culpa terry
+                    richardson biodiesel. Art party scenester stumptown, tumblr
+                    butcher vero sint qui sapiente accusamus tattooed echo park.
+                  </p>
+                </Tab>
+              </Tabs>
             </Card>
           </Col>
         </div>
