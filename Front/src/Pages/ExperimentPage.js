@@ -1,17 +1,7 @@
 import React, { Component, Suspense } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-// import windowSize from "react-window-size";
-import { Row, Col, Tabs, Tab } from "react-bootstrap";
-import Card from "../App/components/MainCard";
-import { MDBIcon } from "mdbreact";
 import NavBar from "../Components/NavBarExp";
 import ComponentsTable from "../Components/Tabels/ComponentsTable";
-import QuestionsInput from "../Components/QuestionsInput";
-// import NavBar from "./NavBar";
-// import Configuration from "./Configuration";
-// import Loader from "../Loader";
-// import routes from "../../../routes";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 
@@ -33,18 +23,6 @@ class ExperimentPage extends Component {
   }
 
   render() {
-    // const menu = routes.map((route, index) => {
-    //   return route.component ? (
-    //     <Route
-    //       key={index}
-    //       path={route.path}
-    //       exact={route.exact}
-    //       name={route.name}
-    //       render={(props) => <route.component {...props} />}
-    //     />
-    //   ) : null;
-    // });
-
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
@@ -61,7 +39,6 @@ class ExperimentPage extends Component {
         />
 
         <ComponentsTable />
-        {/* <QuestionsInput /> */}
       </Aux>
     );
   }
