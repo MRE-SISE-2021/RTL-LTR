@@ -17,7 +17,7 @@ const app = (
   <Provider store={store}>
     <BrowserRouter basename={config.basename}>
       <Switch>
-        <Route exact path="/" component={App} />
+        <Route exact path="/home" component={App} />
         <Route
           path="/create/:name/:type/:language"
           component={ExperimentPage}

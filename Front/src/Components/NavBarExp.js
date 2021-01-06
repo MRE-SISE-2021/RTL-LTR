@@ -46,9 +46,9 @@ class NavBar extends Component {
       <Aux>
         <div className={mainHeaderClass.join(" ")}>
           <div className="m-header">
-            <a href={DEMO.BLANK_LINK} className="b-brand">
+            <a className="b-brand">
               {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
-              <Link to="/">
+              <Link to="/home">
                 <button type="button">Click Me!</button>
               </Link>
             </a>
