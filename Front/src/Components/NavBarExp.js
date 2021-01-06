@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Table, Button, Col, Row } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Link } from "react-router-dom";
-
+import Modal from "./Modals/ModalSavedExperiment";
 // import NavLeft from "./NavLeft";
 // import NavRight from "./NavRight";
 import Aux from "../hoc/_Aux";
@@ -82,9 +82,7 @@ class NavBar extends Component {
               </Button>
             </Col>
             <Col>
-              <button onClick={() => alert("saved")}>
-                <MDBIcon icon="save" />
-              </button>
+              <Modal data={this.props} />
             </Col>
             <Col>
               <MDBIcon far icon="eye" />

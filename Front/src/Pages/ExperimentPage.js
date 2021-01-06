@@ -59,6 +59,7 @@ class ExperimentPage extends Component {
           type={this.props.match.params.type}
           lang={this.props.match.params.language}
         />
+
         <ComponentsTable />
         {/* <QuestionsInput /> */}
       </Aux>

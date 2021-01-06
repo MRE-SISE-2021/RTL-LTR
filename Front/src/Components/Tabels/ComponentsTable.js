@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from "react";
 import { connect } from "react-redux";
 // import windowSize from "react-window-size";
-import { Row, Col, Tabs, Tab } from "react-bootstrap";
+import { Row, Col, Tabs, Tab, Button, Form } from "react-bootstrap";
 import Card from "../../App/components/MainCard";
 import { MDBIcon } from "mdbreact";
 import Input from "../QuestionsInput";
@@ -22,7 +22,9 @@ class ComponentsTable extends Component {
   onAddBtnClick(event) {
     const inputList = this.state.inputList;
     this.setState({
-      inputList: inputList.concat(<Input key={inputList.length} />),
+      inputList: inputList.concat(
+        <Input key={inputList.length} name={event.target.id} />
+      ),
     });
   }
 
@@ -90,31 +92,53 @@ class ComponentsTable extends Component {
                   <h5>Genral forms</h5>
                   <li className="list-group-item">
                     {/* //////// */}
-                    <a onClick={this.onAddBtnClick} className="text-muted">
+
+                    <Button
+                      id="Welcome"
+                      onClick={this.onAddBtnClick}
+                      variant="outline-*"
+                    >
                       <i className="feather icon-file-text" /> Welcome Page
-                    </a>{" "}
+                    </Button>
                   </li>
                   <li className="list-group-item">
-                    <a href="#" className="text-muted">
+                    <Button
+                      id="Explanation"
+                      onClick={this.onAddBtnClick}
+                      variant="outline-*"
+                    >
                       <i className="feather icon-file-text" /> Explanation page
-                    </a>{" "}
+                    </Button>
                   </li>
                   <li className="list-group-item">
-                    <a href="#" className="text-muted">
+                    <Button
+                      id="Thank You"
+                      onClick={this.onAddBtnClick}
+                      variant="outline-*"
+                    >
                       <i className="feather icon-file-text" /> Thank you page
-                    </a>{" "}
+                    </Button>
                   </li>
                   <br />
                   <h5>Text Based</h5>
+
                   <li className="list-group-item">
-                    <a href="#" className="text-muted">
+                    <Button
+                      id="Text Box"
+                      onClick={this.onAddBtnClick}
+                      variant="outline-*"
+                    >
                       <i className="feather icon-file" /> Text Box
-                    </a>
+                    </Button>
                   </li>
                   <li className="list-group-item">
-                    <a href="#" className="text-muted">
+                    <Button
+                      id="Number"
+                      onClick={this.onAddBtnClick}
+                      variant="outline-*"
+                    >
                       <i className="feather icon-file" /> Number
-                    </a>
+                    </Button>
                   </li>
                 </ul>{" "}
               </Tab>
