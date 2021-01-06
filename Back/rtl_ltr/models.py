@@ -62,8 +62,8 @@ class Task(models.Model):
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     is_required = models.BooleanField(db_column='IsRequired')
 
-    components = models.ManyToManyField(Component, through='TaskComponent')
-    images = models.ManyToManyField(Image, through='TaskImage')
+    # components = models.ManyToManyField(Component, through='TaskComponent')
+    # images = models.ManyToManyField(Image, through='TaskImage')
 
     class Meta:
         db_table = 'Task'
@@ -115,6 +115,7 @@ class AnswerTask(models.Model):
 
 
 class ParticipantLanguageProficiency(models.Model):
+    participant_language_id = models.AutoField(db_column='ParticipantLanguageId', primary_key=True)
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     proficiency = models.IntegerField(db_column='Proficiency')
@@ -125,6 +126,7 @@ class ParticipantLanguageProficiency(models.Model):
 
 
 class TaskParticipant(models.Model):
+    task_participant_id = models.AutoField(db_column='TaskParticipantId', primary_key=True)
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
     task_direction = models.CharField(db_column='TaskDirection', max_length=10, blank=True, null=True)
@@ -144,17 +146,19 @@ class Questionnaire(models.Model):
     questionnaire_name = models.CharField(db_column='QuestionnaireName', max_length=100, blank=True, null=True)
     hosted_link = models.TextField(db_column='HostedLink', blank=True, null=True)
     is_active = models.BooleanField(db_column='IsActive')
-    language = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
+    language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     creation_date = models.DateTimeField(db_column='CreationDate', auto_now_add=True)
-    questionnaire_type = models.ForeignKey(QuestionnaireType, models.DO_NOTHING, db_column='QuestionnaireTypeId',
-                                           blank=True, null=True)
-    tasks = models.ManyToManyField(Task, through='QuestionnaireTask')
+    questionnaire_type_id = models.ForeignKey(QuestionnaireType, models.DO_NOTHING, db_column='QuestionnaireTypeId',
+                                              blank=True, null=True)
+
+    # tasks = models.ManyToManyField(Task, through='QuestionnaireTask')
 
     class Meta:
         db_table = 'Questionnaire'
 
 
 class QuestionnaireParticipant(models.Model):
+    questionnaire_participant_id = models.AutoField(db_column='QuestionnaireParticipantId', primary_key=True)
     questionnaire_id = models.ForeignKey(Questionnaire, models.DO_NOTHING, db_column='QuestionnaireId')
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     questionnaire_start = models.TimeField(db_column='QuestionnaireStart')
@@ -168,6 +172,7 @@ class QuestionnaireParticipant(models.Model):
 
 
 class QuestionnaireTask(models.Model):
+    questionnaire_task_id = models.AutoField(db_column='QuestionnaireTaskId', primary_key=True)
     questionnaire_id = models.ForeignKey(Questionnaire, models.DO_NOTHING, db_column='QuestionnaireId')
     task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId', )
 
@@ -177,6 +182,7 @@ class QuestionnaireTask(models.Model):
 
 
 class TaskComponent(models.Model):
+    task_component_id = models.AutoField(db_column='TaskComponentId', primary_key=True)
     task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
     component_id = models.ForeignKey(Component, models.DO_NOTHING, db_column='ComponentId')
     direction = models.CharField(db_column='Direction', max_length=10)
@@ -187,6 +193,7 @@ class TaskComponent(models.Model):
 
 
 class TaskImage(models.Model):
+    task_image_id = models.AutoField(db_column='TaskImageId', primary_key=True)
     task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
     image_id = models.ForeignKey(Image, models.DO_NOTHING, db_column='ImageId')
 

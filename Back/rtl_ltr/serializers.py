@@ -119,7 +119,7 @@ class QuestionnaireSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Questionnaire
         fields = '__all__'
-        depth = 1
+        # depth = 1
         # fields = ('questionnaire_id', 'questionnaire_name', 'hosted_link', 'is_active', 'category_name',
         #           'creation_date',
         #           'questionnaire_type_id',)
