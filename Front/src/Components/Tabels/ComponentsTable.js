@@ -3,15 +3,17 @@ import { connect } from "react-redux";
 import { Tabs, Tab, Button } from "react-bootstrap";
 import Card from "../../App/components/MainCard";
 import { MDBIcon } from "mdbreact";
-import Input from "../QuestionsInput";
+import Input from "../PagesInput";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
+import QuestionsInput from "../QuestionsInput";
 
 class ComponentsTable extends Component {
   constructor(props) {
     super(props);
     this.state = { inputList: [] };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
+    this.onAddBtnClick2 = this.onAddBtnClick2.bind(this);
   }
 
   onAddBtnClick(event) {
@@ -23,6 +25,14 @@ class ComponentsTable extends Component {
     });
   }
 
+  onAddBtnClick2(event) {
+    const inputList = this.state.inputList;
+    this.setState({
+      inputList: inputList.concat(
+        <QuestionsInput key={inputList.length} name={event.target.id} />
+      ),
+    });
+  }
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -119,20 +129,20 @@ class ComponentsTable extends Component {
 
                   <li className="list-group-item">
                     <Button
-                      id="Text Box"
-                      onClick={this.onAddBtnClick}
+                      id="Range"
+                      onClick={this.onAddBtnClick2}
                       variant="outline-*"
                     >
-                      <i className="feather icon-file" /> Text Box
+                      <i className="feather icon-file" /> Range
                     </Button>
                   </li>
                   <li className="list-group-item">
                     <Button
-                      id="Number"
-                      onClick={this.onAddBtnClick}
+                      id="Text"
+                      onClick={this.onAddBtnClick2}
                       variant="outline-*"
                     >
-                      <i className="feather icon-file" /> Number
+                      <i className="feather icon-file" /> Text
                     </Button>
                   </li>
                 </ul>{" "}
