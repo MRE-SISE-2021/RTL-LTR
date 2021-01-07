@@ -6,7 +6,7 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import { Table, Button, Row } from "react-bootstrap";
 
-import QuestionnaireInfo from "../QuestionnaireInfo";
+import QuestionnaireInfo from "../ExperimentInfo";
 
 class ExperimentTable extends Component {
   constructor(props) {
@@ -151,7 +151,7 @@ class ExperimentTable extends Component {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Questionaire Name</th>
+                <th>Experiment Name</th>
               </tr>
             </thead>
             <tbody>

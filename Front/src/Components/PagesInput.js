@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import { Card } from "react-bootstrap";
 import AllCkEditor from "../App/components/AllCkEditor";
+import Card from "../App/components/MainCard";
 
 class Input extends React.Component {
   constructor(props) {
@@ -50,13 +50,8 @@ class Input extends React.Component {
                 <div className="pcoded-inner-content">
                   <div className="main-body">
                     <div className="page-wrapper">
-                      <Card>
-                        <Card.Header>
-                          <Card.Title as="h5">Edit Page</Card.Title>
-                        </Card.Header>
-                        <Card.Body>
-                          <AllCkEditor html={html} editor="classic" />
-                        </Card.Body>
+                      <Card title="Edit Page" isOption>
+                        <AllCkEditor html={html} editor="classic" />
                       </Card>
                     </div>
                   </div>

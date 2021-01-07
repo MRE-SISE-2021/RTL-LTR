@@ -14,7 +14,7 @@ class NewExperimentModal extends React.Component {
       isScrolling: false,
       isLarge: false,
       title: "",
-      chosenRadio: "eng",
+      chosenRadio: "english",
       expName: "exp",
       toDashboard: false,
     };
@@ -97,28 +97,28 @@ class NewExperimentModal extends React.Component {
                     label="Arabic"
                     name="Lang"
                     id="aLangId"
-                    onClick={() => this.setState({ chosenRadio: "ar" })}
+                    onClick={() => this.setState({ chosenRadio: "arabic" })}
                   />
                   <Form.Check
                     type="radio"
                     label="English"
                     name="Lang"
                     id="eLangId"
-                    onClick={() => this.setState({ chosenRadio: "eng" })}
+                    onClick={() => this.setState({ chosenRadio: "english" })}
                   />
                   <Form.Check
                     type="radio"
                     label="Hebrew"
                     name="Lang"
                     id="hLangId"
-                    onClick={() => this.setState({ chosenRadio: "heb" })}
+                    onClick={() => this.setState({ chosenRadio: "hebrew" })}
                   />
                   <Form.Check
                     type="radio"
                     label="Russian"
                     name="Lang"
                     id="rLangId"
-                    onClick={() => this.setState({ chosenRadio: "ru" })}
+                    onClick={() => this.setState({ chosenRadio: "russian" })}
                   />
                 </Col>
               </Form.Group>

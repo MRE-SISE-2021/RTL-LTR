@@ -4,7 +4,7 @@ import { Row, Col } from "react-bootstrap";
 import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-class QuestionaireInfo extends Component {
+class ExperimentInfo extends Component {
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -32,7 +32,7 @@ class QuestionaireInfo extends Component {
 
     // const data = QuestionaireInfoResponse;
     const data = this.props.chosen;
-    console.log(data.is_active);
+    console.log(data);
     return (
       <Aux>
         {/* <NavBar /> */}
@@ -46,10 +46,7 @@ class QuestionaireInfo extends Component {
                       <Aux>
                         <Row>
                           <Col>
-                            <Card
-                              title={this.props.questionnaire_name}
-                              isOption
-                            >
+                            <Card title={data.questionnaire_name} isOption>
                               <Row>
                                 <Col>
                                   <b>Created: </b> {data.creation_date}
@@ -110,4 +107,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionaireInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(ExperimentInfo);

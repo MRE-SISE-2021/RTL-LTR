@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
+import { Redirect } from "react-router-dom";
 
 class SaveModal extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class SaveModal extends React.Component {
       isScrolling: false,
       isLarge: false,
       title: "",
+      toDashboard: false,
       name: this.props.data.name,
       lang: this.props.data.lang,
     };
@@ -22,13 +24,13 @@ class SaveModal extends React.Component {
 
   getLangId() {
     switch (this.state.lang) {
-      case "eng":
+      case "english":
         return "2";
-      case "heb":
+      case "hebrew":
         return "3";
-      case "ar":
+      case "arabic":
         return "1";
-      case "ru":
+      case "russian":
         return "4";
       default:
         return "2";
@@ -67,9 +69,15 @@ class SaveModal extends React.Component {
       .catch((error) => this.setState({ error }));
 
     this.setState({ isBasic: false });
+    this.setState(() => ({
+      toDashboard: true,
+    }));
   }
 
   render() {
+    if (this.state.toDashboard === true) {
+      return <Redirect to={"/home/"} />;
+    }
     return (
       <div className="mr-5">
         <Button
@@ -85,7 +93,7 @@ class SaveModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title as="h5">All Data Will be Saved!</Modal.Title>
           </Modal.Header>
-
+          <img src="https://icon-library.com/images/save-icon-image/save-icon-image-12.jpg" />
           <Modal.Footer>
             <Button variant="secondary" onClick={this.onAddBtnClick}>
               Save!
