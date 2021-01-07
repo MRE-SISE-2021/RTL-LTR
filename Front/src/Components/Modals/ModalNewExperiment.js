@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Modal, Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Aux from "../../hoc/_Aux";
 
 class NewExperimentModal extends React.Component {
   constructor() {
@@ -27,9 +28,10 @@ class NewExperimentModal extends React.Component {
 
   render() {
     return (
-      <div>
+      <Aux>
         <Button
-          variant="Light"
+          className="ml-2"
+          variant="outline-dark"
           onClick={() => this.setState({ isBasic: true })}
         >
           Create
@@ -118,7 +120,7 @@ class NewExperimentModal extends React.Component {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
+      </Aux>
     );
   }
 }

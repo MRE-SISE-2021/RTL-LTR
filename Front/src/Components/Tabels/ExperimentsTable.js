@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import Modal from "../Modals/ModalNewExperiment";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
-import { Table, Button } from "react-bootstrap";
+import { Table, Button, Row } from "react-bootstrap";
 
 import QuestionnaireInfo from "../QuestionnaireInfo";
 
@@ -142,8 +142,11 @@ class ExperimentTable extends Component {
         <QuestionnaireInfo chosen={this.state.chosen} />
 
         <nav className={navClass.join(" ")}>
-          <h5>My Experiments</h5>
-          <Modal />
+          <Row className="mt-4 ml-1">
+            <h5>My Experiments</h5>
+            <Modal />
+          </Row>
+
           <Table striped bordered hover>
             <thead>
               <tr>

@@ -30,19 +30,12 @@ class NavBar extends Component {
 
     let navBar = (
       <Aux>
-        <div className={mainHeaderClass.join(" ")}>
+        <div>
           <div className="m-header">
             <a href={DEMO.BLANK_LINK} className="b-brand">
               {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
               <h3>RTL-LTR</h3>
             </a>
-          </div>
-          <a className="mobile-menu" id="mobile-header" href={DEMO.BLANK_LINK}>
-            <i className="feather icon-more-horizontal" />
-          </a>
-          <div className="collapse navbar-collapse">
-            {/* <NavLeft /> */}
-            {/* <NavRight rtlLayout={this.props.rtlLayout} /> */}
           </div>
         </div>
       </Aux>
