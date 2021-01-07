@@ -56,7 +56,14 @@ class QuestionaireInfo extends Component {
                                 </Col>
                                 <Col>
                                   <b>Language: </b>
-                                  {data.language_id}
+                                  {
+                                    {
+                                      1: "Arabic",
+                                      2: "English",
+                                      3: "Hebrew",
+                                      4: "Russian",
+                                    }[data.language_id]
+                                  }
                                 </Col>
                               </Row>
                               <Row>

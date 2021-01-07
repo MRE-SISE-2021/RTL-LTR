@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Modal, Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Aux from "../../hoc/_Aux";
 
 class NewExperimentModal extends React.Component {
@@ -16,8 +16,10 @@ class NewExperimentModal extends React.Component {
       title: "",
       chosenRadio: "eng",
       expName: "exp",
+      toDashboard: false,
     };
     this.onInputchange = this.onInputchange.bind(this);
+    this.submitHandler = this.submitHandler.bind(this);
   }
 
   onInputchange(event) {
@@ -26,7 +28,31 @@ class NewExperimentModal extends React.Component {
     });
   }
 
+  submitHandler(event) {
+    event.preventDefault();
+    // do some sort of verification here if you need to
+    //   <Link
+    // to={
+    //   "/create/" +
+    //   this.state.expName +
+    //   "/exp/" +
+    //   this.state.chosenRadio
+    // }
+    // >
+    this.setState(() => ({
+      toDashboard: true,
+    }));
+  }
   render() {
+    if (this.state.toDashboard === true) {
+      return (
+        <Redirect
+          to={
+            "/create/" + this.state.expName + "/exp/" + this.state.chosenRadio
+          }
+        />
+      );
+    }
     return (
       <Aux>
         <Button
@@ -44,7 +70,7 @@ class NewExperimentModal extends React.Component {
             <Modal.Title as="h5">Modal Title</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form onSubmit={this.submitHandler}>
               <Form.Group controlId="formExpName">
                 <Form.Label>Experiment Name</Form.Label>
                 <Form.Control
@@ -97,18 +123,9 @@ class NewExperimentModal extends React.Component {
                 </Col>
               </Form.Group>
 
-              <Link
-                to={
-                  "/create/" +
-                  this.state.expName +
-                  "/exp/" +
-                  this.state.chosenRadio
-                }
-              >
-                <Button type="submit" variant="primary">
-                  Create
-                </Button>
-              </Link>
+              <Button type="submit" variant="primary">
+                Create
+              </Button>
             </Form>
           </Modal.Body>
           <Modal.Footer>
