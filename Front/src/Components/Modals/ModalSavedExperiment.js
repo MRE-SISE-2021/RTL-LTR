@@ -38,7 +38,7 @@ class SaveModal extends React.Component {
     const langId = this.getLangId();
     console.log(this.props.data);
     const response = {
-      creation_date: Date().toLocaleString(), //
+      creation_date: "2021-01-06 23:25", //
       questionnaire_name: this.state.name,
       hosted_link: "https://www.youtube.com/",
       is_active: "true",
