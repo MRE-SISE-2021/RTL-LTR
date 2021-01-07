@@ -34,7 +34,7 @@ class NavBar extends Component {
             <a className="b-brand">
               {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
               <Link to="/home">
-                <button type="button">Click Me!</button>
+                <MDBIcon icon="angle-double-left" />
               </Link>
             </a>
           </div>

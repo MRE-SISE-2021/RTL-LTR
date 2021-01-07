@@ -32,14 +32,6 @@ class NavBar extends Component {
       <Aux>
         <div className={mainHeaderClass.join(" ")}>
           <div className="m-header">
-            <a
-              className={toggleClass.join(" ")}
-              id="mobile-collapse1"
-              href={DEMO.BLANK_LINK}
-              onClick={this.props.onToggleNavigation}
-            >
-              <span />
-            </a>
             <a href={DEMO.BLANK_LINK} className="b-brand">
               {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
               <h3>RTL-LTR</h3>
