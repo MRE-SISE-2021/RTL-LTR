@@ -89,8 +89,8 @@ class ComponentsTable extends Component {
         {this.state.inputList.map(function (input, index) {
           return input;
         })}
-        <nav className={navClass.join(" ")}>
-          <Card>
+        <nav className={navClass.join(" ")} style={{ background: "white" }}>
+          <Card style={{ width: "100%" }}>
             <Tabs defaultActiveKey="home" className="mb-3">
               <Tab eventKey="home" title={<MDBIcon icon="plus" />}>
                 <ul className="list-group list-group-full">
@@ -101,7 +101,7 @@ class ComponentsTable extends Component {
                     <Button
                       id="Welcome"
                       onClick={this.onAddBtnClick}
-                      variant="outline-*"
+                      variant="outline-info"
                     >
                       <i className="feather icon-file-text" /> Welcome Page
                     </Button>
@@ -110,7 +110,7 @@ class ComponentsTable extends Component {
                     <Button
                       id="Explanation"
                       onClick={this.onAddBtnClick}
-                      variant="outline-*"
+                      variant="outline-info"
                     >
                       <i className="feather icon-file-text" /> Explanation page
                     </Button>
@@ -119,7 +119,7 @@ class ComponentsTable extends Component {
                     <Button
                       id="Thank You"
                       onClick={this.onAddBtnClick}
-                      variant="outline-*"
+                      variant="outline-info"
                     >
                       <i className="feather icon-file-text" /> Thank you page
                     </Button>
@@ -131,7 +131,7 @@ class ComponentsTable extends Component {
                     <Button
                       id="Range"
                       onClick={this.onAddBtnClick2}
-                      variant="outline-*"
+                      variant="outline-info"
                     >
                       <i className="feather icon-file" /> Range
                     </Button>
@@ -140,7 +140,7 @@ class ComponentsTable extends Component {
                     <Button
                       id="Text"
                       onClick={this.onAddBtnClick2}
-                      variant="outline-*"
+                      variant="outline-info"
                     >
                       <i className="feather icon-file" /> Text
                     </Button>
