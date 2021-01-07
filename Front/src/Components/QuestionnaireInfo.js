@@ -32,6 +32,7 @@ class QuestionaireInfo extends Component {
 
     // const data = QuestionaireInfoResponse;
     const data = this.props.chosen;
+    console.log(data.is_active);
     return (
       <Aux>
         {/* <NavBar /> */}
@@ -50,12 +51,25 @@ class QuestionaireInfo extends Component {
                               isOption
                             >
                               <Row>
-                                <Col>Created: {data.creation_date}</Col>
-                                <Col>Language: {data.language}</Col>
+                                <Col>
+                                  <b>Created: </b> {data.creation_date}
+                                </Col>
+                                <Col>
+                                  <b>Language: </b>
+                                  {data.language_id}
+                                </Col>
                               </Row>
                               <Row>
-                                <Col>Hosted Link: {data.hosted_link}</Col>
-                                <Col>Status: {data.is_active}</Col>
+                                <Col>
+                                  <b>Hosted Link: </b>
+                                  {data.hosted_link}
+                                </Col>
+                                <Col>
+                                  <b>Status: </b>
+                                  {data.is_active !== undefined
+                                    ? [data.is_active ? "True" : "False"]
+                                    : null}
+                                </Col>
                               </Row>
                             </Card>
                           </Col>
