@@ -79,6 +79,7 @@ urlpatterns = [
     path('viewset/', include(router_participant.urls)),
     path('viewset/', include(router_participant_language_proficiency.urls)),
     path('viewset/', include(router_task_participant.urls)),
+    path('viewset/', include(router_answer_task.urls)),
     path('viewset/', include(router_questionnaire.urls)),
     path('viewset/', include(router_questionnaire_participant.urls)),
     path('viewset/', include(router_questionnaire_task.urls)),
