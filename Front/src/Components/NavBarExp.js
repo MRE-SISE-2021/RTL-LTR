@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Link } from "react-router-dom";
 import Modal from "./Modals/ModalSavedExperiment";
 import Aux from "../hoc/_Aux";
-import DEMO from "../store/constant";
 import * as actionTypes from "../store/actions";
 
 class NavBar extends Component {
@@ -30,58 +29,48 @@ class NavBar extends Component {
     let navBar = (
       <Aux>
         <div className={mainHeaderClass.join(" ")}>
-          <div className="m-header">
-            {/* <a className="b-brand"> */}
-            {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
-            <Link to="/home">
-              <MDBIcon icon="angle-double-left" />
-            </Link>
-            {/* </a> */}
-          </div>
-          <a className="mobile-menu" id="mobile-header" href={DEMO.BLANK_LINK}>
-            <i className="feather icon-more-horizontal" />
-          </a>
-          <div className="collapse navbar-collapse">
-            <Col lg={2}>
-              <h5>Experiment Name </h5>
-            </Col>
-            <Col lg={2}>
-              <Button className="btn-square" variant="light">
-                {this.props.name}
-              </Button>
-            </Col>
-            <Col lg={1}>
-              <h5> Type </h5>
-            </Col>
-            <Col lg={2}>
-              <Button className="btn-square" variant="light">
-                {this.props.type}
-              </Button>
-            </Col>
-            <Col lg={1}>
-              <h5> Language </h5>
-            </Col>
-            <Col>
-              <Button className="btn-square" variant="light">
-                {this.props.lang}
-              </Button>
-            </Col>
-            <Col>
-              <Modal data={this.props} />
-            </Col>
-            <Col>
-              <MDBIcon far icon="eye" />
-            </Col>
-            <Col>
-              <MDBIcon icon="paperclip" />
-            </Col>
+          {/* <div className="m-header"> */}
+          {/* <a className="b-brand"> */}
+          {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
+          <Link to="/home">
+            <MDBIcon className="mr-5" icon="angle-double-left" />
+          </Link>
+          {/* </a> */}
+          {/* </div> */}
 
-            <Col>
-              <MDBIcon far icon="clone" />
-            </Col>
-            <Col>
-              <MDBIcon far icon="trash-alt" />
-            </Col>
+          <div className="collapse navbar-collapse">
+            <h5 className="mr-5">Experiment Name </h5>
+            <Button className="btn-square mr-5" variant="light">
+              {this.props.name}
+            </Button>
+            <h5 className="mr-5"> Type </h5>
+
+            <Button className="btn-square mr-5" variant="light">
+              {this.props.type}
+            </Button>
+
+            <h5 className="mr-5"> Language </h5>
+
+            <Button className="btn-square mr-5" variant="light">
+              {this.props.lang}
+            </Button>
+
+            <div className="d-flex justify-content-lg-end">
+              <Modal className="mr-5" data={this.props} />
+
+              <Button variant="outline-*" disabled>
+                <MDBIcon className="mr-5" far icon="eye" />
+              </Button>
+              <Button variant="outline-*" disabled>
+                <MDBIcon className="mr-5" icon="paperclip" />
+              </Button>
+              <Button variant="outline-*" disabled>
+                <MDBIcon className="mr-5" far icon="clone" />
+              </Button>
+              <Button variant="outline-*" disabled>
+                <MDBIcon className="mr-5" far icon="trash-alt" />
+              </Button>
+            </div>
           </div>
         </div>
       </Aux>

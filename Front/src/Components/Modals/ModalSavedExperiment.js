@@ -71,10 +71,13 @@ class SaveModal extends React.Component {
 
   render() {
     return (
-      <div>
-        <button onClick={() => this.setState({ isBasic: true })}>
+      <div className="mr-5">
+        <Button
+          variant="outline-*"
+          onClick={() => this.setState({ isBasic: true })}
+        >
           <MDBIcon icon="save" />
-        </button>
+        </Button>
         <Modal
           show={this.state.isBasic}
           onHide={() => this.setState({ isBasic: false })}
