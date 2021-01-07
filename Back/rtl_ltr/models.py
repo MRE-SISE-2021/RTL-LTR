@@ -9,9 +9,9 @@
 # (Evgeny) The classes were created and modified according to the tutorials:
 # https://docs.djangoproject.com/en/3.1/ref/models/options/
 # https://django-book.readthedocs.io/en/latest/chapter18.html
-
-
+import datetime
 from django.db import models
+from django.utils import timezone
 
 
 class Component(models.Model):
@@ -147,7 +147,7 @@ class Questionnaire(models.Model):
     hosted_link = models.TextField(db_column='HostedLink', blank=True, null=True)
     is_active = models.BooleanField(db_column='IsActive')
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
-    creation_date = models.DateTimeField(db_column='CreationDate', auto_now_add=True)
+    creation_date = models.DateTimeField(db_column='CreationDate')
     questionnaire_type_id = models.ForeignKey(QuestionnaireType, models.DO_NOTHING, db_column='QuestionnaireTypeId',
                                               blank=True, null=True)
 
@@ -155,6 +155,10 @@ class Questionnaire(models.Model):
 
     class Meta:
         db_table = 'Questionnaire'
+
+    def save(self, *args, **kwargs):
+        self.creation_date = datetime.datetime.now()
+        return super(Questionnaire, self).save(*args, **kwargs)
 
 
 class QuestionnaireParticipant(models.Model):
