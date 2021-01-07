@@ -31,12 +31,12 @@ class NavBar extends Component {
       <Aux>
         <div className={mainHeaderClass.join(" ")}>
           <div className="m-header">
-            <a className="b-brand">
-              {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
-              <Link to="/home">
-                <MDBIcon icon="angle-double-left" />
-              </Link>
-            </a>
+            {/* <a className="b-brand"> */}
+            {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
+            <Link to="/home">
+              <MDBIcon icon="angle-double-left" />
+            </Link>
+            {/* </a> */}
           </div>
           <a className="mobile-menu" id="mobile-header" href={DEMO.BLANK_LINK}>
             <i className="feather icon-more-horizontal" />
