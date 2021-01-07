@@ -2,20 +2,27 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import reducer from "./store/reducer";
 import config from "./config";
 import "./assets/scss/style.scss";
+import ExperimentPage from "./Pages/ExperimentPage";
 
 const store = createStore(reducer);
 
 const app = (
   <Provider store={store}>
     <BrowserRouter basename={config.basename}>
-      <App />
+      <Switch>
+        <Route exact path="/home" component={App} />
+        <Route
+          path="/create/:name/:type/:language"
+          component={ExperimentPage}
+        />
+      </Switch>
     </BrowserRouter>
   </Provider>
 );

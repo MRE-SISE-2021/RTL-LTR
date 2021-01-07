@@ -1,30 +1,37 @@
 import React from "react";
-import {
-  Row,
-  Col,
-  Card,
-  Modal,
-  Button,
-  OverlayTrigger,
-  Tooltip,
-  Container,
-  Form,
-} from "react-bootstrap";
-class BasicModals extends React.Component {
-  state = {
-    isBasic: false,
-    isVertically: false,
-    isTooltip: false,
-    isGrid: false,
-    isScrolling: false,
-    isLarge: false,
-    title: "",
-  };
+import { Col, Modal, Button, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Aux from "../../hoc/_Aux";
+
+class NewExperimentModal extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      isBasic: false,
+      isVertically: false,
+      isTooltip: false,
+      isGrid: false,
+      isScrolling: false,
+      isLarge: false,
+      title: "",
+      chosenRadio: "eng",
+      expName: "exp",
+    };
+    this.onInputchange = this.onInputchange.bind(this);
+  }
+
+  onInputchange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
+
   render() {
     return (
-      <div>
+      <Aux>
         <Button
-          variant="primary"
+          className="ml-2"
+          variant="outline-dark"
           onClick={() => this.setState({ isBasic: true })}
         >
           Create
@@ -41,8 +48,11 @@ class BasicModals extends React.Component {
               <Form.Group controlId="formExpName">
                 <Form.Label>Experiment Name</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="Enter name of experiment"
+                  required
+                  type="text"
+                  placeholder="experiment"
+                  name="expName"
+                  onChange={this.onInputchange}
                 />
               </Form.Group>
 
@@ -53,7 +63,7 @@ class BasicModals extends React.Component {
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group>
+              <Form.Group required>
                 <Form.Label>Languages</Form.Label>
                 <Col sm={10}>
                   <Form.Check
@@ -61,29 +71,44 @@ class BasicModals extends React.Component {
                     label="Arabic"
                     name="Lang"
                     id="aLangId"
+                    onClick={() => this.setState({ chosenRadio: "ar" })}
                   />
                   <Form.Check
                     type="radio"
                     label="English"
                     name="Lang"
                     id="eLangId"
+                    onClick={() => this.setState({ chosenRadio: "eng" })}
                   />
                   <Form.Check
                     type="radio"
                     label="Hebrew"
                     name="Lang"
                     id="hLangId"
+                    onClick={() => this.setState({ chosenRadio: "heb" })}
                   />
                   <Form.Check
                     type="radio"
                     label="Russian"
                     name="Lang"
                     id="rLangId"
+                    onClick={() => this.setState({ chosenRadio: "ru" })}
                   />
                 </Col>
               </Form.Group>
 
-              <Button variant="primary">Cteate</Button>
+              <Link
+                to={
+                  "/create/" +
+                  this.state.expName +
+                  "/exp/" +
+                  this.state.chosenRadio
+                }
+              >
+                <Button type="submit" variant="primary">
+                  Create
+                </Button>
+              </Link>
             </Form>
           </Modal.Body>
           <Modal.Footer>
@@ -95,8 +120,8 @@ class BasicModals extends React.Component {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
+      </Aux>
     );
   }
 }
-export default BasicModals;
+export default NewExperimentModal;
