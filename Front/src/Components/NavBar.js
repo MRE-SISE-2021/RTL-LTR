@@ -16,17 +16,17 @@ class NavBar extends Component {
       headerClass = [...headerClass, "headerpos-fixed"];
     }
 
-    let toggleClass = ["mobile-menu"];
-    if (this.props.collapseMenu) {
-      toggleClass = [...toggleClass, "on"];
-    }
+    // let toggleClass = ["mobile-menu"];
+    // if (this.props.collapseMenu) {
+    //   toggleClass = [...toggleClass, "on"];
+    // }
 
-    let mainHeaderClass = ["content-main"];
-    if (this.props.fullWidthLayout) {
-      mainHeaderClass = [...mainHeaderClass, "container-fluid"];
-    } else {
-      mainHeaderClass = [...mainHeaderClass, "container"];
-    }
+    // let mainHeaderClass = ["content-main"];
+    // if (this.props.fullWidthLayout) {
+    //   mainHeaderClass = [...mainHeaderClass, "container-fluid"];
+    // } else {
+    //   mainHeaderClass = [...mainHeaderClass, "container"];
+    // }
 
     let navBar = (
       <Aux>

@@ -1,21 +1,10 @@
 import React from "react";
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Button,
-  InputGroup,
-  FormControl,
-  DropdownButton,
-  Dropdown,
-} from "react-bootstrap";
+import { Row, Col, Card, Form } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actionTypes from "../store/actions";
 
 import Aux from "../hoc/_Aux";
 import Breadcrumb from "../App/components/Breadcrumb";
-import DEMO from "../store/constant";
 
 class FormsElements extends React.Component {
   state = {
@@ -54,7 +43,7 @@ class FormsElements extends React.Component {
   };
 
   render() {
-    const { validated, validatedTooltip } = this.state;
+    // const { validated, validatedTooltip } = this.state;
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
