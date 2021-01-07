@@ -29,7 +29,7 @@ class NewExperimentModal extends React.Component {
     return (
       <div>
         <Button
-          variant="primary"
+          variant="Light"
           onClick={() => this.setState({ isBasic: true })}
         >
           Create
@@ -46,6 +46,7 @@ class NewExperimentModal extends React.Component {
               <Form.Group controlId="formExpName">
                 <Form.Label>Experiment Name</Form.Label>
                 <Form.Control
+                  required
                   type="text"
                   placeholder="experiment"
                   name="expName"
@@ -60,7 +61,7 @@ class NewExperimentModal extends React.Component {
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group>
+              <Form.Group required>
                 <Form.Label>Languages</Form.Label>
                 <Col sm={10}>
                   <Form.Check
@@ -102,7 +103,9 @@ class NewExperimentModal extends React.Component {
                   this.state.chosenRadio
                 }
               >
-                <Button variant="primary">Create</Button>
+                <Button type="submit" variant="primary">
+                  Create
+                </Button>
               </Link>
             </Form>
           </Modal.Body>
