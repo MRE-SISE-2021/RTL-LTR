@@ -1,12 +1,10 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-// import windowSize from "react-window-size";
 import { Row, Col } from "react-bootstrap";
 import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import QuestionaireInfoResponse from "../Api/mocks/QuestionaireInfoResponse";
-class QuestionaireInfo extends Component {
+class ExperimentInfo extends Component {
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -34,6 +32,7 @@ class QuestionaireInfo extends Component {
 
     // const data = QuestionaireInfoResponse;
     const data = this.props.chosen;
+    console.log(data);
     return (
       <Aux>
         {/* <NavBar /> */}
@@ -47,17 +46,34 @@ class QuestionaireInfo extends Component {
                       <Aux>
                         <Row>
                           <Col>
-                            <Card
-                              title={this.props.questionnaire_name}
-                              isOption
-                            >
+                            <Card title={data.questionnaire_name} isOption>
                               <Row>
-                                <Col>Created: {data.creation_date}</Col>
-                                <Col>Language: {data.language}</Col>
+                                <Col>
+                                  <b>Created: </b> {data.creation_date}
+                                </Col>
+                                <Col>
+                                  <b>Language: </b>
+                                  {
+                                    {
+                                      1: "Arabic",
+                                      2: "English",
+                                      3: "Hebrew",
+                                      4: "Russian",
+                                    }[data.language_id]
+                                  }
+                                </Col>
                               </Row>
                               <Row>
-                                <Col>Hosted Link: {data.hosted_link}</Col>
-                                <Col>Status: {data.is_active}</Col>
+                                <Col>
+                                  <b>Hosted Link: </b>
+                                  {data.hosted_link}
+                                </Col>
+                                <Col>
+                                  <b>Status: </b>
+                                  {data.is_active !== undefined
+                                    ? [data.is_active ? "True" : "False"]
+                                    : null}
+                                </Col>
                               </Row>
                             </Card>
                           </Col>
@@ -91,4 +107,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionaireInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(ExperimentInfo);
