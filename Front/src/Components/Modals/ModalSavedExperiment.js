@@ -40,13 +40,27 @@ class SaveModal extends React.Component {
     const langId = this.getLangId();
     console.log(this.props.data);
     const response = {
+      //tasks
+      tasks: [
+        {
+          answers: [],
+          components: [],
+          images: [],
+          task_title: "Test create",
+          task_content: "easdasdwq", ////////////////////////////////////////////
+          is_required: true,
+          language_id: 1,
+        },
+      ],
+      //data
       creation_date: "2021-01-06 23:25", //
       questionnaire_name: this.state.name,
-      hosted_link: "https://www.youtube.com/",
+      hosted_link: "https://www.youtube.com/", //
       is_active: "true",
       language_id: langId,
       questionnaire_type_id: "1", //
     };
+
     console.log(response);
     const requestOptions = {
       method: "post",
