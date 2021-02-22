@@ -56,6 +56,7 @@ class NavBar extends Component {
             </Button>
 
             <div className="d-flex justify-content-lg-end">
+              {/* props = name | lang | type */}
               <Modal className="mr-5" data={this.props} />
 
               <Button variant="outline-*" disabled>

@@ -2,46 +2,11 @@ import React from "react";
 import { Row, Col, Card, Form } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actionTypes from "../store/actions";
-
+// import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
 import Breadcrumb from "../App/components/Breadcrumb";
 
 class FormsElements extends React.Component {
-  state = {
-    validated: false,
-    validatedTooltip: false,
-    supportedCheckbox: false,
-    supportedRadio: false,
-    supportedSelect: 0,
-    supportedFile: 0,
-  };
-
-  handleSubmit(event) {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    this.setState({ validated: true });
-  }
-
-  handleSubmitTooltip(event) {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    this.setState({ validatedTooltip: true });
-  }
-
-  supportedSelectHandler = (event) => {
-    this.setState({ supportedSelect: parseInt(event.target.value) });
-  };
-
-  supportedFileHandler = (event) => {
-    this.setState({ supportedFile: !!event.target.value });
-  };
-
   render() {
     // const { validated, validatedTooltip } = this.state;
     let mainClass = ["content-main"];
