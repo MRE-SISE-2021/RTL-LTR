@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Link } from "react-router-dom";
-import Modal from "./Modals/ModalSavedExperiment";
-import Aux from "../hoc/_Aux";
-import * as actionTypes from "../store/actions";
+import Modal from "../Modals/ModalSavedExperiment";
+import Aux from "../../hoc/_Aux";
+import * as actionTypes from "../../store/actions";
 
 class NavBar extends Component {
   render() {
