@@ -11,12 +11,21 @@
 # https://django-book.readthedocs.io/en/latest/chapter18.html
 import datetime
 from django.db import models
-from django.utils import timezone
+
+
+class Answer(models.Model):
+    answer_id = models.AutoField(db_column='AnswerId', primary_key=True)
+    answer_content = models.TextField(db_column='AnswerContent')
+    is_correct = models.BooleanField(db_column='IsCorrect', blank=True, null=True)
+
+    class Meta:
+        db_table = 'Answer'
 
 
 class Component(models.Model):
     component_id = models.AutoField(db_column='ComponentId', primary_key=True)
-    component_type = models.CharField(db_column='ComponentType', max_length=10)
+    component_type = models.CharField(db_column='ComponentType', max_length=50)
+    label = models.CharField(db_column='Label', max_length=100, blank=True, null=True)
 
     class Meta:
         db_table = 'Component'
@@ -62,8 +71,9 @@ class Task(models.Model):
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     is_required = models.BooleanField(db_column='IsRequired')
 
-    # components = models.ManyToManyField(Component, through='TaskComponent')
-    # images = models.ManyToManyField(Image, through='TaskImage')
+    answers = models.ManyToManyField(Answer, through='TaskAnswer')
+    components = models.ManyToManyField(Component, through='TaskComponent')
+    images = models.ManyToManyField(Image, through='TaskImage')
 
     class Meta:
         db_table = 'Task'
@@ -104,16 +114,6 @@ class Participant(models.Model):
         db_table = 'Participant'
 
 
-class AnswerTask(models.Model):
-    answer_id = models.AutoField(db_column='AnswerId', primary_key=True)
-    task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
-    answer_content = models.TextField(db_column='AnswerContent')
-    is_correct = models.BooleanField(db_column='IsCorrect', blank=True, null=True)
-
-    class Meta:
-        db_table = 'AnswerTask'
-
-
 class ParticipantLanguageProficiency(models.Model):
     participant_language_id = models.AutoField(db_column='ParticipantLanguageId', primary_key=True)
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
@@ -133,7 +133,7 @@ class TaskParticipant(models.Model):
     task_time = models.TimeField(db_column='TaskTime')
     task_clicks = models.IntegerField(db_column='TaskClicks')
     task_errors = models.IntegerField(db_column='TaskErrors')
-    answer_id = models.ForeignKey(AnswerTask, models.DO_NOTHING, db_column='AnswerId', blank=True, null=True)
+    answer_id = models.ForeignKey(Answer, models.DO_NOTHING, db_column='AnswerId', blank=True, null=True)
     submitted_free_answer = models.TextField(db_column='SubmittedFreeAnswer', blank=True, null=True)
 
     class Meta:
@@ -151,7 +151,7 @@ class Questionnaire(models.Model):
     questionnaire_type_id = models.ForeignKey(QuestionnaireType, models.DO_NOTHING, db_column='QuestionnaireTypeId',
                                               blank=True, null=True)
 
-    # tasks = models.ManyToManyField(Task, through='QuestionnaireTask')
+    tasks = models.ManyToManyField(Task, through='QuestionnaireTask')
 
     class Meta:
         db_table = 'Questionnaire'
@@ -204,3 +204,13 @@ class TaskImage(models.Model):
     class Meta:
         db_table = 'TaskImage'
         unique_together = (('task_id', 'image_id'),)
+
+
+class TaskAnswer(models.Model):
+    task_answer_id = models.AutoField(db_column='TaskAnswerId', primary_key=True)
+    answer_id = models.ForeignKey(Answer, models.DO_NOTHING, db_column='AnswerId')
+    task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
+
+    class Meta:
+        db_table = 'TaskAnswer'
+        unique_together = (('task_id', 'answer_id'),)
