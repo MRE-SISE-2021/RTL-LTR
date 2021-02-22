@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Link } from "react-router-dom";
-import Modal from "./Modals/ModalSavedExperiment";
-import Aux from "../hoc/_Aux";
-import * as actionTypes from "../store/actions";
+import Modal from "../Modals/ModalSavedExperiment";
+import Aux from "../../hoc/_Aux";
+import * as actionTypes from "../../store/actions";
 
 class NavBar extends Component {
   render() {
@@ -56,6 +56,7 @@ class NavBar extends Component {
             </Button>
 
             <div className="d-flex justify-content-lg-end">
+              {/* props = name | lang | type */}
               <Modal className="mr-5" data={this.props} />
 
               <Button variant="outline-*" disabled>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import NavBar from "../Components/NavBarExp";
+import NavBar from "../Components/NavBars/NavBarExp";
 import ComponentsTable from "../Components/Tabels/ComponentsTable";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
