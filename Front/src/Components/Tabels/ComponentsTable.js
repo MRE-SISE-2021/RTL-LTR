@@ -7,6 +7,7 @@ import Input from "../PagesInput";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import QuestionsInput from "../QuestionsInput";
+import NavBar from "../NavBars/NavBarExp";
 
 class ComponentsTable extends Component {
   constructor(props) {
@@ -85,7 +86,12 @@ class ComponentsTable extends Component {
     console.log(this.props.match);
     return (
       <Aux>
-        {" "}
+        <NavBar
+          name={this.props.name}
+          type={this.props.type}
+          lang={this.props.lang}
+          tasks={this.state.inputList}
+        />{" "}
         {this.state.inputList.map(function (input, index) {
           return input;
         })}

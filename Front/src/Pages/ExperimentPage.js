@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import NavBar from "../Components/NavBars/NavBarExp";
 import ComponentsTable from "../Components/Tabels/ComponentsTable";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
@@ -26,13 +25,13 @@ class ExperimentPage extends Component {
     console.log(this.props.match);
     return (
       <Aux>
-        <NavBar
+        {/* <NavBar /> */}
+
+        <ComponentsTable
           name={this.props.match.params.name}
           type={this.props.match.params.type}
           lang={this.props.match.params.language}
         />
-
-        <ComponentsTable />
       </Aux>
     );
   }
