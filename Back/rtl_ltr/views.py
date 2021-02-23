@@ -13,9 +13,15 @@ from django.db import transaction
 
 
 ####### MODEL VIEWSETS #######
+# ComponentType
+class ComponentTypeViewSet(viewsets.ModelViewSet):
+    serializer_class = ComponentTypeSerializer
+    queryset = ComponentType.objects.all()
+
+
 # Component
 class ComponentViewSet(viewsets.ModelViewSet):
-    serializer_class = ComponentSerializer
+    serializer_class = ComponentTypeSerializer
     queryset = Component.objects.all()
 
 
@@ -234,7 +240,8 @@ def create_questionnaire_to_db(request):
                     data={'component_id': component_id,
                           'task_id': task_id,
                           'direction': component["direction"],
-                          'order_key': component["order_key"]})
+                          'order_key': component["order_key"],
+                          'label': component["label"]})
                 if task_component_serializer.is_valid():
                     task_component_serializer.save()
                 else:

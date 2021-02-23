@@ -3,6 +3,11 @@ from .views import *
 from rest_framework.routers import DefaultRouter
 
 # Routers
+
+# ComponentType
+router_component_type = DefaultRouter()
+router_component_type.register('component_type', ComponentTypeViewSet, basename='component')
+
 # Component
 router_component = DefaultRouter()
 router_component.register('component', ComponentViewSet, basename='component')
@@ -74,6 +79,7 @@ router_task_image.register('task_image', TaskImageViewSet, basename='task_image'
 # URL dispatcher:
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
 urlpatterns = [
+    path('viewset/', include(router_component_type.urls)),
     path('viewset/', include(router_component.urls)),
     path('viewset/', include(router_hci_background.urls)),
     path('viewset/', include(router_image.urls)),
