@@ -153,7 +153,7 @@ def create_questionnaire_to_db(request):
         if questionnaire_serializer.is_valid():
             questionnaire_serializer.save()
         else:
-            raise Exception("Create Questionnaire Error: Questionnaire Serializer is not valid")
+            raise Exception(questionnaire_serializer.errors)
         # Save id of new created questionnaire
         questionnaire_id = questionnaire_serializer.data['questionnaire_id']
 
@@ -175,7 +175,7 @@ def create_questionnaire_to_db(request):
                 if task_serializer.is_valid():
                     task_serializer.save()
                 else:
-                    raise Exception("Create Questionnaire Error: Task Serializer is not valid")
+                    raise Exception(task_serializer.errors)
 
                 # Save id of new created task
                 task_id = task_serializer.data['task_id']
@@ -188,7 +188,7 @@ def create_questionnaire_to_db(request):
             if questionnaire_task_serializer.is_valid():
                 questionnaire_task_serializer.save()
             else:
-                raise Exception("Create Questionnaire Error: QuestionnaireTask Serializer is not valid")
+                raise Exception(questionnaire_task_serializer.errors)
 
             # Create answer in db table Answer
             # Create connection TaskAnswer in db table TaskAnswer
@@ -199,7 +199,7 @@ def create_questionnaire_to_db(request):
                     if answer_serializer.is_valid():
                         answer_serializer.save()
                     else:
-                        raise Exception("Create Questionnaire Error: Answer Serializer is not valid")
+                        raise Exception(answer_serializer.errors)
                     # save id of new created answer
                     answer_id = answer_serializer.data['answer_id']
                 else:
@@ -212,7 +212,7 @@ def create_questionnaire_to_db(request):
                 if task_answer_serializer.is_valid():
                     task_answer_serializer.save()
                 else:
-                    raise Exception("Create Questionnaire Error: TaskAnswer Serializer is not valid")
+                    raise Exception(task_answer_serializer.errors)
 
             # Create component in db table Component
             # Create connection TaskAnswer in db table TaskComponent
@@ -223,7 +223,7 @@ def create_questionnaire_to_db(request):
                     if component_serializer.is_valid():
                         component_serializer.save()
                     else:
-                        raise Exception("Create Questionnaire Error: Component Serializer is not valid")
+                        raise Exception(component_serializer.errors)
                     # save id of new created component
                     component_id = component_serializer.data['component_id']
                 else:
@@ -233,11 +233,12 @@ def create_questionnaire_to_db(request):
                 task_component_serializer = TaskComponentSerializer(
                     data={'component_id': component_id,
                           'task_id': task_id,
-                          'direction': component["direction"]})
+                          'direction': component["direction"],
+                          'order_key': component["order_key"]})
                 if task_component_serializer.is_valid():
                     task_component_serializer.save()
                 else:
-                    raise Exception("Create Questionnaire Error: TaskComponent Serializer is not valid")
+                    raise Exception(task_component_serializer.errors)
 
             # Create image in db table Image
             # Create connection TaskImage in db table TaskImage
@@ -248,7 +249,7 @@ def create_questionnaire_to_db(request):
                     if image_serializer.is_valid():
                         image_serializer.save()
                     else:
-                        raise Exception("Create Questionnaire Error: Image Serializer is not valid")
+                        raise Exception(image_serializer.errors)
                     # save id of new created component
                     image_id = image_serializer.data['image_id']
                 else:
@@ -261,6 +262,6 @@ def create_questionnaire_to_db(request):
                 if task_image_serializer.is_valid():
                     task_image_serializer.save()
                 else:
-                    raise Exception("Create Questionnaire Error: TaskImage Serializer is not valid")
+                    raise Exception(task_image_serializer.errors)
 
         return Response(data, status=status.HTTP_201_CREATED)

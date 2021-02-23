@@ -68,7 +68,6 @@ class Task(models.Model):
     task_id = models.AutoField(db_column='TaskId', primary_key=True)
     task_title = models.CharField(db_column='TaskTitle', max_length=100)
     task_content = models.TextField(db_column='TaskContent', blank=True, null=True)
-    language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     is_required = models.BooleanField(db_column='IsRequired')
 
     answers = models.ManyToManyField(Answer, through='TaskAnswer')
@@ -190,6 +189,7 @@ class TaskComponent(models.Model):
     task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
     component_id = models.ForeignKey(Component, models.DO_NOTHING, db_column='ComponentId')
     direction = models.CharField(db_column='Direction', max_length=10)
+    order_key = models.IntegerField(db_column='OrderKey')
 
     class Meta:
         db_table = 'TaskComponent'
