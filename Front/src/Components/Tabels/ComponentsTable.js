@@ -21,7 +21,7 @@ class ComponentsTable extends Component {
     const inputList = this.state.inputList;
     this.setState({
       inputList: inputList.concat(
-        <Input key={inputList.length} name={event.target.id} />
+        <Input key={this.state.inputList.length} name={event.target.id} />
       ),
     });
   }
@@ -30,10 +30,21 @@ class ComponentsTable extends Component {
     const inputList = this.state.inputList;
     this.setState({
       inputList: inputList.concat(
-        <QuestionsInput key={inputList.length} name={event.target.id} />
+        <QuestionsInput
+          key={inputList.length}
+          name={event.target.id}
+          label={this.state.label}
+          title={this.callbackFunction}
+        />
       ),
     });
   }
+
+  ////////////////
+  callbackFunction = (childData) => {
+    this.setState({ message: childData });
+  };
+  /////////////////
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&

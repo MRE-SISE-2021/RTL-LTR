@@ -20,6 +20,7 @@ class SaveModal extends React.Component {
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
+    this.getComponents = this.getComponents.bind(this);
   }
 
   getLangId() {
@@ -36,6 +37,19 @@ class SaveModal extends React.Component {
         return "2";
     }
   }
+
+  getComponents() {
+    const tasks = [];
+    this.props.data.tasks.map(function (task, index) {
+      tasks[index] = {
+        order_key: task.key,
+        component_type_id: task.props.name,
+        label: "whatsssssuppp",
+      };
+    });
+    return tasks;
+  }
+
   onAddBtnClick() {
     const langId = this.getLangId();
     console.log(this.props.data);
@@ -44,12 +58,11 @@ class SaveModal extends React.Component {
       tasks: [
         {
           answers: [],
-          components: [],
+          components: this.getComponents(),
           images: [],
           task_title: "Test create",
-          task_content: "easdasdwq", ////////////////////////////////////////////
-          is_required: true,
-          language_id: 1,
+          task_content: "", ////////?
+          is_required: true, ///////?
         },
       ],
       //data
