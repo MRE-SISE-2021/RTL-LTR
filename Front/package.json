@@ -120,8 +120,4 @@
   "devDependencies": {
     "node-sass": "^4.14.1"
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/back-end_web-api
