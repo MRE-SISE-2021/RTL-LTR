@@ -43,7 +43,8 @@ class SaveModal extends React.Component {
     this.props.data.tasks.map(function (task, index) {
       tasks[index] = {
         order_key: task.key,
-        component_type_id: task.props.name,
+        component_type: task.props.name,
+        direction: 'RTL',
         label: "whatsssssuppp",
       };
     });
@@ -84,7 +85,7 @@ class SaveModal extends React.Component {
       body: JSON.stringify(response),
     };
 
-    fetch("http://127.0.0.1:8000/viewset/questionnaire/", requestOptions)
+    fetch("http://127.0.0.1:8000/create-questionnaire-to-db", requestOptions)
       .then((response) => {
         console.log(response);
         if (response.ok) {

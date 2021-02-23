@@ -31,13 +31,6 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
 
-class ComponentTypeSerializer(DynamicFieldsModelSerializer):
-    class Meta:
-        model = ComponentType
-        fields = '__all__'
-        # fields = ['component_id', 'component_type']
-
-
 class ComponentSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Component
