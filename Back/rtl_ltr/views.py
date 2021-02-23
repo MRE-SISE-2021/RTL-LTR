@@ -13,15 +13,9 @@ from django.db import transaction
 
 
 ####### MODEL VIEWSETS #######
-# ComponentType
-class ComponentTypeViewSet(viewsets.ModelViewSet):
-    serializer_class = ComponentTypeSerializer
-    queryset = ComponentType.objects.all()
-
-
 # Component
 class ComponentViewSet(viewsets.ModelViewSet):
-    serializer_class = ComponentTypeSerializer
+    serializer_class = ComponentSerializer
     queryset = Component.objects.all()
 
 
@@ -151,9 +145,9 @@ def create_questionnaire_to_db(request):
     if request.method == 'POST':
         data = request.data
 
-        tasks = data[0].pop('tasks')
-        questionnaire_table_data = data[0]
+        tasks = data.pop('tasks')
 
+        questionnaire_table_data = data
         # Create new Questionnaire in db table Questionnaire
         questionnaire_serializer = QuestionnaireSerializer(data=questionnaire_table_data)
         if questionnaire_serializer.is_valid():
@@ -238,10 +232,7 @@ def create_questionnaire_to_db(request):
                 # Add connection between task-component
                 task_component_serializer = TaskComponentSerializer(
                     data={'component_id': component_id,
-                          'task_id': task_id,
-                          'direction': component["direction"],
-                          'order_key': component["order_key"],
-                          'label': component["label"]})
+                          'task_id': task_id})
                 if task_component_serializer.is_valid():
                     task_component_serializer.save()
                 else:

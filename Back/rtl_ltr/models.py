@@ -22,17 +22,9 @@ class Answer(models.Model):
         db_table = 'Answer'
 
 
-class ComponentType(models.Model):
-    component_type_id = models.AutoField(db_column='ComponentTypeId', primary_key=True)
-    component_type_name = models.CharField(db_column='ComponentTypeName', max_length=50)
-
-    class Meta:
-        db_table = 'ComponentType'
-
-
 class Component(models.Model):
     component_id = models.AutoField(db_column='ComponentId', primary_key=True)
-    component_type_id = models.ForeignKey(ComponentType, models.DO_NOTHING, db_column='ComponentTypeId')
+    component_type = models.CharField(db_column='ComponentType', max_length=100)
     direction = models.CharField(db_column='Direction', max_length=10)
     order_key = models.IntegerField(db_column='OrderKey')
     label = models.CharField(db_column='Label', max_length=10000, null=True, blank=True)

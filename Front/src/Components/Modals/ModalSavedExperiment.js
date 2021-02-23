@@ -43,7 +43,8 @@ class SaveModal extends React.Component {
     this.props.data.tasks.map(function (task, index) {
       tasks[index] = {
         order_key: task.key,
-        component_type_id: task.props.name,
+        component_type: task.props.name,
+        direction: 'RTL',
         label: "whatsssssuppp",
       };
     });
