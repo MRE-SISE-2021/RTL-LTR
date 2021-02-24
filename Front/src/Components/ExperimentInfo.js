@@ -3,11 +3,27 @@ import { connect } from "react-redux";
 import { Row, Col, Card } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Button } from "react-bootstrap";
+import { Link, Redirect } from "react-router-dom";
 
 // import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 class ExperimentInfo extends Component {
+  constructor() {
+    super();
+    this.state = {
+      toDashboard: false,
+    };
+    this.submitHandler = this.submitHandler.bind(this);
+  }
+
+  submitHandler(event) {
+    event.preventDefault();
+    this.setState(() => ({
+      toDashboard: true,
+    }));
+  }
+
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -25,6 +41,10 @@ class ExperimentInfo extends Component {
   }
 
   render() {
+    if (this.state.toDashboard === true) {
+      return <Redirect to={"/preview"} />;
+    }
+
     // console.log(this.props.chosen);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
