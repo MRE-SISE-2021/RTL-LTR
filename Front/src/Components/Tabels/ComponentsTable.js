@@ -7,6 +7,7 @@ import Input from "../PagesInput";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import QuestionsInput from "../QuestionsInput";
+import NavBar from "../NavBars/NavBarExp";
 
 class ComponentsTable extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class ComponentsTable extends Component {
     const inputList = this.state.inputList;
     this.setState({
       inputList: inputList.concat(
-        <Input key={inputList.length} name={event.target.id} />
+        <Input key={this.state.inputList.length} name={event.target.id} />
       ),
     });
   }
@@ -29,10 +30,21 @@ class ComponentsTable extends Component {
     const inputList = this.state.inputList;
     this.setState({
       inputList: inputList.concat(
-        <QuestionsInput key={inputList.length} name={event.target.id} />
+        <QuestionsInput
+          key={inputList.length}
+          name={event.target.id}
+          label={this.state.label}
+          title={this.callbackFunction}
+        />
       ),
     });
   }
+
+  ////////////////
+  callbackFunction = (childData) => {
+    this.setState({ message: childData });
+  };
+  /////////////////
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -85,7 +97,12 @@ class ComponentsTable extends Component {
     console.log(this.props.match);
     return (
       <Aux>
-        {" "}
+        <NavBar
+          name={this.props.name}
+          type={this.props.type}
+          lang={this.props.lang}
+          tasks={this.state.inputList}
+        />{" "}
         {this.state.inputList.map(function (input, index) {
           return input;
         })}

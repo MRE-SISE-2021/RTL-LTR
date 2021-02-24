@@ -10,7 +10,7 @@ import reducer from "./store/reducer";
 import config from "./config";
 import "./assets/scss/style.scss";
 import ExperimentPage from "./Pages/ExperimentPage";
-
+import PreviewPage from "./Pages/PreviewPage";
 const store = createStore(reducer);
 
 const app = (
@@ -22,6 +22,7 @@ const app = (
           path="/create/:name/:type/:language"
           component={ExperimentPage}
         />
+        <Route path="/preview" component={PreviewPage} />
       </Switch>
     </BrowserRouter>
   </Provider>

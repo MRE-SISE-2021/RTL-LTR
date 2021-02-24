@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Modal, Button, Form } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Aux from "../../hoc/_Aux";
 
 class NewExperimentModal extends React.Component {

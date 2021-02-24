@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.relations import PrimaryKeyRelatedField
+from django.shortcuts import get_object_or_404
 
 from .models import *
 
@@ -17,12 +18,7 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         # Don't pass the 'fields' arg up to the superclass
-        # fields = kwargs.pop('fields', None)
-        # Don't pass the 'fields' arg up to the superclass
-
-        request = kwargs.get('context', {}).get('request')
-        str_fields = request.GET.get('fields', '') if request else None
-        fields = str_fields.split(',') if str_fields else None
+        fields = kwargs.pop('fields', None)
 
         # Instantiate the superclass normally
         super(DynamicFieldsModelSerializer, self).__init__(*args, **kwargs)
@@ -70,13 +66,6 @@ class QuestionnaireTypeSerializer(DynamicFieldsModelSerializer):
         # fields = ['questionnaire_type_id', 'name']
 
 
-class TaskSerializer(DynamicFieldsModelSerializer):
-    class Meta:
-        model = Task
-        fields = '__all__'
-        # fields = ['task_id', 'title', 'task_content', 'language_id', 'is_required']
-
-
 class ParticipantSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Participant
@@ -91,9 +80,16 @@ class ParticipantSerializer(DynamicFieldsModelSerializer):
         #           ]
 
 
-class AnswerTaskSerializer(DynamicFieldsModelSerializer):
+class AnswerSerializer(DynamicFieldsModelSerializer):
     class Meta:
-        model = AnswerTask
+        model = Answer
+        fields = '__all__'
+        # fields = ['answer_id', 'task_id', 'answer_content', 'is_correct']
+
+
+class TaskAnswerSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = TaskAnswer
         fields = '__all__'
         # fields = ['answer_id', 'task_id', 'answer_content', 'is_correct']
 
@@ -111,18 +107,6 @@ class TaskParticipantSerializer(DynamicFieldsModelSerializer):
         fields = '__all__'
         # fields = ['participant_id', 'task_id', 'task_direction', 'task_time', 'task_clicks', 'task_errors',
         #           'answer_id', 'submitted_free_answer']
-
-
-class QuestionnaireSerializer(DynamicFieldsModelSerializer):
-    creation_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
-
-    class Meta:
-        model = Questionnaire
-        fields = '__all__'
-        # depth = 1
-        # fields = ('questionnaire_id', 'questionnaire_name', 'hosted_link', 'is_active', 'category_name',
-        #           'creation_date',
-        #           'questionnaire_type_id',)
 
 
 class QuestionnaireParticipantSerializer(DynamicFieldsModelSerializer):
@@ -152,3 +136,23 @@ class TaskImageSerializer(DynamicFieldsModelSerializer):
         model = TaskImage
         fields = '__all__'
         # fields = ['task_id', 'image_id']
+
+
+class TaskSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__'
+        # fields = ['task_id', 'title', 'task_content', 'language_id', 'is_required']
+
+    answers = AnswerSerializer(many=True, required=False)
+    components = ComponentSerializer(many=True, required=False)
+    images = ImageSerializer(many=True, required=False)
+
+
+class QuestionnaireSerializer(DynamicFieldsModelSerializer):
+    creation_date = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+    tasks = TaskSerializer(many=True, required=False)
+
+    class Meta:
+        model = Questionnaire
+        fields = '__all__'

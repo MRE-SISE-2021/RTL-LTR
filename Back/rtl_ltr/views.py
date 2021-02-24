@@ -1,3 +1,5 @@
+from django.core.handlers import exception
+
 from .serializers import *
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -6,6 +8,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from django.http import HttpResponse
+from django.db import transaction
 
 
 ####### MODEL VIEWSETS #######
@@ -51,10 +55,16 @@ class ParticipantViewSet(viewsets.ModelViewSet):
     queryset = Participant.objects.all()
 
 
-# AnswerTask
-class AnswerTaskViewSet(viewsets.ModelViewSet):
-    serializer_class = AnswerTaskSerializer
-    queryset = AnswerTask.objects.all()
+# Answer
+class AnswerViewSet(viewsets.ModelViewSet):
+    serializer_class = AnswerSerializer
+    queryset = Answer.objects.all()
+
+
+# TaskAnswer
+class TaskAnswerViewSet(viewsets.ModelViewSet):
+    serializer_class = TaskAnswerSerializer
+    queryset = TaskAnswer.objects.all()
 
 
 # ParticipantLanguageProficiency
@@ -103,7 +113,7 @@ class TaskImageViewSet(viewsets.ModelViewSet):
 
 # get list of questionnaire name for main page
 @api_view(['GET'])
-def get_questionnaire_list(request):
+def get_questionnaire_name_list(request):
     if request.method == "GET":
         queryset = Questionnaire.objects.all()
         data = QuestionnaireSerializer(queryset, many=True).data
@@ -113,3 +123,143 @@ def get_questionnaire_list(request):
             names_list.append(value['questionnaire_name'])
 
         return Response(names_list, status=status.HTTP_200_OK)
+
+
+# get preview data of a questionnaire by questionnaire_id
+@api_view(['GET'])
+def get_questionnaire_data_by_id(request, pk):
+    if request.method == "GET":
+        queryset = Questionnaire.objects.get(pk=pk)
+
+        data = QuestionnaireSerializer(queryset, many=False, fields=('questionnaire_id', 'creation_date',
+                                                                     'questionnaire_name', 'hosted_link',
+                                                                     'is_active', 'language_id',
+                                                                     'questionnaire_type_id')).data
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
+@transaction.atomic
+@api_view(['POST'])
+def create_questionnaire_to_db(request):
+    if request.method == 'POST':
+        data = request.data
+
+        tasks = data.pop('tasks')
+
+        questionnaire_table_data = data
+        # Create new Questionnaire in db table Questionnaire
+        questionnaire_serializer = QuestionnaireSerializer(data=questionnaire_table_data)
+        if questionnaire_serializer.is_valid():
+            questionnaire_serializer.save()
+        else:
+            raise Exception(questionnaire_serializer.errors)
+        # Save id of new created questionnaire
+        questionnaire_id = questionnaire_serializer.data['questionnaire_id']
+
+        # Create new Task in db table Task
+        # Create connection QuestionnaireTask in db table QuestionnaireTask
+        for task in tasks:
+            # Check the task not exists in db
+            task_id = -1
+            answers = {}
+            components = {}
+            images = {}
+
+            if 'task_id' not in task:
+                answers = task.pop('answers')
+                components = task.pop('components')
+                images = task.pop('images')
+
+                task_serializer = TaskSerializer(data=task)
+                if task_serializer.is_valid():
+                    task_serializer.save()
+                else:
+                    raise Exception(task_serializer.errors)
+
+                # Save id of new created task
+                task_id = task_serializer.data['task_id']
+            else:
+                task_id = task['task_id']
+
+            # Create connection task-questionnaire
+            questionnaire_task_serializer = QuestionnaireTaskSerializer(data={'questionnaire_id': questionnaire_id,
+                                                                              'task_id': task_id})
+            if questionnaire_task_serializer.is_valid():
+                questionnaire_task_serializer.save()
+            else:
+                raise Exception(questionnaire_task_serializer.errors)
+
+            # Create answer in db table Answer
+            # Create connection TaskAnswer in db table TaskAnswer
+            for answer in answers:
+                answer_id = -1
+                if 'answer_id' not in answer:
+                    answer_serializer = AnswerSerializer(data=answer)
+                    if answer_serializer.is_valid():
+                        answer_serializer.save()
+                    else:
+                        raise Exception(answer_serializer.errors)
+                    # save id of new created answer
+                    answer_id = answer_serializer.data['answer_id']
+                else:
+                    answer_id = answer['answer_id']
+
+                # Add connection between task-answer
+                task_answer_serializer = TaskAnswerSerializer(
+                    data={'answer_id': answer_id,
+                          'task_id': task_id})
+                if task_answer_serializer.is_valid():
+                    task_answer_serializer.save()
+                else:
+                    raise Exception(task_answer_serializer.errors)
+
+            # Create component in db table Component
+            # Create connection TaskAnswer in db table TaskComponent
+            for component in components:
+                component_id = -1
+                if 'component_id' not in component:
+                    component_serializer = ComponentSerializer(data=component)
+                    if component_serializer.is_valid():
+                        component_serializer.save()
+                    else:
+                        raise Exception(component_serializer.errors)
+                    # save id of new created component
+                    component_id = component_serializer.data['component_id']
+                else:
+                    component_id = component['component_id']
+
+                # Add connection between task-component
+                task_component_serializer = TaskComponentSerializer(
+                    data={'component_id': component_id,
+                          'task_id': task_id})
+                if task_component_serializer.is_valid():
+                    task_component_serializer.save()
+                else:
+                    raise Exception(task_component_serializer.errors)
+
+            # Create image in db table Image
+            # Create connection TaskImage in db table TaskImage
+            for image in images:
+                image_id = -1
+                if 'image_id' not in image:
+                    image_serializer = ImageSerializer(data=image)
+                    if image_serializer.is_valid():
+                        image_serializer.save()
+                    else:
+                        raise Exception(image_serializer.errors)
+                    # save id of new created component
+                    image_id = image_serializer.data['image_id']
+                else:
+                    image_id = image['image_id']
+
+                # Add connection between task-component
+                task_image_serializer = TaskImageSerializer(
+                    data={'image_id': image_id,
+                          'task_id': task_id})
+                if task_image_serializer.is_valid():
+                    task_image_serializer.save()
+                else:
+                    raise Exception(task_image_serializer.errors)
+
+        return Response(data, status=status.HTTP_201_CREATED)
