@@ -2,28 +2,35 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import { Row, Col, Card } from "react-bootstrap";
 import NavBar from "../Components/NavBars/NavBarExp";
+
 class ExperimentPage extends Component {
-  UNSAFE_componentWillMount() {
-    if (
-      this.props.windowWidth > 992 &&
-      this.props.windowWidth <= 1024 &&
-      this.props.layout !== "horizontal"
-    ) {
-      this.props.onComponentWillMount();
-    }
+  constructor() {
+    super();
+    this.state = {
+      tasks: [],
+      inputList: [],
+    };
   }
+  // UNSAFE_componentWillMount() {
+  //   if (
+  //     this.props.windowWidth > 992 &&
+  //     this.props.windowWidth <= 1024 &&
+  //     this.props.layout !== "horizontal"
+  //   ) {
+  //     this.props.onComponentWillMount();
+  //   }
+  // }
 
-  mobileOutClickHandler() {
-    if (this.props.windowWidth < 992 && this.props.collapseMenu) {
-      this.props.onComponentWillMount();
-    }
-  }
+  // mobileOutClickHandler() {
+  //   if (this.props.windowWidth < 992 && this.props.collapseMenu) {
+  //     this.props.onComponentWillMount();
+  //   }
+  // }
 
-  componentDidMount() {
+  async componentDidMount() {
     //////
-    fetch(
+    await fetch(
       "http://127.0.0.1:8000/viewset/questionnaire/" +
         this.props.match.params.id +
         "/"
@@ -32,15 +39,10 @@ class ExperimentPage extends Component {
       .then(
         (result) => {
           // console.log(result);
-          // this.setState({
-          //   isLoaded: true,
-          //   items: result,
-          // });
-          console.log(result);
+          this.setState(() => ({
+            tasks: result.tasks[0].components,
+          }));
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           this.setState({
             isLoaded: true,
@@ -48,8 +50,50 @@ class ExperimentPage extends Component {
           });
         }
       );
-    // this.resize();
+
+    this.putInputList();
     // window.addEventListener("resize", this.resize);
+  }
+
+  putInputList() {
+    // alert("here");
+    // console.log(this.state.tasks);
+
+    this.state.tasks.forEach((task) => {
+      // console.log(task.component_type);
+      const inputList = this.state.inputList;
+
+      if (task.component_type === "Welcome") {
+        this.setState({
+          inputList: inputList.concat(<h1> Welcome</h1>),
+        });
+      } else if (task.component_type === "Explanation") {
+        this.setState({
+          inputList: inputList.concat(<h1> Explanation</h1>),
+        });
+      } else {
+        this.setState({
+          inputList: inputList.concat(<h1> Default</h1>),
+        });
+      }
+      // switch (task.component_type) {
+      //   case "Welcome":
+      //     this.setState({
+      //       inputList: inputList.concat(<h1> Welcome</h1>),
+      //     });
+      //   case "Explanation":
+      //     this.setState({
+      //       inputList: inputList.concat(<h1> Explanation</h1>),
+      //     });
+      //   default:
+      //     this.setState({
+      //       inputList: inputList.concat(<h1> Default</h1>),
+      //     });
+      // }
+
+      /////
+    });
+    // console.log(this.state.inputList);
   }
 
   render() {
@@ -60,7 +104,9 @@ class ExperimentPage extends Component {
     } else {
       mainClass = [...mainClass, "container"];
     }
-    // console.log(this.props.match);
+    // console.log(this.state.tasks);
+    // console.log(this.state.inputList);
+
     return (
       <Aux>
         <NavBar />
@@ -72,33 +118,10 @@ class ExperimentPage extends Component {
                   <div className="main-body">
                     <div className="page-wrapper">
                       <Aux>
-                        <Row>
-                          <Col>
-                            <Card>
-                              <Card.Header>
-                                <Card.Title>fcfxgfxd</Card.Title>
-                              </Card.Header>
-                              <Card.Body>
-                                <Row>
-                                  <Col>
-                                    <b>Created: </b>
-                                  </Col>
-                                  <Col>
-                                    <b>Language: </b>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <b>Hosted Link: </b>
-                                  </Col>
-                                  <Col>
-                                    <b>Status: </b>
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                            </Card>
-                          </Col>
-                        </Row>
+                        {this.state.inputList.map(function (input, index) {
+                          return input;
+                          // alert(index);
+                        })}
                       </Aux>
                     </div>
                   </div>
