@@ -21,14 +21,46 @@ class ExperimentPage extends Component {
     }
   }
 
+  componentDidMount() {
+    //////
+    fetch(
+      "http://127.0.0.1:8000/viewset/questionnaire/" +
+        this.props.match.params.id +
+        "/"
+    )
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          // console.log(result);
+          // this.setState({
+          //   isLoaded: true,
+          //   items: result,
+          // });
+          console.log(result);
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        }
+      );
+    // this.resize();
+    // window.addEventListener("resize", this.resize);
+  }
+
   render() {
+    // console.log(this.props.match.params.id);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
     } else {
       mainClass = [...mainClass, "container"];
     }
-    console.log(this.props.match);
+    // console.log(this.props.match);
     return (
       <Aux>
         <NavBar />
@@ -42,7 +74,7 @@ class ExperimentPage extends Component {
                       <Aux>
                         <Row>
                           <Col>
-                            <Card isOption>
+                            <Card>
                               <Card.Header>
                                 <Card.Title>fcfxgfxd</Card.Title>
                               </Card.Header>

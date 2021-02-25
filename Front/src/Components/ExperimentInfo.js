@@ -41,8 +41,11 @@ class ExperimentInfo extends Component {
   }
 
   render() {
+    // const data = QuestionaireInfoResponse;
+    const data = this.props.chosen;
+
     if (this.state.toDashboard === true) {
-      return <Redirect to={"/preview"} />;
+      return <Redirect to={"/preview/" + data.questionnaire_id} />;
     }
 
     // console.log(this.props.chosen);
@@ -53,8 +56,6 @@ class ExperimentInfo extends Component {
       mainClass = [...mainClass, "container"];
     }
 
-    // const data = QuestionaireInfoResponse;
-    const data = this.props.chosen;
     console.log(data);
     return (
       <Aux>
