@@ -10,6 +10,9 @@ class ExperimentPage extends Component {
     this.state = {
       tasks: [],
       inputList: [],
+      name: "",
+      lang: "",
+      type: "",
     };
   }
   // UNSAFE_componentWillMount() {
@@ -38,9 +41,12 @@ class ExperimentPage extends Component {
       .then((res) => res.json())
       .then(
         (result) => {
-          // console.log(result);
+          console.log(result);
           this.setState(() => ({
             tasks: result.tasks[0].components,
+            name: result.questionnaire_name,
+            type: result.questionnaire_type_id,
+            lang: result.language_id,
           }));
         },
         (error) => {
@@ -60,7 +66,7 @@ class ExperimentPage extends Component {
     // console.log(this.state.tasks);
 
     this.state.tasks.forEach((task) => {
-      // console.log(task.component_type);
+      console.log(task);
       const inputList = this.state.inputList;
 
       if (task.component_type === "Welcome") {
@@ -70,6 +76,34 @@ class ExperimentPage extends Component {
       } else if (task.component_type === "Explanation") {
         this.setState({
           inputList: inputList.concat(<h1> Explanation</h1>),
+        });
+      } else if (task.component_type === "Range") {
+        this.setState({
+          inputList: inputList.concat(
+            <div>
+              <p>{task.label}</p>
+              <input
+                type="range"
+                className="custom-range"
+                defaultValue="22"
+                id="customRange1"
+              />
+            </div>
+          ),
+        });
+      } else if (task.component_type === "Text") {
+        this.setState({
+          inputList: inputList.concat(
+            <div>
+              <p>{task.label}</p>
+              <input
+                type="text"
+                className="custom-range"
+                defaultValue="22"
+                id="customRange1"
+              />
+            </div>
+          ),
         });
       } else {
         this.setState({
@@ -109,7 +143,11 @@ class ExperimentPage extends Component {
 
     return (
       <Aux>
-        <NavBar />
+        <NavBar
+          name={this.state.name}
+          type={this.state.type}
+          lang={this.state.lang}
+        />
         <div className={mainClass.join(" ")}>
           <div className="pcoded-main-container full-screenable-node">
             <div className="pcoded-wrapper">
