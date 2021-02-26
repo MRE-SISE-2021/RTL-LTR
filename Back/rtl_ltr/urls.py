@@ -93,6 +93,9 @@ urlpatterns = [
     path('viewset/', include(router_task_image.urls)),
 
     path('questionnaire-names/', get_questionnaire_name_list),
-    path('questionnaire-preview-data/<int:pk>/', get_questionnaire_data_by_id),
-    path('create-questionnaire-to-db', create_questionnaire_to_db),
+    # path('questionnaire-preview-data/<int:pk>/', get_questionnaire_preview_data_by_id),
+    # path('create-questionnaire-to-db', create_questionnaire_to_db),
+
+    path('questionnaire-preview-data', QuestionnairePreviewAPIView.as_view()),
+    path('questionnaire-preview-data/<int:id>', QuestionnairePreviewAPIView.as_view())
 ]

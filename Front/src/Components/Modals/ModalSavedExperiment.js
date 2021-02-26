@@ -85,7 +85,7 @@ class SaveModal extends React.Component {
       body: JSON.stringify(response),
     };
 
-    fetch("http://127.0.0.1:8000/create-questionnaire-to-db", requestOptions)
+    fetch("http://127.0.0.1:8000/questionnaire-preview-data", requestOptions)
       .then((response) => {
         console.log(response);
         if (response.ok) {
