@@ -79,25 +79,25 @@ class NavBar extends Component {
 
             <h5 className="mr-5"> Language </h5>
 
-            <Button className="btn-primary tn-edit btn btn-default mr-5" size="lg" variant="light" >
+            <Button className="btn-primary tn-edit btn btn-default mr-5 text-white" size="lg" variant="light" >
               {this.props.lang}
             </Button>
 
             <div className="d-flex justify-content-lg-end">
               {/* props = name | lang | type */}
-              <Modal className="mr-5" data={this.props} />
+              <Modal className="ml-5 " data={this.props} />
 
               <Button variant="outline-*" onClick={this.submitHandler}>
-                <MDBIcon className="mr-5" far icon="eye" />
+                <MDBIcon className="mr-5 text-white" far icon="eye" size="2x"  />
               </Button>
               <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" icon="paperclip" />
+                <MDBIcon className="mr-5 text-white" icon="paperclip" size="2x"  />
               </Button>
               <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" far icon="clone" />
+                <MDBIcon className="mr-5 text-white" far icon="clone"  size="2x"  />
               </Button>
               <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" far icon="trash-alt" />
+                <MDBIcon className="mr-5 text-white" far icon="trash-alt" size="2x"   />
               </Button>
             </div>
           </div>

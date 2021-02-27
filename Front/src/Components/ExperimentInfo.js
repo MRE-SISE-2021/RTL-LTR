@@ -67,7 +67,7 @@ class ExperimentInfo extends Component {
       <Aux >
 
         
-        <nav class="p-3 mb-2 bg-info text-white" style={{height:"100%", marginTop:"53px"}} className={mainClass.join(" ")}>
+        <nav  style={{class:"p-3 mb-2 bg-info text-white" , marginTop:"53px"}} className={mainClass.join(" ")}>
 
         
         {/* <NavBar /> */}
@@ -84,42 +84,39 @@ class ExperimentInfo extends Component {
                       
                         <Row>
                           <Col>
-                       
-
-                          
-                            <Card style={{class:"bg-info text-white  "}} isOption>
-                            <Card.Header>
+                            <Card isOption>
+                            <div  style={{ height: "90px"}} class="p-3 mb-2 bg-info text-white">
+                            <Card.Header >
                                 <Card.Title>
                                   {data.questionnaire_name}
                                   <div className="d-flex justify-content-lg-end">
                                     <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-5" icon="upload" />
+                                      <MDBIcon className="mr-3" icon="upload" size="2x" className="text-white"/>
                                     </Button>
                                     <Button
                                       variant="outline-*"
                                       onClick={this.submitHandler}
                                     >
-                                      <MDBIcon className="mr-5" icon="eye" />
+                                      <MDBIcon className="mr-3" icon="eye" size="2x" className="text-white"/>
                                     </Button>
 
                                     <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-5" icon="clone" />
+                                      <MDBIcon className="mr-3" icon="clone" size="2x" className="text-white"/>
                                     </Button>
                                     <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-5" icon="edit" />
+                                      <MDBIcon className="mr-3" icon="edit" size="2x" className="text-white"/>
                                     </Button>
                                     <Button variant="outline-*" disabled>
-                                      <MDBIcon
-                                        className="mr-5"
-                                        icon="trash-alt"
+                                      <MDBIcon className="mr-3" icon="trash-alt" size="2x" className="text-white"
                                       />
                                     </Button>
                                   </div>
                                 </Card.Title>
                               </Card.Header>
-                              <Card.Body> 
-                            <div  style={{ height: "500px"}} class="p-3 mb-2 bg-info text-white">
-                            <ul class="p-3 mb-2 bg-info  text-white">
+                              </div>
+                             
+                            <div  style={{ height: "450px"}} class="p-3 mb-2 bg-info text-white">
+                             <Card.Body> 
                               <Row>
                                 <Col>
                                   <b>Created: </b> {data.creation_date}
@@ -150,10 +147,10 @@ class ExperimentInfo extends Component {
                                 </Col>
                               </Row>
                              
-                               </ul>
-</div>
+                              </Card.Body>
+                          </div>
                           
-                          </Card.Body>
+                          
                             </Card>        
                                 
                           </Col>

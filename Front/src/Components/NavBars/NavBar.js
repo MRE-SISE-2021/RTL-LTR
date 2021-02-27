@@ -45,7 +45,7 @@ class NavBar extends Component {
       <Aux>
        <ul class="p-3 mb-2 bg-info text-white">
               <li>
-                <a><MDBIcon icon="home" className="indigo-text pr-3" /></a>
+                <MDBIcon icon="home" size="3x" className="indigo-text pr-3" />
               </li>
             </ul>
       </Aux>
