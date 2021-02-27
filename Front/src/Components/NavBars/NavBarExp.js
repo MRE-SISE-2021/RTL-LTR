@@ -79,7 +79,7 @@ class NavBar extends Component {
 
             <h5 className="mr-5"> Language </h5>
 
-            <Button className="btn-primary tn-edit btn btn-default mr-5 text-white" size="lg" variant="light" >
+            <Button className="btn-primary tn-edit btn btn-default mr-5 " size="lg" variant="light" >
               {this.props.lang}
             </Button>
 

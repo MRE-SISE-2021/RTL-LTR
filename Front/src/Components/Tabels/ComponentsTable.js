@@ -99,6 +99,7 @@ class ComponentsTable extends Component {
     console.log(this.state.inputList);
     return (
       <Aux>
+
         <NavBar
           name={this.props.name}
           type={this.props.type}
@@ -108,10 +109,10 @@ class ComponentsTable extends Component {
         {this.state.inputList.map(function (input, index) {
           return input;
         })}
-        <nav className={navClass.join(" ")} style={{ background: "white" }}>
-          <Card style={{ width: "100%" }}>
+        <nav  className={navClass.join(" ")} style={{  width:"20%" , background: "white" }}>
+          <Card >
             <Tabs defaultActiveKey="home" className="mb-3">
-              <Tab eventKey="home" title={<MDBIcon icon="plus" />}>
+              <Tab  eventKey="home" title={<MDBIcon icon="plus"  size="2x" />}>
                 <ul className="list-group list-group-full">
                   <h5>Genral forms</h5>
                   <li className="list-group-item">
@@ -166,12 +167,13 @@ class ComponentsTable extends Component {
                   </li>
                 </ul>{" "}
               </Tab>
-              <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
+              <Tab eventKey="profile" title={<MDBIcon icon="cog" size="2x" />}>
                 <p>SETTINGS TAB.</p>
               </Tab>
             </Tabs>
           </Card>
         </nav>
+        
       </Aux>
     );
   }

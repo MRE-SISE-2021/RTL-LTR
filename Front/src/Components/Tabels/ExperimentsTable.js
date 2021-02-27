@@ -25,6 +25,7 @@ class ExperimentTable extends Component {
       error: null,
       isLoaded: false,
       items: [],
+    
     };
   }
 
@@ -91,6 +92,7 @@ class ExperimentTable extends Component {
   }
 
   render() {
+    
     let navClass = ["pcoded-navbar"];
     
     navClass = [...navClass, this.props.layoutType];
@@ -116,6 +118,7 @@ class ExperimentTable extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
+    
     // let navBarClass = ["navbar-wrapper", "content-main"];
     // if (this.props.fullWidthLayout) {
     //   navBarClass = [...navBarClass, "container-fluid"];
@@ -134,6 +137,7 @@ class ExperimentTable extends Component {
             this.setState({
               isLoaded: true,
               chosen: result,
+            
             });
           },
           // Note: it's important to handle errors here  
@@ -155,12 +159,7 @@ class ExperimentTable extends Component {
 
 */
     return (
-
-
-    
-
       <Aux> 
-
         <nav style={{ marginLeft:"200px" }}>
           <QuestionnaireInfo chosen={this.state.chosen} />
         </nav>
@@ -184,7 +183,8 @@ class ExperimentTable extends Component {
                 <th>1</th>
                 <th>first Experiment </th>
                 <th><MDBIcon far icon="play-circle" /></th>
-       
+               
+                
             <a class="collapsed faq-links" data-toggle="collapse" 
             data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
             <i class="fa fa-plus-square-o fa-2x"></i>
