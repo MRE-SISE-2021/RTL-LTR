@@ -129,15 +129,9 @@ def get_questionnaire_name_list(request):
 ####### CLASS BASED VIEWS #######
 
 class QuestionnairePreviewAPIView(APIView):
-    def get_object(self, id):
-        try:
-            return Questionnaire.objects.get(questionnaire_id=id)
-        except Questionnaire.DoesNotExist:
-            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
-
     # get preview data for home page of a questionnaire by questionnaire_id
     def get(self, request, id):
-        queryset = self.get_object(id)
+        queryset = get_object(id, Questionnaire)
         data = QuestionnaireSerializer(queryset, many=False, fields=('questionnaire_id', 'creation_date',
                                                                      'questionnaire_name', 'hosted_link',
                                                                      'is_active', 'language_id',
@@ -224,11 +218,90 @@ class QuestionnairePreviewAPIView(APIView):
 
     @transaction.atomic
     def put(self, request, id):
-        pass
+        # lists of key-value {task_id: data}
+        task_answers = []
+        task_components = []
+        task_images = []
+
+        # get parameters for update
+        questionnaire_put = request.data
+        tasks_put = questionnaire_put.pop('tasks') if 'tasks' in questionnaire_put else None
+
+        # get queryset of questionnaire table by questionnaire_id
+        try:
+            questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=id)
+        except Questionnaire.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+        # update Questionnaire table
+        update_data_into_table(QuestionnaireSerializer(questionnaire_queryset, data=questionnaire_put,
+                                                       partial=True))
+
+        # insert or update Task table
+        for task in tasks_put:
+            # map the new task_id with its answers, components, images
+            task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
+            task_components.append({task_id: task.pop('components')}) if task['components'] else None
+            task_images.append({task_id: task.pop('images')}) if task['images'] else None
+
+            # update Task table by task_id
+            if 'task_id' in task:
+                try:
+                    task_queryset = Task.objects.get(task_id=task['task_id'])
+                except Questionnaire.DoesNotExist:
+                    return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+                update_data_into_table(TaskSerializer(task_queryset, data=task,
+                                                      partial=True))
+                continue
+
+            # insert a new task to questionnaire and get id of the new task
+            task_id = insert_data_into_table(TaskSerializer(data=task),
+                                             'task_id')
+
+            # associate the new task with the new questionnaire
+            insert_data_into_table(QuestionnaireTaskSerializer(data={'questionnaire_id': id,
+                                                                     'task_id': task_id}))
+        # insert or update Answer table (the same architecture as Task)
+        for task_answer in task_answers:
+            task_id = next(iter(task_answer))
+            answer = task_answer[task_id]
+
+            update_associate_task_data(association_task_id=task_id,
+                                       data_list=answer,
+                                       data_id_name='answer_id',
+                                       serializer=AnswerSerializer,
+                                       association_task_serializer=TaskAnswerSerializer,
+                                       model_name='Answer')
+
+        # insert or update Component table (the same architecture as Task)
+        for task_component in task_components:
+            task_id = next(iter(task_component))
+            component = task_component[task_id]
+
+            update_associate_task_data(association_task_id=task_id,
+                                       data_list=component,
+                                       data_id_name='component_id',
+                                       serializer=ComponentSerializer,
+                                       association_task_serializer=TaskComponentSerializer,
+                                       model_name='Component')
+
+        # insert or update Image table (the same architecture as Task)
+        for task_image in task_images:
+            task_id = next(iter(task_image))
+            image = task_image[task_id]
+
+            update_associate_task_data(association_task_id=task_id,
+                                       data_list=image,
+                                       data_id_name='image_id',
+                                       serializer=ImageSerializer,
+                                       association_task_serializer=TaskImageSerializer,
+                                       model_name='Image')
+
+        return Response(questionnaire_put, status=status.HTTP_200_OK)
 
 
 ####### INSTRUMENTAL FUNCTIONS #######
-
 # POST QuestionnairePreviewAPIView
 # insert answer, component and image to db and associate them with a task
 def insert_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer):
@@ -240,16 +313,16 @@ def insert_associate_task_data(association_task_id, data_list, data_id_name, ser
             continue
 
         # create data to db
-        datum_id = insert_data_into_table(serializer(data=data),
-                                          data_id_name)
+        data_id = insert_data_into_table(serializer(data=data),
+                                         data_id_name)
 
         # associate the new data with the new task
-        insert_data_into_table(association_task_serializer(data={data_id_name: datum_id,
+        insert_data_into_table(association_task_serializer(data={data_id_name: data_id,
                                                                  'task_id': association_task_id}))
 
 
 # POST QuestionnairePreviewAPIView
-# get serializer of a table and name of id field (to return the id of a new entity)
+# params: serializer of a table and name of id field (to return the id of a new entity)
 def insert_data_into_table(serializer, id_name=None):
     if serializer.is_valid():
         serializer.save()
@@ -258,3 +331,44 @@ def insert_data_into_table(serializer, id_name=None):
 
     # return id of new created entity if need
     return serializer.data[id_name] if id_name is not None else -1
+
+
+# PUT QuestionnairePreviewAPIView
+# update answer, component and image in db or inset them and associate them with a task
+def update_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer,
+                               model_name):
+    for data in data_list:
+        # data exists in db
+        if data_id_name in data:
+            # update the data
+            try:
+                if model_name == 'Answer':
+                    model_queryset = Answer.objects.get(answer_id=data[data_id_name])
+                elif model_name == 'Component':
+                    model_queryset = Component.objects.get(component_id=data[data_id_name])
+                elif model_name == 'Image':
+                    model_queryset = Image.objects.get(image_id=data[data_id_name])
+            except Questionnaire.DoesNotExist:
+                return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+            update_data_into_table(association_task_serializer(model_queryset, data=data,
+                                                               partial=True))
+            continue
+
+        # create data to db
+        data_id = insert_data_into_table(serializer(data=data),
+                                         data_id_name)
+
+        # associate the new data with the new task
+        insert_data_into_table(association_task_serializer(data={data_id_name: data_id,
+                                                                 'task_id': association_task_id}))
+
+
+# PUT QuestionnairePreviewAPIView
+# params: serializer
+def update_data_into_table(serializer):
+    # update due serializer
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        raise Exception(serializer.errors)
