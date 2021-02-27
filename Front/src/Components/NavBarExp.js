@@ -7,6 +7,10 @@ import Modal from "./Modals/ModalSavedExperiment";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 
+import Navbar from 'react-bootstrap/Navbar' 
+import '../styles/homePageStyle.css'; 
+
+
 class NavBar extends Component {
   render() {
     let headerClass = [
@@ -28,6 +32,12 @@ class NavBar extends Component {
 
     let navBar = (
       <Aux>
+       <Navbar fixed="bottom" fixed="top" expand="lg" bg="info" variant="dark">
+          
+
+       
+
+       
         <div className={mainHeaderClass.join(" ")}>
           {/* <div className="m-header"> */}
           {/* <a className="b-brand"> */}
@@ -40,18 +50,18 @@ class NavBar extends Component {
 
           <div className="collapse navbar-collapse">
             <h5 className="mr-5">Experiment Name </h5>
-            <Button className="btn-square mr-5" variant="light">
+            <Button className="btn-primary tn-edit btn btn-default mr-5" size="lg" variant="light">
               {this.props.name}
             </Button>
             <h5 className="mr-5"> Type </h5>
 
-            <Button className="btn-square mr-5" variant="light">
+            <Button className="btn-primary tn-edit btn btn-default mr-5 " size="lg" variant="light">
               {this.props.type}
             </Button>
 
             <h5 className="mr-5"> Language </h5>
 
-            <Button className="btn-square mr-5" variant="light">
+            <Button className="btn-primary tn-edit btn btn-default mr-5" size="lg" variant="light" >
               {this.props.lang}
             </Button>
 
@@ -73,6 +83,7 @@ class NavBar extends Component {
             </div>
           </div>
         </div>
+        </Navbar>
       </Aux>
     );
 

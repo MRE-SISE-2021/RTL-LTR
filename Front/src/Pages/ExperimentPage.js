@@ -4,7 +4,7 @@ import NavBar from "../Components/NavBarExp";
 import ComponentsTable from "../Components/Tabels/ComponentsTable";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 class ExperimentPage extends Component {
   UNSAFE_componentWillMount() {
     if (

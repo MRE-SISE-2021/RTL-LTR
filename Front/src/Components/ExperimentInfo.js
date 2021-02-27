@@ -4,6 +4,11 @@ import { Row, Col } from "react-bootstrap";
 import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
+
+
+import '../styles/homePageStyle.css'; 
+//import '../assets/scss/themes/bootstrap-overlay/_card.scss'
+
 class ExperimentInfo extends Component {
   UNSAFE_componentWillMount() {
     if (
@@ -34,19 +39,33 @@ class ExperimentInfo extends Component {
     const data = this.props.chosen;
     console.log(data);
     return (
-      <Aux>
+    
+      <Aux >
+
+        
+        <nav class="p-3 mb-2 bg-info text-white" style={{height:"100%", marginTop:"53px"}} className={mainClass.join(" ")}>
+
+        
         {/* <NavBar /> */}
-        <div className={mainClass.join(" ")}>
-          <div className="pcoded-main-container full-screenable-node">
+        
+        <div  className={mainClass.join(" ")}>
+          <div  className="pcoded-main-container full-screenable-node">
             <div className="pcoded-wrapper">
-              <div className="pcoded-content">
-                <div className="pcoded-inner-content">
-                  <div className="main-body">
-                    <div className="page-wrapper">
-                      <Aux>
+              <div  className="pcoded-content">
+                <div  className="pcoded-inner-content">
+             
+                  <div   className="main-body">  
+                    <div   className="page-wrapper">
+                      <Aux>  
+                      
                         <Row>
                           <Col>
-                            <Card title={data.questionnaire_name} isOption>
+                       
+
+                          
+                            <Card style={{class:"bg-info  "}} title={data.questionnaire_name} isOption> 
+                            <div  style={{ height: "500px"}} class="p-3 mb-2 bg-info text-white">
+                            <ul class="p-3 mb-2 bg-info  text-white">
                               <Row>
                                 <Col>
                                   <b>Created: </b> {data.creation_date}
@@ -63,6 +82,7 @@ class ExperimentInfo extends Component {
                                   }
                                 </Col>
                               </Row>
+                              
                               <Row>
                                 <Col>
                                   <b>Hosted Link: </b>
@@ -75,19 +95,29 @@ class ExperimentInfo extends Component {
                                     : null}
                                 </Col>
                               </Row>
-                            </Card>
+                             
+                               </ul>
+</div>
+                          
+                            </Card>        
+                                
                           </Col>
-                        </Row>
-                      </Aux>
+                        </Row> 
+                             
+                      </Aux>                 
                     </div>
                   </div>
+                 
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         {/* <Configuration /> */}
+      </nav>
       </Aux>
+      
     );
   }
 }

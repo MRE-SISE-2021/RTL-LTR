@@ -40,6 +40,7 @@
     "highcharts": "^7.2.1",
     "highcharts-react-official": "^2.2.2",
     "jodit-react": "^1.0.26",
+    "jquery": "^3.5.1",
     "jszip": "^3.2.2",
     "mdbreact": "^5.0.1",
     "moment": "^2.24.0",

@@ -3,6 +3,9 @@ import { Col, Modal, Button, Form } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom";
 import Aux from "../../hoc/_Aux";
 
+import '../../styles/homePageStyle.css'; 
+
+
 class NewExperimentModal extends React.Component {
   constructor() {
     super();
@@ -55,19 +58,21 @@ class NewExperimentModal extends React.Component {
     }
     return (
       <Aux>
-        <Button
-          className="ml-2"
-          variant="outline-dark"
-          onClick={() => this.setState({ isBasic: true })}
-        >
-          Create
-        </Button>
+        <div style={{ marginLeft:"180px" , marginBottom:"20px"}}>
+          <Button 
+            className="sm"
+            variant="info"
+            onClick={() => this.setState({ isBasic: true })}
+          >
+            + Create New
+          </Button>
+        </div>
         <Modal
           show={this.state.isBasic}
           onHide={() => this.setState({ isBasic: false })}
         >
           <Modal.Header closeButton>
-            <Modal.Title as="h5">Modal Title</Modal.Title>
+            <Modal.Title as="h5">Create New Experiment</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={this.submitHandler}>
@@ -122,20 +127,16 @@ class NewExperimentModal extends React.Component {
                   />
                 </Col>
               </Form.Group>
+              <Modal.Footer >
 
-              <Button type="submit" variant="primary">
-                Create
-              </Button>
+                <button type="submit" variant="info" class="btn btn-info mr-auto">Create</button>
+                <button type="button" variant="light" class="btn btn-light" onClick={() => this.setState({ isBasic: false })}>Close</button>
+          
+              </Modal.Footer>
+             
             </Form>
+
           </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={() => this.setState({ isBasic: false })}
-            >
-              Close
-            </Button>
-          </Modal.Footer>
         </Modal>
       </Aux>
     );
