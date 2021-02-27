@@ -6,7 +6,16 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import { Table, Button, Row } from "react-bootstrap";
 
+import $ from 'jquery';
+
+
 import QuestionnaireInfo from "../ExperimentInfo";
+import { MDBIcon} from "mdbreact";
+import '../../styles/homePageStyle.css'; 
+
+//import '../../styles/ExperimentsTableCss.css'; 
+//import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'react-bootstrap-table/css/react-bootstrap-table.css';
 
 class ExperimentTable extends Component {
   constructor(props) {
@@ -19,6 +28,9 @@ class ExperimentTable extends Component {
     };
   }
 
+
+
+  
   resize = () => {
     const contentWidth = document.getElementById("root").clientWidth;
 
@@ -80,7 +92,7 @@ class ExperimentTable extends Component {
 
   render() {
     let navClass = ["pcoded-navbar"];
-
+    
     navClass = [...navClass, this.props.layoutType];
 
     if (this.props.layout === "horizontal") {
@@ -124,7 +136,7 @@ class ExperimentTable extends Component {
               chosen: result,
             });
           },
-          // Note: it's important to handle errors here
+          // Note: it's important to handle errors here  
           // instead of a catch() block so that we don't swallow
           // exceptions from actual bugs in components.
           (error) => {
@@ -136,33 +148,61 @@ class ExperimentTable extends Component {
         );
     };
     const names = this.state.items;
+/*
+  <div class="infoStyle">
+          
+        </div>
 
+*/
     return (
-      <Aux>
-        <QuestionnaireInfo chosen={this.state.chosen} />
 
-        <nav className={navClass.join(" ")}>
+
+    
+
+      <Aux> 
+
+        <nav style={{ marginLeft:"200px" }}>
+          <QuestionnaireInfo chosen={this.state.chosen} />
+        </nav>
+        
+        <nav style={{ width:"30%" }} className={navClass.join(" ")} >
           <Row className="mt-4 ml-1">
             <h5>My Experiments</h5>
             <Modal />
           </Row>
-
-          <Table striped bordered hover>
+          <Table  striped bordered hover size="sm">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Experiment Name</th>
+                <th>status</th>
               </tr>
             </thead>
+
+            <thead>
+              <tr>
+                <th>1</th>
+                <th>first Experiment </th>
+                <th><MDBIcon far icon="play-circle" /></th>
+       
+            <a class="collapsed faq-links" data-toggle="collapse" 
+            data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+            <i class="fa fa-plus-square-o fa-2x"></i>
+        </a>
+                
+                
+              </tr>
+            </thead>
+
             <tbody>
               {console.log(names)}
               {names.map((value, index) => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>
+                    <td> 
                       <Button
-                        variant="outline-*"
+                        variant="secondary"
                         onClick={() => handleClick(value.questionnaire_id)}
                       >
                         {value.questionnaire_name}
@@ -201,3 +241,4 @@ const mapDispatchToProps = (dispatch) => {
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(ExperimentTable)
 );
+

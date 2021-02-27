@@ -4,6 +4,9 @@ import Aux from "../../hoc/_Aux";
 import DEMO from "../../store/constant";
 import * as actionTypes from "../../store/actions";
 
+import '../../styles/homePageStyle.css'; 
+import { MDBIcon} from "mdbreact";
+
 class NavBar extends Component {
   render() {
     let headerClass = [
@@ -21,23 +24,30 @@ class NavBar extends Component {
     //   toggleClass = [...toggleClass, "on"];
     // }
 
+    /*
+  <ul class="p-3 mb-2 bg-info text-white">
+              <li>
+                <a><MDBIcon icon="home" size="3x" className="indigo-text pr-3" /></a>
+              </li>
+            </ul>
+
+    */
     // let mainHeaderClass = ["content-main"];
     // if (this.props.fullWidthLayout) {
     //   mainHeaderClass = [...mainHeaderClass, "container-fluid"];
     // } else {
     //   mainHeaderClass = [...mainHeaderClass, "container"];
     // }
+    //<a href={DEMO.BLANK_LINK} className="b-brand">{/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}</a>
 
     let navBar = (
+      
       <Aux>
-        <div>
-          <div className="m-header">
-            <a href={DEMO.BLANK_LINK} className="b-brand">
-              {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
-              <h3>RTL-LTR</h3>
-            </a>
-          </div>
-        </div>
+       <ul class="p-3 mb-2 bg-info text-white">
+              <li>
+                <a><MDBIcon icon="home" className="indigo-text pr-3" /></a>
+              </li>
+            </ul>
       </Aux>
     );
 
