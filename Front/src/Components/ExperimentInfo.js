@@ -87,7 +87,37 @@ class ExperimentInfo extends Component {
                        
 
                           
-                            <Card style={{class:"bg-info  "}} title={data.questionnaire_name} isOption> 
+                            <Card style={{class:"bg-info text-white  "}} isOption>
+                            <Card.Header>
+                                <Card.Title>
+                                  {data.questionnaire_name}
+                                  <div className="d-flex justify-content-lg-end">
+                                    <Button variant="outline-*" disabled>
+                                      <MDBIcon className="mr-5" icon="upload" />
+                                    </Button>
+                                    <Button
+                                      variant="outline-*"
+                                      onClick={this.submitHandler}
+                                    >
+                                      <MDBIcon className="mr-5" icon="eye" />
+                                    </Button>
+
+                                    <Button variant="outline-*" disabled>
+                                      <MDBIcon className="mr-5" icon="clone" />
+                                    </Button>
+                                    <Button variant="outline-*" disabled>
+                                      <MDBIcon className="mr-5" icon="edit" />
+                                    </Button>
+                                    <Button variant="outline-*" disabled>
+                                      <MDBIcon
+                                        className="mr-5"
+                                        icon="trash-alt"
+                                      />
+                                    </Button>
+                                  </div>
+                                </Card.Title>
+                              </Card.Header>
+                              <Card.Body> 
                             <div  style={{ height: "500px"}} class="p-3 mb-2 bg-info text-white">
                             <ul class="p-3 mb-2 bg-info  text-white">
                               <Row>
@@ -123,6 +153,7 @@ class ExperimentInfo extends Component {
                                </ul>
 </div>
                           
+                          </Card.Body>
                             </Card>        
                                 
                           </Col>
