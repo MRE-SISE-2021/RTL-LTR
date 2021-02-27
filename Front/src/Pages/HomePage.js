@@ -4,7 +4,16 @@ import ExperimentsTable from "../Components/Tabels/ExperimentsTable";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 
+import QuestionnaireInfo from "../Components/ExperimentInfo";
+
 class HomePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      chosen: {},
+    };
+  }
+
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -30,14 +39,21 @@ class HomePage extends Component {
     }
     return (
       <Aux>
-        <div className={mainClass.join(" ")}>
-          <ExperimentsTable />
+        <div style={{margin : "0" , marginTop: "0px"}} className={mainClass.join(" ")}>
+          <ExperimentsTable  />
         </div>
+      
       </Aux>
     );
   }
 }
+/*
+  <div style={{marginRight : "150px" , marginTop: "2.5%"}} className={mainClass.join(" ")}>
+          <QuestionnaireInfo chosen={this.state.chosen}  />
+        </div>
 
+
+*/
 const mapStateToProps = (state) => {
   return {
     defaultPath: state.defaultPath,
