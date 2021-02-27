@@ -144,9 +144,9 @@ class TaskSerializer(DynamicFieldsModelSerializer):
         fields = '__all__'
         # fields = ['task_id', 'title', 'task_content', 'language_id', 'is_required']
 
-    answers = AnswerSerializer(many=True, required=False)
-    components = ComponentSerializer(many=True, required=False)
-    images = ImageSerializer(many=True, required=False)
+    answers = AnswerSerializer(many=True, required=False, read_only=True)
+    components = ComponentSerializer(many=True, required=False, read_only=True)
+    images = ImageSerializer(many=True, required=False, read_only=True)
 
 
 class QuestionnaireSerializer(DynamicFieldsModelSerializer):
