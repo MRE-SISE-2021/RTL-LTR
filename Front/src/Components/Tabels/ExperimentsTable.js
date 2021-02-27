@@ -195,6 +195,7 @@ class ExperimentTable extends Component {
             </thead>
 
             <tbody>
+              {console.log(names)}
               {names.map((value, index) => {
                 return (
                   <tr key={index}>

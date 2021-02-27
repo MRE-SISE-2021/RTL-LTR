@@ -2,17 +2,35 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
-import { Link } from "react-router-dom";
-import Modal from "./Modals/ModalSavedExperiment";
-import Aux from "../hoc/_Aux";
-import * as actionTypes from "../store/actions";
+import { Link, Redirect } from "react-router-dom";
+import Modal from "../Modals/ModalSavedExperiment";
+import Aux from "../../hoc/_Aux";
+import * as actionTypes from "../../store/actions";
 
 import Navbar from 'react-bootstrap/Navbar' 
 import '../styles/homePageStyle.css'; 
 
 
 class NavBar extends Component {
+  constructor() {
+    super();
+    this.state = {
+      toDashboard: false,
+    };
+    this.submitHandler = this.submitHandler.bind(this);
+  }
+
+  submitHandler(event) {
+    event.preventDefault();
+    this.setState(() => ({
+      toDashboard: true,
+    }));
+  }
   render() {
+    if (this.state.toDashboard === true) {
+      return <Redirect to={"/preview"} />;
+    }
+
     let headerClass = [
       "navbar",
       "pcoded-header",
@@ -66,9 +84,10 @@ class NavBar extends Component {
             </Button>
 
             <div className="d-flex justify-content-lg-end">
+              {/* props = name | lang | type */}
               <Modal className="mr-5" data={this.props} />
 
-              <Button variant="outline-*" disabled>
+              <Button variant="outline-*" onClick={this.submitHandler}>
                 <MDBIcon className="mr-5" far icon="eye" />
               </Button>
               <Button variant="outline-*" disabled>

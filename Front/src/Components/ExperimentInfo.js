@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Row, Col } from "react-bootstrap";
-import Card from "../App/components/MainCard";
+import { Row, Col, Card } from "react-bootstrap";
+import { MDBIcon } from "mdbreact";
+import { Button } from "react-bootstrap";
+import { Link, Redirect } from "react-router-dom";
+
+// import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 
@@ -10,6 +14,21 @@ import '../styles/homePageStyle.css';
 //import '../assets/scss/themes/bootstrap-overlay/_card.scss'
 
 class ExperimentInfo extends Component {
+  constructor() {
+    super();
+    this.state = {
+      toDashboard: false,
+    };
+    this.submitHandler = this.submitHandler.bind(this);
+  }
+
+  submitHandler(event) {
+    event.preventDefault();
+    this.setState(() => ({
+      toDashboard: true,
+    }));
+  }
+
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -27,6 +46,13 @@ class ExperimentInfo extends Component {
   }
 
   render() {
+    // const data = QuestionaireInfoResponse;
+    const data = this.props.chosen;
+
+    if (this.state.toDashboard === true) {
+      return <Redirect to={"/preview/" + data.questionnaire_id} />;
+    }
+
     // console.log(this.props.chosen);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
@@ -35,8 +61,6 @@ class ExperimentInfo extends Component {
       mainClass = [...mainClass, "container"];
     }
 
-    // const data = QuestionaireInfoResponse;
-    const data = this.props.chosen;
     console.log(data);
     return (
     

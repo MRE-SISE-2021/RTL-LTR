@@ -3,6 +3,7 @@ from .views import *
 from rest_framework.routers import DefaultRouter
 
 # Routers
+
 # Component
 router_component = DefaultRouter()
 router_component.register('component', ComponentViewSet, basename='component')
@@ -31,9 +32,13 @@ router_task.register('task', TaskViewSet, basename='task')
 router_participant = DefaultRouter()
 router_participant.register('participant', ParticipantViewSet, basename='participant')
 
-# AnswerTask
-router_answer_task = DefaultRouter()
-router_answer_task.register('answer_task', AnswerTaskViewSet, basename='answer_task')
+# Answer
+router_answer = DefaultRouter()
+router_answer.register('answer', AnswerViewSet, basename='answer')
+
+# TaskAnswer
+router_task_answer = DefaultRouter()
+router_task_answer.register('task_answer', TaskAnswerViewSet, basename='task_answer')
 
 # ParticipantLanguageProficiency
 router_participant_language_proficiency = DefaultRouter()
@@ -79,12 +84,18 @@ urlpatterns = [
     path('viewset/', include(router_participant.urls)),
     path('viewset/', include(router_participant_language_proficiency.urls)),
     path('viewset/', include(router_task_participant.urls)),
-    path('viewset/', include(router_answer_task.urls)),
+    path('viewset/', include(router_answer.urls)),
+    path('viewset/', include(router_task_answer.urls)),
     path('viewset/', include(router_questionnaire.urls)),
     path('viewset/', include(router_questionnaire_participant.urls)),
     path('viewset/', include(router_questionnaire_task.urls)),
     path('viewset/', include(router_task_component.urls)),
     path('viewset/', include(router_task_image.urls)),
 
-    path('questionnaire-names/', get_questionnaire_list),
+    path('questionnaire-names/', get_questionnaire_name_list),
+    # path('questionnaire-preview-data/<int:pk>/', get_questionnaire_preview_data_by_id),
+    # path('create-questionnaire-to-db', create_questionnaire_to_db),
+
+    path('questionnaire-preview-data', QuestionnairePreviewAPIView.as_view()),
+    path('questionnaire-preview-data/<int:id>', QuestionnairePreviewAPIView.as_view())
 ]

@@ -1,45 +1,23 @@
 import React from "react";
-import { Row, Col, Card, Form } from "react-bootstrap";
+import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actionTypes from "../store/actions";
-
+// import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
 import Breadcrumb from "../App/components/Breadcrumb";
 
 class FormsElements extends React.Component {
-  state = {
-    validated: false,
-    validatedTooltip: false,
-    supportedCheckbox: false,
-    supportedRadio: false,
-    supportedSelect: 0,
-    supportedFile: 0,
-  };
-
-  handleSubmit(event) {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    this.setState({ validated: true });
+  constructor() {
+    super();
+    this.state = {
+      title: "",
+      label: "",
+    };
   }
 
-  handleSubmitTooltip(event) {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    this.setState({ validatedTooltip: true });
-  }
-
-  supportedSelectHandler = (event) => {
-    this.setState({ supportedSelect: parseInt(event.target.value) });
-  };
-
-  supportedFileHandler = (event) => {
-    this.setState({ supportedFile: !!event.target.value });
+  sendData = () => {
+    this.props.title("Hey Popsie, How’s it going?");
+    // event.preventDefault();
   };
 
   render() {
@@ -70,7 +48,16 @@ class FormsElements extends React.Component {
                           <Card>
                             <Card.Header>
                               <Card.Title as="h5">
-                                {this.props.name} Inputs
+                                <Form.Control
+                                  type="text"
+                                  // placeholder=`${this.props.name}:Inputs`
+                                  placeholder="Enter Your Task Title"
+                                  value={this.state.title}
+                                  // onChange={this.sendData}
+                                  onChange={(e) =>
+                                    this.setState({ title: e.target.title })
+                                  }
+                                />
                               </Card.Title>
                             </Card.Header>
                             <Card.Body>
@@ -78,14 +65,18 @@ class FormsElements extends React.Component {
                               <Row>
                                 <Col md={6}>
                                   <Form.Group controlId="exampleForm.ControlInput1">
-                                    <Form.Label>
-                                      Enter Your Question:
-                                    </Form.Label>
                                     <Form.Control
-                                      type="email"
-                                      placeholder="Text"
+                                      type="text"
+                                      placeholder="Enter Your Question"
+                                      value={this.state.label}
+                                      onChange={(e) =>
+                                        this.setState({ label: e.target.label })
+                                      }
                                     />
                                   </Form.Group>
+                                </Col>
+                                <Col md={6}>
+                                  <Button onClick={this.sendData}>Save</Button>
                                 </Col>
                               </Row>
                               {this.props.name === "Range" && (
@@ -95,6 +86,12 @@ class FormsElements extends React.Component {
                                       <Form.Control
                                         type="range"
                                         className="form-control-range"
+                                        value={this.state.label}
+                                        onChange={(e) =>
+                                          this.setState({
+                                            label: e.target.label,
+                                          })
+                                        }
                                       />
                                     </Form.Group>
                                   </Col>

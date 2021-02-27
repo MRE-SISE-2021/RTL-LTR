@@ -20,6 +20,7 @@ class SaveModal extends React.Component {
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
+    this.getComponents = this.getComponents.bind(this);
   }
 
   getLangId() {
@@ -36,17 +37,44 @@ class SaveModal extends React.Component {
         return "2";
     }
   }
+
+  getComponents() {
+    const tasks = [];
+    this.props.data.tasks.map(function (task, index) {
+      tasks[index] = {
+        order_key: task.key,
+        component_type: task.props.name,
+        direction: 'RTL',
+        label: "whatsssssuppp",
+      };
+    });
+    return tasks;
+  }
+
   onAddBtnClick() {
     const langId = this.getLangId();
     console.log(this.props.data);
     const response = {
+      //tasks
+      tasks: [
+        {
+          answers: [],
+          components: this.getComponents(),
+          images: [],
+          task_title: "Test create",
+          task_content: "", ////////?
+          is_required: true, ///////?
+        },
+      ],
+      //data
       creation_date: "2021-01-06 23:25", //
       questionnaire_name: this.state.name,
-      hosted_link: "https://www.youtube.com/",
+      hosted_link: "https://www.youtube.com/", //
       is_active: "true",
       language_id: langId,
       questionnaire_type_id: "1", //
     };
+
     console.log(response);
     const requestOptions = {
       method: "post",
@@ -57,7 +85,7 @@ class SaveModal extends React.Component {
       body: JSON.stringify(response),
     };
 
-    fetch("http://127.0.0.1:8000/viewset/questionnaire/", requestOptions)
+    fetch("http://127.0.0.1:8000/questionnaire-preview-data", requestOptions)
       .then((response) => {
         console.log(response);
         if (response.ok) {
