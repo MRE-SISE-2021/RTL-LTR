@@ -22,7 +22,7 @@ const app = (
           path="/create/:name/:type/:language"
           component={ExperimentPage}
         />
-        <Route path="/preview" component={PreviewPage} />
+        <Route path="/preview/:id" component={PreviewPage} />
       </Switch>
     </BrowserRouter>
   </Provider>
