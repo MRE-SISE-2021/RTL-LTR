@@ -26,25 +26,27 @@ class ComponentsTable extends Component {
     });
   }
 
+  ////////////////
+  callbackFunction = (childData) => {
+    this.setState({ message: childData });
+  };
+  /////////////////
   onAddBtnClick2(event) {
+    event.persist();
     const inputList = this.state.inputList;
+    console.log(event);
     this.setState({
       inputList: inputList.concat(
         <QuestionsInput
           key={inputList.length}
           name={event.target.id}
-          label={this.state.label}
+          label={this.callbackFunction}
           title={this.callbackFunction}
         />
       ),
     });
   }
 
-  ////////////////
-  callbackFunction = (childData) => {
-    this.setState({ message: childData });
-  };
-  /////////////////
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -94,7 +96,7 @@ class ComponentsTable extends Component {
     //   navBarClass = [...navBarClass, "container"];
     // }
 
-    console.log(this.props.match);
+    console.log(this.state.inputList);
     return (
       <Aux>
         <NavBar
@@ -102,7 +104,7 @@ class ComponentsTable extends Component {
           type={this.props.type}
           lang={this.props.lang}
           tasks={this.state.inputList}
-        />{" "}
+        />
         {this.state.inputList.map(function (input, index) {
           return input;
         })}
