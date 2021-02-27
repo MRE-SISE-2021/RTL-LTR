@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Card, Form } from "react-bootstrap";
+import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actionTypes from "../store/actions";
 // import Card from "../App/components/MainCard";
@@ -17,6 +17,7 @@ class FormsElements extends React.Component {
 
   sendData = () => {
     this.props.title("Hey Popsie, How’s it going?");
+    // event.preventDefault();
   };
 
   render() {
@@ -52,7 +53,10 @@ class FormsElements extends React.Component {
                                   // placeholder=`${this.props.name}:Inputs`
                                   placeholder="Enter Your Task Title"
                                   value={this.state.title}
-                                  onChange={this.sendData}
+                                  // onChange={this.sendData}
+                                  onChange={(e) =>
+                                    this.setState({ title: e.target.title })
+                                  }
                                 />
                               </Card.Title>
                             </Card.Header>
@@ -70,6 +74,9 @@ class FormsElements extends React.Component {
                                       }
                                     />
                                   </Form.Group>
+                                </Col>
+                                <Col md={6}>
+                                  <Button onClick={this.sendData}>Save</Button>
                                 </Col>
                               </Row>
                               {this.props.name === "Range" && (
