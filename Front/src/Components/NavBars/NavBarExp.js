@@ -8,7 +8,7 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 
 import Navbar from 'react-bootstrap/Navbar' 
-import '../styles/homePageStyle.css'; 
+import '../../styles/homePageStyle.css'; 
 
 
 class NavBar extends Component {

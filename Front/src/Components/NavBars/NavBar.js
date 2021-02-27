@@ -4,7 +4,7 @@ import Aux from "../../hoc/_Aux";
 import DEMO from "../../store/constant";
 import * as actionTypes from "../../store/actions";
 
-import '../styles/homePageStyle.css'; 
+import '../../styles/homePageStyle.css'; 
 import { MDBIcon} from "mdbreact";
 
 class NavBar extends Component {
