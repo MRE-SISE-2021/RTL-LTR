@@ -2,9 +2,8 @@ import React from "react";
 import { Col, Modal, Button, Form } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import Aux from "../../hoc/_Aux";
-
-import '../../styles/homePageStyle.css'; 
-
+import API from "../../Api/Api";
+import "../../styles/homePageStyle.css";
 
 class NewExperimentModal extends React.Component {
   constructor() {
@@ -23,6 +22,7 @@ class NewExperimentModal extends React.Component {
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.getLangId = this.getLangId.bind(this);
   }
 
   onInputchange(event) {
@@ -31,21 +31,34 @@ class NewExperimentModal extends React.Component {
     });
   }
 
+  getLangId() {
+    switch (this.state.chosenRadio) {
+      case "english":
+        return "2";
+      case "hebrew":
+        return "3";
+      case "arabic":
+        return "1";
+      case "russian":
+        return "4";
+      default:
+        return "2";
+    }
+  }
+
   submitHandler(event) {
     event.preventDefault();
-    // do some sort of verification here if you need to
-    //   <Link
-    // to={
-    //   "/create/" +
-    //   this.state.expName +
-    //   "/exp/" +
-    //   this.state.chosenRadio
-    // }
-    // >
+    //POST ---- default values
+    API.createNewExp(this.state.expName, this.getLangId());
+
+    this.setState({ isBasic: false });
+    ///// -- next page
     this.setState(() => ({
       toDashboard: true,
     }));
   }
+
+  //////////
   render() {
     if (this.state.toDashboard === true) {
       return (
@@ -58,8 +71,8 @@ class NewExperimentModal extends React.Component {
     }
     return (
       <Aux>
-        <div style={{ marginLeft:"180px" , marginBottom:"20px"}}>
-          <Button 
+        <div style={{ marginLeft: "180px", marginBottom: "20px" }}>
+          <Button
             className="sm"
             variant="info"
             onClick={() => this.setState({ isBasic: true })}
@@ -127,15 +140,24 @@ class NewExperimentModal extends React.Component {
                   />
                 </Col>
               </Form.Group>
-              <Modal.Footer >
-
-                <button type="submit" variant="info" class="btn btn-info mr-auto">Create</button>
-                <button type="button" variant="light" class="btn btn-light" onClick={() => this.setState({ isBasic: false })}>Close</button>
-          
+              <Modal.Footer>
+                <button
+                  type="submit"
+                  variant="info"
+                  class="btn btn-info mr-auto"
+                >
+                  Create
+                </button>
+                <button
+                  type="button"
+                  variant="light"
+                  class="btn btn-light"
+                  onClick={() => this.setState({ isBasic: false })}
+                >
+                  Close
+                </button>
               </Modal.Footer>
-             
             </Form>
-
           </Modal.Body>
         </Modal>
       </Aux>

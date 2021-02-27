@@ -44,7 +44,7 @@ class SaveModal extends React.Component {
       tasks[index] = {
         order_key: task.key,
         component_type: task.props.name,
-        direction: 'RTL',
+        direction: "RTL",
         label: "whatsssssuppp",
       };
     });
@@ -52,49 +52,49 @@ class SaveModal extends React.Component {
   }
 
   onAddBtnClick() {
-    const langId = this.getLangId();
-    console.log(this.props.data);
-    const response = {
-      //tasks
-      tasks: [
-        {
-          answers: [],
-          components: this.getComponents(),
-          images: [],
-          task_title: "Test create",
-          task_content: "", ////////?
-          is_required: true, ///////?
-        },
-      ],
-      //data
-      creation_date: "2021-01-06 23:25", //
-      questionnaire_name: this.state.name,
-      hosted_link: "https://www.youtube.com/", //
-      is_active: "true",
-      language_id: langId,
-      questionnaire_type_id: "1", //
-    };
+    // const langId = this.getLangId();
+    // console.log(this.props.data);
+    // const response = {
+    //   //tasks
+    //   tasks: [
+    //     {
+    //       answers: [],
+    //       components: this.getComponents(),
+    //       images: [],
+    //       task_title: "Test create",
+    //       task_content: "", ////////?
+    //       is_required: true, ///////?
+    //     },
+    //   ],
+    //   //data
+    //   creation_date: "2021-01-06 23:25", //
+    //   questionnaire_name: this.state.name,
+    //   hosted_link: "https://www.youtube.com/", //
+    //   is_active: "true",
+    //   language_id: langId,
+    //   questionnaire_type_id: "1", //
+    // };
 
-    console.log(response);
-    const requestOptions = {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(response),
-    };
+    // console.log(response);
+    // const requestOptions = {
+    //   method: "post",
+    //   headers: {
+    //     Accept: "application/json, text/plain, */*",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(response),
+    // };
 
-    fetch("http://127.0.0.1:8000/questionnaire-preview-data", requestOptions)
-      .then((response) => {
-        console.log(response);
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Something went wrong ...");
-        }
-      })
-      .catch((error) => this.setState({ error }));
+    // fetch("http://127.0.0.1:8000/questionnaire-preview-data", requestOptions)
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.ok) {
+    //       return response.json();
+    //     } else {
+    //       throw new Error("Something went wrong ...");
+    //     }
+    //   })
+    //   .catch((error) => this.setState({ error }));
 
     this.setState({ isBasic: false });
     this.setState(() => ({

@@ -12,12 +12,65 @@ class FormsElements extends React.Component {
     this.state = {
       title: "",
       label: "",
+      questionnaire_id: "",
     };
   }
 
   sendData = () => {
-    this.props.title("Hey Popsie, How’s it going?");
-    // event.preventDefault();
+    //PUT request -- save task
+    const response = {
+      //tasks
+      tasks: [
+        {
+          // answers: [],
+          components: [
+            {
+              order_key: "",
+              component_type: "",
+              direction: "RTL",
+              label: this.state.label,
+            },
+          ],
+          // images: [],
+          // task_title: "jj",
+          // task_content: "", ////////?
+          // is_required: true, ///////?
+        },
+      ],
+      //data
+      // creation_date: "2021-01-06 23:25", //
+      // questionnaire_name: this.state.expName,
+      // hosted_link: "", //
+      // is_active: "true",
+      // language_id: this.getLangId(),
+      // questionnaire_type_id: "1", //
+    };
+
+    console.log(response);
+    const requestOptions = {
+      method: "put",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(response),
+    };
+
+    fetch(
+      "http://127.0.0.1:8000/questionnaire-preview-data/" +
+        this.state.questionnaire_id +
+        "/",
+      requestOptions
+    )
+      .then((response) => {
+        console.log(response);
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Something went wrong ...");
+        }
+      })
+      .catch((error) => this.setState({ error })); // event.preventDefault();
   };
 
   render() {
@@ -52,7 +105,7 @@ class FormsElements extends React.Component {
                                   type="text"
                                   // placeholder=`${this.props.name}:Inputs`
                                   placeholder="Enter Your Task Title"
-                                  value={this.state.title}
+                                  // value={this.state.title}
                                   // onChange={this.sendData}
                                   onChange={(e) =>
                                     this.setState({ title: e.target.title })
@@ -68,7 +121,7 @@ class FormsElements extends React.Component {
                                     <Form.Control
                                       type="text"
                                       placeholder="Enter Your Question"
-                                      value={this.state.label}
+                                      // value={this.state.label}
                                       onChange={(e) =>
                                         this.setState({ label: e.target.label })
                                       }
@@ -86,7 +139,7 @@ class FormsElements extends React.Component {
                                       <Form.Control
                                         type="range"
                                         className="form-control-range"
-                                        value={this.state.label}
+                                        // value={this.state.label}
                                         onChange={(e) =>
                                           this.setState({
                                             label: e.target.label,
