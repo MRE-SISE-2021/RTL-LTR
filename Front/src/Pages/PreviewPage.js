@@ -43,7 +43,7 @@ class ExperimentPage extends Component {
         (result) => {
           console.log(result);
           this.setState(() => ({
-            tasks: result.tasks[0].components,
+            tasks: result.tasks,
             name: result.questionnaire_name,
             type: result.questionnaire_type_id,
             lang: result.language_id,
@@ -68,52 +68,55 @@ class ExperimentPage extends Component {
     this.state.tasks.forEach((task, index) => {
       console.log(task);
       const inputList = this.state.inputList;
+      ///////
+      task.components.forEach((component, index) => {
+        if (component.component_type === "Welcome") {
+          this.setState({
+            inputList: inputList.concat(
+              <h1 key={"welcome" + index}> Welcome</h1>
+            ),
+          });
+        } else if (component.component_type === "Explanation") {
+          this.setState({
+            inputList: inputList.concat(
+              <h1 key={"explain" + index}> Explanation</h1>
+            ),
+          });
+        } else if (component.component_type === "Range") {
+          this.setState({
+            inputList: inputList.concat(
+              <div>
+                <p>{component.label}</p>
+                <input
+                  type="range"
+                  className="custom-range"
+                  defaultValue="22"
+                  id="customRange1"
+                />
+              </div>
+            ),
+          });
+        } else if (component.component_type === "Text") {
+          this.setState({
+            inputList: inputList.concat(
+              <div>
+                <p>{component.label}</p>
+                <input
+                  type="text"
+                  className="custom-range"
+                  // defaultValue="22"
+                  id="customRange1"
+                />
+              </div>
+            ),
+          });
+        } else {
+          this.setState({
+            inputList: inputList.concat(<h1 key={index}> Default</h1>),
+          });
+        }
+      });
 
-      if (task.component_type === "Welcome") {
-        this.setState({
-          inputList: inputList.concat(
-            <h1 key={"welcome" + index}> Welcome</h1>
-          ),
-        });
-      } else if (task.component_type === "Explanation") {
-        this.setState({
-          inputList: inputList.concat(
-            <h1 key={"explain" + index}> Explanation</h1>
-          ),
-        });
-      } else if (task.component_type === "Range") {
-        this.setState({
-          inputList: inputList.concat(
-            <div>
-              <p>{task.label}</p>
-              <input
-                type="range"
-                className="custom-range"
-                defaultValue="22"
-                id="customRange1"
-              />
-            </div>
-          ),
-        });
-      } else if (task.component_type === "Text") {
-        this.setState({
-          inputList: inputList.concat(
-            <div>
-              <p>{task.label}</p>
-              <input
-                type="text"
-                className="custom-range"
-                defaultValue="22"
-                id="customRange1"
-              />
-            </div>
-          ),
-        });
-      } else {
-        this.setState({
-          inputList: inputList.concat(<h1 key={index}> Default</h1>),
-        });
-      }
       // switch (task.component_type) {
       //   case "Welcome":
       //     this.setState({
