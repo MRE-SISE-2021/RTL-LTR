@@ -65,17 +65,21 @@ class ExperimentPage extends Component {
     // alert("here");
     // console.log(this.state.tasks);
 
-    this.state.tasks.forEach((task) => {
+    this.state.tasks.forEach((task, index) => {
       console.log(task);
       const inputList = this.state.inputList;
 
       if (task.component_type === "Welcome") {
         this.setState({
-          inputList: inputList.concat(<h1> Welcome</h1>),
+          inputList: inputList.concat(
+            <h1 key={"welcome" + index}> Welcome</h1>
+          ),
         });
       } else if (task.component_type === "Explanation") {
         this.setState({
-          inputList: inputList.concat(<h1> Explanation</h1>),
+          inputList: inputList.concat(
+            <h1 key={"explain" + index}> Explanation</h1>
+          ),
         });
       } else if (task.component_type === "Range") {
         this.setState({
@@ -107,7 +111,7 @@ class ExperimentPage extends Component {
         });
       } else {
         this.setState({
-          inputList: inputList.concat(<h1> Default</h1>),
+          inputList: inputList.concat(<h1 key={index}> Default</h1>),
         });
       }
       // switch (task.component_type) {

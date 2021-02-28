@@ -19,7 +19,7 @@ const app = (
       <Switch>
         <Route exact path="/home" component={App} />
         <Route
-          path="/create/:name/:type/:language/:id"
+          path="/create/:name/:type/:language"
           component={ExperimentPage}
         />
         <Route path="/preview/:id" component={PreviewPage} />

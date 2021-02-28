@@ -15,11 +15,11 @@ class NewExperimentModal extends React.Component {
       isGrid: false,
       isScrolling: false,
       isLarge: false,
-      title: "",
+      // title: "",
       chosenRadio: "english",
       expName: "exp",
       toDashboard: false,
-      expId: "1",
+      // expId: "1",
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
@@ -50,55 +50,55 @@ class NewExperimentModal extends React.Component {
   submitHandler(event) {
     event.preventDefault();
     //POST ---- default values
-    const response = {
-      //tasks
-      tasks: [
-        {
-          answers: [],
-          components: [],
-          images: [],
-          task_title: "jj",
-          task_content: "", ////////?
-          is_required: true, ///////?
-        },
-      ],
-      //data
-      creation_date: "2021-01-06 23:25", //
-      questionnaire_name: this.state.expName,
-      hosted_link: "", //
-      is_active: "true",
-      language_id: this.getLangId(),
-      questionnaire_type_id: "1", //
-    };
+    // const response = {
+    //   //tasks
+    //   tasks: [
+    //     {
+    //       answers: [],
+    //       components: [],
+    //       images: [],
+    //       task_title: "jj",
+    //       task_content: "", ////////?
+    //       is_required: true, ///////?
+    //     },
+    //   ],
+    //   //data
+    //   creation_date: "2021-01-06 23:25", //
+    //   questionnaire_name: this.state.expName,
+    //   hosted_link: "", //
+    //   is_active: "true",
+    //   language_id: this.getLangId(),
+    //   questionnaire_type_id: "1", //
+    // };
 
-    const PostRequestOptions = {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(response),
-    };
+    // const PostRequestOptions = {
+    //   method: "post",
+    //   headers: {
+    //     Accept: "application/json, text/plain, */*",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(response),
+    // };
 
-    fetch(
-      "http://127.0.0.1:8000/questionnaire-preview-data",
-      PostRequestOptions
-    )
-      // .then((response) => {
-      //   console.log(response);
-      //   if (response.ok) {
-      //     return response.json();
-      //   } else {
-      //     throw new Error("Something went wrong ...");
-      //   }
-      // })
-      .then((response) => {
-        response.json().then((data) => {
-          console.log(data);
-          this.setState({ expId: data });
-        });
-      })
-      .catch((error) => this.setState({ error }));
+    // fetch(
+    //   "http://127.0.0.1:8000/questionnaire-preview-data",
+    //   PostRequestOptions
+    // )
+    //   // .then((response) => {
+    //   //   console.log(response);
+    //   //   if (response.ok) {
+    //   //     return response.json();
+    //   //   } else {
+    //   //     throw new Error("Something went wrong ...");
+    //   //   }
+    //   // })
+    //   .then((response) => {
+    //     response.json().then((data) => {
+    //       console.log(data);
+    //       this.setState({ expId: data });
+    //     });
+    //   })
+    //   .catch((error) => this.setState({ error }));
     // const newExpId = API.createNewExp(this.state.expName, this.getLangId());
 
     this.setState({ isBasic: false });
@@ -114,12 +114,9 @@ class NewExperimentModal extends React.Component {
       return (
         <Redirect
           to={
-            "/create/" +
-            this.state.expName +
-            "/exp/" +
-            this.state.chosenRadio +
-            "/" +
-            this.state.expId
+            "/create/" + this.state.expName + "/exp/" + this.state.chosenRadio
+            // "/" +
+            // this.state.expId
           }
         />
       );
@@ -199,14 +196,14 @@ class NewExperimentModal extends React.Component {
                 <button
                   type="submit"
                   variant="info"
-                  class="btn btn-info mr-auto"
+                  className="btn btn-info mr-auto"
                 >
                   Create
                 </button>
                 <button
                   type="button"
                   variant="light"
-                  class="btn btn-light"
+                  className="btn btn-light"
                   onClick={() => this.setState({ isBasic: false })}
                 >
                   Close
