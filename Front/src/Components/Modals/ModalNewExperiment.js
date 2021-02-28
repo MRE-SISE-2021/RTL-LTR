@@ -19,6 +19,7 @@ class NewExperimentModal extends React.Component {
       chosenRadio: "english",
       expName: "exp",
       toDashboard: false,
+      expId: "",
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
@@ -49,7 +50,8 @@ class NewExperimentModal extends React.Component {
   submitHandler(event) {
     event.preventDefault();
     //POST ---- default values
-    API.createNewExp(this.state.expName, this.getLangId());
+    const newExpId = API.createNewExp(this.state.expName, this.getLangId());
+    this.setState({ expId: newExpId });
 
     this.setState({ isBasic: false });
     ///// -- next page
@@ -64,7 +66,12 @@ class NewExperimentModal extends React.Component {
       return (
         <Redirect
           to={
-            "/create/" + this.state.expName + "/exp/" + this.state.chosenRadio
+            "/create/" +
+            this.state.expName +
+            "/exp/" +
+            this.state.chosenRadio +
+            "/" +
+            this.state.expId
           }
         />
       );

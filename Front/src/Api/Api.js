@@ -37,7 +37,7 @@ function put(url = "", response = {}) {
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error("Something went wrong ...");
+        // throw new Error("Something went wrong ...");
       }
     })
     .catch((error) => this.setState({ error }));
@@ -69,6 +69,16 @@ class API {
       questionnaire_type_id: "1", //
     };
     post(this.ENDPOINT + "questionnaire-preview-data", response);
+    return response.questionnaire_id;
   };
+
+  //   getAllExperiments = () => {
+  //     fetch("http://127.0.0.1:8000/viewset/questionnaire")
+  //       .then((res) => res.json())
+  //       .then((result) => {
+  //         console.log(result);
+  //         return result;
+  //       });
+  //   };
 }
 export default new API();

@@ -32,7 +32,7 @@ class FormsElements extends React.Component {
             },
           ],
           // images: [],
-          // task_title: "jj",
+          task_title: this.state.title,
           // task_content: "", ////////?
           // is_required: true, ///////?
         },
@@ -107,9 +107,10 @@ class FormsElements extends React.Component {
                                   placeholder="Enter Your Task Title"
                                   // value={this.state.title}
                                   // onChange={this.sendData}
-                                  onChange={(e) =>
-                                    this.setState({ title: e.target.title })
-                                  }
+                                  onChange={(e) => {
+                                    this.setState({ title: e.target.value });
+                                    console.log(this.state.title);
+                                  }}
                                 />
                               </Card.Title>
                             </Card.Header>
@@ -122,9 +123,12 @@ class FormsElements extends React.Component {
                                       type="text"
                                       placeholder="Enter Your Question"
                                       // value={this.state.label}
-                                      onChange={(e) =>
-                                        this.setState({ label: e.target.label })
-                                      }
+                                      onChange={(e) => {
+                                        this.setState({
+                                          label: e.target.value,
+                                        });
+                                        console.log(this.state.label);
+                                      }}
                                     />
                                   </Form.Group>
                                 </Col>
@@ -142,7 +146,7 @@ class FormsElements extends React.Component {
                                         // value={this.state.label}
                                         onChange={(e) =>
                                           this.setState({
-                                            label: e.target.label,
+                                            label: e.target.value,
                                           })
                                         }
                                       />
