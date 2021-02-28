@@ -239,10 +239,7 @@ class QuestionnairePreviewAPIView(APIView):
 
         # insert or update Task table
         for task in tasks_put:
-            # map the new task_id with its answers, components, images
-            task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
-            task_components.append({task_id: task.pop('components')}) if task['components'] else None
-            task_images.append({task_id: task.pop('images')}) if task['images'] else None
+           
 
             # update Task table by task_id
             if 'task_id' in task:
@@ -258,6 +255,11 @@ class QuestionnairePreviewAPIView(APIView):
             # insert a new task to questionnaire and get id of the new task
             task_id = insert_data_into_table(TaskSerializer(data=task),
                                              'task_id')
+
+             # map the new task_id with its answers, components, images
+            task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
+            task_components.append({task_id: task.pop('components')}) if task['components'] else None
+            task_images.append({task_id: task.pop('images')}) if task['images'] else None                                 
 
             # associate the new task with the new questionnaire
             insert_data_into_table(QuestionnaireTaskSerializer(data={'questionnaire_id': id,

@@ -61,7 +61,7 @@ class ExperimentPage extends Component {
       ],
       //data
       creation_date: "2021-01-06 23:25", //
-      questionnaire_name: "this.state.expName",
+      questionnaire_name: this.props.match.params.name,
       hosted_link: "", //
       is_active: "true",
       language_id: "1",

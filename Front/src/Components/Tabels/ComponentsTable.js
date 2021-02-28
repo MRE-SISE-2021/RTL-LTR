@@ -33,7 +33,12 @@ class ComponentsTable extends Component {
     // console.log(this.props);
     this.setState({
       inputList: inputList.concat(
-        <QuestionsInput key={inputList.length} expId={id} />
+        <QuestionsInput
+          key={inputList.length}
+          name={event.target.id}
+          expId={id}
+          keyOrder={inputList.length}
+        />
       ),
     });
   }
