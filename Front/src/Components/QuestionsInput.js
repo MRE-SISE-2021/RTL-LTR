@@ -7,71 +7,27 @@ import Aux from "../hoc/_Aux";
 import Breadcrumb from "../App/components/Breadcrumb";
 
 class FormsElements extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       title: "",
       label: "",
-      questionnaire_id: "",
+      id: this.props.expId,
     };
+    this.onInputchange = this.onInputchange.bind(this);
   }
 
   sendData = () => {
     //PUT request -- save task
-    const response = {
-      //tasks
-      tasks: [
-        {
-          // answers: [],
-          components: [
-            {
-              order_key: "",
-              component_type: "",
-              direction: "RTL",
-              label: this.state.label,
-            },
-          ],
-          // images: [],
-          task_title: this.state.title,
-          // task_content: "", ////////?
-          // is_required: true, ///////?
-        },
-      ],
-      //data
-      // creation_date: "2021-01-06 23:25", //
-      // questionnaire_name: this.state.expName,
-      // hosted_link: "", //
-      // is_active: "true",
-      // language_id: this.getLangId(),
-      // questionnaire_type_id: "1", //
-    };
 
-    console.log(response);
-    const requestOptions = {
-      method: "put",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(response),
-    };
-
-    fetch(
-      "http://127.0.0.1:8000/questionnaire-preview-data/" +
-        this.state.questionnaire_id +
-        "/",
-      requestOptions
-    )
-      .then((response) => {
-        console.log(response);
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Something went wrong ...");
-        }
-      })
-      .catch((error) => this.setState({ error })); // event.preventDefault();
+    console.log(this.state);
   };
+
+  onInputchange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
 
   render() {
     // const { validated, validatedTooltip } = this.state;
@@ -103,14 +59,9 @@ class FormsElements extends React.Component {
                               <Card.Title as="h5">
                                 <Form.Control
                                   type="text"
-                                  // placeholder=`${this.props.name}:Inputs`
                                   placeholder="Enter Your Task Title"
-                                  // value={this.state.title}
-                                  // onChange={this.sendData}
-                                  onChange={(e) => {
-                                    this.setState({ title: e.target.value });
-                                    console.log(this.state.title);
-                                  }}
+                                  onChange={this.onInputchange}
+                                  name="title"
                                 />
                               </Card.Title>
                             </Card.Header>
@@ -122,13 +73,8 @@ class FormsElements extends React.Component {
                                     <Form.Control
                                       type="text"
                                       placeholder="Enter Your Question"
-                                      // value={this.state.label}
-                                      onChange={(e) => {
-                                        this.setState({
-                                          label: e.target.value,
-                                        });
-                                        console.log(this.state.label);
-                                      }}
+                                      name="label"
+                                      onChange={this.onInputchange}
                                     />
                                   </Form.Group>
                                 </Col>
@@ -143,12 +89,8 @@ class FormsElements extends React.Component {
                                       <Form.Control
                                         type="range"
                                         className="form-control-range"
-                                        // value={this.state.label}
-                                        onChange={(e) =>
-                                          this.setState({
-                                            label: e.target.value,
-                                          })
-                                        }
+                                        name="label"
+                                        onChange={this.onInputchange}
                                       />
                                     </Form.Group>
                                   </Col>

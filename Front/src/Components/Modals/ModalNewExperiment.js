@@ -2,7 +2,6 @@ import React from "react";
 import { Col, Modal, Button, Form } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import Aux from "../../hoc/_Aux";
-import API from "../../Api/Api";
 import "../../styles/homePageStyle.css";
 
 class NewExperimentModal extends React.Component {
@@ -49,58 +48,6 @@ class NewExperimentModal extends React.Component {
 
   submitHandler(event) {
     event.preventDefault();
-    //POST ---- default values
-    // const response = {
-    //   //tasks
-    //   tasks: [
-    //     {
-    //       answers: [],
-    //       components: [],
-    //       images: [],
-    //       task_title: "jj",
-    //       task_content: "", ////////?
-    //       is_required: true, ///////?
-    //     },
-    //   ],
-    //   //data
-    //   creation_date: "2021-01-06 23:25", //
-    //   questionnaire_name: this.state.expName,
-    //   hosted_link: "", //
-    //   is_active: "true",
-    //   language_id: this.getLangId(),
-    //   questionnaire_type_id: "1", //
-    // };
-
-    // const PostRequestOptions = {
-    //   method: "post",
-    //   headers: {
-    //     Accept: "application/json, text/plain, */*",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(response),
-    // };
-
-    // fetch(
-    //   "http://127.0.0.1:8000/questionnaire-preview-data",
-    //   PostRequestOptions
-    // )
-    //   // .then((response) => {
-    //   //   console.log(response);
-    //   //   if (response.ok) {
-    //   //     return response.json();
-    //   //   } else {
-    //   //     throw new Error("Something went wrong ...");
-    //   //   }
-    //   // })
-    //   .then((response) => {
-    //     response.json().then((data) => {
-    //       console.log(data);
-    //       this.setState({ expId: data });
-    //     });
-    //   })
-    //   .catch((error) => this.setState({ error }));
-    // const newExpId = API.createNewExp(this.state.expName, this.getLangId());
-
     this.setState({ isBasic: false });
     ///// -- next page
     this.setState(() => ({

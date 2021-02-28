@@ -26,23 +26,14 @@ class ComponentsTable extends Component {
     });
   }
 
-  ////////////////
-  callbackFunction = (childData) => {
-    this.setState({ message: childData });
-  };
-  /////////////////
   onAddBtnClick2(event) {
-    event.persist();
+    // event.persist();
     const inputList = this.state.inputList;
-    console.log(event);
+    const id = this.props.expId;
+    // console.log(this.props);
     this.setState({
       inputList: inputList.concat(
-        <QuestionsInput
-          key={inputList.length}
-          name={event.target.id}
-          label={this.callbackFunction}
-          title={this.callbackFunction}
-        />
+        <QuestionsInput key={inputList.length} expId={id} />
       ),
     });
   }
