@@ -9,8 +9,7 @@ import { Link, Redirect } from "react-router-dom";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 
-
-import '../styles/homePageStyle.css'; 
+import "../styles/homePageStyle.css";
 //import '../assets/scss/themes/bootstrap-overlay/_card.scss'
 
 class ExperimentInfo extends Component {
@@ -63,116 +62,119 @@ class ExperimentInfo extends Component {
 
     console.log(data);
     return (
-    
-      <Aux >
+      <Aux>
+        <nav
+          className="p-3 mb-2 bg-info text-white"
+          style={{ height: "100%", marginTop: "53px" }}
+          className={mainClass.join(" ")}
+        >
+          {/* <NavBar /> */}
 
-        
-        <nav class="p-3 mb-2 bg-info text-white" style={{height:"100%", marginTop:"53px"}} className={mainClass.join(" ")}>
+          <div className={mainClass.join(" ")}>
+            <div className="pcoded-main-container full-screenable-node">
+              <div className="pcoded-wrapper">
+                <div className="pcoded-content">
+                  <div className="pcoded-inner-content">
+                    <div className="main-body">
+                      <div className="page-wrapper">
+                        <Aux>
+                          <Row>
+                            <Col>
+                              <Card
+                                style={{ className: "bg-info text-white  " }}
+                              >
+                                <Card.Header>
+                                  <Card.Title>
+                                    {data.questionnaire_name}
+                                    <div className="d-flex justify-content-lg-end">
+                                      <Button variant="outline-*" disabled>
+                                        <MDBIcon
+                                          className="mr-5"
+                                          icon="upload"
+                                        />
+                                      </Button>
+                                      <Button
+                                        variant="outline-*"
+                                        onClick={this.submitHandler}
+                                      >
+                                        <MDBIcon className="mr-5" icon="eye" />
+                                      </Button>
 
-        
-        {/* <NavBar /> */}
-        
-        <div  className={mainClass.join(" ")}>
-          <div  className="pcoded-main-container full-screenable-node">
-            <div className="pcoded-wrapper">
-              <div  className="pcoded-content">
-                <div  className="pcoded-inner-content">
-             
-                  <div   className="main-body">  
-                    <div   className="page-wrapper">
-                      <Aux>  
-                      
-                        <Row>
-                          <Col>
-                       
+                                      <Button variant="outline-*" disabled>
+                                        <MDBIcon
+                                          className="mr-5"
+                                          icon="clone"
+                                        />
+                                      </Button>
+                                      <Button variant="outline-*" disabled>
+                                        <MDBIcon className="mr-5" icon="edit" />
+                                      </Button>
+                                      <Button variant="outline-*" disabled>
+                                        <MDBIcon
+                                          className="mr-5"
+                                          icon="trash-alt"
+                                        />
+                                      </Button>
+                                    </div>
+                                  </Card.Title>
+                                </Card.Header>
+                                <Card.Body>
+                                  <div
+                                    style={{ height: "500px" }}
+                                    className="p-3 mb-2 bg-info text-white"
+                                  >
+                                    <ul className="p-3 mb-2 bg-info  text-white">
+                                      <Row>
+                                        <Col>
+                                          <b>Created: </b> {data.creation_date}
+                                        </Col>
+                                        <Col>
+                                          <b>Language: </b>
+                                          {
+                                            {
+                                              1: "Arabic",
+                                              2: "English",
+                                              3: "Hebrew",
+                                              4: "Russian",
+                                            }[data.language_id]
+                                          }
+                                        </Col>
+                                      </Row>
 
-                          
-                            <Card style={{class:"bg-info text-white  "}} isOption>
-                            <Card.Header>
-                                <Card.Title>
-                                  {data.questionnaire_name}
-                                  <div className="d-flex justify-content-lg-end">
-                                    <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-5" icon="upload" />
-                                    </Button>
-                                    <Button
-                                      variant="outline-*"
-                                      onClick={this.submitHandler}
-                                    >
-                                      <MDBIcon className="mr-5" icon="eye" />
-                                    </Button>
-
-                                    <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-5" icon="clone" />
-                                    </Button>
-                                    <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-5" icon="edit" />
-                                    </Button>
-                                    <Button variant="outline-*" disabled>
-                                      <MDBIcon
-                                        className="mr-5"
-                                        icon="trash-alt"
-                                      />
-                                    </Button>
+                                      <Row>
+                                        <Col>
+                                          <b>Hosted Link: </b>
+                                          {data.hosted_link}
+                                        </Col>
+                                        <Col>
+                                          <b>Status: </b>
+                                          {data.is_active !== undefined
+                                            ? [
+                                                data.is_active
+                                                  ? "True"
+                                                  : "False",
+                                              ]
+                                            : null}
+                                        </Col>
+                                      </Row>
+                                    </ul>
                                   </div>
-                                </Card.Title>
-                              </Card.Header>
-                              <Card.Body> 
-                            <div  style={{ height: "500px"}} class="p-3 mb-2 bg-info text-white">
-                            <ul class="p-3 mb-2 bg-info  text-white">
-                              <Row>
-                                <Col>
-                                  <b>Created: </b> {data.creation_date}
-                                </Col>
-                                <Col>
-                                  <b>Language: </b>
-                                  {
-                                    {
-                                      1: "Arabic",
-                                      2: "English",
-                                      3: "Hebrew",
-                                      4: "Russian",
-                                    }[data.language_id]
-                                  }
-                                </Col>
-                              </Row>
-                              
-                              <Row>
-                                <Col>
-                                  <b>Hosted Link: </b>
-                                  {data.hosted_link}
-                                </Col>
-                                <Col>
-                                  <b>Status: </b>
-                                  {data.is_active !== undefined
-                                    ? [data.is_active ? "True" : "False"]
-                                    : null}
-                                </Col>
-                              </Row>
-                             
-                               </ul>
-</div>
-                          
-                          </Card.Body>
-                            </Card>        
-                                
-                          </Col>
-                        </Row> 
-                             
-                      </Aux>                 
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Aux>
+                      </div>
                     </div>
                   </div>
-                 
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* <Configuration /> */}
-      </nav>
+          {/* <Configuration /> */}
+        </nav>
       </Aux>
-      
     );
   }
 }

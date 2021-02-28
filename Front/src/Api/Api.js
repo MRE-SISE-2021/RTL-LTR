@@ -8,46 +8,51 @@ function post(url = "", response = {}) {
     body: JSON.stringify(response),
   };
 
-  fetch(url, PostRequestOptions)
-    .then((response) => {
-      console.log(response);
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Something went wrong ...");
-      }
-    })
-    .catch((error) => this.setState({ error }));
+  return (
+    fetch(url, PostRequestOptions)
+      // .then((response) => {
+      //   console.log(response);
+      //   if (response.ok) {
+      //     return response.json();
+      //   } else {
+      //     throw new Error("Something went wrong ...");
+      //   }
+      // })
+      .then((response) => {
+        response.json().then((data) => {
+          console.log(data);
+          return data;
+        });
+      })
+      .catch((error) => this.setState({ error }))
+  );
 }
 
 ///////////////////////////////////////////////////////////////////////////
-function put(url = "", response = {}) {
-  const PostRequestOptions = {
-    method: "put",
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(response),
-  };
+// function put(url = "", response = {}) {
+//   const PostRequestOptions = {
+//     method: "put",
+//     headers: {
+//       Accept: "application/json, text/plain, */*",
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(response),
+//   };
 
-  fetch(url, PostRequestOptions)
-    .then((response) => {
-      console.log(response);
-      if (response.ok) {
-        return response.json();
-      } else {
-        // throw new Error("Something went wrong ...");
-      }
-    })
-    .catch((error) => this.setState({ error }));
-}
+//   fetch(url, PostRequestOptions)
+//     .then((response) => {
+//       response.json().then((data) => {
+//         console.log(data);
+//       });
+//     })
+//     .catch((error) => this.setState({ error }));
+// }
 ////////////////////////////////////////////////////////////////////////////
 class API {
   ENDPOINT = "http://127.0.0.1:8000/";
 
   //Post -- create new EXP
-  createNewExp = (name, langId) => {
+  async createNewExp(name, langId) {
     const response = {
       //tasks
       tasks: [
@@ -68,9 +73,14 @@ class API {
       language_id: langId,
       questionnaire_type_id: "1", //
     };
-    post(this.ENDPOINT + "questionnaire-preview-data", response);
-    return response.questionnaire_id;
-  };
+    let result = 0;
+    await post(
+      this.ENDPOINT + "questionnaire-preview-data",
+      response
+    ).then((result) => console.log(result));
+    console.log(result);
+    return result;
+  }
 
   //   getAllExperiments = () => {
   //     fetch("http://127.0.0.1:8000/viewset/questionnaire")

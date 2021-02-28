@@ -178,16 +178,16 @@ class ExperimentTable extends Component {
                   <MDBIcon far icon="play-circle" />
                 </th>
 
-                <a
-                  class="collapsed faq-links"
+                {/* <a
+                  className="collapsed faq-links"
                   data-toggle="collapse"
                   data-parent="#accordion"
                   href="#collapseFive"
                   aria-expanded="false"
                   aria-controls="collapseFive"
                 >
-                  <i class="fa fa-plus-square-o fa-2x"></i>
-                </a>
+                  <i className="fa fa-plus-square-o fa-2x"></i>
+                </a> */}
               </tr>
             </thead>
 
