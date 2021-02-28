@@ -214,7 +214,7 @@ class QuestionnairePreviewAPIView(APIView):
                                        serializer=ImageSerializer,
                                        association_task_serializer=TaskImageSerializer)
 
-        return Response(request.data, status=status.HTTP_201_CREATED)
+        return Response({'questionnaire_id': questionnaire_id}, status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def put(self, request, id):
