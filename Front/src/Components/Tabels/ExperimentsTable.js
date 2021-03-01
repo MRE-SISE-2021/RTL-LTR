@@ -161,33 +161,24 @@ class ExperimentTable extends Component {
             <h5>My Experiments</h5>
             <Modal />
           </Row>
-          <Table striped bordered hover size="sm">
-            <thead>
+          <Table
+            style={{
+              borderStyle: "solid",
+              width: "320px",
+              height: "450px",
+              overflow: "auto",
+              display: "inline-block",
+            }}
+          >
+            <thead
+            // style={{
+            //   position: "fixed",
+            // }}
+            >
               <tr>
                 <th>#</th>
                 <th>Experiment Name</th>
                 <th>status</th>
-              </tr>
-            </thead>
-
-            <thead>
-              <tr>
-                <th>1</th>
-                <th>first Experiment </th>
-                <th>
-                  <MDBIcon far icon="play-circle" />
-                </th>
-
-                {/* <a
-                  className="collapsed faq-links"
-                  data-toggle="collapse"
-                  data-parent="#accordion"
-                  href="#collapseFive"
-                  aria-expanded="false"
-                  aria-controls="collapseFive"
-                >
-                  <i className="fa fa-plus-square-o fa-2x"></i>
-                </a> */}
               </tr>
             </thead>
 
@@ -199,11 +190,15 @@ class ExperimentTable extends Component {
                     <td>{index + 1}</td>
                     <td>
                       <Button
-                        variant="secondary"
+                        // variant="secondary"
+                        variant="outline-info"
                         onClick={() => handleClick(value.questionnaire_id)}
                       >
                         {value.questionnaire_name}
                       </Button>
+                    </td>
+                    <td>
+                      <MDBIcon far icon="play-circle" />
                     </td>
                   </tr>
                 );
