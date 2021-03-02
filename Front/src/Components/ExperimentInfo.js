@@ -12,20 +12,77 @@ import * as actionTypes from "../store/actions";
 import "../styles/homePageStyle.css";
 //import '../assets/scss/themes/bootstrap-overlay/_card.scss'
 
+async function deleteData(url = "", data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
 class ExperimentInfo extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       toDashboard: false,
+      // id: props.chosen.questionnaire_id,
     };
-    this.submitHandler = this.submitHandler.bind(this);
+    this.submitHandlerPreview = this.submitHandlerPreview.bind(this);
+    this.submitHandlerDelete = this.submitHandlerDelete.bind(this);
   }
 
-  submitHandler(event) {
+  submitHandlerPreview(event) {
     event.preventDefault();
     this.setState(() => ({
       toDashboard: true,
     }));
+  }
+
+  submitHandlerDelete(event) {
+    //PUT request -- save task
+    // console.log(this.props);
+
+    const response = {
+      //tasks
+      // tasks: [
+      //   {
+      //     answers: [],
+      //     components: [
+      //       {
+      //         order_key: this.props.keyOrder,
+      //         component_type: this.props.name,
+      //         direction: "RTL",
+      //         label: this.state.label,
+      //       },
+      //     ],
+      //     images: [],
+      //     task_title: this.state.title,
+      //     task_content: "", ////////?
+      //     is_required: true, ///////?
+      //   },
+      // ],
+      // questionnaire_id: this.state.id, //
+    };
+
+    deleteData(
+      "http://127.0.0.1:8000/questionnaire-preview-data/" +
+        this.props.chosen.questionnaire_id,
+      response
+    ).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      // this.setState({ expId: data.questionnaire_id });
+    });
+    // console.log(this.state);
   }
 
   UNSAFE_componentWillMount() {
@@ -68,7 +125,10 @@ class ExperimentInfo extends Component {
                     <Button variant="outline-*" disabled>
                       <MDBIcon className="mr-5" icon="upload" />
                     </Button>
-                    <Button variant="outline-*" onClick={this.submitHandler}>
+                    <Button
+                      variant="outline-*"
+                      onClick={this.submitHandlerPreview}
+                    >
                       <MDBIcon className="mr-5" icon="eye" />
                     </Button>
 
@@ -78,7 +138,10 @@ class ExperimentInfo extends Component {
                     <Button variant="outline-*" disabled>
                       <MDBIcon className="mr-5" icon="edit" />
                     </Button>
-                    <Button variant="outline-*" disabled>
+                    <Button
+                      variant="outline-*"
+                      onClick={this.submitHandlerDelete}
+                    >
                       <MDBIcon className="mr-5" icon="trash-alt" />
                     </Button>
                   </div>
