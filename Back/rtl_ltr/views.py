@@ -131,11 +131,16 @@ def get_questionnaire_name_list(request):
 class QuestionnairePreviewAPIView(APIView):
     # get preview data for home page of a questionnaire by questionnaire_id
     def get(self, request, id):
-        queryset = get_object(id, Questionnaire)
-        data = QuestionnaireSerializer(queryset, many=False, fields=('questionnaire_id', 'creation_date',
-                                                                     'questionnaire_name', 'hosted_link',
-                                                                     'is_active', 'language_id',
-                                                                     'questionnaire_type_id')).data
+        # get queryset of questionnaire table by questionnaire_id
+        try:
+            questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=id)
+        except Questionnaire.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+        data = QuestionnaireSerializer(questionnaire_queryset, many=False, fields=('questionnaire_id', 'creation_date',
+                                                                                   'questionnaire_name', 'hosted_link',
+                                                                                   'is_active', 'language_id',
+                                                                                   'questionnaire_type_id')).data
 
         return Response(data, status=status.HTTP_200_OK)
 
@@ -218,6 +223,11 @@ class QuestionnairePreviewAPIView(APIView):
 
     @transaction.atomic
     def put(self, request, id):
+        # check if the questionnaire was already participated
+        if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
+            return HttpResponse('Not permitted to update: the questionnaire was already participated',
+                                status=status.HTTP_208_ALREADY_REPORTED)
+
         # lists of key-value {task_id: data}
         task_answers = []
         task_components = []
@@ -231,7 +241,7 @@ class QuestionnairePreviewAPIView(APIView):
         try:
             questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=id)
         except Questionnaire.DoesNotExist:
-            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+            raise Exception(Questionnaire.DoesNotExist)
 
         # update Questionnaire table
         update_data_into_table(QuestionnaireSerializer(questionnaire_queryset, data=questionnaire_put,
@@ -239,14 +249,13 @@ class QuestionnairePreviewAPIView(APIView):
 
         # insert or update Task table
         for task in tasks_put:
-           
 
             # update Task table by task_id
             if 'task_id' in task:
                 try:
                     task_queryset = Task.objects.get(task_id=task['task_id'])
                 except Questionnaire.DoesNotExist:
-                    return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+                    raise Exception(Questionnaire.DoesNotExist)
 
                 update_data_into_table(TaskSerializer(task_queryset, data=task,
                                                       partial=True))
@@ -256,10 +265,10 @@ class QuestionnairePreviewAPIView(APIView):
             task_id = insert_data_into_table(TaskSerializer(data=task),
                                              'task_id')
 
-             # map the new task_id with its answers, components, images
+            # map the new task_id with its answers, components, images
             task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
             task_components.append({task_id: task.pop('components')}) if task['components'] else None
-            task_images.append({task_id: task.pop('images')}) if task['images'] else None                                 
+            task_images.append({task_id: task.pop('images')}) if task['images'] else None
 
             # associate the new task with the new questionnaire
             insert_data_into_table(QuestionnaireTaskSerializer(data={'questionnaire_id': id,
@@ -301,6 +310,67 @@ class QuestionnairePreviewAPIView(APIView):
                                        model_name='Image')
 
         return Response(questionnaire_put, status=status.HTTP_200_OK)
+
+    @transaction.atomic
+    def delete(self, request, id):
+        # lists of key-value {task_id: data}
+        answer_ids = []
+        component_ids = []
+        image_ids = []
+
+        # check if the questionnaire was already participated
+        if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
+            return HttpResponse('Not permitted to delete: the questionnaire was already participated',
+                                status=status.HTTP_208_ALREADY_REPORTED)
+
+        task_ids = []
+        # get queryset of questionnaire_task table by questionnaire_id
+        for qt in QuestionnaireTask.objects.filter(questionnaire_id=id):
+            task_ids.append(qt.task_id_id)
+            qt.delete()
+
+        # get queryset of questionnaire table by questionnaire_id
+        try:
+            questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=id)
+        except Questionnaire.DoesNotExist:
+            raise Exception(Questionnaire.DoesNotExist)
+
+        # delete questionnaire by id from db Questionnaire table
+        questionnaire_queryset.delete()
+
+        for task_id in task_ids:
+            for ta in TaskAnswer.objects.filter(task_id=task_id):
+                answer_ids.append(ta.answer_id_id)
+                ta.delete()
+
+            for tc in TaskComponent.objects.filter(task_id=task_id):
+                component_ids.append(tc.component_id_id)
+                tc.delete()
+
+            for ti in TaskImage.objects.filter(task_id=task_id):
+                image_ids.append(ti.image_id_id)
+                ti.delete()
+
+            try:
+                task_queryset = Task.objects.get(task_id=task_id)
+            except Task.DoesNotExist:
+                raise Exception(Task.DoesNotExist)
+
+            task_queryset.delete()
+
+        for answer_id in answer_ids:
+            for answer_queryset in Answer.objects.filter(answer_id=answer_id):
+                answer_queryset.delete()
+
+        for component_id in component_ids:
+            for component_queryset in Component.objects.filter(component_id=component_id):
+                component_queryset.delete()
+
+        for image_id in image_ids:
+            for image_queryset in Image.objects.filter(image_id=image_id):
+                image_queryset.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 ####### INSTRUMENTAL FUNCTIONS #######
