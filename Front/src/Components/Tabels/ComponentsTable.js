@@ -19,9 +19,15 @@ class ComponentsTable extends Component {
 
   onAddBtnClick(event) {
     const inputList = this.state.inputList;
+    const id = this.props.expId;
     this.setState({
       inputList: inputList.concat(
-        <Input key={this.state.inputList.length} name={event.target.id} />
+        <Input
+          key={this.state.inputList.length}
+          name={event.target.id}
+          expId={id}
+          keyOrder={inputList.length}
+        />
       ),
     });
   }

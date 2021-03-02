@@ -73,13 +73,13 @@ class ExperimentPage extends Component {
         if (component.component_type === "Welcome") {
           this.setState({
             inputList: inputList.concat(
-              <h1 key={"welcome" + index}> Welcome</h1>
+              <div dangerouslySetInnerHTML={{ __html: component.label }}></div>
             ),
           });
         } else if (component.component_type === "Explanation") {
           this.setState({
             inputList: inputList.concat(
-              <h1 key={"explain" + index}> Explanation</h1>
+              <div dangerouslySetInnerHTML={{ __html: component.label }}></div>
             ),
           });
         } else if (component.component_type === "Range") {
@@ -112,7 +112,9 @@ class ExperimentPage extends Component {
           });
         } else {
           this.setState({
-            inputList: inputList.concat(<h1 key={index}> Default</h1>),
+            inputList: inputList.concat(
+              <div dangerouslySetInnerHTML={{ __html: component.label }}></div>
+            ),
           });
         }
       });

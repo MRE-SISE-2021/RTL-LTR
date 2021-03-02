@@ -10,7 +10,10 @@ class Input extends React.Component {
     super(props);
     this.state = {
       name: props.name,
+      id: props.expId,
+      keyOrder: props.keyOrder,
     };
+    console.log(this.state);
   }
 
   render() {
@@ -51,7 +54,13 @@ class Input extends React.Component {
                   <div className="main-body">
                     <div className="page-wrapper">
                       <Card title="Edit Page" isOption>
-                        <AllCkEditor html={html} editor="classic" />
+                        <AllCkEditor
+                          html={html}
+                          editor="classic"
+                          expId={this.state.id}
+                          keyOrder={this.state.keyOrder}
+                          name={this.state.name}
+                        />
                       </Card>
                     </div>
                   </div>
