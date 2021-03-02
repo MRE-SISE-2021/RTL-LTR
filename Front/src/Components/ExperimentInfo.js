@@ -4,6 +4,8 @@ import { Row, Col, Card } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 // import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
@@ -35,6 +37,7 @@ class ExperimentInfo extends Component {
     super(props);
     this.state = {
       toDashboard: false,
+      reload: false,
       // id: props.chosen.questionnaire_id,
     };
     this.submitHandlerPreview = this.submitHandlerPreview.bind(this);
@@ -51,38 +54,34 @@ class ExperimentInfo extends Component {
   submitHandlerDelete(event) {
     //PUT request -- save task
     // console.log(this.props);
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this file!",
+      type: "warning",
+      showCloseButton: true,
+      showCancelButton: true,
+    }).then((willDelete) => {
+      if (willDelete.value) {
+        const response = {
+          questionnaire_id: this.props.chosen.questionnaire_id, //
+        };
 
-    const response = {
-      //tasks
-      // tasks: [
-      //   {
-      //     answers: [],
-      //     components: [
-      //       {
-      //         order_key: this.props.keyOrder,
-      //         component_type: this.props.name,
-      //         direction: "RTL",
-      //         label: this.state.label,
-      //       },
-      //     ],
-      //     images: [],
-      //     task_title: this.state.title,
-      //     task_content: "", ////////?
-      //     is_required: true, ///////?
-      //   },
-      // ],
-      // questionnaire_id: this.state.id, //
-    };
-
-    deleteData(
-      "http://127.0.0.1:8000/questionnaire-preview-data/" +
-        this.props.chosen.questionnaire_id,
-      response
-    ).then((data) => {
-      console.log(data); // JSON data parsed by `data.json()` call
-      // this.setState({ expId: data.questionnaire_id });
+        deleteData(
+          "http://127.0.0.1:8000/questionnaire-preview-data/" +
+            this.props.chosen.questionnaire_id,
+          response
+        ).then((data) => {
+          console.log(data); // JSON data parsed by `data.json()` call
+          // this.setState({ expId: data.questionnaire_id });
+        });
+        // this.setState({ reload: true });
+        return MySwal.fire("", "Your file has been deleted!", "success");
+      } else {
+        return MySwal.fire("", "Your file is safe!", "error");
+      }
     });
-    // console.log(this.state);
+    // window.location.reload(false);
   }
 
   UNSAFE_componentWillMount() {
@@ -109,6 +108,9 @@ class ExperimentInfo extends Component {
       return <Redirect to={"/preview/" + data.questionnaire_id} />;
     }
 
+    // if (this.state.reload === true) {
+    //   return <Redirect to={"/home/"} />;
+    // }
     console.log(data);
     return (
       <Aux>
