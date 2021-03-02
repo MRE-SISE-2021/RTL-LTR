@@ -41,7 +41,7 @@ class ExperimentPage extends Component {
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result);
+          // console.log(result);
           this.setState(() => ({
             tasks: result.tasks,
             name: result.questionnaire_name,
@@ -66,20 +66,26 @@ class ExperimentPage extends Component {
     // console.log(this.state.tasks);
 
     this.state.tasks.forEach((task, index) => {
-      console.log(task);
+      // console.log(task);
       const inputList = this.state.inputList;
       ///////
       task.components.forEach((component, index) => {
         if (component.component_type === "Welcome") {
           this.setState({
             inputList: inputList.concat(
-              <div dangerouslySetInnerHTML={{ __html: component.label }}></div>
+              <div
+                key="welcome"
+                dangerouslySetInnerHTML={{ __html: component.label }}
+              ></div>
             ),
           });
         } else if (component.component_type === "Explanation") {
           this.setState({
             inputList: inputList.concat(
-              <div dangerouslySetInnerHTML={{ __html: component.label }}></div>
+              <div
+                key="explain"
+                dangerouslySetInnerHTML={{ __html: component.label }}
+              ></div>
             ),
           });
         } else if (component.component_type === "Range") {
@@ -113,7 +119,10 @@ class ExperimentPage extends Component {
         } else {
           this.setState({
             inputList: inputList.concat(
-              <div dangerouslySetInnerHTML={{ __html: component.label }}></div>
+              <div
+                key="thaks"
+                dangerouslySetInnerHTML={{ __html: component.label }}
+              ></div>
             ),
           });
         }
