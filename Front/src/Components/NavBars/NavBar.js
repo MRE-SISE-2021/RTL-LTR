@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../../hoc/_Aux";
-import DEMO from "../../store/constant";
 import * as actionTypes from "../../store/actions";
-
+import { Link } from "react-router-dom";
 import "../../styles/homePageStyle.css";
 import { MDBIcon } from "mdbreact";
 
@@ -44,9 +43,9 @@ class NavBar extends Component {
       <Aux>
         <ul className="p-3 mb-2 bg-info text-white">
           <li>
-            <a>
+            <Link to="/home">
               <MDBIcon icon="home" className="indigo-text pr-3" />
-            </a>
+            </Link>
           </li>
         </ul>
       </Aux>

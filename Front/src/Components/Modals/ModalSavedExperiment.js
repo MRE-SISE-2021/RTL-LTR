@@ -121,7 +121,10 @@ class SaveModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title as="h5">All Data Will be Saved!</Modal.Title>
           </Modal.Header>
-          <img src="https://icon-library.com/images/save-icon-image/save-icon-image-12.jpg" />
+          <img
+            alt="save icon"
+            src="https://icon-library.com/images/save-icon-image/save-icon-image-12.jpg"
+          />
           <Modal.Footer>
             <Button variant="secondary" onClick={this.onAddBtnClick}>
               Save!

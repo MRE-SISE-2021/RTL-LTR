@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Row, Col, Card } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Button } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 // import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
@@ -57,11 +57,11 @@ class ExperimentInfo extends Component {
       <Aux>
         <nav
           className="bg-info text-white"
-          style={{ marginTop: "150px", marginLeft: "200px" }}
+          style={{ marginTop: "90px", marginLeft: "200px" }}
         >
           <Aux>
             <Card>
-              <Card.Header>
+              <Card.Header style={{ height: "90px" }}>
                 <Card.Title>
                   <b className="text-info">{data.questionnaire_name}</b>
                   <div className="d-flex justify-content-lg-end">

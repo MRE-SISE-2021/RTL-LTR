@@ -4,8 +4,6 @@ import ExperimentsTable from "../Components/Tabels/ExperimentsTable";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 
-import QuestionnaireInfo from "../Components/ExperimentInfo";
-
 class HomePage extends Component {
   constructor(props) {
     super(props);

@@ -7,9 +7,8 @@ import Modal from "../Modals/ModalSavedExperiment";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 
-import Navbar from 'react-bootstrap/Navbar' 
-import '../../styles/homePageStyle.css'; 
-
+import Navbar from "react-bootstrap/Navbar";
+import "../../styles/homePageStyle.css";
 
 class NavBar extends Component {
   constructor() {
@@ -50,58 +49,65 @@ class NavBar extends Component {
 
     let navBar = (
       <Aux>
-       <Navbar fixed="bottom" fixed="top" expand="lg" bg="info" variant="dark">
-          
+        <Navbar fixed="top" bg="info" variant="dark">
+          <div className={mainHeaderClass.join(" ")}>
+            {/* <div className="m-header"> */}
+            {/* <a className="b-brand"> */}
+            {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
+            <Link to="/home">
+              <MDBIcon className="mr-5" icon="angle-double-left" />
+            </Link>
+            {/* </a> */}
+            {/* </div> */}
 
-       
-
-       
-        <div className={mainHeaderClass.join(" ")}>
-          {/* <div className="m-header"> */}
-          {/* <a className="b-brand"> */}
-          {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
-          <Link to="/home">
-            <MDBIcon className="mr-5" icon="angle-double-left" />
-          </Link>
-          {/* </a> */}
-          {/* </div> */}
-
-          <div className="collapse navbar-collapse">
-            <h5 className="mr-5">Experiment Name </h5>
-            <Button className="btn-primary tn-edit btn btn-default mr-5" size="lg" variant="light">
-              {this.props.name}
-            </Button>
-            <h5 className="mr-5"> Type </h5>
-
-            <Button className="btn-primary tn-edit btn btn-default mr-5 " size="lg" variant="light">
-              {this.props.type}
-            </Button>
-
-            <h5 className="mr-5"> Language </h5>
-
-            <Button className="btn-primary tn-edit btn btn-default mr-5" size="lg" variant="light" >
-              {this.props.lang}
-            </Button>
-
-            <div className="d-flex justify-content-lg-end">
-              {/* props = name | lang | type */}
-              <Modal className="mr-5" data={this.props} />
-
-              <Button variant="outline-*" onClick={this.submitHandler}>
-                <MDBIcon className="mr-5" far icon="eye" />
+            <div className="collapse navbar-collapse">
+              <h5 className="mr-5">Experiment Name </h5>
+              <Button
+                className="btn-primary tn-edit btn btn-default mr-5"
+                size="lg"
+                variant="light"
+              >
+                {this.props.name}
               </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" icon="paperclip" />
+              <h5 className="mr-5"> Type </h5>
+
+              <Button
+                className="btn-primary tn-edit btn btn-default mr-5 "
+                size="lg"
+                variant="light"
+              >
+                {this.props.type}
               </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" far icon="clone" />
+
+              <h5 className="mr-5"> Language </h5>
+
+              <Button
+                className="btn-primary tn-edit btn btn-default mr-5"
+                size="lg"
+                variant="light"
+              >
+                {this.props.lang}
               </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" far icon="trash-alt" />
-              </Button>
+
+              <div className="d-flex justify-content-lg-end">
+                {/* props = name | lang | type */}
+                <Modal className="mr-5" data={this.props} />
+
+                <Button variant="outline-*" onClick={this.submitHandler}>
+                  <MDBIcon className="mr-5" far icon="eye" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" icon="paperclip" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" far icon="clone" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" far icon="trash-alt" />
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
         </Navbar>
       </Aux>
     );

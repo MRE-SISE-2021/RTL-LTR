@@ -5,9 +5,6 @@ import Modal from "../Modals/ModalNewExperiment";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import { Table, Button, Row } from "react-bootstrap";
-
-import $ from "jquery";
-
 import QuestionnaireInfo from "../ExperimentInfo";
 import { MDBIcon } from "mdbreact";
 import "../../styles/homePageStyle.css";
