@@ -49,16 +49,7 @@ class ExperimentPage extends Component {
   componentDidMount() {
     const response = {
       //tasks
-      tasks: [
-        {
-          answers: [],
-          components: [],
-          images: [],
-          task_title: "jj",
-          task_content: "", ////////?
-          is_required: true, ///////?
-        },
-      ],
+      tasks: [],
       //data
       creation_date: "2021-01-06 23:25", //
       questionnaire_name: this.props.match.params.name,

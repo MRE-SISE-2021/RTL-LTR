@@ -42,10 +42,13 @@ class ExperimentTable extends Component {
       .then(
         (result) => {
           // console.log(result);
-          this.setState({
-            isLoaded: true,
-            items: result,
-          });
+          if (result[0] !== undefined) {
+            this.setState({
+              isLoaded: true,
+              items: result,
+              chosen: result[0],
+            });
+          }
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
