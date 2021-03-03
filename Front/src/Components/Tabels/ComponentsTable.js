@@ -110,69 +110,84 @@ class ComponentsTable extends Component {
         {this.state.inputList.map(function (input, index) {
           return input;
         })}
-        <nav className={navClass.join(" ")} style={{ background: "white" }}>
-          <Card style={{ width: "100%" }}>
-            <Tabs defaultActiveKey="home" className="mb-3">
-              <Tab eventKey="home" title={<MDBIcon icon="plus" />}>
-                <ul className="list-group list-group-full">
-                  <h5>Genral forms</h5>
-                  <li className="list-group-item">
-                    {/* //////// */}
+        <nav
+          className={navClass.join(" ")}
+          style={{
+            width: "300px",
+            background: "white",
+            position: "fixed",
+            top: "0",
+            left: "0",
+          }}
+        >
+          {/* <Card > */}
+          <Tabs defaultActiveKey="home">
+            <Tab eventKey="home" title={<MDBIcon icon="plus" />}>
+              <ul
+                style={{
+                  width: "300px",
+                  textAlign: "center",
+                }}
+                className="list-group list-group-full"
+              >
+                <h5>Genral forms</h5>
+                <li className="list-group-item">
+                  {/* //////// */}
 
-                    <Button
-                      id="Welcome"
-                      onClick={this.onAddBtnClick}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file-text" /> Welcome Page
-                    </Button>
-                  </li>
-                  <li className="list-group-item">
-                    <Button
-                      id="Explanation"
-                      onClick={this.onAddBtnClick}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file-text" /> Explanation page
-                    </Button>
-                  </li>
-                  <li className="list-group-item">
-                    <Button
-                      id="Thank You"
-                      onClick={this.onAddBtnClick}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file-text" /> Thank you page
-                    </Button>
-                  </li>
-                  <br />
-                  <h5>Text Based</h5>
+                  <Button
+                    id="Welcome"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file-text" /> Welcome Page
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="Explanation"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file-text" /> Explanation page
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="Thank You"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file-text" /> Thank you page
+                  </Button>
+                </li>
+                <br />
+                <h5>Text Based</h5>
 
-                  <li className="list-group-item">
-                    <Button
-                      id="Range"
-                      onClick={this.onAddBtnClick2}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file" /> Range
-                    </Button>
-                  </li>
-                  <li className="list-group-item">
-                    <Button
-                      id="Text"
-                      onClick={this.onAddBtnClick2}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file" /> Text
-                    </Button>
-                  </li>
-                </ul>{" "}
-              </Tab>
-              <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
-                <p>SETTINGS TAB.</p>
-              </Tab>
-            </Tabs>
-          </Card>
+                <li className="list-group-item">
+                  <Button
+                    id="Range"
+                    onClick={this.onAddBtnClick2}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Range
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="Text"
+                    onClick={this.onAddBtnClick2}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Text
+                  </Button>
+                </li>
+              </ul>{" "}
+            </Tab>
+            <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
+              <p>SETTINGS TAB.</p>
+            </Tab>
+          </Tabs>
+          {/* </Card> */}
         </nav>
       </Aux>
     );
