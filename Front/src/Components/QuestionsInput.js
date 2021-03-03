@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import * as actionTypes from "../store/actions";
 // import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
-import Breadcrumb from "../App/components/Breadcrumb";
+// import Breadcrumb from "../App/components/Breadcrumb";
+import { MDBIcon } from "mdbreact";
 
 async function putData(url = "", data = {}) {
   // Default options are marked with *
@@ -140,92 +141,82 @@ class FormsElements extends React.Component {
 
     return (
       <Aux>
-        <div className={mainClass.join(" ")}>
-          <div className="pcoded-main-container full-screenable-node">
-            <div className="pcoded-wrapper">
-              <div className="pcoded-content">
-                <div className="pcoded-inner-content">
-                  <div className="main-body">
-                    <div className="page-wrapper">
-                      <Row className="align-items-center page-header">
-                        <Col>
-                          <Breadcrumb />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Card>
-                            <Card.Header>
-                              <Card.Title as="h5">
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Enter Your Task Title"
-                                  onChange={this.onInputchange}
-                                  name="title"
-                                  required
-                                  readOnly={this.state.deleteAll}
-                                />
-                              </Card.Title>
-                            </Card.Header>
-                            <Card.Body>
-                              <hr />
-                              <Row>
-                                <Col md={6}>
-                                  <Form.Group controlId="exampleForm.ControlInput1">
-                                    <Form.Control
-                                      type="text"
-                                      placeholder="Enter Your Question"
-                                      name="label"
-                                      onChange={this.onInputchange}
-                                      required
-                                      readOnly={this.state.deleteAll}
-                                    />
-                                  </Form.Group>
-                                </Col>
-                                <Col md={3}>
-                                  <Button
-                                    variant="primary"
-                                    onClick={this.sendData}
-                                    disabled={this.state.deleteAll}
-                                  >
-                                    Save
-                                  </Button>
-                                </Col>
-                                <Col md={3}>
-                                  <Button
-                                    variant="danger"
-                                    disabled={this.state.delete}
-                                    onClick={this.deleteData}
-                                  >
-                                    Delete
-                                  </Button>
-                                </Col>
-                              </Row>
-                              {this.props.name === "Range" && (
-                                <Row>
-                                  <Col md={6}>
-                                    <Form.Group controlId="exampleForm.RangeInput">
-                                      <Form.Control
-                                        type="range"
-                                        className="form-control-range"
-                                        name="label"
-                                        onChange={this.onInputchange}
-                                        readOnly={this.state.deleteAll}
-                                      />
-                                    </Form.Group>
-                                  </Col>
-                                </Row>
-                              )}
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      </Row>{" "}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Card
+            style={{
+              width: "500px",
+            }}
+          >
+            <Card.Header>
+              <Card.Title as="h5">
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Your Task Title"
+                  onChange={this.onInputchange}
+                  name="title"
+                  required
+                  readOnly={this.state.deleteAll}
+                />
+              </Card.Title>
+            </Card.Header>
+            <Card.Body>
+              <hr />
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="exampleForm.ControlInput1">
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Your Question"
+                      name="label"
+                      onChange={this.onInputchange}
+                      required
+                      readOnly={this.state.deleteAll}
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={3}>
+                  <Button
+                    variant="info"
+                    onClick={this.sendData}
+                    disabled={this.state.deleteAll}
+                  >
+                    <MDBIcon icon="save" />
+                  </Button>
+                  {/* </Col> */}
+                  {/* <Col md={3}> */}
+                  <Button
+                    variant="danger"
+                    disabled={this.state.delete}
+                    onClick={this.deleteData}
+                  >
+                    <MDBIcon icon="trash-alt" />
+                  </Button>
+                </Col>
+              </Row>
+              {this.props.name === "Range" && (
+                <Row>
+                  <Col md={6}>
+                    <Form.Group controlId="exampleForm.RangeInput">
+                      <Form.Control
+                        type="range"
+                        className="form-control-range"
+                        name="label"
+                        onChange={this.onInputchange}
+                        readOnly={this.state.deleteAll}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+              )}
+            </Card.Body>
+          </Card>
         </div>
       </Aux>
     );

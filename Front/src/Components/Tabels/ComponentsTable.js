@@ -107,9 +107,15 @@ class ComponentsTable extends Component {
           lang={this.props.lang}
           tasks={this.state.inputList}
         />
-        {this.state.inputList.map(function (input, index) {
-          return input;
-        })}
+        <div
+          style={{
+            marginTop: "10%",
+          }}
+        >
+          {this.state.inputList.map(function (input, index) {
+            return input;
+          })}
+        </div>
         <nav
           className={navClass.join(" ")}
           style={{
