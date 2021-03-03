@@ -268,7 +268,7 @@ class QuestionnairePreviewAPIView(APIView):
                                              'task_id')
 
             # map the new task_id with its answers, components, images
-            task_ids.append(task['task_id'])
+            task_ids.append(task_id)
             task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
             task_components.append({task_id: task.pop('components')}) if task['components'] else None
             task_images.append({task_id: task.pop('images')}) if task['images'] else None
