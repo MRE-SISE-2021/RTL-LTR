@@ -229,6 +229,7 @@ class QuestionnairePreviewAPIView(APIView):
                                 status=status.HTTP_208_ALREADY_REPORTED)
 
         # lists of key-value {task_id: data}
+        task_ids = []
         task_answers = []
         task_components = []
         task_images = []
@@ -252,6 +253,7 @@ class QuestionnairePreviewAPIView(APIView):
 
             # update Task table by task_id
             if 'task_id' in task:
+                task_ids.append(task['task_id'])
                 try:
                     task_queryset = Task.objects.get(task_id=task['task_id'])
                 except Questionnaire.DoesNotExist:
@@ -266,6 +268,7 @@ class QuestionnairePreviewAPIView(APIView):
                                              'task_id')
 
             # map the new task_id with its answers, components, images
+            task_ids.append(task['task_id'])
             task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
             task_components.append({task_id: task.pop('components')}) if task['components'] else None
             task_images.append({task_id: task.pop('images')}) if task['images'] else None
@@ -309,7 +312,8 @@ class QuestionnairePreviewAPIView(APIView):
                                        association_task_serializer=TaskImageSerializer,
                                        model_name='Image')
 
-        return Response(questionnaire_put, status=status.HTTP_200_OK)
+        return Response({'questionnaire_id': id, 'task_id': task_ids},
+                        status=status.HTTP_200_OK)
 
     @transaction.atomic
     def delete(self, request, id):
@@ -324,19 +328,26 @@ class QuestionnairePreviewAPIView(APIView):
                                 status=status.HTTP_208_ALREADY_REPORTED)
 
         task_ids = []
-        # get queryset of questionnaire_task table by questionnaire_id
-        for qt in QuestionnaireTask.objects.filter(questionnaire_id=id):
+        if 'task_id' in request.data:
+            # get queryset of questionnaire_task table by task_id
+            qt = QuestionnaireTask.objects.get(task_id=request.data['task_id'],
+                                               questionnaire_id=id)
             task_ids.append(qt.task_id_id)
             qt.delete()
+        else:
+            # get queryset of questionnaire_task table by questionnaire_id
+            for qt in QuestionnaireTask.objects.filter(questionnaire_id=id):
+                task_ids.append(qt.task_id_id)
+                qt.delete()
 
-        # get queryset of questionnaire table by questionnaire_id
-        try:
-            questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=id)
-        except Questionnaire.DoesNotExist:
-            raise Exception(Questionnaire.DoesNotExist)
+            # get queryset of questionnaire table by questionnaire_id
+            try:
+                questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=id)
+            except Questionnaire.DoesNotExist:
+                raise Exception(Questionnaire.DoesNotExist)
 
-        # delete questionnaire by id from db Questionnaire table
-        questionnaire_queryset.delete()
+            # delete questionnaire by id from db Questionnaire table
+            questionnaire_queryset.delete()
 
         for task_id in task_ids:
             for ta in TaskAnswer.objects.filter(task_id=task_id):
