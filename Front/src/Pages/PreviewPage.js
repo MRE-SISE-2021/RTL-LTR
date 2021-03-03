@@ -91,7 +91,7 @@ class ExperimentPage extends Component {
         } else if (component.component_type === "Range") {
           this.setState({
             inputList: inputList.concat(
-              <div>
+              <div key={"range" + index}>
                 <p>{component.label}</p>
                 <input
                   type="range"

@@ -31,7 +31,9 @@ class FormsElements extends React.Component {
     this.state = {
       title: "",
       label: "",
-      id: this.props.expId,
+      id: props.expId,
+      delete: true,
+      taskId: "",
     };
     this.onInputchange = this.onInputchange.bind(this);
   }
@@ -66,8 +68,14 @@ class FormsElements extends React.Component {
       response
     ).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
-      // this.setState({ expId: data.questionnaire_id });
+      this.setState({ taskId: data.task_id[0] });
     });
+
+    ///show delete button
+    this.setState({
+      delete: false,
+    });
+
     console.log(this.state);
   };
 
@@ -78,7 +86,7 @@ class FormsElements extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     // const { validated, validatedTooltip } = this.state;
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
@@ -111,6 +119,7 @@ class FormsElements extends React.Component {
                                   placeholder="Enter Your Task Title"
                                   onChange={this.onInputchange}
                                   name="title"
+                                  required
                                 />
                               </Card.Title>
                             </Card.Header>
@@ -124,11 +133,25 @@ class FormsElements extends React.Component {
                                       placeholder="Enter Your Question"
                                       name="label"
                                       onChange={this.onInputchange}
+                                      required
                                     />
                                   </Form.Group>
                                 </Col>
-                                <Col md={6}>
-                                  <Button onClick={this.sendData}>Save</Button>
+                                <Col md={3}>
+                                  <Button
+                                    variant="primary"
+                                    onClick={this.sendData}
+                                  >
+                                    Save
+                                  </Button>
+                                </Col>
+                                <Col md={3}>
+                                  <Button
+                                    variant="danger"
+                                    disabled={this.state.delete}
+                                  >
+                                    Delete
+                                  </Button>
                                 </Col>
                               </Row>
                               {this.props.name === "Range" && (
