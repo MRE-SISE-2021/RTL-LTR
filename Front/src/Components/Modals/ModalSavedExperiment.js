@@ -15,8 +15,8 @@ class SaveModal extends React.Component {
       isLarge: false,
       title: "",
       toDashboard: false,
-      name: this.props.data.name,
-      lang: this.props.data.lang,
+      name: props.data.name,
+      lang: props.data.lang,
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
@@ -52,8 +52,8 @@ class SaveModal extends React.Component {
   }
 
   onAddBtnClick() {
-    // const langId = this.getLangId();
-    // console.log(this.props.data);
+    const langId = this.getLangId();
+    console.log(this.props.data);
     // const response = {
     //   //tasks
     //   tasks: [
