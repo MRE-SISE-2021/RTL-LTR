@@ -53,9 +53,7 @@ class ExperimentPage extends Component {
   }
 
   render() {
-    console.log(this.props.match);
-    console.log(this.props);
-    console.log(this.state.expId);
+    // console.log(this.props.location.state);
     return (
       <Aux>
         <ComponentsTable

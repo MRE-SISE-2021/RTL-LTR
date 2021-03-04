@@ -92,15 +92,16 @@ class ExperimentInfo extends Component {
     if (this.state.edit === true) {
       return (
         <Redirect
-          to={
-            "/create/" +
-            data.questionnaire_name +
-            "/exp/" +
-            data.language_id +
-            "/" +
-            data.questionnaire_id
-          }
-          tasks={data.tasks}
+          to={{
+            pathname:
+              "/create/" +
+              data.questionnaire_name +
+              "/exp/" +
+              data.language_id +
+              "/" +
+              data.questionnaire_id,
+            state: { tasks: data.tasks },
+          }}
         />
       );
     }
