@@ -18,9 +18,11 @@ class ExperimentInfo extends Component {
     this.state = {
       toDashboard: false,
       reload: false,
+      edit: false,
     };
     this.submitHandlerPreview = this.submitHandlerPreview.bind(this);
     this.submitHandlerDelete = this.submitHandlerDelete.bind(this);
+    this.submitHandlerEdit = this.submitHandlerEdit.bind(this);
   }
 
   submitHandlerPreview(event) {
@@ -30,6 +32,12 @@ class ExperimentInfo extends Component {
     }));
   }
 
+  submitHandlerEdit(event) {
+    event.preventDefault();
+    this.setState(() => ({
+      edit: true,
+    }));
+  }
   submitHandlerDelete(event) {
     //DELETE request -- delete task
     const MySwal = withReactContent(Swal);
@@ -76,9 +84,25 @@ class ExperimentInfo extends Component {
 
   render() {
     const data = this.props.chosen;
-
+    console.log(data);
     if (this.state.toDashboard === true) {
       return <Redirect to={"/preview/" + data.questionnaire_id} />;
+    }
+
+    if (this.state.edit === true) {
+      return (
+        <Redirect
+          to={
+            "/create/" +
+            data.questionnaire_name +
+            "/exp/" +
+            data.language_id +
+            "/" +
+            data.questionnaire_id
+          }
+          tasks={data.tasks}
+        />
+      );
     }
 
     console.log(data);
@@ -107,7 +131,10 @@ class ExperimentInfo extends Component {
                     <Button variant="outline-*" disabled>
                       <MDBIcon className="mr-5" icon="clone" />
                     </Button>
-                    <Button variant="outline-*" disabled>
+                    <Button
+                      variant="outline-*"
+                      onClick={this.submitHandlerEdit}
+                    >
                       <MDBIcon className="mr-5" icon="edit" />
                     </Button>
                     <Button

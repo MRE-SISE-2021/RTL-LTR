@@ -111,6 +111,7 @@ class SaveModal extends React.Component {
         <Button
           variant="outline-*"
           onClick={() => this.setState({ isBasic: true })}
+          disabled
         >
           <MDBIcon icon="save" />
         </Button>

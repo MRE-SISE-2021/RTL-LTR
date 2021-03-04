@@ -87,7 +87,11 @@ class NavBar extends Component {
               <div className="d-flex justify-content-lg-end">
                 <Modal className="mr-5" data={this.props} />
 
-                <Button variant="outline-*" onClick={this.submitHandler}>
+                <Button
+                  variant="outline-*"
+                  disabled
+                  onClick={this.submitHandler}
+                >
                   <MDBIcon className="mr-5" far icon="eye" />
                 </Button>
                 <Button variant="outline-*" disabled>

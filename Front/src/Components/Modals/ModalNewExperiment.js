@@ -59,7 +59,11 @@ class NewExperimentModal extends React.Component {
       return (
         <Redirect
           to={
-            "/create/" + this.state.expName + "/exp/" + this.state.chosenRadio
+            "/create/" +
+            this.state.expName +
+            "/exp/" +
+            this.state.chosenRadio +
+            "/0"
           }
         />
       );

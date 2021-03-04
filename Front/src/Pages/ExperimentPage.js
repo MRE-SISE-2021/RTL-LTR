@@ -30,6 +30,10 @@ class ExperimentPage extends Component {
   }
 
   componentDidMount() {
+    if (this.props.match.params.id !== "0") {
+      // console.log("zerrrrrrrrroooooooooooooo");
+      return;
+    }
     const response = {
       //tasks
       tasks: [],
@@ -50,6 +54,7 @@ class ExperimentPage extends Component {
 
   render() {
     console.log(this.props.match);
+    console.log(this.props);
     console.log(this.state.expId);
     return (
       <Aux>
