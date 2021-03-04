@@ -7,7 +7,6 @@ import { Redirect } from "react-router-dom";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import API from "../Api/Api";
-// import Card from "../App/components/MainCard";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 
@@ -19,7 +18,6 @@ class ExperimentInfo extends Component {
     this.state = {
       toDashboard: false,
       reload: false,
-      // id: props.chosen.questionnaire_id,
     };
     this.submitHandlerPreview = this.submitHandlerPreview.bind(this);
     this.submitHandlerDelete = this.submitHandlerDelete.bind(this);
@@ -33,8 +31,7 @@ class ExperimentInfo extends Component {
   }
 
   submitHandlerDelete(event) {
-    //PUT request -- save task
-    // console.log(this.props);
+    //DELETE request -- delete task
     const MySwal = withReactContent(Swal);
     MySwal.fire({
       title: "Are you sure?",
@@ -53,15 +50,12 @@ class ExperimentInfo extends Component {
           response
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
-          // this.setState({ expId: data.questionnaire_id });
         });
-        // this.setState({ reload: true });
         return MySwal.fire("", "Your file has been deleted!", "success");
       } else {
         return MySwal.fire("", "Your file is safe!", "error");
       }
     });
-    // window.location.reload(false);
   }
 
   UNSAFE_componentWillMount() {
@@ -81,16 +75,12 @@ class ExperimentInfo extends Component {
   }
 
   render() {
-    // const data = QuestionaireInfoResponse;
     const data = this.props.chosen;
 
     if (this.state.toDashboard === true) {
       return <Redirect to={"/preview/" + data.questionnaire_id} />;
     }
 
-    // if (this.state.reload === true) {
-    //   return <Redirect to={"/home/"} />;
-    // }
     console.log(data);
     return (
       <Aux>

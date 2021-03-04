@@ -51,14 +51,9 @@ class NavBar extends Component {
       <Aux>
         <Navbar fixed="top" bg="info" variant="dark">
           <div className={mainHeaderClass.join(" ")}>
-            {/* <div className="m-header"> */}
-            {/* <a className="b-brand"> */}
-            {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
             <Link to="/home">
               <MDBIcon className="mr-5" icon="angle-double-left" />
             </Link>
-            {/* </a> */}
-            {/* </div> */}
 
             <div className="collapse navbar-collapse">
               <h5 className="mr-5">Experiment Name </h5>
@@ -90,7 +85,6 @@ class NavBar extends Component {
               </Button>
 
               <div className="d-flex justify-content-lg-end">
-                {/* props = name | lang | type */}
                 <Modal className="mr-5" data={this.props} />
 
                 <Button variant="outline-*" onClick={this.submitHandler}>

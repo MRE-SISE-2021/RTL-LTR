@@ -53,7 +53,6 @@ class ExperimentPage extends Component {
     console.log(this.state.expId);
     return (
       <Aux>
-        {/* <NavBar /> */}
         <ComponentsTable
           name={this.props.match.params.name}
           type={this.props.match.params.type}

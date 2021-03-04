@@ -9,10 +9,6 @@ import QuestionnaireInfo from "../ExperimentInfo";
 import { MDBIcon } from "mdbreact";
 import "../../styles/homePageStyle.css";
 
-//import '../../styles/ExperimentsTableCss.css';
-//import 'bootstrap/dist/css/bootstrap.min.css';
-//import 'react-bootstrap-table/css/react-bootstrap-table.css';
-
 class ExperimentTable extends Component {
   constructor(props) {
     super(props);
@@ -47,9 +43,6 @@ class ExperimentTable extends Component {
             });
           }
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           this.setState({
             isLoaded: true,
@@ -112,14 +105,6 @@ class ExperimentTable extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
-    // let navBarClass = ["navbar-wrapper", "content-main"];
-    // if (this.props.fullWidthLayout) {
-    //   navBarClass = [...navBarClass, "container-fluid"];
-    // } else {
-    //   navBarClass = [...navBarClass, "container"];
-    // }
-    ///////////////////////////////
-
     ///////////////////////////
     const handleClick = (value) => {
       fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`)
@@ -132,9 +117,6 @@ class ExperimentTable extends Component {
               chosen: result,
             });
           },
-          // Note: it's important to handle errors here
-          // instead of a catch() block so that we don't swallow
-          // exceptions from actual bugs in components.
           (error) => {
             this.setState({
               isLoaded: true,
@@ -144,12 +126,7 @@ class ExperimentTable extends Component {
         );
     };
     const names = this.state.items;
-    /*
-  <div class="infoStyle">
-          
-        </div>
 
-*/
     return (
       <Aux>
         <nav style={{ marginLeft: "200px" }}>
@@ -170,11 +147,7 @@ class ExperimentTable extends Component {
               display: "inline-block",
             }}
           >
-            <thead
-            // style={{
-            //   position: "fixed",
-            // }}
-            >
+            <thead>
               <tr>
                 <th>#</th>
                 <th>Experiment Name</th>
@@ -190,7 +163,6 @@ class ExperimentTable extends Component {
                     <td>{index + 1}</td>
                     <td>
                       <Button
-                        // variant="secondary"
                         variant="outline-info"
                         onClick={() => handleClick(value.questionnaire_id)}
                       >

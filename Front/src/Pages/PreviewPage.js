@@ -15,22 +15,6 @@ class ExperimentPage extends Component {
       type: "",
     };
   }
-  // UNSAFE_componentWillMount() {
-  //   if (
-  //     this.props.windowWidth > 992 &&
-  //     this.props.windowWidth <= 1024 &&
-  //     this.props.layout !== "horizontal"
-  //   ) {
-  //     this.props.onComponentWillMount();
-  //   }
-  // }
-
-  // mobileOutClickHandler() {
-  //   if (this.props.windowWidth < 992 && this.props.collapseMenu) {
-  //     this.props.onComponentWillMount();
-  //   }
-  // }
-
   async componentDidMount() {
     //////
     await fetch(
@@ -41,7 +25,6 @@ class ExperimentPage extends Component {
       .then((res) => res.json())
       .then(
         (result) => {
-          // console.log(result);
           this.setState(() => ({
             tasks: result.tasks,
             name: result.questionnaire_name,
@@ -58,15 +41,10 @@ class ExperimentPage extends Component {
       );
 
     this.putInputList();
-    // window.addEventListener("resize", this.resize);
   }
 
   putInputList() {
-    // alert("here");
-    // console.log(this.state.tasks);
-
     this.state.tasks.forEach((task, index) => {
-      // console.log(task);
       const inputList = this.state.inputList;
       ///////
       task.components.forEach((component, index) => {
@@ -127,37 +105,16 @@ class ExperimentPage extends Component {
           });
         }
       });
-
-      // switch (task.component_type) {
-      //   case "Welcome":
-      //     this.setState({
-      //       inputList: inputList.concat(<h1> Welcome</h1>),
-      //     });
-      //   case "Explanation":
-      //     this.setState({
-      //       inputList: inputList.concat(<h1> Explanation</h1>),
-      //     });
-      //   default:
-      //     this.setState({
-      //       inputList: inputList.concat(<h1> Default</h1>),
-      //     });
-      // }
-
-      /////
     });
-    // console.log(this.state.inputList);
   }
 
   render() {
-    // console.log(this.props.match.params.id);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
     } else {
       mainClass = [...mainClass, "container"];
     }
-    // console.log(this.state.tasks);
-    // console.log(this.state.inputList);
 
     return (
       <Aux>
@@ -176,7 +133,6 @@ class ExperimentPage extends Component {
                       <Aux>
                         {this.state.inputList.map(function (input, index) {
                           return input;
-                          // alert(index);
                         })}
                       </Aux>
                     </div>

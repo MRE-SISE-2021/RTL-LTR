@@ -18,27 +18,6 @@ class NavBar extends Component {
       headerClass = [...headerClass, "headerpos-fixed"];
     }
 
-    // let toggleClass = ["mobile-menu"];
-    // if (this.props.collapseMenu) {
-    //   toggleClass = [...toggleClass, "on"];
-    // }
-
-    /*
-  <ul class="p-3 mb-2 bg-info text-white">
-              <li>
-                <a><MDBIcon icon="home" size="3x" className="indigo-text pr-3" /></a>
-              </li>
-            </ul>
-
-    */
-    // let mainHeaderClass = ["content-main"];
-    // if (this.props.fullWidthLayout) {
-    //   mainHeaderClass = [...mainHeaderClass, "container-fluid"];
-    // } else {
-    //   mainHeaderClass = [...mainHeaderClass, "container"];
-    // }
-    //<a href={DEMO.BLANK_LINK} className="b-brand">{/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}</a>
-
     let navBar = (
       <Aux>
         <ul className="p-3 mb-2 bg-info text-white">

@@ -51,7 +51,6 @@ class FormsElements extends React.Component {
       "questionnaire-preview-data/" + this.state.id,
       response
     ).then((data) => {
-      // console.log(data); // JSON data parsed by `data.json()` call
       this.setState({ taskId: data.task_id[0] });
     });
 
@@ -59,12 +58,10 @@ class FormsElements extends React.Component {
     this.setState({
       delete: false,
     });
-
-    // console.log(this.state);
   };
 
   deleteData = () => {
-    //PUT request -- save task
+    //DELETE request -- delete task
     console.log(this.props);
     const response = {
       task_id: this.state.taskId, //
@@ -75,7 +72,6 @@ class FormsElements extends React.Component {
       response
     ).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
-      // this.setState({ taskId: data.task_id[0] });
     });
 
     ///show delete button
@@ -83,8 +79,6 @@ class FormsElements extends React.Component {
       delete: true,
       deleteAll: true,
     });
-
-    // console.log(this.state);
   };
 
   onInputchange(event) {
@@ -94,8 +88,6 @@ class FormsElements extends React.Component {
   }
 
   render() {
-    // console.log(this.state);
-    // const { validated, validatedTooltip } = this.state;
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
@@ -153,8 +145,6 @@ class FormsElements extends React.Component {
                   >
                     <MDBIcon icon="save" />
                   </Button>
-                  {/* </Col> */}
-                  {/* <Col md={3}> */}
                   <Button
                     variant="danger"
                     disabled={this.state.delete}

@@ -47,13 +47,7 @@ class HomePage extends Component {
     );
   }
 }
-/*
-  <div style={{marginRight : "150px" , marginTop: "2.5%"}} className={mainClass.join(" ")}>
-          <QuestionnaireInfo chosen={this.state.chosen}  />
-        </div>
 
-
-*/
 const mapStateToProps = (state) => {
   return {
     defaultPath: state.defaultPath,

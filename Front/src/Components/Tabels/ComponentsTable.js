@@ -36,7 +36,6 @@ class ComponentsTable extends Component {
     // event.persist();
     const inputList = this.state.inputList;
     const id = this.props.expId;
-    // console.log(this.props);
     this.setState({
       inputList: inputList.concat(
         <QuestionsInput
@@ -91,13 +90,6 @@ class ComponentsTable extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
-    // let navBarClass = ["navbar-wrapper", "content-main"];
-    // if (this.props.fullWidthLayout) {
-    //   navBarClass = [...navBarClass, "container-fluid"];
-    // } else {
-    //   navBarClass = [...navBarClass, "container"];
-    // }
-
     console.log(this.state.inputList);
     return (
       <Aux>
@@ -126,7 +118,6 @@ class ComponentsTable extends Component {
             left: "0",
           }}
         >
-          {/* <Card > */}
           <Tabs defaultActiveKey="home">
             <Tab eventKey="home" title={<MDBIcon icon="plus" />}>
               <ul
@@ -138,8 +129,6 @@ class ComponentsTable extends Component {
               >
                 <h5>Genral forms</h5>
                 <li className="list-group-item">
-                  {/* //////// */}
-
                   <Button
                     id="Welcome"
                     onClick={this.onAddBtnClick}
@@ -193,7 +182,6 @@ class ComponentsTable extends Component {
               <p>SETTINGS TAB.</p>
             </Tab>
           </Tabs>
-          {/* </Card> */}
         </nav>
       </Aux>
     );

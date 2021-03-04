@@ -14,11 +14,9 @@ class NewExperimentModal extends React.Component {
       isGrid: false,
       isScrolling: false,
       isLarge: false,
-      // title: "",
       chosenRadio: "english",
       expName: "exp",
       toDashboard: false,
-      // expId: "1",
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
@@ -62,8 +60,6 @@ class NewExperimentModal extends React.Component {
         <Redirect
           to={
             "/create/" + this.state.expName + "/exp/" + this.state.chosenRadio
-            // "/" +
-            // this.state.expId
           }
         />
       );
