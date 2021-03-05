@@ -254,6 +254,10 @@ class QuestionnairePreviewAPIView(APIView):
             # update Task table by task_id
             if 'task_id' in task:
                 task_ids.append(task['task_id'])
+                task_answers.append({task['task_id']: task.pop('answers')}) if task['answers'] else None
+                task_components.append({task['task_id']: task.pop('components')}) if task['components'] else None
+                task_images.append({task['task_id']: task.pop('images')}) if task['images'] else None
+
                 try:
                     task_queryset = Task.objects.get(task_id=task['task_id'])
                 except Questionnaire.DoesNotExist:
