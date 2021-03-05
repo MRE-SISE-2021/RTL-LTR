@@ -1,6 +1,7 @@
 from django.urls import path, include
 from .views import *
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 
 # Routers
 
@@ -75,6 +76,8 @@ router_task_image.register('task_image', TaskImageViewSet, basename='task_image'
 # URL dispatcher:
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
 urlpatterns = [
+    path('auth/', obtain_auth_token),
+
     path('viewset/', include(router_component.urls)),
     path('viewset/', include(router_hci_background.urls)),
     path('viewset/', include(router_image.urls)),
