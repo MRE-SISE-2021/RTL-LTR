@@ -12,6 +12,7 @@ class Input extends React.Component {
       name: props.name,
       id: props.expId,
       keyOrder: props.keyOrder,
+      label: props.label,
     };
     console.log(this.state);
   }
@@ -54,13 +55,23 @@ class Input extends React.Component {
                   <div className="main-body">
                     <div className="page-wrapper">
                       <Card title="Edit Page" isOption>
-                        <AllCkEditor
-                          html={html}
-                          editor="classic"
-                          expId={this.state.id}
-                          keyOrder={this.state.keyOrder}
-                          name={this.state.name}
-                        />
+                        {this.state.label === undefined ? (
+                          <AllCkEditor
+                            html={html}
+                            editor="classic"
+                            expId={this.state.id}
+                            keyOrder={this.state.keyOrder}
+                            name={this.state.name}
+                          />
+                        ) : (
+                          <AllCkEditor
+                            html={this.state.label}
+                            editor="classic"
+                            expId={this.state.id}
+                            keyOrder={this.state.keyOrder}
+                            name={this.state.name}
+                          />
+                        )}
                       </Card>
                     </div>
                   </div>

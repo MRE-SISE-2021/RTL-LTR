@@ -11,6 +11,7 @@ class ExperimentPage extends Component {
     super();
     this.state = {
       expId: "",
+      tasks: [],
     };
   }
   UNSAFE_componentWillMount() {
@@ -30,10 +31,17 @@ class ExperimentPage extends Component {
   }
 
   componentDidMount() {
+    //Edit EXP
     if (this.props.match.params.id !== "0") {
       // console.log("zerrrrrrrrroooooooooooooo");
+      this.setState({
+        expId: this.props.match.params.id,
+        tasks: this.props.location.state.tasks,
+      });
       return;
     }
+
+    //Create new Exp
     const response = {
       //tasks
       tasks: [],
@@ -53,7 +61,9 @@ class ExperimentPage extends Component {
   }
 
   render() {
-    console.log(this.props.location.state);
+    // console.log(this.props.location.state);
+    console.log(this.state);
+    //for creating a new EXP the tasks array will be empty
     return (
       <Aux>
         <ComponentsTable
@@ -61,6 +71,7 @@ class ExperimentPage extends Component {
           type={this.props.match.params.type}
           lang={this.props.match.params.language}
           expId={this.state.expId}
+          tasks={this.state.tasks}
         />
       </Aux>
     );

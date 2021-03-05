@@ -12,11 +12,65 @@ import NavBar from "../NavBars/NavBarExp";
 class ComponentsTable extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = { inputList: [] };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.onAddBtnClick2 = this.onAddBtnClick2.bind(this);
   }
 
+  componentWillReceiveProps(propsIncoming) {
+    //Edit EXP
+    const id = propsIncoming.expId;
+    let inputListNew = [];
+    if (propsIncoming.tasks.length > 0) {
+      propsIncoming.tasks.forEach((task, index) => {
+        task.components.forEach((comp) => {
+          // console.log(inputList);
+          if (
+            comp.component_type === "Welcome" ||
+            comp.component_type === "Thank You" ||
+            comp.component_type === "Explanation"
+          ) {
+            console.log(comp);
+            // this.addTasks(comp.component_type, comp.label);
+
+            inputListNew = inputListNew.concat(
+              <Input
+                key={inputListNew.length}
+                name={comp.component_type}
+                expId={id}
+                keyOrder={index}
+                label={comp.label}
+                // title={}
+              />
+            );
+            console.log("heyyyyyyyyy");
+          } else if (
+            comp.component_type === "Range" ||
+            comp.component_type === "Text"
+          ) {
+            // this.addTasksQuestions(comp.component_type, comp.label, comp.title);
+            console.log(comp);
+
+            inputListNew = inputListNew.concat(
+              <QuestionsInput
+                key={inputListNew.length}
+                name={comp.component_type}
+                expId={id}
+                keyOrder={index}
+                label={comp.label}
+                // title={comp.title}
+              />
+            );
+          }
+        });
+      });
+    }
+    console.log(this.state);
+    this.setState({ inputList: inputListNew });
+  }
+
+  //////--- on button clicked add tasks ---///////
   onAddBtnClick(event) {
     const inputList = this.state.inputList;
     const id = this.props.expId;
@@ -65,6 +119,8 @@ class ComponentsTable extends Component {
   }
 
   render() {
+    console.log(this.props.tasks.length);
+
     let navClass = ["pcoded-navbar"];
 
     navClass = [...navClass, this.props.layoutType];

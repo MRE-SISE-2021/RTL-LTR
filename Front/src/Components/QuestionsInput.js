@@ -10,10 +10,10 @@ import API from "../Api/Api";
 class FormsElements extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(props);
     this.state = {
       title: "",
-      label: "",
+      label: props.label,
       id: props.expId,
       delete: true,
       deleteAll: false,
@@ -22,6 +22,10 @@ class FormsElements extends React.Component {
     this.onInputchange = this.onInputchange.bind(this);
   }
 
+  componentWillReceiveProps(propsIncoming) {
+    console.log(propsIncoming);
+    this.setState({ label: propsIncoming.label });
+  }
   sendData = () => {
     //PUT request -- save task
     console.log(this.props);
@@ -62,7 +66,7 @@ class FormsElements extends React.Component {
 
   deleteData = () => {
     //DELETE request -- delete task
-    console.log(this.props);
+    // console.log(this.props);
     const response = {
       task_id: this.state.taskId, //
     };
@@ -88,6 +92,7 @@ class FormsElements extends React.Component {
   }
 
   render() {
+    console.log(this.state);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
@@ -130,6 +135,7 @@ class FormsElements extends React.Component {
                       type="text"
                       placeholder="Enter Your Question"
                       name="label"
+                      value={this.state.label}
                       onChange={this.onInputchange}
                       required
                       readOnly={this.state.deleteAll}
