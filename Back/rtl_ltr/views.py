@@ -434,17 +434,23 @@ def update_associate_task_data(association_task_id, data_list, data_id_name, ser
         if data_id_name in data:
             # update the data
             try:
+                update_serializer = None
                 if model_name == 'Answer':
                     model_queryset = Answer.objects.get(answer_id=data[data_id_name])
+                    update_serializer = AnswerSerializer(model_queryset, data=data,
+                                                         partial=True)
                 elif model_name == 'Component':
                     model_queryset = Component.objects.get(component_id=data[data_id_name])
+                    update_serializer = ComponentSerializer(model_queryset, data=data,
+                                                            partial=True)
                 elif model_name == 'Image':
                     model_queryset = Image.objects.get(image_id=data[data_id_name])
+                    update_serializer = ImageSerializer(model_queryset, data=data,
+                                                        partial=True)
             except Questionnaire.DoesNotExist:
                 return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
-            update_data_into_table(association_task_serializer(model_queryset, data=data,
-                                                               partial=True))
+            update_data_into_table(update_serializer)
             continue
 
         # create data to db
