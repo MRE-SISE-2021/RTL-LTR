@@ -18,6 +18,7 @@ class FormsElements extends React.Component {
       delete: true,
       deleteAll: false,
       taskId: props.taskId,
+      compId: props.compId,
     };
     this.onInputchange = this.onInputchange.bind(this);
   }
@@ -28,7 +29,7 @@ class FormsElements extends React.Component {
   }
   sendData = () => {
     //PUT request -- save task
-    console.log(this.props);
+    // console.log(this.state);
     let response = {};
     if (this.taskId !== "") {
       response = {
@@ -42,6 +43,7 @@ class FormsElements extends React.Component {
                 component_type: this.props.name,
                 direction: "RTL",
                 label: this.state.label,
+                component_id: this.state.compId,
               },
             ],
             images: [],
@@ -76,7 +78,7 @@ class FormsElements extends React.Component {
         questionnaire_id: this.state.id, //
       };
     }
-
+    console.log(response);
     API.putRequest(
       "questionnaire-preview-data/" + this.state.id,
       response

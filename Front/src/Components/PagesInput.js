@@ -14,6 +14,7 @@ class Input extends React.Component {
       keyOrder: props.keyOrder,
       label: props.label,
       taskId: props.taskId,
+      compId: props.compId,
     };
     console.log(this.state);
   }
@@ -72,6 +73,7 @@ class Input extends React.Component {
                             keyOrder={this.state.keyOrder}
                             name={this.state.name}
                             taskId={this.state.taskId}
+                            compId={this.state.compId}
                           />
                         )}
                       </Card>

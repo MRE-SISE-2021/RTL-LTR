@@ -33,7 +33,7 @@ class ComponentsTable extends Component {
             comp.component_type === "Thank You" ||
             comp.component_type === "Explanation"
           ) {
-            console.log(comp);
+            console.log(comp.component_id);
             // this.addTasks(comp.component_type, comp.label);
 
             inputListNew = inputListNew.concat(
@@ -45,6 +45,7 @@ class ComponentsTable extends Component {
                 label={comp.label}
                 taskId={task_id}
                 // title={}
+                compId={comp.component_id}
               />
             );
             // console.log("heyyyyyyyyy");
@@ -64,6 +65,7 @@ class ComponentsTable extends Component {
                 label={comp.label}
                 taskId={task_id}
                 title={task_title}
+                compId={comp.component_id}
               />
             );
           }
