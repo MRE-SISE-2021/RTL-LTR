@@ -27,6 +27,9 @@ class ExperimentInfo extends Component {
 
   submitHandlerPreview(event) {
     event.preventDefault();
+    if (this.props.chosen.questionnaire_id === undefined) {
+      return;
+    }
     this.setState(() => ({
       toDashboard: true,
     }));
@@ -34,12 +37,18 @@ class ExperimentInfo extends Component {
 
   submitHandlerEdit(event) {
     event.preventDefault();
+    if (this.props.chosen.questionnaire_id === undefined) {
+      return;
+    }
     this.setState(() => ({
       edit: true,
     }));
   }
   submitHandlerDelete(event) {
     //DELETE request -- delete task
+    if (this.props.chosen.questionnaire_id === undefined) {
+      return;
+    }
     const MySwal = withReactContent(Swal);
     MySwal.fire({
       title: "Are you sure?",
@@ -84,7 +93,7 @@ class ExperimentInfo extends Component {
 
   render() {
     const data = this.props.chosen;
-    console.log(data);
+    // console.log(data);
     if (this.state.toDashboard === true) {
       return <Redirect to={"/preview/" + data.questionnaire_id} />;
     }
@@ -106,7 +115,7 @@ class ExperimentInfo extends Component {
       );
     }
 
-    console.log(data);
+    // console.log(data);
     return (
       <Aux>
         <nav

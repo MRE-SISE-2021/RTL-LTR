@@ -41,6 +41,12 @@ class ExperimentTable extends Component {
               items: result,
               chosen: result[0],
             });
+          } else {
+            this.setState({
+              isLoaded: true,
+              items: [],
+              chosen: {},
+            });
           }
         },
         (error) => {
@@ -106,6 +112,12 @@ class ExperimentTable extends Component {
     }
 
     ///////////////////////////
+    const handleReload = (event) => {
+      // event.preventDefault();
+      console.log("reloaddddd");
+      this.componentDidMount();
+      this.forceUpdate();
+    };
     const handleClick = (value) => {
       fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`)
         .then((res) => res.json())
@@ -152,11 +164,16 @@ class ExperimentTable extends Component {
                 <th>#</th>
                 <th>Experiment Name</th>
                 <th>status</th>
+                <th>
+                  <button onClick={() => handleReload()} variant="outline-*">
+                    <MDBIcon icon="redo" />
+                  </button>
+                </th>
               </tr>
             </thead>
 
             <tbody>
-              {console.log(names)}
+              {/* {console.log(names)} */}
               {names.map((value, index) => {
                 return (
                   <tr key={index}>
