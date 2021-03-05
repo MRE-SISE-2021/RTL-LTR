@@ -225,7 +225,7 @@ class QuestionnairePreviewAPIView(APIView):
     def put(self, request, id):
         # check if the questionnaire was already participated
         if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
-            return HttpResponse('Not permitted to update: the questionnaire was already participated',
+            return HttpResponse('Not permitted to update: the questionnaire already was participated',
                                 status=status.HTTP_208_ALREADY_REPORTED)
 
         # lists of key-value {task_id: data}
@@ -254,6 +254,10 @@ class QuestionnairePreviewAPIView(APIView):
             # update Task table by task_id
             if 'task_id' in task:
                 task_ids.append(task['task_id'])
+                task_answers.append({task['task_id']: task.pop('answers')}) if task['answers'] else None
+                task_components.append({task['task_id']: task.pop('components')}) if task['components'] else None
+                task_images.append({task['task_id']: task.pop('images')}) if task['images'] else None
+
                 try:
                     task_queryset = Task.objects.get(task_id=task['task_id'])
                 except Questionnaire.DoesNotExist:
@@ -324,7 +328,7 @@ class QuestionnairePreviewAPIView(APIView):
 
         # check if the questionnaire was already participated
         if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
-            return HttpResponse('Not permitted to delete: the questionnaire was already participated',
+            return HttpResponse('Not permitted to delete: the questionnaire already was participated',
                                 status=status.HTTP_208_ALREADY_REPORTED)
 
         task_ids = []
@@ -349,6 +353,8 @@ class QuestionnairePreviewAPIView(APIView):
             # delete questionnaire by id from db Questionnaire table
             questionnaire_queryset.delete()
 
+        # get answer, component, image ids for the tasks
+        # delete the tasks
         for task_id in task_ids:
             for ta in TaskAnswer.objects.filter(task_id=task_id):
                 answer_ids.append(ta.answer_id_id)
@@ -369,14 +375,17 @@ class QuestionnairePreviewAPIView(APIView):
 
             task_queryset.delete()
 
+        # delete answer
         for answer_id in answer_ids:
             for answer_queryset in Answer.objects.filter(answer_id=answer_id):
                 answer_queryset.delete()
 
+        # delete component
         for component_id in component_ids:
             for component_queryset in Component.objects.filter(component_id=component_id):
                 component_queryset.delete()
 
+        # delete image
         for image_id in image_ids:
             for image_queryset in Image.objects.filter(image_id=image_id):
                 image_queryset.delete()
