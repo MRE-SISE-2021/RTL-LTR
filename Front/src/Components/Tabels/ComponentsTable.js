@@ -25,6 +25,7 @@ class ComponentsTable extends Component {
     if (propsIncoming.tasks.length > 0) {
       propsIncoming.tasks.forEach((task, index) => {
         const task_id = task.task_id;
+        const task_title = task.task_title;
         task.components.forEach((comp) => {
           // console.log(inputList);
           if (
@@ -52,7 +53,7 @@ class ComponentsTable extends Component {
             comp.component_type === "Text"
           ) {
             // this.addTasksQuestions(comp.component_type, comp.label, comp.title);
-            // console.log(comp);
+            // console.log(task_title);
 
             inputListNew = inputListNew.concat(
               <QuestionsInput
@@ -62,7 +63,7 @@ class ComponentsTable extends Component {
                 keyOrder={index}
                 label={comp.label}
                 taskId={task_id}
-                // title={comp.title}
+                title={task_title}
               />
             );
           }

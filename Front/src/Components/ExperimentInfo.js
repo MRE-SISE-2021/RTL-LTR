@@ -93,7 +93,7 @@ class ExperimentInfo extends Component {
 
   render() {
     const data = this.props.chosen;
-    // console.log(data);
+    console.log(data);
     if (this.state.toDashboard === true) {
       return <Redirect to={"/preview/" + data.questionnaire_id} />;
     }

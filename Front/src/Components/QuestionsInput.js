@@ -12,7 +12,7 @@ class FormsElements extends React.Component {
     super(props);
     console.log(props);
     this.state = {
-      title: "",
+      title: props.title,
       label: props.label,
       id: props.expId,
       delete: true,
@@ -29,27 +29,53 @@ class FormsElements extends React.Component {
   sendData = () => {
     //PUT request -- save task
     console.log(this.props);
-    const response = {
-      //tasks
-      tasks: [
-        {
-          answers: [],
-          components: [
-            {
-              order_key: this.props.keyOrder,
-              component_type: this.props.name,
-              direction: "RTL",
-              label: this.state.label,
-            },
-          ],
-          images: [],
-          task_title: this.state.title,
-          task_content: "", ////////?
-          is_required: true, ///////?
-        },
-      ],
-      questionnaire_id: this.state.id, //
-    };
+    let response = {};
+    if (this.taskId !== "") {
+      response = {
+        //tasks
+        tasks: [
+          {
+            answers: [],
+            components: [
+              {
+                order_key: this.props.keyOrder,
+                component_type: this.props.name,
+                direction: "RTL",
+                label: this.state.label,
+              },
+            ],
+            images: [],
+            task_title: this.state.title,
+            task_content: "", ////////?
+            is_required: true, ///////?
+            task_id: this.state.taskId,
+          },
+        ],
+        questionnaire_id: this.state.id, //
+      };
+    } else {
+      response = {
+        //tasks
+        tasks: [
+          {
+            answers: [],
+            components: [
+              {
+                order_key: this.props.keyOrder,
+                component_type: this.props.name,
+                direction: "RTL",
+                label: this.state.label,
+              },
+            ],
+            images: [],
+            task_title: this.state.title,
+            task_content: "", ////////?
+            is_required: true, ///////?
+          },
+        ],
+        questionnaire_id: this.state.id, //
+      };
+    }
 
     API.putRequest(
       "questionnaire-preview-data/" + this.state.id,
@@ -131,6 +157,7 @@ class FormsElements extends React.Component {
                   placeholder="Enter Your Task Title"
                   onChange={this.onInputchange}
                   name="title"
+                  value={this.state.title}
                   required
                   readOnly={this.state.deleteAll}
                 />
