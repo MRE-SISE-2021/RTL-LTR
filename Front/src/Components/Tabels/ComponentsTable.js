@@ -24,6 +24,7 @@ class ComponentsTable extends Component {
     let inputListNew = [];
     if (propsIncoming.tasks.length > 0) {
       propsIncoming.tasks.forEach((task, index) => {
+        const task_id = task.task_id;
         task.components.forEach((comp) => {
           // console.log(inputList);
           if (
@@ -41,16 +42,17 @@ class ComponentsTable extends Component {
                 expId={id}
                 keyOrder={index}
                 label={comp.label}
+                taskId={task_id}
                 // title={}
               />
             );
-            console.log("heyyyyyyyyy");
+            // console.log("heyyyyyyyyy");
           } else if (
             comp.component_type === "Range" ||
             comp.component_type === "Text"
           ) {
             // this.addTasksQuestions(comp.component_type, comp.label, comp.title);
-            console.log(comp);
+            // console.log(comp);
 
             inputListNew = inputListNew.concat(
               <QuestionsInput
@@ -59,6 +61,7 @@ class ComponentsTable extends Component {
                 expId={id}
                 keyOrder={index}
                 label={comp.label}
+                taskId={task_id}
                 // title={comp.title}
               />
             );
@@ -66,8 +69,8 @@ class ComponentsTable extends Component {
         });
       });
     }
-    console.log(this.state);
     this.setState({ inputList: inputListNew });
+    console.log(this.state);
   }
 
   //////--- on button clicked add tasks ---///////

@@ -17,7 +17,7 @@ class FormsElements extends React.Component {
       id: props.expId,
       delete: true,
       deleteAll: false,
-      taskId: "",
+      taskId: props.taskId,
     };
     this.onInputchange = this.onInputchange.bind(this);
   }
@@ -90,7 +90,17 @@ class FormsElements extends React.Component {
       [event.target.name]: event.target.value,
     });
   }
-
+  openDelete() {
+    this.setState({
+      delete: false,
+    });
+  }
+  componentDidMount() {
+    console.log(this.state);
+    if (this.state.taskId !== "") {
+      this.openDelete();
+    }
+  }
   render() {
     console.log(this.state);
     let mainClass = ["content-main"];
