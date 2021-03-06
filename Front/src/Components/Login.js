@@ -62,7 +62,7 @@ class Login extends React.Component {
                                     <div className="card-body">
                                         <h4 className="mb-3 f-w-400">User Login</h4>
                                         <div className="input-group mb-3">
-                                            <i class="fa fa-user login-icon"/>
+                                            <i className="fa fa-user login-icon"/>
 
                                             <input type="text" className="form-control" id="username" placeholder="Username"
                                             value={this.state.value} onChange={this.handleUsername}
@@ -70,7 +70,7 @@ class Login extends React.Component {
 
                                         </div>
                                         <div className="input-group mb-4">
-                                            <i class="fa fa-key login-icon" />
+                                            <i className="fa fa-key login-icon" />
 
                                             <input type="password" className="form-control" id="password" placeholder="Password"
                                             value={this.state.value} onChange={this.handlePassword}
