@@ -118,23 +118,24 @@ class NavBar extends Component {
             >
               {this.props.lang}
             </Button>
+            {this.props.prev ? null : (
+              <div className="d-flex justify-content-lg-end">
+                <Modal className="mr-4" data={this.props} />
 
-            <div className="d-flex justify-content-lg-end">
-              <Modal className="mr-4" data={this.props} />
-
-              <Button variant="outline-*" onClick={this.submitPreview}>
-                <MDBIcon className="mr-5" far icon="eye" />
-              </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" icon="paperclip" />
-              </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" far icon="clone" />
-              </Button>
-              <Button variant="outline-*" onClick={this.submitDelete}>
-                <MDBIcon className="mr-5" far icon="trash-alt" />
-              </Button>
-            </div>
+                <Button variant="outline-*" onClick={this.submitPreview}>
+                  <MDBIcon className="mr-5" far icon="eye" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" icon="paperclip" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" far icon="clone" />
+                </Button>
+                <Button variant="outline-*" onClick={this.submitDelete}>
+                  <MDBIcon className="mr-5" far icon="trash-alt" />
+                </Button>
+              </div>
+            )}
           </div>
         </Navbar>
       </Aux>

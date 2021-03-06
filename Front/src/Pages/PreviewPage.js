@@ -122,6 +122,7 @@ class ExperimentPage extends Component {
           name={this.state.name}
           type={this.state.type}
           lang={this.state.lang}
+          prev={true}
         />
         <div className={mainClass.join(" ")}>
           <div className="pcoded-main-container full-screenable-node">
