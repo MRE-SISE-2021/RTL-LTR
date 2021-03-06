@@ -126,6 +126,32 @@ def get_questionnaire_name_list(request):
         return Response(names_list, status=status.HTTP_200_OK)
 
 
+# DELETE task from questionnaire
+@api_view(['DELETE'])
+def delete_task_from_questionnaire(request, id):
+    # check if the questionnaire was already participated
+    if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
+        return HttpResponse('Not permitted to delete: the questionnaire already was participated',
+                            status=status.HTTP_208_ALREADY_REPORTED)
+
+    # validate request
+    if 'task_id' not in request.data:
+        return HttpResponse('No task_id field in JSON', status=status.HTTP_400_BAD_REQUEST)
+
+    # get parameters for update
+    task_ids = []
+
+    # get queryset of questionnaire_task table by task_id
+    qt = QuestionnaireTask.objects.get(task_id=request.data['task_id'],
+                                       questionnaire_id=id)
+    task_ids.append(qt.task_id_id)
+    qt.delete()
+
+    delete_tasks(task_ids)
+
+    return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+
+
 ####### CLASS BASED VIEWS #######
 
 class QuestionnairePreviewAPIView(APIView):
@@ -322,73 +348,28 @@ class QuestionnairePreviewAPIView(APIView):
     @transaction.atomic
     def delete(self, request, id):
         # lists of key-value {task_id: data}
-        answer_ids = []
-        component_ids = []
-        image_ids = []
+        task_ids = []
 
         # check if the questionnaire was already participated
         if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
             return HttpResponse('Not permitted to delete: the questionnaire already was participated',
                                 status=status.HTTP_208_ALREADY_REPORTED)
 
-        task_ids = []
-        if 'task_id' in request.data:
-            # get queryset of questionnaire_task table by task_id
-            qt = QuestionnaireTask.objects.get(task_id=request.data['task_id'],
-                                               questionnaire_id=id)
+        # get queryset of questionnaire_task table by questionnaire_id
+        for qt in QuestionnaireTask.objects.filter(questionnaire_id=id):
             task_ids.append(qt.task_id_id)
             qt.delete()
-        else:
-            # get queryset of questionnaire_task table by questionnaire_id
-            for qt in QuestionnaireTask.objects.filter(questionnaire_id=id):
-                task_ids.append(qt.task_id_id)
-                qt.delete()
 
-            # get queryset of questionnaire table by questionnaire_id
-            try:
-                questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=id)
-            except Questionnaire.DoesNotExist:
-                raise Exception(Questionnaire.DoesNotExist)
+        # get queryset of questionnaire table by questionnaire_id
+        try:
+            questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=id)
+        except Questionnaire.DoesNotExist:
+            raise Exception(Questionnaire.DoesNotExist)
 
-            # delete questionnaire by id from db Questionnaire table
-            questionnaire_queryset.delete()
+        # delete questionnaire by id from db Questionnaire table
+        questionnaire_queryset.delete()
 
-        # get answer, component, image ids for the tasks
-        # delete the tasks
-        for task_id in task_ids:
-            for ta in TaskAnswer.objects.filter(task_id=task_id):
-                answer_ids.append(ta.answer_id_id)
-                ta.delete()
-
-            for tc in TaskComponent.objects.filter(task_id=task_id):
-                component_ids.append(tc.component_id_id)
-                tc.delete()
-
-            for ti in TaskImage.objects.filter(task_id=task_id):
-                image_ids.append(ti.image_id_id)
-                ti.delete()
-
-            try:
-                task_queryset = Task.objects.get(task_id=task_id)
-            except Task.DoesNotExist:
-                raise Exception(Task.DoesNotExist)
-
-            task_queryset.delete()
-
-        # delete answer
-        for answer_id in answer_ids:
-            for answer_queryset in Answer.objects.filter(answer_id=answer_id):
-                answer_queryset.delete()
-
-        # delete component
-        for component_id in component_ids:
-            for component_queryset in Component.objects.filter(component_id=component_id):
-                component_queryset.delete()
-
-        # delete image
-        for image_id in image_ids:
-            for image_queryset in Image.objects.filter(image_id=image_id):
-                image_queryset.delete()
+        delete_tasks(task_ids)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -470,3 +451,49 @@ def update_data_into_table(serializer):
         serializer.save()
     else:
         raise Exception(serializer.errors)
+
+
+# DELETE QuestionnairePreviewAPIView, delete_task_in_questionnaire
+# params: list of task ids
+def delete_tasks(task_ids):
+    # lists of key-value {task_id: data}
+    answer_ids = []
+    component_ids = []
+    image_ids = []
+
+    # get answer, component, image ids for the tasks
+    # delete the tasks
+    for task_id in task_ids:
+        for ta in TaskAnswer.objects.filter(task_id=task_id):
+            answer_ids.append(ta.answer_id_id)
+            ta.delete()
+
+        for tc in TaskComponent.objects.filter(task_id=task_id):
+            component_ids.append(tc.component_id_id)
+            tc.delete()
+
+        for ti in TaskImage.objects.filter(task_id=task_id):
+            image_ids.append(ti.image_id_id)
+            ti.delete()
+
+        try:
+            task_queryset = Task.objects.get(task_id=task_id)
+        except Task.DoesNotExist:
+            raise Exception(Task.DoesNotExist)
+
+        task_queryset.delete()
+
+    # delete answer
+    for answer_id in answer_ids:
+        for answer_queryset in Answer.objects.filter(answer_id=answer_id):
+            answer_queryset.delete()
+
+    # delete component
+    for component_id in component_ids:
+        for component_queryset in Component.objects.filter(component_id=component_id):
+            component_queryset.delete()
+
+    # delete image
+    for image_id in image_ids:
+        for image_queryset in Image.objects.filter(image_id=image_id):
+            image_queryset.delete()

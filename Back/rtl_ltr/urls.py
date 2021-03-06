@@ -95,10 +95,14 @@ urlpatterns = [
     path('viewset/', include(router_task_component.urls)),
     path('viewset/', include(router_task_image.urls)),
 
+    ### DECORATORS ###
+    # GET list of questionnaire names
     path('questionnaire-names/', get_questionnaire_name_list),
-    # path('questionnaire-preview-data/<int:pk>/', get_questionnaire_preview_data_by_id),
-    # path('create-questionnaire-to-db', create_questionnaire_to_db),
+    # DELETE task from questionnaire by id. id: questionnaire_id, task_id in JSON
+    path('delete-task-from-questionnaire/<int:id>', delete_task_from_questionnaire),
 
+    ### CLASS BASED VIEWS ###
+    # QuestionnairePreviewAPIView (GET, POST, PUT, DELETE)
     path('questionnaire-preview-data', QuestionnairePreviewAPIView.as_view()),
     path('questionnaire-preview-data/<int:id>', QuestionnairePreviewAPIView.as_view())
 ]
