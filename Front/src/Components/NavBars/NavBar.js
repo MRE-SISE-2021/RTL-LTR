@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../../hoc/_Aux";
-import DEMO from "../../store/constant";
 import * as actionTypes from "../../store/actions";
-
-import '../../styles/homePageStyle.css'; 
-import { MDBIcon} from "mdbreact";
+import { Link } from "react-router-dom";
+import "../../styles/homePageStyle.css";
+import { MDBIcon } from "mdbreact";
+import Navbar from "react-bootstrap/Navbar";
 
 class NavBar extends Component {
   render() {
@@ -19,35 +19,13 @@ class NavBar extends Component {
       headerClass = [...headerClass, "headerpos-fixed"];
     }
 
-    // let toggleClass = ["mobile-menu"];
-    // if (this.props.collapseMenu) {
-    //   toggleClass = [...toggleClass, "on"];
-    // }
-
-    /*
-  <ul class="p-3 mb-2 bg-info text-white">
-              <li>
-                <a><MDBIcon icon="home" size="3x" className="indigo-text pr-3" /></a>
-              </li>
-            </ul>
-
-    */
-    // let mainHeaderClass = ["content-main"];
-    // if (this.props.fullWidthLayout) {
-    //   mainHeaderClass = [...mainHeaderClass, "container-fluid"];
-    // } else {
-    //   mainHeaderClass = [...mainHeaderClass, "container"];
-    // }
-    //<a href={DEMO.BLANK_LINK} className="b-brand">{/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}</a>
-
     let navBar = (
-      
       <Aux>
-       <ul class="p-3 mb-2 bg-info text-white">
-              <li>
-                <a><MDBIcon icon="home" className="indigo-text pr-3" /></a>
-              </li>
-            </ul>
+        <Navbar fixed="top" bg="info" variant="dark" style={{ height: "66px" }}>
+          <Link to="/home">
+            <MDBIcon icon="home" />
+          </Link>
+        </Navbar>
       </Aux>
     );
 

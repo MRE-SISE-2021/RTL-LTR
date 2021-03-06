@@ -5,17 +5,9 @@ import Modal from "../Modals/ModalNewExperiment";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import { Table, Button, Row } from "react-bootstrap";
-
-import $ from 'jquery';
-
-
 import QuestionnaireInfo from "../ExperimentInfo";
-import { MDBIcon} from "mdbreact";
-import '../../styles/homePageStyle.css'; 
-
-//import '../../styles/ExperimentsTableCss.css'; 
-//import 'bootstrap/dist/css/bootstrap.min.css';
-//import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import { MDBIcon } from "mdbreact";
+import "../../styles/homePageStyle.css";
 
 class ExperimentTable extends Component {
   constructor(props) {
@@ -28,9 +20,6 @@ class ExperimentTable extends Component {
     };
   }
 
-
-
-  
   resize = () => {
     const contentWidth = document.getElementById("root").clientWidth;
 
@@ -46,14 +35,20 @@ class ExperimentTable extends Component {
       .then(
         (result) => {
           // console.log(result);
-          this.setState({
-            isLoaded: true,
-            items: result,
-          });
+          if (result[0] !== undefined) {
+            this.setState({
+              isLoaded: true,
+              items: result,
+              chosen: result[0],
+            });
+          } else {
+            this.setState({
+              isLoaded: true,
+              items: [],
+              chosen: {},
+            });
+          }
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           this.setState({
             isLoaded: true,
@@ -92,7 +87,7 @@ class ExperimentTable extends Component {
 
   render() {
     let navClass = ["pcoded-navbar"];
-    
+
     navClass = [...navClass, this.props.layoutType];
 
     if (this.props.layout === "horizontal") {
@@ -116,15 +111,13 @@ class ExperimentTable extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
-    // let navBarClass = ["navbar-wrapper", "content-main"];
-    // if (this.props.fullWidthLayout) {
-    //   navBarClass = [...navBarClass, "container-fluid"];
-    // } else {
-    //   navBarClass = [...navBarClass, "container"];
-    // }
-    ///////////////////////////////
-
     ///////////////////////////
+    const handleReload = (event) => {
+      // event.preventDefault();
+      console.log("reloaddddd");
+      this.componentDidMount();
+      this.forceUpdate();
+    };
     const handleClick = (value) => {
       fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`)
         .then((res) => res.json())
@@ -136,9 +129,6 @@ class ExperimentTable extends Component {
               chosen: result,
             });
           },
-          // Note: it's important to handle errors here  
-          // instead of a catch() block so that we don't swallow
-          // exceptions from actual bugs in components.
           (error) => {
             this.setState({
               isLoaded: true,
@@ -148,65 +138,58 @@ class ExperimentTable extends Component {
         );
     };
     const names = this.state.items;
-/*
-  <div class="infoStyle">
-          
-        </div>
 
-*/
     return (
-
-
-    
-
-      <Aux> 
-
-        <nav style={{ marginLeft:"200px" }}>
+      <Aux>
+        <nav style={{ marginLeft: "200px" }}>
           <QuestionnaireInfo chosen={this.state.chosen} />
         </nav>
-        
-        <nav style={{ width:"30%" }} className={navClass.join(" ")} >
+
+        <nav style={{ width: "30%" }} className={navClass.join(" ")}>
           <Row className="mt-4 ml-1">
             <h5>My Experiments</h5>
             <Modal />
           </Row>
-          <Table  striped bordered hover size="sm">
+          <Table
+            style={{
+              borderStyle: "solid",
+              width: "320px",
+              height: "450px",
+              overflow: "auto",
+              display: "inline-block",
+            }}
+          >
             <thead>
               <tr>
                 <th>#</th>
                 <th>Experiment Name</th>
                 <th>status</th>
-              </tr>
-            </thead>
-
-            <thead>
-              <tr>
-                <th>1</th>
-                <th>first Experiment </th>
-                <th><MDBIcon far icon="play-circle" /></th>
-       
-            <a class="collapsed faq-links" data-toggle="collapse" 
-            data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-            <i class="fa fa-plus-square-o fa-2x"></i>
-        </a>
-                
-                
+                <th>
+                  <MDBIcon
+                    type="button"
+                    onClick={() => handleReload()}
+                    icon="redo"
+                  />
+                </th>
               </tr>
             </thead>
 
             <tbody>
-              {console.log(names)}
+              {/* {console.log(names)} */}
               {names.map((value, index) => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td> 
+                    <td>
                       <Button
-                        variant="secondary"
+                        variant="outline-info"
                         onClick={() => handleClick(value.questionnaire_id)}
                       >
                         {value.questionnaire_name}
                       </Button>
+                    </td>
+                    <td>
+                      <MDBIcon far icon="play-circle" />
                     </td>
                   </tr>
                 );
@@ -241,4 +224,3 @@ const mapDispatchToProps = (dispatch) => {
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(ExperimentTable)
 );
-

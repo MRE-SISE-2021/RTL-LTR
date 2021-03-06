@@ -3,8 +3,17 @@ import { connect } from "react-redux";
 import ComponentsTable from "../Components/Tabels/ComponentsTable";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import API from "../Api/Api";
+
 class ExperimentPage extends Component {
+  constructor() {
+    super();
+    this.state = {
+      expId: "",
+      tasks: [],
+    };
+  }
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -21,16 +30,48 @@ class ExperimentPage extends Component {
     }
   }
 
+  componentDidMount() {
+    //Edit EXP
+    if (this.props.match.params.id !== "0") {
+      // console.log("zerrrrrrrrroooooooooooooo");
+      this.setState({
+        expId: this.props.match.params.id,
+        tasks: this.props.location.state.tasks,
+      });
+      return;
+    }
+
+    //Create new Exp
+    const response = {
+      //tasks
+      tasks: [],
+      //data
+      creation_date: "2021-01-06 23:25", //
+      questionnaire_name: this.props.match.params.name,
+      hosted_link: "", //
+      is_active: "true",
+      language_id: "1",
+      questionnaire_type_id: "1", //
+    };
+
+    API.postRequest("questionnaire-preview-data", response).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      this.setState({ expId: data.questionnaire_id });
+    });
+  }
+
   render() {
-    console.log(this.props.match);
+    // console.log(this.props.location.state);
+    console.log(this.state);
+    //for creating a new EXP the tasks array will be empty
     return (
       <Aux>
-        {/* <NavBar /> */}
-
         <ComponentsTable
           name={this.props.match.params.name}
           type={this.props.match.params.type}
           lang={this.props.match.params.language}
+          expId={this.state.expId}
+          tasks={this.state.tasks}
         />
       </Aux>
     );
