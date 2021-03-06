@@ -125,7 +125,7 @@ class FormsElements extends React.Component {
   }
   componentDidMount() {
     console.log(this.state);
-    if (this.state.taskId !== "") {
+    if (this.state.taskId !== undefined) {
       this.openDelete();
     }
   }

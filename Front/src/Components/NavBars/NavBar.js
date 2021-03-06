@@ -5,6 +5,7 @@ import * as actionTypes from "../../store/actions";
 import { Link } from "react-router-dom";
 import "../../styles/homePageStyle.css";
 import { MDBIcon } from "mdbreact";
+import Navbar from "react-bootstrap/Navbar";
 
 class NavBar extends Component {
   render() {
@@ -20,13 +21,11 @@ class NavBar extends Component {
 
     let navBar = (
       <Aux>
-        <ul className="p-3 mb-2 bg-info text-white">
-          <li>
-            <Link to="/home">
-              <MDBIcon icon="home" className="indigo-text pr-3" />
-            </Link>
-          </li>
-        </ul>
+        <Navbar fixed="top" bg="info" variant="dark" style={{ height: "66px" }}>
+          <Link to="/home">
+            <MDBIcon icon="home" />
+          </Link>
+        </Navbar>
       </Aux>
     );
 
