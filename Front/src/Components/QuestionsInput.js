@@ -100,7 +100,7 @@ class FormsElements extends React.Component {
     };
 
     API.deleteRequest(
-      "questionnaire-preview-data/" + this.state.id,
+      "delete-task-from-questionnaire/" + this.state.id,
       response
     ).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
