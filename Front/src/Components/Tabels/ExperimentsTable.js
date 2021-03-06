@@ -165,9 +165,11 @@ class ExperimentTable extends Component {
                 <th>Experiment Name</th>
                 <th>status</th>
                 <th>
-                  <button onClick={() => handleReload()} variant="outline-*">
-                    <MDBIcon icon="redo" />
-                  </button>
+                  <MDBIcon
+                    type="button"
+                    onClick={() => handleReload()}
+                    icon="redo"
+                  />
                 </th>
               </tr>
             </thead>

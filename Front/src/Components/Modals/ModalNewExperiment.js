@@ -72,7 +72,6 @@ class NewExperimentModal extends React.Component {
       <Aux>
         <div style={{ marginLeft: "180px", marginBottom: "20px" }}>
           <Button
-            className="sm"
             variant="info"
             onClick={() => this.setState({ isBasic: true })}
           >
