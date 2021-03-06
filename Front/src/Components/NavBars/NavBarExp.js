@@ -6,28 +6,71 @@ import { Link, Redirect } from "react-router-dom";
 import Modal from "../Modals/ModalSavedExperiment";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
-
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 import Navbar from "react-bootstrap/Navbar";
 import "../../styles/homePageStyle.css";
+import API from "../../Api/Api";
 
 class NavBar extends Component {
   constructor() {
     super();
     this.state = {
-      toDashboard: false,
+      toPreview: false,
+      toHome: false,
     };
-    this.submitHandler = this.submitHandler.bind(this);
+    this.submitPreview = this.submitPreview.bind(this);
+    this.submitDelete = this.submitDelete.bind(this);
   }
 
-  submitHandler(event) {
+  submitPreview(event) {
     event.preventDefault();
     this.setState(() => ({
-      toDashboard: true,
+      toPreview: true,
     }));
   }
+
+  submitDelete(event) {
+    event.preventDefault();
+    if (this.props.expId === undefined) {
+      return;
+    }
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this file!",
+      type: "warning",
+      showCloseButton: true,
+      showCancelButton: true,
+    }).then((willDelete) => {
+      if (willDelete.value) {
+        const response = {
+          questionnaire_id: this.props.expId, //
+        };
+
+        API.deleteRequest(
+          "questionnaire-preview-data/" + this.props.expId,
+          response
+        ).then((data) => {
+          console.log(data); // JSON data parsed by `data.json()` call
+        });
+        this.setState(() => ({
+          toHome: true,
+        }));
+        return MySwal.fire("", "Your file has been deleted!", "success");
+      } else {
+        return MySwal.fire("", "Your file is safe!", "error");
+      }
+    });
+  }
   render() {
-    if (this.state.toDashboard === true) {
-      return <Redirect to={"/preview"} />;
+    console.log(this.props);
+    if (this.state.toPreview === true) {
+      return <Redirect to={"/preview/" + this.props.expId} />;
+    }
+
+    if (this.state.toHome === true) {
+      return <Redirect to={"/home/"} />;
     }
 
     let headerClass = [
@@ -79,7 +122,7 @@ class NavBar extends Component {
             <div className="d-flex justify-content-lg-end">
               <Modal className="mr-4" data={this.props} />
 
-              <Button variant="outline-*" disabled onClick={this.submitHandler}>
+              <Button variant="outline-*" onClick={this.submitPreview}>
                 <MDBIcon className="mr-5" far icon="eye" />
               </Button>
               <Button variant="outline-*" disabled>
@@ -88,7 +131,7 @@ class NavBar extends Component {
               <Button variant="outline-*" disabled>
                 <MDBIcon className="mr-5" far icon="clone" />
               </Button>
-              <Button variant="outline-*" disabled>
+              <Button variant="outline-*" onClick={this.submitDelete}>
                 <MDBIcon className="mr-5" far icon="trash-alt" />
               </Button>
             </div>
