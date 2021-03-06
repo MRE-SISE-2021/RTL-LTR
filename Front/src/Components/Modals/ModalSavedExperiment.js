@@ -15,8 +15,8 @@ class SaveModal extends React.Component {
       isLarge: false,
       title: "",
       toDashboard: false,
-      name: this.props.data.name,
-      lang: this.props.data.lang,
+      name: props.data.name,
+      lang: props.data.lang,
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
@@ -52,8 +52,8 @@ class SaveModal extends React.Component {
   }
 
   onAddBtnClick() {
-    // const langId = this.getLangId();
-    // console.log(this.props.data);
+    const langId = this.getLangId();
+    console.log(this.props.data);
     // const response = {
     //   //tasks
     //   tasks: [
@@ -111,6 +111,7 @@ class SaveModal extends React.Component {
         <Button
           variant="outline-*"
           onClick={() => this.setState({ isBasic: true })}
+          disabled
         >
           <MDBIcon icon="save" />
         </Button>
@@ -121,7 +122,10 @@ class SaveModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title as="h5">All Data Will be Saved!</Modal.Title>
           </Modal.Header>
-          <img src="https://icon-library.com/images/save-icon-image/save-icon-image-12.jpg" />
+          <img
+            alt="save icon"
+            src="https://icon-library.com/images/save-icon-image/save-icon-image-12.jpg"
+          />
           <Modal.Footer>
             <Button variant="secondary" onClick={this.onAddBtnClick}>
               Save!
