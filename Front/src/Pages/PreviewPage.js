@@ -4,6 +4,9 @@ import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import NavBar from "../Components/NavBars/NavBarExp";
 
+// cookies
+import { useCookies } from 'react-cookie';
+
 class ExperimentPage extends Component {
   constructor() {
     super();
@@ -16,11 +19,19 @@ class ExperimentPage extends Component {
     };
   }
   async componentDidMount() {
+    // cookies
+    const [token, setToken] = useCookies(['rtl_ltr_session'])
+
     //////
     await fetch(
-      "http://127.0.0.1:8000/viewset/questionnaire/" +
-        this.props.match.params.id +
-        "/"
+      "http://127.0.0.1:8000/viewset/questionnaire/" + 
+      this.props.match.params.id + 
+      "/", 
+      {
+        headers: {
+          "Authorization": `Token ${token}`
+        },
+      }
     )
       .then((res) => res.json())
       .then(

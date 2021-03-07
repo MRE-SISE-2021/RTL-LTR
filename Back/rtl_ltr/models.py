@@ -27,7 +27,7 @@ class Component(models.Model):
     component_type = models.CharField(db_column='ComponentType', max_length=100)
     direction = models.CharField(db_column='Direction', max_length=10)
     order_key = models.IntegerField(db_column='OrderKey')
-    label = models.CharField(db_column='Label', max_length=255, null=True, blank=True)
+    label = models.TextField(db_column='Label', null=True, blank=True)
 
     class Meta:
         db_table = 'Component'

@@ -12,6 +12,9 @@ import * as actionTypes from "../store/actions";
 
 import "../styles/homePageStyle.css";
 
+// cookies
+import { useCookies } from 'react-cookie';
+
 class ExperimentInfo extends Component {
   constructor(props) {
     super(props);
@@ -45,6 +48,9 @@ class ExperimentInfo extends Component {
     }));
   }
   submitHandlerDelete(event) {
+    // cookies
+    const [token, setToken] = useCookies(['rtl_ltr_session'])
+
     //DELETE request -- delete task
     if (this.props.chosen.questionnaire_id === undefined) {
       return;
@@ -64,7 +70,8 @@ class ExperimentInfo extends Component {
 
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
-          response
+          response,
+          token['rtl_ltr_session']
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });

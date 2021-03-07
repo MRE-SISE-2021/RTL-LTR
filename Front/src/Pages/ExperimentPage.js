@@ -6,6 +6,15 @@ import * as actionTypes from "../store/actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import API from "../Api/Api";
 
+// cookies
+import { useCookies } from 'react-cookie';
+
+const tokensd = () => {
+  const [token, setToken] = useCookies(['rtl_ltr_session'])
+
+  return token;
+}
+
 class ExperimentPage extends Component {
   constructor() {
     super();
@@ -13,6 +22,7 @@ class ExperimentPage extends Component {
       expId: "",
       tasks: [],
     };
+
   }
   UNSAFE_componentWillMount() {
     if (
@@ -30,7 +40,13 @@ class ExperimentPage extends Component {
     }
   }
 
+
+
+
+
   componentDidMount() {
+    const token = useCookies(['rtl_ltr_session'])
+    
     //Edit EXP
     if (this.props.match.params.id !== "0") {
       // console.log("zerrrrrrrrroooooooooooooo");
@@ -54,7 +70,11 @@ class ExperimentPage extends Component {
       questionnaire_type_id: "1", //
     };
 
-    API.postRequest("questionnaire-preview-data", response).then((data) => {
+    API.postRequest("questionnaire-preview-data", 
+    response, 
+    token['rtl_ltr_session']
+    )
+    .then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
       this.setState({ expId: data.questionnaire_id });
     });

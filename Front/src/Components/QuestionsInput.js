@@ -7,7 +7,12 @@ import Aux from "../hoc/_Aux";
 import { MDBIcon } from "mdbreact";
 import API from "../Api/Api";
 
+// cookies
+import { useCookies } from 'react-cookie';
+
 async function putData(url = "", data = {}) {
+
+
   // Default options are marked with *
   const response = await fetch(url, {
     method: "PUT", // *GET, POST, PUT, DELETE, etc.
@@ -16,6 +21,7 @@ async function putData(url = "", data = {}) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
+      // "Authorization": `Token ${token}`
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error
@@ -46,6 +52,9 @@ class FormsElements extends React.Component {
     this.setState({ label: propsIncoming.label });
   }
   sendData = () => {
+    // cookies
+    const [token, setToken] = useCookies(['rtl_ltr_session'])
+
     //PUT request -- save task
     // console.log(this.state);
     let response = {};
@@ -99,7 +108,8 @@ class FormsElements extends React.Component {
     console.log(response);
     API.putRequest(
       "questionnaire-preview-data/" + this.state.id,
-      response
+      response,
+      token['rtl_ltr_session']
     ).then((data) => {
       this.setState({ taskId: data.task_id[0] });
     });
@@ -111,6 +121,9 @@ class FormsElements extends React.Component {
   };
 
   deleteData = () => {
+    // cookies
+    const [token, setToken] = useCookies(['rtl_ltr_session'])
+
     //DELETE request -- delete task
     // console.log(this.props);
     const response = {
@@ -119,7 +132,8 @@ class FormsElements extends React.Component {
 
     API.deleteRequest(
       "delete-task-from-questionnaire/" + this.state.id,
-      response
+      response,
+      token['rtl_ltr_session']
     ).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
     });

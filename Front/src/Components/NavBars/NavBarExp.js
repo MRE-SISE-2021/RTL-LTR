@@ -12,6 +12,9 @@ import Navbar from "react-bootstrap/Navbar";
 import "../../styles/homePageStyle.css";
 import API from "../../Api/Api";
 
+// cookies
+import { useCookies } from 'react-cookie';
+
 class NavBar extends Component {
   constructor() {
     super();
@@ -31,6 +34,9 @@ class NavBar extends Component {
   }
 
   submitDelete(event) {
+    // cookies
+    const [token, setToken] = useCookies(['rtl_ltr_session'])
+
     event.preventDefault();
     if (this.props.expId === undefined) {
       return;
@@ -50,7 +56,8 @@ class NavBar extends Component {
 
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.expId,
-          response
+          response,
+          token['rtl_ltr_session']
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });
