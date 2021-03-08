@@ -14,7 +14,7 @@ class Login extends React.Component {
     this.state = {
       username: "",
       password: "",
-      user: this.props.cookies.get("user") || "",
+      token: this.props.cookies.get("token") || "",
       toHome: false,
     };
     this.onInputchange = this.onInputchange.bind(this);
@@ -33,9 +33,6 @@ class Login extends React.Component {
   };
 
   handleCookie = () => {
-    const { cookies } = this.props;
-    cookies.set("user", "gowtham", { path: "/" }); // setting the cookie
-    this.setState({ user: cookies.get("user") });
     console.log(this.user);
   };
 
@@ -43,6 +40,8 @@ class Login extends React.Component {
 
   ///////
   render() {
+    const { cookies } = this.props;
+
     if (this.state.toHome === true) {
       return <Redirect to={"/home/"} />;
     }
@@ -58,11 +57,15 @@ class Login extends React.Component {
         .then(
           (result) => {
             // console.log(result);
-            this.setState({
-              toHome: true,
-            });
+            if (result.token !== undefined) {
+              cookies.set("token", result.token, { path: "/" }); // setting the cookie
+              this.setState({
+                user: cookies.get("user"),
+                toHome: true,
+              });
+            }
 
-            console.log(result);
+            console.log(result.token);
           },
           (error) => {
             //   this.setState({

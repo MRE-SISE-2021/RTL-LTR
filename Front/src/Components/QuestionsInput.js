@@ -6,6 +6,7 @@ import * as actionTypes from "../store/actions";
 import Aux from "../hoc/_Aux";
 import { MDBIcon } from "mdbreact";
 import API from "../Api/Api";
+import { withCookies, Cookies } from "react-cookie";
 
 class FormsElements extends React.Component {
   constructor(props) {
@@ -29,10 +30,11 @@ class FormsElements extends React.Component {
   }
   sendData = () => {
     // cookies
-    const [token, setToken] = useCookies(["rtl_ltr_session"]);
 
     //PUT request -- save task
     // console.log(this.state);
+    const { cookies } = this.props;
+    console.log(cookies);
     let response = {};
     if (this.taskId !== "") {
       response = {
