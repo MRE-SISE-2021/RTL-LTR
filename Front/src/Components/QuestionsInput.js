@@ -28,6 +28,9 @@ class FormsElements extends React.Component {
     this.setState({ label: propsIncoming.label });
   }
   sendData = () => {
+    // cookies
+    const [token, setToken] = useCookies(["rtl_ltr_session"]);
+
     //PUT request -- save task
     // console.log(this.state);
     let response = {};
