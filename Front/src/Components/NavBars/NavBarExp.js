@@ -122,7 +122,11 @@ class NavBar extends Component {
               <div className="d-flex justify-content-lg-end">
                 <Modal className="mr-4" data={this.props} />
 
-                <Button variant="outline-*" onClick={this.submitPreview}>
+                <Button
+                  variant="outline-*"
+                  style={{ color: "white" }}
+                  onClick={this.submitPreview}
+                >
                   <MDBIcon className="mr-5" far icon="eye" />
                 </Button>
                 <Button variant="outline-*" disabled>
@@ -131,7 +135,11 @@ class NavBar extends Component {
                 <Button variant="outline-*" disabled>
                   <MDBIcon className="mr-5" far icon="clone" />
                 </Button>
-                <Button variant="outline-*" onClick={this.submitDelete}>
+                <Button
+                  variant="outline-*"
+                  style={{ color: "white" }}
+                  onClick={this.submitDelete}
+                >
                   <MDBIcon className="mr-5" far icon="trash-alt" />
                 </Button>
               </div>

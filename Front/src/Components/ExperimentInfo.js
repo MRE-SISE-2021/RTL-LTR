@@ -188,6 +188,11 @@ class ExperimentInfo extends Component {
                           : null}
                       </Col>
                     </Row>
+                    <Row>
+                      <Col>
+                        <b>Mesaures: </b>
+                      </Col>
+                    </Row>
                   </ul>
                 </div>
               </Card.Body>
