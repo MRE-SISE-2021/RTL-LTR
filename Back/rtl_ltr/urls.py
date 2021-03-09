@@ -104,5 +104,9 @@ urlpatterns = [
     ### CLASS BASED VIEWS ###
     # QuestionnairePreviewAPIView (GET, POST, PUT, DELETE)
     path('questionnaire-preview-data', QuestionnairePreviewAPIView.as_view()),
-    path('questionnaire-preview-data/<int:id>', QuestionnairePreviewAPIView.as_view())
+    path('questionnaire-preview-data/<int:id>', QuestionnairePreviewAPIView.as_view()),
+
+    # ParticipantAPIView (GET, POST, PUT, DELETE)
+    path('participant-data', Participant.as_view()),
+    path('participant-data/<int:id>', Participant.as_view())
 ]

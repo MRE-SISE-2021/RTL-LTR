@@ -67,6 +67,7 @@ class QuestionnaireTypeSerializer(DynamicFieldsModelSerializer):
 
 
 class ParticipantSerializer(DynamicFieldsModelSerializer):
+    # hci_background_id = HciBackgroundSerializer()
     class Meta:
         model = Participant
         fields = '__all__'

@@ -374,6 +374,40 @@ class QuestionnairePreviewAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class ParticipantAPIView(APIView):
+    rtl_languages = ['Aramaic', 'Azeri', 'Dhivehi', 'Maldivian', 'Kurdish', 'Sorani', 'Persian', 'Farsi', 'Urdu']
+
+    # get preview data for home page of a questionnaire by questionnaire_id
+    # def get(self, request, id):
+    #     # get queryset of questionnaire table by questionnaire_id
+    #     try:
+    #         questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=id)
+    #     except Questionnaire.DoesNotExist:
+    #         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+    #
+    #     data = QuestionnaireSerializer(questionnaire_queryset, many=False, fields=('questionnaire_id', 'creation_date',
+    #                                                                                'questionnaire_name', 'hosted_link',
+    #                                                                                'is_active', 'language_id',
+    #                                                                                'questionnaire_type_id')).data
+    #
+    #     return Response(data, status=status.HTTP_200_OK)
+
+    # Save new questionnaire to db (with tasks, answers, components, images)
+    @transaction.atomic
+    def post(self, request):
+        participant_data = request.data
+
+        return Response(status=status.HTTP_201_CREATED)
+
+    @transaction.atomic
+    def put(self, request, id):
+        return Response(status=status.HTTP_200_OK)
+
+    @transaction.atomic
+    def delete(self, request, id):
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 ####### INSTRUMENTAL FUNCTIONS #######
 # POST QuestionnairePreviewAPIView
 # insert answer, component and image to db and associate them with a task
