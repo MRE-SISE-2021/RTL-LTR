@@ -33,7 +33,11 @@ class ExperimentTable extends Component {
     const { cookies } = this.props;
     console.log(cookies.cookies.token);
     //////
-    fetch("http://127.0.0.1:8000/viewset/questionnaire", cookies.cookies.token)
+    fetch("http://127.0.0.1:8000/viewset/questionnaire", {
+      headers: new Headers({
+        Authorization: `Token ${cookies.cookies.token}`,
+      }),
+    })
       .then((res) => res.json())
       .then(
         (result) => {
@@ -53,7 +57,7 @@ class ExperimentTable extends Component {
           }
         },
         (error) => {
-          console.log("Errrrrrrrror");
+          console.log(error);
           this.setState({
             isLoaded: true,
             error,
@@ -123,7 +127,12 @@ class ExperimentTable extends Component {
       this.forceUpdate();
     };
     const handleClick = (value) => {
-      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`)
+      const { cookies } = this.props;
+      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`, {
+        headers: new Headers({
+          Authorization: `Token ${cookies.cookies.token}`,
+        }),
+      })
         .then((res) => res.json())
         .then(
           (result) => {

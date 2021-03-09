@@ -5,7 +5,7 @@ import * as actionTypes from "../store/actions";
 import NavBar from "../Components/NavBars/NavBarExp";
 
 // cookies
-import { useCookies } from 'react-cookie';
+import { withCookies } from "react-cookie";
 
 class ExperimentPage extends Component {
   constructor() {
@@ -20,17 +20,17 @@ class ExperimentPage extends Component {
   }
   async componentDidMount() {
     // cookies
-    const [token, setToken] = useCookies(['rtl_ltr_session'])
+    const { cookies } = this.props;
 
     //////
     await fetch(
-      "http://127.0.0.1:8000/viewset/questionnaire/" + 
-      this.props.match.params.id + 
-      "/", 
+      "http://127.0.0.1:8000/viewset/questionnaire/" +
+        this.props.match.params.id +
+        "/",
       {
-        headers: {
-          "Authorization": `Token ${token}`
-        },
+        headers: new Headers({
+          Authorization: `Token ${cookies.cookies.token}`,
+        }),
       }
     )
       .then((res) => res.json())
@@ -174,4 +174,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperimentPage);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentPage)
+);

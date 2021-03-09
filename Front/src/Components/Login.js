@@ -60,7 +60,7 @@ class Login extends React.Component {
             if (result.token !== undefined) {
               cookies.set("token", result.token, { path: "/" }); // setting the cookie
               this.setState({
-                user: cookies.get("user"),
+                token: cookies.get("token"),
                 toHome: true,
               });
             }

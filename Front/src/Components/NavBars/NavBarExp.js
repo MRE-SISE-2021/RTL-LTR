@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import Navbar from "react-bootstrap/Navbar";
 import "../../styles/homePageStyle.css";
 import API from "../../Api/Api";
+import { withCookies } from "react-cookie";
 
 class NavBar extends Component {
   constructor() {
@@ -32,6 +33,8 @@ class NavBar extends Component {
 
   submitDelete(event) {
     event.preventDefault();
+    const { cookies } = this.props;
+
     if (this.props.expId === undefined) {
       return;
     }
@@ -50,7 +53,8 @@ class NavBar extends Component {
 
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.expId,
-          response
+          response,
+          cookies.cookies.token
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });
@@ -174,4 +178,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(NavBar)
+);
