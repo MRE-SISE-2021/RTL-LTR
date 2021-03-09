@@ -5,16 +5,10 @@ import Modal from "../Modals/ModalNewExperiment";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import { Table, Button, Row } from "react-bootstrap";
-
-import $ from "jquery";
-
 import QuestionnaireInfo from "../ExperimentInfo";
 import { MDBIcon } from "mdbreact";
 import "../../styles/homePageStyle.css";
-
-//import '../../styles/ExperimentsTableCss.css';
-//import 'bootstrap/dist/css/bootstrap.min.css';
-//import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import { withCookies } from "react-cookie";
 
 class ExperimentTable extends Component {
   constructor(props) {
@@ -36,21 +30,34 @@ class ExperimentTable extends Component {
   };
 
   componentDidMount() {
+    const { cookies } = this.props;
+    console.log(cookies.cookies.token);
     //////
-    fetch("http://127.0.0.1:8000/viewset/questionnaire")
+    fetch("http://127.0.0.1:8000/viewset/questionnaire", {
+      headers: new Headers({
+        Authorization: `Token ${cookies.cookies.token}`,
+      }),
+    })
       .then((res) => res.json())
       .then(
         (result) => {
-          // console.log(result);
-          this.setState({
-            isLoaded: true,
-            items: result,
-          });
+          console.log(result);
+          if (result[0] !== undefined) {
+            this.setState({
+              isLoaded: true,
+              items: result,
+              chosen: result[0],
+            });
+          } else {
+            this.setState({
+              isLoaded: true,
+              items: [],
+              chosen: {},
+            });
+          }
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
+          console.log(error);
           this.setState({
             isLoaded: true,
             error,
@@ -112,17 +119,20 @@ class ExperimentTable extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
-    // let navBarClass = ["navbar-wrapper", "content-main"];
-    // if (this.props.fullWidthLayout) {
-    //   navBarClass = [...navBarClass, "container-fluid"];
-    // } else {
-    //   navBarClass = [...navBarClass, "container"];
-    // }
-    ///////////////////////////////
-
     ///////////////////////////
+    const handleReload = (event) => {
+      // event.preventDefault();
+      console.log("reloaddddd");
+      this.componentDidMount();
+      this.forceUpdate();
+    };
     const handleClick = (value) => {
-      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`)
+      const { cookies } = this.props;
+      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`, {
+        headers: new Headers({
+          Authorization: `Token ${cookies.cookies.token}`,
+        }),
+      })
         .then((res) => res.json())
         .then(
           (result) => {
@@ -132,9 +142,6 @@ class ExperimentTable extends Component {
               chosen: result,
             });
           },
-          // Note: it's important to handle errors here
-          // instead of a catch() block so that we don't swallow
-          // exceptions from actual bugs in components.
           (error) => {
             this.setState({
               isLoaded: true,
@@ -144,12 +151,7 @@ class ExperimentTable extends Component {
         );
     };
     const names = this.state.items;
-    /*
-  <div class="infoStyle">
-          
-        </div>
 
-*/
     return (
       <Aux>
         <nav style={{ marginLeft: "200px" }}>
@@ -161,49 +163,46 @@ class ExperimentTable extends Component {
             <h5>My Experiments</h5>
             <Modal />
           </Row>
-          <Table striped bordered hover size="sm">
+          <Table
+            style={{
+              borderStyle: "solid",
+              width: "320px",
+              height: "450px",
+              overflow: "auto",
+              display: "inline-block",
+            }}
+          >
             <thead>
               <tr>
                 <th>#</th>
                 <th>Experiment Name</th>
                 <th>status</th>
-              </tr>
-            </thead>
-
-            <thead>
-              <tr>
-                <th>1</th>
-                <th>first Experiment </th>
                 <th>
-                  <MDBIcon far icon="play-circle" />
+                  <MDBIcon
+                    type="button"
+                    onClick={() => handleReload()}
+                    icon="redo"
+                  />
                 </th>
-
-                {/* <a
-                  className="collapsed faq-links"
-                  data-toggle="collapse"
-                  data-parent="#accordion"
-                  href="#collapseFive"
-                  aria-expanded="false"
-                  aria-controls="collapseFive"
-                >
-                  <i className="fa fa-plus-square-o fa-2x"></i>
-                </a> */}
               </tr>
             </thead>
 
             <tbody>
-              {console.log(names)}
+              {/* {console.log(names)} */}
               {names.map((value, index) => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>
                       <Button
-                        variant="secondary"
+                        variant="outline-info"
                         onClick={() => handleClick(value.questionnaire_id)}
                       >
                         {value.questionnaire_name}
                       </Button>
+                    </td>
+                    <td>
+                      <MDBIcon far icon="play-circle" />
                     </td>
                   </tr>
                 );
@@ -235,6 +234,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ExperimentTable)
+export default withCookies(
+  withRouter(connect(mapStateToProps, mapDispatchToProps)(ExperimentTable))
 );

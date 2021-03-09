@@ -1,94 +1,76 @@
-function post(url = "", response = {}) {
-  const PostRequestOptions = {
-    method: "post",
+async function postData(url = "", data = {}, token) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
     headers: {
-      Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: JSON.stringify(response),
-  };
-
-  return (
-    fetch(url, PostRequestOptions)
-      // .then((response) => {
-      //   console.log(response);
-      //   if (response.ok) {
-      //     return response.json();
-      //   } else {
-      //     throw new Error("Something went wrong ...");
-      //   }
-      // })
-      .then((response) => {
-        response.json().then((data) => {
-          console.log(data);
-          return data;
-        });
-      })
-      .catch((error) => this.setState({ error }))
-  );
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
 }
 
-///////////////////////////////////////////////////////////////////////////
-// function put(url = "", response = {}) {
-//   const PostRequestOptions = {
-//     method: "put",
-//     headers: {
-//       Accept: "application/json, text/plain, */*",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(response),
-//   };
+async function putData(url = "", data = {}, token) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "PUT", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
 
-//   fetch(url, PostRequestOptions)
-//     .then((response) => {
-//       response.json().then((data) => {
-//         console.log(data);
-//       });
-//     })
-//     .catch((error) => this.setState({ error }));
-// }
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
+async function deleteData(url = "", data = {}, token) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
 ////////////////////////////////////////////////////////////////////////////
 class API {
   ENDPOINT = "http://127.0.0.1:8000/";
 
-  //Post -- create new EXP
-  async createNewExp(name, langId) {
-    const response = {
-      //tasks
-      tasks: [
-        {
-          answers: [],
-          components: [],
-          images: [],
-          task_title: "jj",
-          task_content: "", ////////?
-          is_required: true, ///////?
-        },
-      ],
-      //data
-      creation_date: "2021-01-06 23:25", //
-      questionnaire_name: name,
-      hosted_link: "", //
-      is_active: "true",
-      language_id: langId,
-      questionnaire_type_id: "1", //
-    };
-    let result = 0;
-    await post(
-      this.ENDPOINT + "questionnaire-preview-data",
-      response
-    ).then((result) => console.log(result));
-    console.log(result);
-    return result;
+  putRequest(url, response, token) {
+    return putData(this.ENDPOINT + url, response, token);
   }
 
-  //   getAllExperiments = () => {
-  //     fetch("http://127.0.0.1:8000/viewset/questionnaire")
-  //       .then((res) => res.json())
-  //       .then((result) => {
-  //         console.log(result);
-  //         return result;
-  //       });
-  //   };
+  deleteRequest(url, response, token) {
+    return deleteData(this.ENDPOINT + url, response, token);
+  }
+
+  postRequest(url, response, token) {
+    return postData(this.ENDPOINT + url, response, token);
+  }
 }
 export default new API();

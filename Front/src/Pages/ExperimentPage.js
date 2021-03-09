@@ -4,30 +4,15 @@ import ComponentsTable from "../Components/Tabels/ComponentsTable";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-async function postData(url = "", data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
-    headers: {
-      "Content-Type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: "follow", // manual, *follow, error
-    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
-}
+import API from "../Api/Api";
+import { withCookies } from "react-cookie";
 
 class ExperimentPage extends Component {
   constructor() {
     super();
     this.state = {
       expId: "",
+      tasks: [],
     };
   }
   UNSAFE_componentWillMount() {
@@ -47,18 +32,22 @@ class ExperimentPage extends Component {
   }
 
   componentDidMount() {
+    const { cookies } = this.props;
+    console.log(cookies.cookies.token);
+    //Edit EXP
+    if (this.props.match.params.id !== "0") {
+      // console.log("zerrrrrrrrroooooooooooooo");
+      this.setState({
+        expId: this.props.match.params.id,
+        tasks: this.props.location.state.tasks,
+      });
+      return;
+    }
+
+    //Create new Exp
     const response = {
       //tasks
-      tasks: [
-        {
-          answers: [],
-          components: [],
-          images: [],
-          task_title: "jj",
-          task_content: "", ////////?
-          is_required: true, ///////?
-        },
-      ],
+      tasks: [],
       //data
       creation_date: "2021-01-06 23:25", //
       questionnaire_name: this.props.match.params.name,
@@ -68,25 +57,28 @@ class ExperimentPage extends Component {
       questionnaire_type_id: "1", //
     };
 
-    postData("http://127.0.0.1:8000/questionnaire-preview-data", response).then(
-      (data) => {
-        console.log(data); // JSON data parsed by `data.json()` call
-        this.setState({ expId: data.questionnaire_id });
-      }
-    );
+    API.postRequest(
+      "questionnaire-preview-data",
+      response,
+      cookies.cookies.token
+    ).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      this.setState({ expId: data.questionnaire_id });
+    });
   }
 
   render() {
-    console.log(this.props.match);
-    console.log(this.state.expId);
+    // console.log(this.props.location.state);
+    console.log(this.state);
+    //for creating a new EXP the tasks array will be empty
     return (
       <Aux>
-        {/* <NavBar /> */}
         <ComponentsTable
           name={this.props.match.params.name}
           type={this.props.match.params.type}
           lang={this.props.match.params.language}
           expId={this.state.expId}
+          tasks={this.state.tasks}
         />
       </Aux>
     );
@@ -108,4 +100,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperimentPage);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentPage)
+);

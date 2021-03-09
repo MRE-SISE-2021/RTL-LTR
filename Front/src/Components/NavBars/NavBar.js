@@ -1,14 +1,34 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../../hoc/_Aux";
-import DEMO from "../../store/constant";
 import * as actionTypes from "../../store/actions";
-
+import { Link } from "react-router-dom";
 import "../../styles/homePageStyle.css";
 import { MDBIcon } from "mdbreact";
-
+import Navbar from "react-bootstrap/Navbar";
+import { withCookies } from "react-cookie";
+import { Redirect } from "react-router-dom";
+import { Button } from "react-bootstrap";
 class NavBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toLogin: false,
+    };
+  }
+
   render() {
+    const { cookies } = this.props;
+
+    if (this.state.toLogin === true) {
+      return <Redirect to={"/"} />;
+    }
+
+    const handleClick = () => {
+      this.setState({ toLogin: true });
+      cookies.remove("token");
+    };
+
     let headerClass = [
       "navbar",
       "pcoded-header",
@@ -19,36 +39,18 @@ class NavBar extends Component {
       headerClass = [...headerClass, "headerpos-fixed"];
     }
 
-    // let toggleClass = ["mobile-menu"];
-    // if (this.props.collapseMenu) {
-    //   toggleClass = [...toggleClass, "on"];
-    // }
-
-    /*
-  <ul class="p-3 mb-2 bg-info text-white">
-              <li>
-                <a><MDBIcon icon="home" size="3x" className="indigo-text pr-3" /></a>
-              </li>
-            </ul>
-
-    */
-    // let mainHeaderClass = ["content-main"];
-    // if (this.props.fullWidthLayout) {
-    //   mainHeaderClass = [...mainHeaderClass, "container-fluid"];
-    // } else {
-    //   mainHeaderClass = [...mainHeaderClass, "container"];
-    // }
-    //<a href={DEMO.BLANK_LINK} className="b-brand">{/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}</a>
-
     let navBar = (
       <Aux>
-        <ul className="p-3 mb-2 bg-info text-white">
-          <li>
-            <a>
-              <MDBIcon icon="home" className="indigo-text pr-3" />
-            </a>
-          </li>
-        </ul>
+        <Navbar fixed="top" bg="info" variant="dark" style={{ height: "66px" }}>
+          <Link to="/home">
+            <MDBIcon icon="home" />
+          </Link>
+          <div style={{ marginLeft: "97%" }}>
+            <Button variant="outline-*" onClick={() => handleClick()}>
+              <MDBIcon icon="sign-out-alt" />
+            </Button>
+          </div>
+        </Navbar>
       </Aux>
     );
 
@@ -77,4 +79,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(NavBar)
+);

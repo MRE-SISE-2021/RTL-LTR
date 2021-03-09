@@ -27,7 +27,7 @@ class Component(models.Model):
     component_type = models.CharField(db_column='ComponentType', max_length=100)
     direction = models.CharField(db_column='Direction', max_length=10)
     order_key = models.IntegerField(db_column='OrderKey')
-    label = models.CharField(db_column='Label', max_length=10000, null=True, blank=True)
+    label = models.TextField(db_column='Label', null=True, blank=True)
 
     class Meta:
         db_table = 'Component'
@@ -85,6 +85,7 @@ class Participant(models.Model):
     sex = models.CharField(db_column='Sex', max_length=10, blank=True, null=True)
     age = models.IntegerField(db_column='Age', blank=True, null=True)
     mother_tongue = models.ForeignKey(Language, models.DO_NOTHING, db_column='MotherTongue')
+    other_language_proficiency = models.TextField(db_column='OtherLanguageProficiency')
     ltr_proficiency = models.FloatField(db_column='LtrProficiency')
     rtl_proficiency = models.FloatField(db_column='RtlProficiency')
     dominant_hand_writing = models.CharField(db_column='DominantHandWriting', max_length=10, blank=True, null=True)
