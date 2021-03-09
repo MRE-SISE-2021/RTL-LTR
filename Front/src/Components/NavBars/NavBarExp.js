@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import Navbar from "react-bootstrap/Navbar";
 import "../../styles/homePageStyle.css";
 import API from "../../Api/Api";
+import { withCookies } from "react-cookie";
 
 class NavBar extends Component {
   constructor() {
@@ -32,6 +33,8 @@ class NavBar extends Component {
 
   submitDelete(event) {
     event.preventDefault();
+    const { cookies } = this.props;
+
     if (this.props.expId === undefined) {
       return;
     }
@@ -50,7 +53,8 @@ class NavBar extends Component {
 
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.expId,
-          response
+          response,
+          cookies.cookies.token
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });
@@ -118,23 +122,32 @@ class NavBar extends Component {
             >
               {this.props.lang}
             </Button>
+            {this.props.prev ? null : (
+              <div className="d-flex justify-content-lg-end">
+                <Modal className="mr-4" data={this.props} />
 
-            <div className="d-flex justify-content-lg-end">
-              <Modal className="mr-4" data={this.props} />
-
-              <Button variant="outline-*" onClick={this.submitPreview}>
-                <MDBIcon className="mr-5" far icon="eye" />
-              </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" icon="paperclip" />
-              </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" far icon="clone" />
-              </Button>
-              <Button variant="outline-*" onClick={this.submitDelete}>
-                <MDBIcon className="mr-5" far icon="trash-alt" />
-              </Button>
-            </div>
+                <Button
+                  variant="outline-*"
+                  style={{ color: "white" }}
+                  onClick={this.submitPreview}
+                >
+                  <MDBIcon className="mr-5" far icon="eye" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" icon="paperclip" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" far icon="clone" />
+                </Button>
+                <Button
+                  variant="outline-*"
+                  style={{ color: "white" }}
+                  onClick={this.submitDelete}
+                >
+                  <MDBIcon className="mr-5" far icon="trash-alt" />
+                </Button>
+              </div>
+            )}
           </div>
         </Navbar>
       </Aux>
@@ -165,4 +178,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(NavBar)
+);

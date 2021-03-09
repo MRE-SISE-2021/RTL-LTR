@@ -6,6 +6,7 @@ import * as actionTypes from "../store/actions";
 import Aux from "../hoc/_Aux";
 import { MDBIcon } from "mdbreact";
 import API from "../Api/Api";
+import { withCookies } from "react-cookie";
 
 class FormsElements extends React.Component {
   constructor(props) {
@@ -28,8 +29,12 @@ class FormsElements extends React.Component {
     this.setState({ label: propsIncoming.label });
   }
   sendData = () => {
+    // cookies
+
     //PUT request -- save task
     // console.log(this.state);
+    const { cookies } = this.props;
+    console.log(cookies);
     let response = {};
     if (this.taskId !== "") {
       response = {
@@ -81,7 +86,8 @@ class FormsElements extends React.Component {
     console.log(response);
     API.putRequest(
       "questionnaire-preview-data/" + this.state.id,
-      response
+      response,
+      cookies.cookies.token
     ).then((data) => {
       this.setState({ taskId: data.task_id[0] });
     });
@@ -94,6 +100,8 @@ class FormsElements extends React.Component {
 
   deleteData = () => {
     //DELETE request -- delete task
+    const { cookies } = this.props;
+
     // console.log(this.props);
     const response = {
       task_id: this.state.taskId, //
@@ -101,7 +109,8 @@ class FormsElements extends React.Component {
 
     API.deleteRequest(
       "delete-task-from-questionnaire/" + this.state.id,
-      response
+      response,
+      cookies.cookies.token
     ).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
     });
@@ -236,4 +245,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormsElements);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(FormsElements)
+);

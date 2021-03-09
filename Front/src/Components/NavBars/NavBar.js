@@ -6,9 +6,29 @@ import { Link } from "react-router-dom";
 import "../../styles/homePageStyle.css";
 import { MDBIcon } from "mdbreact";
 import Navbar from "react-bootstrap/Navbar";
-
+import { withCookies } from "react-cookie";
+import { Redirect } from "react-router-dom";
+import { Button } from "react-bootstrap";
 class NavBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toLogin: false,
+    };
+  }
+
   render() {
+    const { cookies } = this.props;
+
+    if (this.state.toLogin === true) {
+      return <Redirect to={"/"} />;
+    }
+
+    const handleClick = () => {
+      this.setState({ toLogin: true });
+      cookies.remove("token");
+    };
+
     let headerClass = [
       "navbar",
       "pcoded-header",
@@ -25,6 +45,11 @@ class NavBar extends Component {
           <Link to="/home">
             <MDBIcon icon="home" />
           </Link>
+          <div style={{ marginLeft: "97%" }}>
+            <Button variant="outline-*" onClick={() => handleClick()}>
+              <MDBIcon icon="sign-out-alt" />
+            </Button>
+          </div>
         </Navbar>
       </Aux>
     );
@@ -54,4 +79,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(NavBar)
+);

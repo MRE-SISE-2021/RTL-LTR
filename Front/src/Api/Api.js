@@ -1,4 +1,4 @@
-async function postData(url = "", data = {}) {
+async function postData(url = "", data = {}, token) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -7,6 +7,7 @@ async function postData(url = "", data = {}) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error
@@ -16,7 +17,7 @@ async function postData(url = "", data = {}) {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
-async function putData(url = "", data = {}) {
+async function putData(url = "", data = {}, token) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: "PUT", // *GET, POST, PUT, DELETE, etc.
@@ -25,6 +26,8 @@ async function putData(url = "", data = {}) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error
@@ -34,7 +37,7 @@ async function putData(url = "", data = {}) {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
-async function deleteData(url = "", data = {}) {
+async function deleteData(url = "", data = {}, token) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: "DELETE", // *GET, POST, PUT, DELETE, etc.
@@ -43,6 +46,8 @@ async function deleteData(url = "", data = {}) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error
@@ -56,16 +61,16 @@ async function deleteData(url = "", data = {}) {
 class API {
   ENDPOINT = "http://127.0.0.1:8000/";
 
-  putRequest(url, response) {
-    return putData(this.ENDPOINT + url, response);
+  putRequest(url, response, token) {
+    return putData(this.ENDPOINT + url, response, token);
   }
 
-  deleteRequest(url, response) {
-    return deleteData(this.ENDPOINT + url, response);
+  deleteRequest(url, response, token) {
+    return deleteData(this.ENDPOINT + url, response, token);
   }
 
-  postRequest(url, response) {
-    return postData(this.ENDPOINT + url, response);
+  postRequest(url, response, token) {
+    return postData(this.ENDPOINT + url, response, token);
   }
 }
 export default new API();

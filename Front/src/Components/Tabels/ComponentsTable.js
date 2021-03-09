@@ -242,7 +242,38 @@ class ComponentsTable extends Component {
               </ul>{" "}
             </Tab>
             <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
-              <p>SETTINGS TAB.</p>
+              <ul
+                style={{
+                  width: "300px",
+                  textAlign: "center",
+                }}
+                className="list-group list-group-full"
+              >
+                <h5>Settings Tab</h5>
+                <li className="list-group-item">
+                  <Button id="rtl" variant="outline-info">
+                    <i className="feather icon-file-text" /> Randomize RTL & LTR
+                    components versions
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button id="required" variant="outline-info">
+                    <i className="feather icon-file-text" /> Answer is required
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button id="newPage" variant="outline-info">
+                    <i className="feather icon-file-text" /> Show on a new page
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button id="pic" variant="outline-info">
+                    <i className="feather icon-file-text" /> Add picture under
+                    the question
+                  </Button>
+                </li>
+                <br />
+              </ul>
             </Tab>
           </Tabs>
         </nav>

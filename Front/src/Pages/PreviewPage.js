@@ -4,6 +4,9 @@ import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import NavBar from "../Components/NavBars/NavBarExp";
 
+// cookies
+import { withCookies } from "react-cookie";
+
 class ExperimentPage extends Component {
   constructor() {
     super();
@@ -16,11 +19,19 @@ class ExperimentPage extends Component {
     };
   }
   async componentDidMount() {
+    // cookies
+    const { cookies } = this.props;
+
     //////
     await fetch(
       "http://127.0.0.1:8000/viewset/questionnaire/" +
         this.props.match.params.id +
-        "/"
+        "/",
+      {
+        headers: new Headers({
+          Authorization: `Token ${cookies.cookies.token}`,
+        }),
+      }
     )
       .then((res) => res.json())
       .then(
@@ -122,6 +133,7 @@ class ExperimentPage extends Component {
           name={this.state.name}
           type={this.state.type}
           lang={this.state.lang}
+          prev={true}
         />
         <div className={mainClass.join(" ")}>
           <div className="pcoded-main-container full-screenable-node">
@@ -162,4 +174,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperimentPage);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentPage)
+);

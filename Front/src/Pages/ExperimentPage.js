@@ -5,6 +5,7 @@ import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import API from "../Api/Api";
+import { withCookies } from "react-cookie";
 
 class ExperimentPage extends Component {
   constructor() {
@@ -31,6 +32,8 @@ class ExperimentPage extends Component {
   }
 
   componentDidMount() {
+    const { cookies } = this.props;
+    console.log(cookies.cookies.token);
     //Edit EXP
     if (this.props.match.params.id !== "0") {
       // console.log("zerrrrrrrrroooooooooooooo");
@@ -54,7 +57,11 @@ class ExperimentPage extends Component {
       questionnaire_type_id: "1", //
     };
 
-    API.postRequest("questionnaire-preview-data", response).then((data) => {
+    API.postRequest(
+      "questionnaire-preview-data",
+      response,
+      cookies.cookies.token
+    ).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
       this.setState({ expId: data.questionnaire_id });
     });
@@ -93,4 +100,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperimentPage);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentPage)
+);

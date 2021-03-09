@@ -8,6 +8,7 @@ import { Table, Button, Row } from "react-bootstrap";
 import QuestionnaireInfo from "../ExperimentInfo";
 import { MDBIcon } from "mdbreact";
 import "../../styles/homePageStyle.css";
+import { withCookies } from "react-cookie";
 
 class ExperimentTable extends Component {
   constructor(props) {
@@ -29,12 +30,18 @@ class ExperimentTable extends Component {
   };
 
   componentDidMount() {
+    const { cookies } = this.props;
+    console.log(cookies.cookies.token);
     //////
-    fetch("http://127.0.0.1:8000/viewset/questionnaire")
+    fetch("http://127.0.0.1:8000/viewset/questionnaire", {
+      headers: new Headers({
+        Authorization: `Token ${cookies.cookies.token}`,
+      }),
+    })
       .then((res) => res.json())
       .then(
         (result) => {
-          // console.log(result);
+          console.log(result);
           if (result[0] !== undefined) {
             this.setState({
               isLoaded: true,
@@ -50,6 +57,7 @@ class ExperimentTable extends Component {
           }
         },
         (error) => {
+          console.log(error);
           this.setState({
             isLoaded: true,
             error,
@@ -119,7 +127,12 @@ class ExperimentTable extends Component {
       this.forceUpdate();
     };
     const handleClick = (value) => {
-      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`)
+      const { cookies } = this.props;
+      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`, {
+        headers: new Headers({
+          Authorization: `Token ${cookies.cookies.token}`,
+        }),
+      })
         .then((res) => res.json())
         .then(
           (result) => {
@@ -221,6 +234,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ExperimentTable)
+export default withCookies(
+  withRouter(connect(mapStateToProps, mapDispatchToProps)(ExperimentTable))
 );
