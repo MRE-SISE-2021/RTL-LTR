@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import API from "../Api/Api";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
+import { withCookies } from "react-cookie";
 
 import "../styles/homePageStyle.css";
 
@@ -46,6 +47,8 @@ class ExperimentInfo extends Component {
   }
   submitHandlerDelete(event) {
     //DELETE request -- delete task
+    const { cookies } = this.props;
+
     if (this.props.chosen.questionnaire_id === undefined) {
       return;
     }
@@ -64,7 +67,8 @@ class ExperimentInfo extends Component {
 
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
-          response
+          response,
+          cookies.cookies.token
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });
@@ -219,4 +223,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperimentInfo);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentInfo)
+);
