@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import "./../assets/scss/style.scss";
 import Aux from "./../hoc/_Aux";
 import Breadcrumb from "./../App/components/Breadcrumb";
+import { Alert } from "react-bootstrap";
 
 //////
 import { instanceOf } from "prop-types";
@@ -16,6 +17,7 @@ class Login extends React.Component {
       password: "",
       token: this.props.cookies.get("token") || "",
       toHome: false,
+      error: false,
     };
     this.onInputchange = this.onInputchange.bind(this);
   }
@@ -53,7 +55,16 @@ class Login extends React.Component {
         },
         body: JSON.stringify({ username, password }),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            this.setState({
+              error: true,
+            });
+            return new Error();
+          } else {
+            return res.json();
+          }
+        })
         .then(
           (result) => {
             // console.log(result);
@@ -68,10 +79,9 @@ class Login extends React.Component {
             console.log(result.token);
           },
           (error) => {
-            //   this.setState({
-            //     isLoaded: true,
-            //     error,
-            //   });
+            // this.setState({
+            //   error: true,
+            // });
             console.log(error);
           }
         );
@@ -119,6 +129,11 @@ class Login extends React.Component {
                     >
                       Log In
                     </button>
+                    {this.state.error ? (
+                      <Alert variant="danger">
+                        username or password incorrect!
+                      </Alert>
+                    ) : null}
                   </div>
                 </div>
               </div>
