@@ -85,6 +85,7 @@ class Participant(models.Model):
     sex = models.CharField(db_column='Sex', max_length=10, blank=True, null=True)
     age = models.IntegerField(db_column='Age', blank=True, null=True)
     mother_tongue = models.ForeignKey(Language, models.DO_NOTHING, db_column='MotherTongue')
+    other_language_proficiency = models.TextField(db_column='OtherLanguageProficiency')
     ltr_proficiency = models.FloatField(db_column='LtrProficiency')
     rtl_proficiency = models.FloatField(db_column='RtlProficiency')
     dominant_hand_writing = models.CharField(db_column='DominantHandWriting', max_length=10, blank=True, null=True)
