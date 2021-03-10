@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Tabs, Tab, Button } from "react-bootstrap";
+import { Tabs, Tab, Form, Button } from "react-bootstrap";
 import Card from "../../App/components/MainCard";
 import { MDBIcon } from "mdbreact";
 import Input from "../PagesInput";
@@ -250,29 +250,35 @@ class ComponentsTable extends Component {
                 className="list-group list-group-full"
               >
                 <h5>Settings Tab</h5>
-                <li className="list-group-item">
-                  <Button id="rtl" variant="outline-info">
-                    <i className="feather icon-file-text" /> Randomize RTL & LTR
-                    components versions
-                  </Button>
-                </li>
-                <li className="list-group-item">
-                  <Button id="required" variant="outline-info">
-                    <i className="feather icon-file-text" /> Answer is required
-                  </Button>
-                </li>
-                <li className="list-group-item">
-                  <Button id="newPage" variant="outline-info">
-                    <i className="feather icon-file-text" /> Show on a new page
-                  </Button>
-                </li>
-                <li className="list-group-item">
-                  <Button id="pic" variant="outline-info">
-                    <i className="feather icon-file-text" /> Add picture under
-                    the question
-                  </Button>
-                </li>
                 <br />
+
+                <Form style={{ textAlign: "left", color: "black" }}>
+                  <Form.Check
+                    type="switch"
+                    id="rtl-switch"
+                    label="RTL/LTR customazation"
+                  />
+                  <br />
+                  <Form.Check
+                    type="switch"
+                    label="is required"
+                    id="is-required-switch"
+                  />
+                  <br />
+
+                  <Form.Check
+                    type="switch"
+                    id="new-page-switch"
+                    label="Open on a new page"
+                  />
+                  <br />
+
+                  <Form.Check
+                    type="switch"
+                    id="picture-switch"
+                    label="Add picture under the question"
+                  />
+                </Form>
               </ul>
             </Tab>
           </Tabs>
