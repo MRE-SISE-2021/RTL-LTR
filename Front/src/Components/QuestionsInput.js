@@ -20,8 +20,11 @@ class FormsElements extends React.Component {
       deleteAll: false,
       taskId: props.taskId,
       compId: props.compId,
+      answersNum: 2,
     };
     this.onInputchange = this.onInputchange.bind(this);
+    this.onInputAdd = this.onInputAdd.bind(this);
+    this.onInputSub = this.onInputSub.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -138,7 +141,81 @@ class FormsElements extends React.Component {
       this.openDelete();
     }
   }
+
+  //// Answers --------
+  onInputAdd() {
+    this.setState({
+      answersNum: this.state.answersNum + 1,
+    });
+  }
+
+  onInputSub() {
+    console.log(this.state.answersNum);
+    this.setState({
+      answersNum: this.state.answersNum - 1,
+    });
+  }
+  //// -------- Answers
+
   render() {
+    //// Answers --------
+    var answers = [];
+    for (var i = 0; i < this.state.answersNum; i++) {
+      // note: we are adding a key prop here to allow react to uniquely identify each
+      // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
+      answers.push(
+        <Row>
+          {/* <p key={i}>answ</p> */}
+          <Form.Control
+            type="checkbox"
+            // name="showTitle"
+            // id="show-title"
+            // value="show_title"
+            // defaultChecked={this.state.showTitle}
+            // onChange={this.toggleValue}
+            style={{ marginLeft: "0", width: "5%" }}
+          />
+
+          <Form.Control
+            style={{
+              width: "68%",
+              border: "2px solid black",
+              marginLeft: "1%",
+            }}
+            key={i}
+            type="text"
+            placeholder={"Answer " + i}
+            name="answer"
+            // value={this.state.label}
+            // onChange={this.onInputchange}
+            // required
+            // readOnly={this.state.deleteAll}
+          />
+          <br />
+          {i + 1 === this.state.answersNum ? (
+            <Col md={3}>
+              <Button
+                variant="info"
+                onClick={this.onInputAdd}
+                // disabled={this.state.deleteAll}
+              >
+                <MDBIcon icon="plus" />
+              </Button>
+              {this.state.answersNum - 1 >= 2 ? (
+                <Button
+                  variant="danger"
+                  // disabled={this.state.delete}
+                  onClick={this.onInputSub}
+                >
+                  <MDBIcon icon="times" />
+                </Button>
+              ) : null}
+            </Col>
+          ) : null}
+        </Row>
+      );
+    }
+    //// -------- Answers
     console.log(this.state);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
@@ -162,36 +239,20 @@ class FormsElements extends React.Component {
             }}
           >
             <Card.Header>
-              <Card.Title as="h5">
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Your Task Title"
-                  onChange={this.onInputchange}
-                  name="title"
-                  value={this.state.title}
-                  required
-                  readOnly={this.state.deleteAll}
-                />
-              </Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <hr />
               <Row>
-                <Col md={6}>
-                  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Your Question"
-                      name="label"
-                      value={this.state.label}
-                      onChange={this.onInputchange}
-                      required
-                      readOnly={this.state.deleteAll}
-                    />
-                  </Form.Group>
-                </Col>
-
-                <Col md={3}>
+                <Card.Title as="h5">
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter Your Task Title"
+                    onChange={this.onInputchange}
+                    name="title"
+                    value={this.state.title}
+                    required
+                    readOnly={this.state.deleteAll}
+                    style={{ border: "2px solid red", width: "110%" }}
+                  />
+                </Card.Title>
+                <Col md={7}>
                   <Button
                     variant="info"
                     onClick={this.sendData}
@@ -208,6 +269,28 @@ class FormsElements extends React.Component {
                   </Button>
                 </Col>
               </Row>
+            </Card.Header>
+            <Card.Body>
+              <hr />
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="exampleForm.ControlInput1">
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Your Question"
+                      name="label"
+                      value={this.state.label}
+                      onChange={this.onInputchange}
+                      required
+                      readOnly={this.state.deleteAll}
+                      style={{ width: "160%", border: "2px solid black" }}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              {/* ///// */}
+              {answers}
+              {/* /////// */}
               {this.props.name === "Range" && (
                 <Row>
                   <Col md={6}>
