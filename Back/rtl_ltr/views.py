@@ -477,19 +477,14 @@ def update_data_into_table(serializer):
 def delete_tasks(task_ids):
     # lists of key-value {task_id: data}
     answer_ids = []
-    component_ids = []
     image_ids = []
 
-    # get answer, component, image ids for the tasks
+    # get answer, image ids for the tasks
     # delete the tasks
     for task_id in task_ids:
         for ta in TaskAnswer.objects.filter(task_id=task_id):
             answer_ids.append(ta.answer_id_id)
             ta.delete()
-
-        for tc in TaskComponent.objects.filter(task_id=task_id):
-            component_ids.append(tc.component_id_id)
-            tc.delete()
 
         for ti in TaskImage.objects.filter(task_id=task_id):
             image_ids.append(ti.image_id_id)
@@ -506,11 +501,6 @@ def delete_tasks(task_ids):
     for answer_id in answer_ids:
         for answer_queryset in Answer.objects.filter(answer_id=answer_id):
             answer_queryset.delete()
-
-    # delete component
-    for component_id in component_ids:
-        for component_queryset in Component.objects.filter(component_id=component_id):
-            component_queryset.delete()
 
     # delete image
     for image_id in image_ids:
