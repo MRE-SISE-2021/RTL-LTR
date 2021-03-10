@@ -17,20 +17,18 @@ class Answer(models.Model):
     answer_id = models.AutoField(db_column='AnswerId', primary_key=True)
     answer_content = models.TextField(db_column='AnswerContent')
     is_correct = models.BooleanField(db_column='IsCorrect', blank=True, null=True)
+    value = models.TextField(db_column='Value')
 
     class Meta:
         db_table = 'Answer'
 
 
-class Component(models.Model):
-    component_id = models.AutoField(db_column='ComponentId', primary_key=True)
+class ComponentType(models.Model):
+    component_type_id = models.AutoField(db_column='ComponentTypeId', primary_key=True)
     component_type = models.CharField(db_column='ComponentType', max_length=100)
-    direction = models.CharField(db_column='Direction', max_length=10)
-    order_key = models.IntegerField(db_column='OrderKey')
-    label = models.TextField(db_column='Label', null=True, blank=True)
 
     class Meta:
-        db_table = 'Component'
+        db_table = 'ComponentType'
 
 
 class HciBackground(models.Model):
@@ -69,11 +67,14 @@ class QuestionnaireType(models.Model):
 class Task(models.Model):
     task_id = models.AutoField(db_column='TaskId', primary_key=True)
     task_title = models.CharField(db_column='TaskTitle', max_length=100)
-    task_content = models.TextField(db_column='TaskContent', blank=True, null=True)
+    label = models.TextField(db_column='Label', null=True, blank=True)
+
+    component_type_id = models.ForeignKey(ComponentType, models.DO_NOTHING, db_column='ComponentTypeId')
+    direction = models.CharField(db_column='Direction', max_length=10)
+    order_key = models.IntegerField(db_column='OrderKey')
     is_required = models.BooleanField(db_column='IsRequired')
 
     answers = models.ManyToManyField(Answer, through='TaskAnswer')
-    components = models.ManyToManyField(Component, through='TaskComponent')
     images = models.ManyToManyField(Image, through='TaskImage')
 
     class Meta:
@@ -82,15 +83,15 @@ class Task(models.Model):
 
 class Participant(models.Model):
     participant_id = models.AutoField(db_column='ParticipantId', primary_key=True)
-    sex = models.CharField(db_column='Sex', max_length=10, blank=True, null=True)
+    sex = models.CharField(db_column='Sex', max_length=50, blank=True, null=True)
     age = models.IntegerField(db_column='Age', blank=True, null=True)
-    mother_tongue = models.ForeignKey(Language, models.DO_NOTHING, db_column='MotherTongue')
-    other_language_proficiency = models.TextField(db_column='OtherLanguageProficiency')
-    ltr_proficiency = models.FloatField(db_column='LtrProficiency')
-    rtl_proficiency = models.FloatField(db_column='RtlProficiency')
-    dominant_hand_writing = models.CharField(db_column='DominantHandWriting', max_length=10, blank=True, null=True)
-    dominant_hand_mobile = models.CharField(db_column='DominantHandMobile', max_length=10, blank=True, null=True)
-    dominant_hand_web = models.CharField(db_column='DominantHandWeb', max_length=10, blank=True, null=True)
+    native_language = models.ForeignKey(Language, models.DO_NOTHING, db_column='NativeLanguage',
+                                        related_name='native_language')
+    ltr_proficiency = models.FloatField(db_column='LtrProficiency', blank=True, null=True)
+    rtl_proficiency = models.FloatField(db_column='RtlProficiency', blank=True, null=True)
+    dominant_hand_writing = models.CharField(db_column='DominantHandWriting', max_length=50, blank=True, null=True)
+    dominant_hand_mobile = models.CharField(db_column='DominantHandMobile', max_length=50, blank=True, null=True)
+    dominant_hand_web = models.CharField(db_column='DominantHandWeb', max_length=50, blank=True, null=True)
     dominant_hand_mode = models.IntegerField(db_column='DominantHandMode', blank=True, null=True)
     is_rtl_speakers = models.BooleanField(db_column='IsRtlSpeakers', blank=True, null=True)
     is_rtl_interface = models.BooleanField(db_column='IsRtlInterface', blank=True, null=True)
@@ -105,22 +106,32 @@ class Participant(models.Model):
                                           null=True)
     is_rtl_interfaces_experience = models.BooleanField(db_column='IsRtlInterfacesExperience', blank=True, null=True)
     is_ltr_interfaces_experience = models.BooleanField(db_column='IsLtrInterfacesExperience', blank=True, null=True)
-    other_language_working_characteristics = models.CharField(db_column='OtherLanguageWorkingCharacteristics',
-                                                              max_length=100, blank=True, null=True)
-    questionnaire_version = models.CharField(db_column='QuestionnaireVersion', max_length=10, blank=True, null=True)
+    other_language_working_characteristics = models.TextField(db_column='OtherLanguageWorkingCharacteristics',
+                                                              blank=True, null=True)
+    questionnaire_language_version = models.ForeignKey(Language, models.DO_NOTHING,
+                                                       db_column='QuestionnaireLanguageVersion',
+                                                       related_name='questionnaire_language_version')
     country = models.CharField(db_column='Country', max_length=50, blank=True, null=True)
-    operating_system = models.CharField(db_column='OperatingSystem', max_length=20, blank=True, null=True)
-    browser_type = models.CharField(db_column='BrowserType', max_length=20, blank=True, null=True)
+    operating_system = models.CharField(db_column='OperatingSystem', max_length=50, blank=True, null=True)
+    browser_type = models.CharField(db_column='BrowserType', max_length=50, blank=True, null=True)
 
     class Meta:
         db_table = 'Participant'
+
+
+class Proficiency(models.Model):
+    proficiency_id = models.AutoField(db_column='ProficiencyId', primary_key=True)
+    proficiency_description = models.TextField(db_column='ProficiencyDescription')
+
+    class Meta:
+        db_table = 'Proficiency'
 
 
 class ParticipantLanguageProficiency(models.Model):
     participant_language_id = models.AutoField(db_column='ParticipantLanguageId', primary_key=True)
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
-    proficiency = models.IntegerField(db_column='Proficiency')
+    proficiency_id = models.ForeignKey(Proficiency, models.DO_NOTHING, db_column='ProficiencyId')
 
     class Meta:
         db_table = 'ParticipantLanguageProficiency'
@@ -185,15 +196,6 @@ class QuestionnaireTask(models.Model):
     class Meta:
         db_table = 'QuestionnaireTask'
         unique_together = (('questionnaire_id', 'task_id'),)
-
-
-class TaskComponent(models.Model):
-    task_component_id = models.AutoField(db_column='TaskComponentId', primary_key=True)
-    task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
-    component_id = models.ForeignKey(Component, models.DO_NOTHING, db_column='ComponentId')
-
-    class Meta:
-        db_table = 'TaskComponent'
 
 
 class TaskImage(models.Model):
