@@ -45,18 +45,12 @@ class FormsElements extends React.Component {
         tasks: [
           {
             answers: [],
-            components: [
-              {
-                order_key: this.props.keyOrder,
-                component_type: this.props.name,
-                direction: "RTL",
-                label: this.state.label,
-                component_id: this.state.compId,
-              },
-            ],
+            order_key: this.props.keyOrder,
+            component_type: this.props.name,
+            direction: "RTL",
+            label: this.state.label,
             images: [],
             task_title: this.state.title,
-            task_content: "", ////////?
             is_required: true, ///////?
             task_id: this.state.taskId,
           },
@@ -69,14 +63,10 @@ class FormsElements extends React.Component {
         tasks: [
           {
             answers: [],
-            components: [
-              {
-                order_key: this.props.keyOrder,
-                component_type: this.props.name,
-                direction: "RTL",
-                label: this.state.label,
-              },
-            ],
+            order_key: this.props.keyOrder,
+            component_type: this.props.name,
+            direction: "RTL",
+            label: this.state.label,
             images: [],
             task_title: this.state.title,
             task_content: "", ////////?
