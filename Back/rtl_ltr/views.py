@@ -171,7 +171,7 @@ class QuestionnairePreviewAPIView(APIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
-    # Save new questionnaire to db (with tasks, answers, components, images)
+    # Save new questionnaire to db (with tasks, answers, images)
     @transaction.atomic
     def post(self, request):
         # lists of key-value {task_id: data}
@@ -202,7 +202,7 @@ class QuestionnairePreviewAPIView(APIView):
             insert_data_into_table(QuestionnaireTaskSerializer(data={'questionnaire_id': questionnaire_id,
                                                                      'task_id': task_id}))
 
-            # map the new task_id with its answers, components, images
+            # map the new task_id with its answers, images
             task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
             task_images.append({task_id: task.pop('images')}) if task['images'] else None
 
@@ -314,8 +314,8 @@ class QuestionnairePreviewAPIView(APIView):
                                        association_task_serializer=TaskImageSerializer,
                                        model_name='Image')
 
-        return Response({'questionnaire_id': id, 'task_id': task_ids},
-                        status=status.HTTP_200_OK)
+        return Response({'questionnaire_id': id, 'component_type_id': request.data['component_type_id'],
+                        'task_id': task_ids}, status=status.HTTP_200_OK)
 
     @transaction.atomic
     def delete(self, request, id):
@@ -364,7 +364,7 @@ class ParticipantAPIView(APIView):
     #
     #     return Response(data, status=status.HTTP_200_OK)
 
-    # Save new questionnaire to db (with tasks, answers, components, images)
+    # Save new questionnaire to db (with tasks, answers, images)
     @transaction.atomic
     def post(self, request):
         participant_data = request.data
@@ -395,7 +395,7 @@ class ParticipantAPIView(APIView):
 
 ####### INSTRUMENTAL FUNCTIONS #######
 # POST QuestionnairePreviewAPIView
-# insert answer, component and image to db and associate them with a task
+# insert answer and image to db and associate them with a task
 def insert_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer):
     # data exists in db
     for data in data_list:
@@ -426,7 +426,7 @@ def insert_data_into_table(serializer, id_name=None):
 
 
 # PUT QuestionnairePreviewAPIView
-# update answer, component and image in db or inset them and associate them with a task
+# update answer and image in db or inset them and associate them with a task
 def update_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer,
                                model_name):
     for data in data_list:
@@ -439,10 +439,6 @@ def update_associate_task_data(association_task_id, data_list, data_id_name, ser
                     model_queryset = Answer.objects.get(answer_id=data[data_id_name])
                     update_serializer = AnswerSerializer(model_queryset, data=data,
                                                          partial=True)
-                elif model_name == 'Component':
-                    model_queryset = Component.objects.get(component_id=data[data_id_name])
-                    update_serializer = ComponentSerializer(model_queryset, data=data,
-                                                            partial=True)
                 elif model_name == 'Image':
                     model_queryset = Image.objects.get(image_id=data[data_id_name])
                     update_serializer = ImageSerializer(model_queryset, data=data,
@@ -477,19 +473,14 @@ def update_data_into_table(serializer):
 def delete_tasks(task_ids):
     # lists of key-value {task_id: data}
     answer_ids = []
-    component_ids = []
     image_ids = []
 
-    # get answer, component, image ids for the tasks
+    # get answer, image ids for the tasks
     # delete the tasks
     for task_id in task_ids:
         for ta in TaskAnswer.objects.filter(task_id=task_id):
             answer_ids.append(ta.answer_id_id)
             ta.delete()
-
-        for tc in TaskComponent.objects.filter(task_id=task_id):
-            component_ids.append(tc.component_id_id)
-            tc.delete()
 
         for ti in TaskImage.objects.filter(task_id=task_id):
             image_ids.append(ti.image_id_id)
@@ -506,11 +497,6 @@ def delete_tasks(task_ids):
     for answer_id in answer_ids:
         for answer_queryset in Answer.objects.filter(answer_id=answer_id):
             answer_queryset.delete()
-
-    # delete component
-    for component_id in component_ids:
-        for component_queryset in Component.objects.filter(component_id=component_id):
-            component_queryset.delete()
 
     # delete image
     for image_id in image_ids:
