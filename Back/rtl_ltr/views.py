@@ -314,8 +314,7 @@ class QuestionnairePreviewAPIView(APIView):
                                        association_task_serializer=TaskImageSerializer,
                                        model_name='Image')
 
-        return Response({'questionnaire_id': id, 'component_type_id': request.data['component_type_id'],
-                        'task_id': task_ids}, status=status.HTTP_200_OK)
+        return Response({'questionnaire_id': id, 'task_id': task_ids}, status=status.HTTP_200_OK)
 
     @transaction.atomic
     def delete(self, request, id):
