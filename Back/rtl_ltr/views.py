@@ -12,12 +12,14 @@ from rest_framework.views import APIView
 from django.http import HttpResponse
 from django.db import transaction
 
+import ast
+
 
 ####### MODEL VIEWSETS #######
 # Component
-class ComponentViewSet(viewsets.ModelViewSet):
-    serializer_class = ComponentSerializer
-    queryset = Component.objects.all()
+class ComponentTypeViewSet(viewsets.ModelViewSet):
+    serializer_class = ComponentTypeSerializer
+    queryset = ComponentType.objects.all()
 
 
 # HciBackground
@@ -54,6 +56,11 @@ class TaskViewSet(viewsets.ModelViewSet):
 class ParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = ParticipantSerializer
     queryset = Participant.objects.all()
+
+
+class ProficiencyViewSet(viewsets.ModelViewSet):
+    serializer_class = ProficiencySerializer
+    queryset = Proficiency.objects.all()
 
 
 # Answer
@@ -96,12 +103,6 @@ class QuestionnaireParticipantViewSet(viewsets.ModelViewSet):
 class QuestionnaireTaskViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireTaskSerializer
     queryset = QuestionnaireTask.objects.all()
-
-
-# TaskComponent
-class TaskComponentViewSet(viewsets.ModelViewSet):
-    serializer_class = TaskComponentSerializer
-    queryset = TaskComponent.objects.all()
 
 
 # TaskImage
@@ -175,7 +176,6 @@ class QuestionnairePreviewAPIView(APIView):
     def post(self, request):
         # lists of key-value {task_id: data}
         task_answers = []
-        task_components = []
         task_images = []
 
         tasks = request.data.pop('tasks')
@@ -204,13 +204,12 @@ class QuestionnairePreviewAPIView(APIView):
 
             # map the new task_id with its answers, components, images
             task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
-            task_components.append({task_id: task.pop('components')}) if task['components'] else None
             task_images.append({task_id: task.pop('images')}) if task['images'] else None
 
         # create answers and associate them with the new tasks
         # if answer exists in db, only associate it
         for task_answer in task_answers:
-            # associate existing component with the new task
+            # associate existing answer with the new task
             task_id = next(iter(task_answer))
             answer = task_answer[task_id]
 
@@ -219,18 +218,6 @@ class QuestionnairePreviewAPIView(APIView):
                                        data_id_name='answer_id',
                                        serializer=AnswerSerializer,
                                        association_task_serializer=TaskAnswerSerializer)
-
-        # create components and associate them with the new tasks
-        for task_component in task_components:
-            # associate existing component with the new task
-            task_id = next(iter(task_component))
-            component = task_component[task_id]
-
-            insert_associate_task_data(association_task_id=task_id,
-                                       data_list=component,
-                                       data_id_name='component_id',
-                                       serializer=ComponentSerializer,
-                                       association_task_serializer=TaskComponentSerializer)
 
         # create images and associate them with the new tasks
         # if image exists in db, only associate it
@@ -257,7 +244,6 @@ class QuestionnairePreviewAPIView(APIView):
         # lists of key-value {task_id: data}
         task_ids = []
         task_answers = []
-        task_components = []
         task_images = []
 
         # get parameters for update
@@ -281,7 +267,6 @@ class QuestionnairePreviewAPIView(APIView):
             if 'task_id' in task:
                 task_ids.append(task['task_id'])
                 task_answers.append({task['task_id']: task.pop('answers')}) if task['answers'] else None
-                task_components.append({task['task_id']: task.pop('components')}) if task['components'] else None
                 task_images.append({task['task_id']: task.pop('images')}) if task['images'] else None
 
                 try:
@@ -297,10 +282,9 @@ class QuestionnairePreviewAPIView(APIView):
             task_id = insert_data_into_table(TaskSerializer(data=task),
                                              'task_id')
 
-            # map the new task_id with its answers, components, images
+            # map the new task_id with its answers, images
             task_ids.append(task_id)
             task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
-            task_components.append({task_id: task.pop('components')}) if task['components'] else None
             task_images.append({task_id: task.pop('images')}) if task['images'] else None
 
             # associate the new task with the new questionnaire
@@ -317,18 +301,6 @@ class QuestionnairePreviewAPIView(APIView):
                                        serializer=AnswerSerializer,
                                        association_task_serializer=TaskAnswerSerializer,
                                        model_name='Answer')
-
-        # insert or update Component table (the same architecture as Task)
-        for task_component in task_components:
-            task_id = next(iter(task_component))
-            component = task_component[task_id]
-
-            update_associate_task_data(association_task_id=task_id,
-                                       data_list=component,
-                                       data_id_name='component_id',
-                                       serializer=ComponentSerializer,
-                                       association_task_serializer=TaskComponentSerializer,
-                                       model_name='Component')
 
         # insert or update Image table (the same architecture as Task)
         for task_image in task_images:
@@ -396,6 +368,19 @@ class ParticipantAPIView(APIView):
     @transaction.atomic
     def post(self, request):
         participant_data = request.data
+
+        language_proficiency = participant_data.pop('language_proficiency')
+
+        # create a new questionnaire in the table and get its id
+        questionnaire_id = insert_data_into_table(QuestionnaireSerializer(data=questionnaire_table_data),
+                                                  'questionnaire_id')
+
+        # from string to dict
+        language_proficiency = ast.literal_eval(language_proficiency)
+
+        for language_key in language_proficiency:
+            if Language.objects.filter(language_name=language_key).exists():
+                language_id = Language.objects.get(language_name='language_key')
 
         return Response(status=status.HTTP_201_CREATED)
 
