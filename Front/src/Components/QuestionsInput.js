@@ -8,24 +8,6 @@ import { MDBIcon } from "mdbreact";
 import API from "../Api/Api";
 import { withCookies } from "react-cookie";
 
-async function putData(url = "", data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: "PUT", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
-    headers: {
-      "Content-Type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: "follow", // manual, *follow, error
-    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
-}
-
 class FormsElements extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +19,6 @@ class FormsElements extends React.Component {
       delete: true,
       deleteAll: false,
       taskId: props.taskId,
-      compId: props.compId,
       answersNum: 2,
     };
     this.onInputchange = this.onInputchange.bind(this);
@@ -55,7 +36,7 @@ class FormsElements extends React.Component {
     //PUT request -- save task
     // console.log(this.state);
     const { cookies } = this.props;
-    console.log(cookies);
+    console.log(this.props.compTypeId);
     let response = {};
     if (this.taskId !== "") {
       response = {
@@ -64,7 +45,7 @@ class FormsElements extends React.Component {
           {
             answers: [],
             order_key: this.props.keyOrder,
-            component_type: this.props.name,
+            component_type_id: this.props.compTypeId,
             direction: "RTL",
             label: this.state.label,
             images: [],
@@ -82,7 +63,7 @@ class FormsElements extends React.Component {
           {
             answers: [],
             order_key: this.props.keyOrder,
-            component_type: this.props.name,
+            component_type_id: this.props.compTypeId,
             direction: "RTL",
             label: this.state.label,
             images: [],

@@ -24,52 +24,39 @@ class ComponentsTable extends Component {
     let inputListNew = [];
     if (propsIncoming.tasks.length > 0) {
       propsIncoming.tasks.forEach((task, index) => {
+        console.log(task);
         const task_id = task.task_id;
         const task_title = task.task_title;
-        task.components.forEach((comp) => {
-          // console.log(inputList);
-          if (
-            comp.component_type === "Welcome" ||
-            comp.component_type === "Thank You" ||
-            comp.component_type === "Explanation"
-          ) {
-            console.log(comp.component_id);
-            // this.addTasks(comp.component_type, comp.label);
+        if (task.component_type_id === 1) {
+          inputListNew = inputListNew.concat(
+            <Input
+              key={inputListNew.length}
+              expId={id}
+              keyOrder={index}
+              label={task.label}
+              taskId={task_id}
+              compTypeId={task.component_type_id}
+            />
+          );
+          // console.log("heyyyyyyyyy");
+        } else if (
+          task.component_type_id === 2 ||
+          task.component_type_id === 3
+        ) {
+          console.log(task);
 
-            inputListNew = inputListNew.concat(
-              <Input
-                key={inputListNew.length}
-                name={comp.component_type}
-                expId={id}
-                keyOrder={index}
-                label={comp.label}
-                taskId={task_id}
-                // title={}
-                compId={comp.component_id}
-              />
-            );
-            // console.log("heyyyyyyyyy");
-          } else if (
-            comp.component_type === "Range" ||
-            comp.component_type === "Text"
-          ) {
-            // this.addTasksQuestions(comp.component_type, comp.label, comp.title);
-            // console.log(task_title);
-
-            inputListNew = inputListNew.concat(
-              <QuestionsInput
-                key={inputListNew.length}
-                name={comp.component_type}
-                expId={id}
-                keyOrder={index}
-                label={comp.label}
-                taskId={task_id}
-                title={task_title}
-                compId={comp.component_id}
-              />
-            );
-          }
-        });
+          inputListNew = inputListNew.concat(
+            <QuestionsInput
+              key={inputListNew.length}
+              expId={id}
+              keyOrder={index}
+              label={task.label}
+              taskId={task_id}
+              title={task_title}
+              compTypeId={task.component_type_id}
+            />
+          );
+        }
       });
     }
     this.setState({ inputList: inputListNew });
@@ -84,7 +71,7 @@ class ComponentsTable extends Component {
       inputList: inputList.concat(
         <Input
           key={this.state.inputList.length}
-          name={event.target.id}
+          compTypeId={event.target.id}
           expId={id}
           keyOrder={inputList.length}
         />
@@ -100,7 +87,7 @@ class ComponentsTable extends Component {
       inputList: inputList.concat(
         <QuestionsInput
           key={inputList.length}
-          name={event.target.id}
+          compTypeId={event.target.id}
           expId={id}
           keyOrder={inputList.length}
         />
@@ -193,29 +180,11 @@ class ComponentsTable extends Component {
                 <h5>Genral forms</h5>
                 <li className="list-group-item">
                   <Button
-                    id="Welcome"
+                    id="1"
                     onClick={this.onAddBtnClick}
                     variant="outline-info"
                   >
-                    <i className="feather icon-file-text" /> Welcome Page
-                  </Button>
-                </li>
-                <li className="list-group-item">
-                  <Button
-                    id="Explanation"
-                    onClick={this.onAddBtnClick}
-                    variant="outline-info"
-                  >
-                    <i className="feather icon-file-text" /> Explanation page
-                  </Button>
-                </li>
-                <li className="list-group-item">
-                  <Button
-                    id="Thank You"
-                    onClick={this.onAddBtnClick}
-                    variant="outline-info"
-                  >
-                    <i className="feather icon-file-text" /> Thank you page
+                    <i className="feather icon-file-text" /> New Page
                   </Button>
                 </li>
                 <br />
@@ -223,16 +192,16 @@ class ComponentsTable extends Component {
 
                 <li className="list-group-item">
                   <Button
-                    id="Range"
+                    id="2"
                     onClick={this.onAddBtnClick2}
                     variant="outline-info"
                   >
-                    <i className="feather icon-file" /> Range
+                    <i className="feather icon-file" /> Range Questions
                   </Button>
                 </li>
                 <li className="list-group-item">
                   <Button
-                    id="Text"
+                    id="3"
                     onClick={this.onAddBtnClick2}
                     variant="outline-info"
                   >
