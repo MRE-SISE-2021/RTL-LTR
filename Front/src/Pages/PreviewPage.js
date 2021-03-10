@@ -21,68 +21,67 @@ class ExperimentPage extends Component {
   async componentDidMount() {
     // cookies
     const { cookies } = this.props;
-    const tasks = PreviewResponse.tasks;
+    // const tasks = PreviewResponse.tasks;
 
     console.log(this.state);
     //////
-    // await fetch(
-    //   "http://127.0.0.1:8000/viewset/questionnaire/" +
-    //     this.props.match.params.id +
-    //     "/",
-    //   {
-    //     headers: new Headers({
-    //       Authorization: `Token ${cookies.cookies.token}`,
-    //     }),
-    //   }
-    // )
-    //   .then((res) => res.json())
-    //   .then(
-    //     (result) => {
-    //       this.setState(() => ({
-    //         tasks: result.tasks,
-    //         name: result.questionnaire_name,
-    //         type: result.questionnaire_type_id,
-    //         lang: result.language_id,
-    //       }));
-    //     },
-    //     (error) => {
-    //       this.setState({
-    //         isLoaded: true,
-    //         error,
-    //       });
-    //     }
-    //   );
+    await fetch(
+      "http://127.0.0.1:8000/viewset/questionnaire/" +
+        this.props.match.params.id +
+        "/",
+      {
+        headers: new Headers({
+          Authorization: `Token ${cookies.cookies.token}`,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState(() => ({
+            tasks: result.tasks,
+            name: result.questionnaire_name,
+            type: result.questionnaire_type_id,
+            lang: result.language_id,
+          }));
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        }
+      );
 
-    this.putInputList(tasks);
+    this.putInputList();
   }
 
-  putInputList(tasks) {
-    console.log(tasks);
-    // this.state.tasks.forEach((task, index) => {
-    tasks.forEach((task, index) => {
+  putInputList() {
+    console.log();
+    this.state.tasks.forEach((task, index) => {
+      // tasks.forEach((task, index) => {
       const inputList = this.state.inputList;
       ///////
       console.log(task);
       // task.components.forEach((component, index) => {
-      if (task.component_type === "Welcome") {
+      if (task.component_type_id === 1) {
         this.setState({
           inputList: inputList.concat(
-            <div
-              key="welcome"
-              dangerouslySetInnerHTML={{ __html: task.label }}
-            ></div>
+            <div key="1" dangerouslySetInnerHTML={{ __html: task.label }}></div>
           ),
         });
-      } else if (task.component_type === "Explanation") {
-        this.setState({
-          inputList: inputList.concat(
-            <div
-              key="explain"
-              dangerouslySetInnerHTML={{ __html: task.label }}
-            ></div>
-          ),
-        });
-      } else if (task.component_type === "Range") {
+      }
+      // else if (task.component_type === "Explanation") {
+      //   this.setState({
+      //     inputList: inputList.concat(
+      //       <div
+      //         key="explain"
+      //         dangerouslySetInnerHTML={{ __html: task.label }}
+      //       ></div>
+      //     ),
+      //   });
+      // }
+      else if (task.component_type_id === 2) {
         this.setState({
           inputList: inputList.concat(
             <div key={"range" + index}>
@@ -96,7 +95,7 @@ class ExperimentPage extends Component {
             </div>
           ),
         });
-      } else if (task.component_type === "Text") {
+      } else if (task.component_type_id === 3) {
         this.setState({
           inputList: inputList.concat(
             <div>
@@ -112,15 +111,6 @@ class ExperimentPage extends Component {
                 );
               })}
             </div>
-          ),
-        });
-      } else {
-        this.setState({
-          inputList: inputList.concat(
-            <div
-              key="thaks"
-              dangerouslySetInnerHTML={{ __html: task.label }}
-            ></div>
           ),
         });
       }
