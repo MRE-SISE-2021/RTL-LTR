@@ -171,7 +171,7 @@ class QuestionnairePreviewAPIView(APIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
-    # Save new questionnaire to db (with tasks, answers, components, images)
+    # Save new questionnaire to db (with tasks, answers, images)
     @transaction.atomic
     def post(self, request):
         # lists of key-value {task_id: data}
@@ -202,7 +202,7 @@ class QuestionnairePreviewAPIView(APIView):
             insert_data_into_table(QuestionnaireTaskSerializer(data={'questionnaire_id': questionnaire_id,
                                                                      'task_id': task_id}))
 
-            # map the new task_id with its answers, components, images
+            # map the new task_id with its answers, images
             task_answers.append({task_id: task.pop('answers')}) if task['answers'] else None
             task_images.append({task_id: task.pop('images')}) if task['images'] else None
 
@@ -364,7 +364,7 @@ class ParticipantAPIView(APIView):
     #
     #     return Response(data, status=status.HTTP_200_OK)
 
-    # Save new questionnaire to db (with tasks, answers, components, images)
+    # Save new questionnaire to db (with tasks, answers, images)
     @transaction.atomic
     def post(self, request):
         participant_data = request.data
@@ -395,7 +395,7 @@ class ParticipantAPIView(APIView):
 
 ####### INSTRUMENTAL FUNCTIONS #######
 # POST QuestionnairePreviewAPIView
-# insert answer, component and image to db and associate them with a task
+# insert answer and image to db and associate them with a task
 def insert_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer):
     # data exists in db
     for data in data_list:
@@ -426,7 +426,7 @@ def insert_data_into_table(serializer, id_name=None):
 
 
 # PUT QuestionnairePreviewAPIView
-# update answer, component and image in db or inset them and associate them with a task
+# update answer and image in db or inset them and associate them with a task
 def update_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer,
                                model_name):
     for data in data_list:
@@ -439,10 +439,6 @@ def update_associate_task_data(association_task_id, data_list, data_id_name, ser
                     model_queryset = Answer.objects.get(answer_id=data[data_id_name])
                     update_serializer = AnswerSerializer(model_queryset, data=data,
                                                          partial=True)
-                elif model_name == 'Component':
-                    model_queryset = Component.objects.get(component_id=data[data_id_name])
-                    update_serializer = ComponentSerializer(model_queryset, data=data,
-                                                            partial=True)
                 elif model_name == 'Image':
                     model_queryset = Image.objects.get(image_id=data[data_id_name])
                     update_serializer = ImageSerializer(model_queryset, data=data,
