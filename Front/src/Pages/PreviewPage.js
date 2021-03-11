@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import NavBar from "../Components/NavBars/NavBarExp";
-import PreviewResponse from "../Api/mocks/PreviewResponse";
+// import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
 

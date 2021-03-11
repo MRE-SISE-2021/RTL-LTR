@@ -184,7 +184,10 @@ class FormsElements extends React.Component {
       // note: we are adding a key prop here to allow react to uniquely identify each
       // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
       let ans = null;
-      if (this.props.answers !== undefined) {
+      if (
+        this.props.answers !== undefined &&
+        this.props.answers[i] !== undefined
+      ) {
         ans = this.props.answers[i].answer_content;
       }
       answers.push(
@@ -259,12 +262,6 @@ class FormsElements extends React.Component {
     }
     //// -------- Answers
     console.log(this.state);
-    let mainClass = ["content-main"];
-    if (this.props.fullWidthLayout) {
-      mainClass = [...mainClass, "container-fluid"];
-    } else {
-      mainClass = [...mainClass, "container"];
-    }
 
     return (
       <Aux>
