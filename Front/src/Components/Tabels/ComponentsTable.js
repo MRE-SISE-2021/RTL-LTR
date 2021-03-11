@@ -54,6 +54,7 @@ class ComponentsTable extends Component {
               taskId={task_id}
               title={task_title}
               compTypeId={task.component_type_id}
+              answers={task.answers}
             />
           );
         }

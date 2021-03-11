@@ -22,6 +22,7 @@ class FormsElements extends React.Component {
       answersNum: 2,
       answers: [],
     };
+
     this.onInputchange = this.onInputchange.bind(this);
     this.onInputAdd = this.onInputAdd.bind(this);
     this.onInputSub = this.onInputSub.bind(this);
@@ -30,6 +31,7 @@ class FormsElements extends React.Component {
 
   componentWillReceiveProps(propsIncoming) {
     console.log(propsIncoming);
+
     this.setState({ label: propsIncoming.label });
   }
   sendData = () => {
@@ -63,7 +65,7 @@ class FormsElements extends React.Component {
         //tasks
         tasks: [
           {
-            answers: this.state.answers,
+            answers: this.props.answers,
             order_key: this.props.keyOrder,
             component_type_id: this.props.compTypeId,
             direction: "RTL",
@@ -128,6 +130,9 @@ class FormsElements extends React.Component {
   }
   componentDidMount() {
     console.log(this.state);
+    if (this.props.answers !== undefined) {
+      this.setState({ answersNum: this.props.answers.length });
+    }
     if (this.state.taskId !== undefined) {
       this.openDelete();
     }
@@ -178,6 +183,10 @@ class FormsElements extends React.Component {
     for (var i = 0; i < this.state.answersNum; i++) {
       // note: we are adding a key prop here to allow react to uniquely identify each
       // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
+      let ans = null;
+      if (this.props.answers !== undefined) {
+        ans = this.props.answers[i].answer_content;
+      }
       answers.push(
         <Row>
           {/* <p key={i}>answ</p> */}
@@ -203,6 +212,7 @@ class FormsElements extends React.Component {
             placeholder={"Answer " + i}
             name="answer_content"
             // value={this.state.label}
+            value={ans}
             onChange={this.onAnswerchange}
             // required
             // readOnly={this.state.deleteAll}
