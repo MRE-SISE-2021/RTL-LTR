@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import { Tabs, Tab, Form, Button } from "react-bootstrap";
 import Card from "../../App/components/MainCard";
 import { MDBIcon } from "mdbreact";
-import Input from "../PagesInput";
+import Input from "../UI-Elements/PagesInput";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
-import QuestionsInput from "../QuestionsInput";
+import QuestionsInput from "../UI-Elements/QuestionsInput";
 import NavBar from "../NavBars/NavBarExp";
 
 class ComponentsTable extends Component {

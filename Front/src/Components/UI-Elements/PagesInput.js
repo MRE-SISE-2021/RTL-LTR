@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import Aux from "../hoc/_Aux";
-import * as actionTypes from "../store/actions";
-import AllCkEditor from "../App/components/AllCkEditor";
-import Card from "../App/components/MainCard";
+import Aux from "../../hoc/_Aux";
+import * as actionTypes from "../../store/actions";
+import AllCkEditor from "../../App/components/AllCkEditor";
+import Card from "../../App/components/MainCard";
 
 class Input extends React.Component {
   constructor(props) {

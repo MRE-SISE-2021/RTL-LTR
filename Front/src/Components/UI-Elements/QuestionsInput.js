@@ -1,11 +1,11 @@
 import React from "react";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import * as actionTypes from "../store/actions";
+import * as actionTypes from "../../store/actions";
 // import Card from "../App/components/MainCard";
-import Aux from "../hoc/_Aux";
+import Aux from "../../hoc/_Aux";
 import { MDBIcon } from "mdbreact";
-import API from "../Api/Api";
+import API from "../../Api/Api";
 import { withCookies } from "react-cookie";
 
 class FormsElements extends React.Component {
