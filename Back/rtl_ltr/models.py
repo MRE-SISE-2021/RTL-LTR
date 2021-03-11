@@ -89,10 +89,11 @@ class Participant(models.Model):
                                         related_name='native_language')
     ltr_proficiency = models.FloatField(db_column='LtrProficiency', blank=True, null=True)
     rtl_proficiency = models.FloatField(db_column='RtlProficiency', blank=True, null=True)
+
     dominant_hand_writing = models.CharField(db_column='DominantHandWriting', max_length=50, blank=True, null=True)
     dominant_hand_mobile = models.CharField(db_column='DominantHandMobile', max_length=50, blank=True, null=True)
     dominant_hand_web = models.CharField(db_column='DominantHandWeb', max_length=50, blank=True, null=True)
-    dominant_hand_mode = models.IntegerField(db_column='DominantHandMode', blank=True, null=True)
+    dominant_hand_mode = models.TextField(db_column='DominantHandMode', blank=True, null=True)
     is_rtl_speakers = models.BooleanField(db_column='IsRtlSpeakers', blank=True, null=True)
     is_rtl_interface = models.BooleanField(db_column='IsRtlInterface', blank=True, null=True)
     is_rtl_paper_documents = models.BooleanField(db_column='IsRtlPaperDocuments', blank=True, null=True)
