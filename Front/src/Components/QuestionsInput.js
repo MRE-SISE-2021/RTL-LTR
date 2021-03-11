@@ -20,10 +20,12 @@ class FormsElements extends React.Component {
       deleteAll: false,
       taskId: props.taskId,
       answersNum: 2,
+      answers: [],
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onInputAdd = this.onInputAdd.bind(this);
     this.onInputSub = this.onInputSub.bind(this);
+    this.onAnswerchange = this.onAnswerchange.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -43,7 +45,7 @@ class FormsElements extends React.Component {
         //tasks
         tasks: [
           {
-            answers: [],
+            answers: this.state.answers,
             order_key: this.props.keyOrder,
             component_type_id: this.props.compTypeId,
             direction: "RTL",
@@ -61,7 +63,7 @@ class FormsElements extends React.Component {
         //tasks
         tasks: [
           {
-            answers: [],
+            answers: this.state.answers,
             order_key: this.props.keyOrder,
             component_type_id: this.props.compTypeId,
             direction: "RTL",
@@ -146,6 +148,30 @@ class FormsElements extends React.Component {
   }
   //// -------- Answers
 
+  onAnswerchange(event) {
+    console.log("Answeeeeeersss");
+
+    let index = event.target.id - 1;
+    let answer_content = event.target.value;
+    let answers = [...this.state.answers];
+    if (event.target.name === "check") {
+      answers[index] = {
+        answer_content: this.state.answers[index].answer_content,
+        is_correct: event.target.checked,
+        value: "defalut",
+      };
+      this.setState({ answers });
+      return;
+    }
+    answers[index] = {
+      answer_content: answer_content,
+      is_correct: false,
+      value: "defalut",
+    };
+    this.setState({ answers });
+    console.log(this.state.answers);
+  }
+
   render() {
     //// Answers --------
     var answers = [];
@@ -157,11 +183,11 @@ class FormsElements extends React.Component {
           {/* <p key={i}>answ</p> */}
           <Form.Control
             type="checkbox"
-            // name="showTitle"
-            // id="show-title"
+            name="check"
+            id={i + 1}
             // value="show_title"
             // defaultChecked={this.state.showTitle}
-            // onChange={this.toggleValue}
+            onChange={this.onAnswerchange}
             style={{ marginLeft: "0", width: "5%" }}
           />
 
@@ -171,12 +197,13 @@ class FormsElements extends React.Component {
               border: "2px solid black",
               marginLeft: "1%",
             }}
+            id={i + 1}
             key={i}
             type="text"
             placeholder={"Answer " + i}
-            name="answer"
+            name="answer_content"
             // value={this.state.label}
-            // onChange={this.onInputchange}
+            onChange={this.onAnswerchange}
             // required
             // readOnly={this.state.deleteAll}
           />
@@ -201,6 +228,22 @@ class FormsElements extends React.Component {
               ) : null}
             </Col>
           ) : null}
+          {this.props.compTypeId === "2" && (
+            <Row>
+              {console.log(this.props.compTypeId)}
+              {/* <Col md={6}> */}
+              <Form.Group controlId="exampleForm.RangeInput">
+                <Form.Control
+                  type="range"
+                  className="form-control-range"
+                  // name="value"
+                  // onChange={this.onInputchange}
+                  readOnly={this.state.deleteAll}
+                />
+              </Form.Group>
+              {/* </Col> */}
+            </Row>
+          )}
         </Row>
       );
     }
@@ -280,21 +323,6 @@ class FormsElements extends React.Component {
               {/* ///// */}
               {answers}
               {/* /////// */}
-              {this.props.name === "Range" && (
-                <Row>
-                  <Col md={6}>
-                    <Form.Group controlId="exampleForm.RangeInput">
-                      <Form.Control
-                        type="range"
-                        className="form-control-range"
-                        name="label"
-                        onChange={this.onInputchange}
-                        readOnly={this.state.deleteAll}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-              )}
             </Card.Body>
           </Card>
         </div>
