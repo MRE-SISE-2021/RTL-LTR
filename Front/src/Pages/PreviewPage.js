@@ -85,7 +85,8 @@ class ExperimentPage extends Component {
         this.setState({
           inputList: inputList.concat(
             <div key={"range" + index}>
-              <p>{task.label}</p>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>
               <input
                 type="range"
                 className="custom-range"
@@ -99,7 +100,8 @@ class ExperimentPage extends Component {
         this.setState({
           inputList: inputList.concat(
             <div>
-              <p>{task.label}</p>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>{" "}
               {task.answers.map(function (answer, index) {
                 // return <p>{answer.answer_content}</p>;
                 console.log(answer.answer_content);
