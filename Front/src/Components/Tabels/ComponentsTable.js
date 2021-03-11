@@ -75,7 +75,7 @@ class ComponentsTable extends Component {
   }
 
   render() {
-    console.log(this.props.tasks.length);
+    // console.log(this.props.tasks.length);
 
     let navClass = ["pcoded-navbar"];
 
@@ -102,7 +102,7 @@ class ComponentsTable extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
-    console.log(this.state.inputList);
+    // console.log(this.state.inputList);
     return (
       <Aux>
         <NavBar

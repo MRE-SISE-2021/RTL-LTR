@@ -13,8 +13,8 @@ class FormsElements extends React.Component {
     super(props);
     console.log(props);
     this.state = {
-      title: props.title,
-      label: props.label,
+      title: props.title || "",
+      label: props.label || "",
       id: props.expId,
       delete: true,
       deleteAll: false,
@@ -129,7 +129,7 @@ class FormsElements extends React.Component {
     });
   }
   componentDidMount() {
-    console.log(this.state);
+    // console.log(this.state);
     if (this.props.answers !== undefined) {
       this.setState({ answersNum: this.props.answers.length });
     }
@@ -183,7 +183,7 @@ class FormsElements extends React.Component {
     for (var i = 0; i < this.state.answersNum; i++) {
       // note: we are adding a key prop here to allow react to uniquely identify each
       // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-      let ans = null;
+      let ans = undefined;
       if (
         this.props.answers !== undefined &&
         this.props.answers[i] !== undefined
@@ -191,7 +191,7 @@ class FormsElements extends React.Component {
         ans = this.props.answers[i].answer_content;
       }
       answers.push(
-        <Row>
+        <Row key={i}>
           {/* <p key={i}>answ</p> */}
           <Form.Control
             type="checkbox"
@@ -241,7 +241,7 @@ class FormsElements extends React.Component {
               ) : null}
             </Col>
           ) : null}
-          {this.props.compTypeId === "2" && (
+          {this.props.compTypeId === 2 && (
             <Row>
               {console.log(this.props.compTypeId)}
               {/* <Col md={6}> */}
@@ -261,7 +261,7 @@ class FormsElements extends React.Component {
       );
     }
     //// -------- Answers
-    console.log(this.state);
+    // console.log(this.state);
 
     return (
       <Aux>

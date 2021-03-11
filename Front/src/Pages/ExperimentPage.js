@@ -33,7 +33,7 @@ class ExperimentPage extends Component {
 
   componentDidMount() {
     const { cookies } = this.props;
-    console.log(cookies.cookies.token);
+    // console.log(cookies.cookies.token);
     //Edit EXP
     if (this.props.match.params.id !== "0") {
       // console.log("zerrrrrrrrroooooooooooooo");
@@ -62,7 +62,7 @@ class ExperimentPage extends Component {
       response,
       cookies.cookies.token
     ).then((data) => {
-      console.log(data); // JSON data parsed by `data.json()` call
+      // console.log(data); // JSON data parsed by `data.json()` call
       this.setState({ expId: data.questionnaire_id });
     });
   }

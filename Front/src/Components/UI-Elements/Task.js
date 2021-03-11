@@ -14,7 +14,7 @@ class Task extends Component {
 
   //define task type according to compTypeId
   componentDidMount() {
-    console.log(this.props);
+    // console.log(this.props);
     const inputList = this.state.inputList;
 
     switch (this.props.compTypeId) {
@@ -22,7 +22,7 @@ class Task extends Component {
         this.setState({
           inputList: inputList.concat(
             <Input
-              key={this.props.key}
+              key={"page" + this.props.key}
               expId={this.props.expId}
               keyOrder={this.props.keyOrder}
               label={this.props.label}
@@ -38,7 +38,7 @@ class Task extends Component {
         this.setState({
           inputList: inputList.concat(
             <QuestionsInput
-              key={this.props.key}
+              key={"range" + this.props.key}
               expId={this.props.expId}
               keyOrder={this.props.keyOrder}
               label={this.props.label}
@@ -54,7 +54,7 @@ class Task extends Component {
         this.setState({
           inputList: inputList.concat(
             <QuestionsInput
-              key={this.props.key}
+              key={"text" + this.props.key}
               expId={this.props.expId}
               keyOrder={this.props.keyOrder}
               label={this.props.label}
@@ -69,7 +69,7 @@ class Task extends Component {
       default:
         break;
     }
-    console.log(this.state);
+    // console.log(this.state);
   }
   render() {
     return (

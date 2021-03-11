@@ -23,7 +23,7 @@ class ExperimentPage extends Component {
     const { cookies } = this.props;
     // const tasks = PreviewResponse.tasks;
 
-    console.log(this.state);
+    // console.log(this.state);
     //////
     await fetch(
       "http://127.0.0.1:8000/viewset/questionnaire/" +
@@ -62,7 +62,7 @@ class ExperimentPage extends Component {
       // tasks.forEach((task, index) => {
       const inputList = this.state.inputList;
       ///////
-      console.log(task);
+      // console.log(task);
       // task.components.forEach((component, index) => {
       if (task.component_type_id === 1) {
         this.setState({
@@ -87,26 +87,36 @@ class ExperimentPage extends Component {
             <div key={"range" + index}>
               <h3>--- {task.task_title} ---</h3>
               <h4>{task.label}</h4>
-              <input
-                type="range"
-                className="custom-range"
-                defaultValue="22"
-                id="customRange1"
-              />
+              {task.answers.map(function (answer, index) {
+                // return <p>{answer.answer_content}</p>;
+                // console.log(answer.answer_content);
+                return (
+                  <div key={index}>
+                    {answer.answer_content}
+                    <input
+                      key={"range" + index}
+                      type="range"
+                      className="custom-range"
+                      defaultValue="22"
+                      id="customRange1"
+                    />{" "}
+                  </div>
+                );
+              })}
             </div>
           ),
         });
       } else if (task.component_type_id === 3) {
         this.setState({
           inputList: inputList.concat(
-            <div>
+            <div key={"task" + index}>
               <h3>--- {task.task_title} ---</h3>
               <h4>{task.label}</h4>{" "}
               {task.answers.map(function (answer, index) {
                 // return <p>{answer.answer_content}</p>;
-                console.log(answer.answer_content);
+                // console.log(answer.answer_content);
                 return (
-                  <div>
+                  <div key={index}>
                     <input type="radio" key={index} name="ans" />
                     {answer.answer_content}
                   </div>
