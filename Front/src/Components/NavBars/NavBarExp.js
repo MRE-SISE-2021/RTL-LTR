@@ -8,12 +8,12 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-import Navbar from "react-bootstrap/Navbar";
+//import Navbar from "react-bootstrap/Navbar";
 import "../../styles/homePageStyle.css";
 import API from "../../Api/Api";
 import { withCookies } from "react-cookie";
 
-import Navbar from 'react-bootstrap/Navbar' 
+import {Navbar} from 'react-bootstrap' 
 import '../../styles/homePageStyle.css'; 
 
 
@@ -90,13 +90,17 @@ class NavBar extends Component {
     if (this.props.headerFixedLayout) {
       headerClass = [...headerClass, "headerpos-fixed"];
     }
-
+   
     let navBar = (
       <Aux>
-        <Navbar fixed="top" bg="info" variant="dark">
-          <Link to="/home">
-            <MDBIcon className="mr-5" icon="home" />
+        <Navbar fixed="top" bg="info" variant="dark"  style={{ height: "10%" }}>
+        <Link to="/home">
+            <ul class="mb-1 bg-info text-white">
+              <li>
+            <MDBIcon icon="home" size="3x" className="indigo-text pr-5" /> </li>
+            </ul>
           </Link>
+         
 
           <div className="collapse navbar-collapse">
             <h5 className="mr-4">ExpName: </h5>

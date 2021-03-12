@@ -163,7 +163,7 @@ class ExperimentTable extends Component {
 */
     return (
       <Aux>
-        <nav style={{ marginLeft: "200px" }}>
+        <nav style={{ marginLeft: "15%" }}>
           <QuestionnaireInfo chosen={this.state.chosen} />
         </nav>
 
@@ -172,18 +172,12 @@ class ExperimentTable extends Component {
             <h5>My Experiments</h5>
             <Modal />
           </Row>
-          <Table
-            style={{
-              borderStyle: "solid",
-              width: "320px",
-              height: "450px",
-              overflow: "auto",
-              display: "inline-block",
-            }}
+          <Table striped bordered hover 
+           
           >
             <thead>
               <tr>
-                <th>#</th>
+                <th >#</th>
                 <th>Experiment Name</th>
                 <th>status</th>
                 <th>
@@ -197,6 +191,12 @@ class ExperimentTable extends Component {
             </thead>
 
             <tbody>
+            <tr>
+      <td>1</td>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
               {/* {console.log(names)} */}
               {names.map((value, index) => {
                 return (

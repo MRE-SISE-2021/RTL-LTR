@@ -74,6 +74,7 @@ class Task extends Component {
   render() {
     return (
       <Aux>
+
         {this.state.inputList.map(function (input, index) {
           return input;
         })}
