@@ -39,8 +39,11 @@ class HomePage extends Component {
     }
     return (
       <Aux>
-        <div style={{margin : "0" , marginTop: "0px"}} className={mainClass.join(" ")}>
-          <ExperimentsTable  />
+        <div
+          style={{ margin: "0", marginTop: "0px" }}
+          className={mainClass.join(" ")}
+        >
+          <ExperimentsTable />
         </div>
       
       </Aux>

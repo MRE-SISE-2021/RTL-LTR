@@ -3,30 +3,80 @@ import { connect } from "react-redux";
 import { Row, Col, Card } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Button } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
-
-// import Card from "../App/components/MainCard";
+import { Redirect } from "react-router-dom";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+import API from "../Api/Api";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
+import { withCookies } from "react-cookie";
 
-
-import '../styles/homePageStyle.css'; 
-//import '../assets/scss/themes/bootstrap-overlay/_card.scss'
+import "../styles/homePageStyle.css";
 
 class ExperimentInfo extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       toDashboard: false,
+      reload: false,
+      edit: false,
     };
-    this.submitHandler = this.submitHandler.bind(this);
+    this.submitHandlerPreview = this.submitHandlerPreview.bind(this);
+    this.submitHandlerDelete = this.submitHandlerDelete.bind(this);
+    this.submitHandlerEdit = this.submitHandlerEdit.bind(this);
   }
 
-  submitHandler(event) {
+  submitHandlerPreview(event) {
     event.preventDefault();
+    if (this.props.chosen.questionnaire_id === undefined) {
+      return;
+    }
     this.setState(() => ({
       toDashboard: true,
     }));
+  }
+
+  submitHandlerEdit(event) {
+    event.preventDefault();
+    if (this.props.chosen.questionnaire_id === undefined) {
+      return;
+    }
+    this.setState(() => ({
+      edit: true,
+    }));
+  }
+  submitHandlerDelete(event) {
+    //DELETE request -- delete task
+    const { cookies } = this.props;
+
+    if (this.props.chosen.questionnaire_id === undefined) {
+      return;
+    }
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this file!",
+      type: "warning",
+      showCloseButton: true,
+      showCancelButton: true,
+    }).then((willDelete) => {
+      if (willDelete.value) {
+        const response = {
+          questionnaire_id: this.props.chosen.questionnaire_id, //
+        };
+
+        API.deleteRequest(
+          "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
+          response,
+          cookies.cookies.token
+        ).then((data) => {
+          console.log(data); // JSON data parsed by `data.json()` call
+        });
+        return MySwal.fire("", "Your file has been deleted!", "success");
+      } else {
+        return MySwal.fire("", "Your file is safe!", "error");
+      }
+    });
   }
 
   UNSAFE_componentWillMount() {
@@ -46,128 +96,112 @@ class ExperimentInfo extends Component {
   }
 
   render() {
-    // const data = QuestionaireInfoResponse;
     const data = this.props.chosen;
-
     if (this.state.toDashboard === true) {
       return <Redirect to={"/preview/" + data.questionnaire_id} />;
     }
 
-    // console.log(this.props.chosen);
-    let mainClass = ["content-main"];
-    if (this.props.fullWidthLayout) {
-      mainClass = [...mainClass, "container-fluid"];
-    } else {
-      mainClass = [...mainClass, "container"];
+    if (this.state.edit === true) {
+      return (
+        <Redirect
+          to={{
+            pathname:
+              "/create/" +
+              data.questionnaire_name +
+              "/exp/" +
+              data.language_id +
+              "/" +
+              data.questionnaire_id,
+            state: { tasks: data.tasks },
+          }}
+        />
+      );
     }
 
-    console.log(data);
+    // console.log(data);
     return (
-    
-      <Aux >
+      <Aux>
+        <nav
+          className="bg-info text-white"
+          style={{ marginTop: "90px", marginLeft: "200px" }}
+        >
+          <Aux>
+            <Card>
+              <Card.Header style={{ height: "90px" }}>
+                <Card.Title>
+                  <b className="text-info">{data.questionnaire_name}</b>
+                  <div className="d-flex justify-content-lg-end">
+                    <Button variant="outline-*" disabled>
+                      <MDBIcon className="mr-5" icon="upload" />
+                    </Button>
+                    <Button
+                      variant="outline-*"
+                      onClick={this.submitHandlerPreview}
+                    >
+                      <MDBIcon className="mr-5" icon="eye" />
+                    </Button>
 
-        
-        <nav  style={{class:"p-3 mb-2 bg-info text-white" , marginTop:"53px"}} className={mainClass.join(" ")}>
-
-        
-        {/* <NavBar /> */}
-        
-        <div  className={mainClass.join(" ")}>
-          <div  className="pcoded-main-container full-screenable-node">
-            <div className="pcoded-wrapper">
-              <div  className="pcoded-content">
-                <div  className="pcoded-inner-content">
-             
-                  <div   className="main-body">  
-                    <div   className="page-wrapper">
-                      <Aux>  
-                      
-                        <Row>
-                          <Col>
-                            <Card isOption>
-                            <div  style={{ height: "90px"}} class="p-3 mb-2 bg-info text-white">
-                            <Card.Header >
-                                <Card.Title>
-                                  {data.questionnaire_name}
-                                  <div className="d-flex justify-content-lg-end">
-                                    <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-3" icon="upload" size="2x" className="text-white"/>
-                                    </Button>
-                                    <Button
-                                      variant="outline-*"
-                                      onClick={this.submitHandler}
-                                    >
-                                      <MDBIcon className="mr-3" icon="eye" size="2x" className="text-white"/>
-                                    </Button>
-
-                                    <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-3" icon="clone" size="2x" className="text-white"/>
-                                    </Button>
-                                    <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-3" icon="edit" size="2x" className="text-white"/>
-                                    </Button>
-                                    <Button variant="outline-*" disabled>
-                                      <MDBIcon className="mr-3" icon="trash-alt" size="2x" className="text-white"
-                                      />
-                                    </Button>
-                                  </div>
-                                </Card.Title>
-                              </Card.Header>
-                              </div>
-                             
-                            <div  style={{ height: "450px"}} class="p-3 mb-2 bg-info text-white">
-                             <Card.Body> 
-                              <Row>
-                                <Col>
-                                  <b>Created: </b> {data.creation_date}
-                                </Col>
-                                <Col>
-                                  <b>Language: </b>
-                                  {
-                                    {
-                                      1: "Arabic",
-                                      2: "English",
-                                      3: "Hebrew",
-                                      4: "Russian",
-                                    }[data.language_id]
-                                  }
-                                </Col>
-                              </Row>
-                              
-                              <Row>
-                                <Col>
-                                  <b>Hosted Link: </b>
-                                  {data.hosted_link}
-                                </Col>
-                                <Col>
-                                  <b>Status: </b>
-                                  {data.is_active !== undefined
-                                    ? [data.is_active ? "True" : "False"]
-                                    : null}
-                                </Col>
-                              </Row>
-                             
-                              </Card.Body>
-                          </div>
-                          
-                          
-                            </Card>        
-                                
-                          </Col>
-                        </Row> 
-                             
-                      </Aux>                 
-                    </div>
+                    <Button variant="outline-*" disabled>
+                      <MDBIcon className="mr-5" icon="clone" />
+                    </Button>
+                    <Button
+                      variant="outline-*"
+                      onClick={this.submitHandlerEdit}
+                    >
+                      <MDBIcon className="mr-5" icon="edit" />
+                    </Button>
+                    <Button
+                      variant="outline-*"
+                      onClick={this.submitHandlerDelete}
+                    >
+                      <MDBIcon className="mr-5" icon="trash-alt" />
+                    </Button>
                   </div>
-                 
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                </Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <div style={{ height: "425px" }} className="bg-info text-white">
+                  <ul className="p-3 mb-2 text-white">
+                    <Row>
+                      <Col>
+                        <b>Created: </b> {data.creation_date}
+                      </Col>
+                      <Col>
+                        <b>Language: </b>
+                        {
+                          {
+                            1: "Arabic",
+                            2: "English",
+                            3: "Hebrew",
+                            4: "Russian",
+                          }[data.language_id]
+                        }
+                      </Col>
+                    </Row>
 
-        {/* <Configuration /> */}
-      </nav>
+                    <Row>
+                      <Col>
+                        <b>Hosted Link: </b>
+                        {data.hosted_link}
+                      </Col>
+                      <Col>
+                        <b>Status: </b>
+                        {data.is_active !== undefined
+                          ? [data.is_active ? "True" : "False"]
+                          : null}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <b>Mesaures: </b>
+                      </Col>
+                    </Row>
+                  </ul>
+                </div>
+              </Card.Body>
+            </Card>
+          </Aux>
+        </nav>
       </Aux>
       
     );
@@ -189,4 +223,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperimentInfo);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentInfo)
+);

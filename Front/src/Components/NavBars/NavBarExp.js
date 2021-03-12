@@ -6,6 +6,12 @@ import { Link, Redirect } from "react-router-dom";
 import Modal from "../Modals/ModalSavedExperiment";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+import Navbar from "react-bootstrap/Navbar";
+import "../../styles/homePageStyle.css";
+import API from "../../Api/Api";
+import { withCookies } from "react-cookie";
 
 import Navbar from 'react-bootstrap/Navbar' 
 import '../../styles/homePageStyle.css'; 
@@ -15,20 +21,64 @@ class NavBar extends Component {
   constructor() {
     super();
     this.state = {
-      toDashboard: false,
+      toPreview: false,
+      toHome: false,
     };
-    this.submitHandler = this.submitHandler.bind(this);
+    this.submitPreview = this.submitPreview.bind(this);
+    this.submitDelete = this.submitDelete.bind(this);
   }
 
-  submitHandler(event) {
+  submitPreview(event) {
     event.preventDefault();
     this.setState(() => ({
-      toDashboard: true,
+      toPreview: true,
     }));
   }
+
+  submitDelete(event) {
+    event.preventDefault();
+    const { cookies } = this.props;
+
+    if (this.props.expId === undefined) {
+      return;
+    }
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this file!",
+      type: "warning",
+      showCloseButton: true,
+      showCancelButton: true,
+    }).then((willDelete) => {
+      if (willDelete.value) {
+        const response = {
+          questionnaire_id: this.props.expId, //
+        };
+
+        API.deleteRequest(
+          "questionnaire-preview-data/" + this.props.expId,
+          response,
+          cookies.cookies.token
+        ).then((data) => {
+          console.log(data); // JSON data parsed by `data.json()` call
+        });
+        this.setState(() => ({
+          toHome: true,
+        }));
+        return MySwal.fire("", "Your file has been deleted!", "success");
+      } else {
+        return MySwal.fire("", "Your file is safe!", "error");
+      }
+    });
+  }
   render() {
-    if (this.state.toDashboard === true) {
-      return <Redirect to={"/preview"} />;
+    // console.log(this.props);
+    if (this.state.toPreview === true) {
+      return <Redirect to={"/preview/" + this.props.expId} />;
+    }
+
+    if (this.state.toHome === true) {
+      return <Redirect to={"/home/"} />;
     }
 
     let headerClass = [
@@ -41,67 +91,68 @@ class NavBar extends Component {
       headerClass = [...headerClass, "headerpos-fixed"];
     }
 
-    let mainHeaderClass = ["content-main"];
-    if (this.props.fullWidthLayout) {
-      mainHeaderClass = [...mainHeaderClass, "container-fluid"];
-    } else {
-      mainHeaderClass = [...mainHeaderClass, "container"];
-    }
-
     let navBar = (
       <Aux>
-       <Navbar fixed="bottom" fixed="top" expand="lg" bg="info" variant="dark">
-          
-
-       
-
-       
-        <div className={mainHeaderClass.join(" ")}>
-          {/* <div className="m-header"> */}
-          {/* <a className="b-brand"> */}
-          {/* <img id="main-logo" src={mainLogo} alt="" className="logo" /> */}
+        <Navbar fixed="top" bg="info" variant="dark">
           <Link to="/home">
-            <MDBIcon className="mr-5" icon="angle-double-left" />
+            <MDBIcon className="mr-5" icon="home" />
           </Link>
-          {/* </a> */}
-          {/* </div> */}
 
           <div className="collapse navbar-collapse">
-            <h5 className="mr-5">Experiment Name </h5>
-            <Button className="btn-primary tn-edit btn btn-default mr-5" size="lg" variant="light">
+            <h5 className="mr-4">ExpName: </h5>
+            <Button
+              className="btn-primary tn-edit btn btn-default mr-5"
+              size="lg"
+              variant="light"
+            >
               {this.props.name}
             </Button>
-            <h5 className="mr-5"> Type </h5>
+            <h5 className="mr-4"> Type </h5>
 
-            <Button className="btn-primary tn-edit btn btn-default mr-5 " size="lg" variant="light">
+            <Button
+              className="btn-primary tn-edit btn btn-default mr-5 "
+              size="lg"
+              variant="light"
+            >
               {this.props.type}
             </Button>
 
-            <h5 className="mr-5"> Language </h5>
+            <h5 className="mr-4"> Language </h5>
 
-            <Button className="btn-primary tn-edit btn btn-default mr-5 " size="lg" variant="light" >
+            <Button
+              className="btn-primary tn-edit btn btn-default mr-5"
+              size="lg"
+              variant="light"
+            >
               {this.props.lang}
             </Button>
+            {this.props.prev ? null : (
+              <div className="d-flex justify-content-lg-end">
+                <Modal className="mr-4" data={this.props} />
 
-            <div className="d-flex justify-content-lg-end">
-              {/* props = name | lang | type */}
-              <Modal className="ml-5 " data={this.props} />
-
-              <Button variant="outline-*" onClick={this.submitHandler}>
-                <MDBIcon className="mr-5 text-white" far icon="eye" size="2x"  />
-              </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5 text-white" icon="paperclip" size="2x"  />
-              </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5 text-white" far icon="clone"  size="2x"  />
-              </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5 text-white" far icon="trash-alt" size="2x"   />
-              </Button>
-            </div>
+                <Button
+                  variant="outline-*"
+                  style={{ color: "white" }}
+                  onClick={this.submitPreview}
+                >
+                  <MDBIcon className="mr-5" far icon="eye" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" icon="paperclip" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" far icon="clone" />
+                </Button>
+                <Button
+                  variant="outline-*"
+                  style={{ color: "white" }}
+                  onClick={this.submitDelete}
+                >
+                  <MDBIcon className="mr-5" far icon="trash-alt" />
+                </Button>
+              </div>
+            )}
           </div>
-        </div>
         </Navbar>
       </Aux>
     );
@@ -131,4 +182,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(NavBar)
+);

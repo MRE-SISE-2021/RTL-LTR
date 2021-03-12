@@ -1,52 +1,63 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Tabs, Tab, Button } from "react-bootstrap";
-import Card from "../../App/components/MainCard";
+import { Tabs, Tab, Form, Button } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
-import Input from "../PagesInput";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
-import QuestionsInput from "../QuestionsInput";
 import NavBar from "../NavBars/NavBarExp";
-
+import Task from "../UI-Elements/Task";
 class ComponentsTable extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = { inputList: [] };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
-    this.onAddBtnClick2 = this.onAddBtnClick2.bind(this);
   }
 
+  componentWillReceiveProps(propsIncoming) {
+    //Edit EXP
+    const id = propsIncoming.expId;
+    let inputListNew = [];
+    if (propsIncoming.tasks.length > 0) {
+      propsIncoming.tasks.forEach((task, index) => {
+        console.log(task);
+        const task_id = task.task_id;
+        const task_title = task.task_title;
+
+        inputListNew = inputListNew.concat(
+          <Task
+            key={index}
+            expId={id}
+            keyOrder={index}
+            label={task.label}
+            taskId={task_id}
+            title={task_title}
+            compTypeId={task.component_type_id}
+            answers={task.answers}
+          />
+        );
+        // }
+      });
+    }
+    this.setState({ inputList: inputListNew });
+    console.log(this.state);
+  }
+
+  //////--- on button clicked add tasks ---///////
   onAddBtnClick(event) {
     const inputList = this.state.inputList;
+    const id = this.props.expId;
     this.setState({
       inputList: inputList.concat(
-        <Input key={this.state.inputList.length} name={event.target.id} />
-      ),
-    });
-  }
-
-  ////////////////
-  callbackFunction = (childData) => {
-    this.setState({ message: childData });
-  };
-  /////////////////
-  onAddBtnClick2(event) {
-    event.persist();
-    const inputList = this.state.inputList;
-    console.log(event);
-    this.setState({
-      inputList: inputList.concat(
-        <QuestionsInput
+        <Task
           key={inputList.length}
-          name={event.target.id}
-          label={this.callbackFunction}
-          title={this.callbackFunction}
+          compTypeId={parseInt(event.target.id)}
+          expId={id}
+          keyOrder={inputList.length}
         />
       ),
     });
   }
-
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -64,6 +75,8 @@ class ComponentsTable extends Component {
   }
 
   render() {
+    // console.log(this.props.tasks.length);
+
     let navClass = ["pcoded-navbar"];
 
     navClass = [...navClass, this.props.layoutType];
@@ -89,14 +102,7 @@ class ComponentsTable extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
-    // let navBarClass = ["navbar-wrapper", "content-main"];
-    // if (this.props.fullWidthLayout) {
-    //   navBarClass = [...navBarClass, "container-fluid"];
-    // } else {
-    //   navBarClass = [...navBarClass, "container"];
-    // }
-
-    console.log(this.state.inputList);
+    // console.log(this.state.inputList);
     return (
       <Aux>
 
@@ -105,73 +111,110 @@ class ComponentsTable extends Component {
           type={this.props.type}
           lang={this.props.lang}
           tasks={this.state.inputList}
+          expId={this.props.expId}
         />
-        {this.state.inputList.map(function (input, index) {
-          return input;
-        })}
-        <nav  className={navClass.join(" ")} style={{  width:"20%" , background: "white" }}>
-          <Card >
-            <Tabs defaultActiveKey="home" className="mb-3">
-              <Tab  eventKey="home" title={<MDBIcon icon="plus"  size="2x" />}>
-                <ul className="list-group list-group-full">
-                  <h5>Genral forms</h5>
-                  <li className="list-group-item">
-                    {/* //////// */}
+        <div
+          style={{
+            marginTop: "10%",
+          }}
+        >
+          {this.state.inputList.map(function (input, index) {
+            return input;
+          })}
+        </div>
+        <nav
+          className={navClass.join(" ")}
+          style={{
+            width: "300px",
+            background: "white",
+            position: "fixed",
+            top: "0",
+            left: "0",
+          }}
+        >
+          <Tabs defaultActiveKey="home">
+            <Tab eventKey="home" title={<MDBIcon icon="plus" />}>
+              <ul
+                style={{
+                  width: "300px",
+                  textAlign: "center",
+                }}
+                className="list-group list-group-full"
+              >
+                <h5>Genral forms</h5>
+                <li className="list-group-item">
+                  <Button
+                    id="1"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file-text" /> New Page
+                  </Button>
+                </li>
+                <br />
+                <h5>Text Based</h5>
 
-                    <Button
-                      id="Welcome"
-                      onClick={this.onAddBtnClick}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file-text" /> Welcome Page
-                    </Button>
-                  </li>
-                  <li className="list-group-item">
-                    <Button
-                      id="Explanation"
-                      onClick={this.onAddBtnClick}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file-text" /> Explanation page
-                    </Button>
-                  </li>
-                  <li className="list-group-item">
-                    <Button
-                      id="Thank You"
-                      onClick={this.onAddBtnClick}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file-text" /> Thank you page
-                    </Button>
-                  </li>
+                <li className="list-group-item">
+                  <Button
+                    id="2"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Range Questions
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="3"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Text
+                  </Button>
+                </li>
+              </ul>{" "}
+            </Tab>
+            <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
+              <ul
+                style={{
+                  width: "300px",
+                  textAlign: "center",
+                }}
+                className="list-group list-group-full"
+              >
+                <h5>Settings Tab</h5>
+                <br />
+
+                <Form style={{ textAlign: "left", color: "black" }}>
+                  <Form.Check
+                    type="switch"
+                    id="rtl-switch"
+                    label="RTL/LTR customazation"
+                  />
                   <br />
-                  <h5>Text Based</h5>
+                  <Form.Check
+                    type="switch"
+                    label="is required"
+                    id="is-required-switch"
+                  />
+                  <br />
 
-                  <li className="list-group-item">
-                    <Button
-                      id="Range"
-                      onClick={this.onAddBtnClick2}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file" /> Range
-                    </Button>
-                  </li>
-                  <li className="list-group-item">
-                    <Button
-                      id="Text"
-                      onClick={this.onAddBtnClick2}
-                      variant="outline-info"
-                    >
-                      <i className="feather icon-file" /> Text
-                    </Button>
-                  </li>
-                </ul>{" "}
-              </Tab>
-              <Tab eventKey="profile" title={<MDBIcon icon="cog" size="2x" />}>
-                <p>SETTINGS TAB.</p>
-              </Tab>
-            </Tabs>
-          </Card>
+                  <Form.Check
+                    type="switch"
+                    id="new-page-switch"
+                    label="Open on a new page"
+                  />
+                  <br />
+
+                  <Form.Check
+                    type="switch"
+                    id="picture-switch"
+                    label="Add picture under the question"
+                  />
+                </Form>
+              </ul>
+            </Tab>
+          </Tabs>
         </nav>
         
       </Aux>

@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import NavBar from "../Components/NavBars/NavBarExp";
+// import PreviewResponse from "../Api/mocks/PreviewResponse";
+// cookies
+import { withCookies } from "react-cookie";
 
 class ExperimentPage extends Component {
   constructor() {
@@ -15,35 +18,28 @@ class ExperimentPage extends Component {
       type: "",
     };
   }
-  // UNSAFE_componentWillMount() {
-  //   if (
-  //     this.props.windowWidth > 992 &&
-  //     this.props.windowWidth <= 1024 &&
-  //     this.props.layout !== "horizontal"
-  //   ) {
-  //     this.props.onComponentWillMount();
-  //   }
-  // }
-
-  // mobileOutClickHandler() {
-  //   if (this.props.windowWidth < 992 && this.props.collapseMenu) {
-  //     this.props.onComponentWillMount();
-  //   }
-  // }
-
   async componentDidMount() {
+    // cookies
+    const { cookies } = this.props;
+    // const tasks = PreviewResponse.tasks;
+
+    // console.log(this.state);
     //////
     await fetch(
       "http://127.0.0.1:8000/viewset/questionnaire/" +
         this.props.match.params.id +
-        "/"
+        "/",
+      {
+        headers: new Headers({
+          Authorization: `Token ${cookies.cookies.token}`,
+        }),
+      }
     )
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result);
           this.setState(() => ({
-            tasks: result.tasks[0].components,
+            tasks: result.tasks,
             name: result.questionnaire_name,
             type: result.questionnaire_type_id,
             lang: result.language_id,
@@ -58,88 +54,89 @@ class ExperimentPage extends Component {
       );
 
     this.putInputList();
-    // window.addEventListener("resize", this.resize);
   }
 
   putInputList() {
-    // alert("here");
-    // console.log(this.state.tasks);
-
-    this.state.tasks.forEach((task) => {
-      console.log(task);
+    console.log();
+    this.state.tasks.forEach((task, index) => {
+      // tasks.forEach((task, index) => {
       const inputList = this.state.inputList;
-
-      if (task.component_type === "Welcome") {
-        this.setState({
-          inputList: inputList.concat(<h1> Welcome</h1>),
-        });
-      } else if (task.component_type === "Explanation") {
-        this.setState({
-          inputList: inputList.concat(<h1> Explanation</h1>),
-        });
-      } else if (task.component_type === "Range") {
+      ///////
+      // console.log(task);
+      // task.components.forEach((component, index) => {
+      if (task.component_type_id === 1) {
         this.setState({
           inputList: inputList.concat(
-            <div>
-              <p>{task.label}</p>
-              <input
-                type="range"
-                className="custom-range"
-                defaultValue="22"
-                id="customRange1"
-              />
-            </div>
+            <div key="1" dangerouslySetInnerHTML={{ __html: task.label }}></div>
           ),
-        });
-      } else if (task.component_type === "Text") {
-        this.setState({
-          inputList: inputList.concat(
-            <div>
-              <p>{task.label}</p>
-              <input
-                type="text"
-                className="custom-range"
-                defaultValue="22"
-                id="customRange1"
-              />
-            </div>
-          ),
-        });
-      } else {
-        this.setState({
-          inputList: inputList.concat(<h1> Default</h1>),
         });
       }
-      // switch (task.component_type) {
-      //   case "Welcome":
-      //     this.setState({
-      //       inputList: inputList.concat(<h1> Welcome</h1>),
-      //     });
-      //   case "Explanation":
-      //     this.setState({
-      //       inputList: inputList.concat(<h1> Explanation</h1>),
-      //     });
-      //   default:
-      //     this.setState({
-      //       inputList: inputList.concat(<h1> Default</h1>),
-      //     });
+      // else if (task.component_type === "Explanation") {
+      //   this.setState({
+      //     inputList: inputList.concat(
+      //       <div
+      //         key="explain"
+      //         dangerouslySetInnerHTML={{ __html: task.label }}
+      //       ></div>
+      //     ),
+      //   });
       // }
-
-      /////
+      else if (task.component_type_id === 2) {
+        this.setState({
+          inputList: inputList.concat(
+            <div key={"range" + index}>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>
+              {task.answers.map(function (answer, index) {
+                // return <p>{answer.answer_content}</p>;
+                // console.log(answer.answer_content);
+                return (
+                  <div key={index}>
+                    {answer.answer_content}
+                    <input
+                      key={"range" + index}
+                      type="range"
+                      className="custom-range"
+                      defaultValue="22"
+                      id="customRange1"
+                    />{" "}
+                  </div>
+                );
+              })}
+            </div>
+          ),
+        });
+      } else if (task.component_type_id === 3) {
+        this.setState({
+          inputList: inputList.concat(
+            <div key={"task" + index}>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>{" "}
+              {task.answers.map(function (answer, index) {
+                // return <p>{answer.answer_content}</p>;
+                // console.log(answer.answer_content);
+                return (
+                  <div key={index}>
+                    <input type="radio" key={index} name="ans" />
+                    {answer.answer_content}
+                  </div>
+                );
+              })}
+            </div>
+          ),
+        });
+      }
     });
-    // console.log(this.state.inputList);
+    // });
   }
 
   render() {
-    // console.log(this.props.match.params.id);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
     } else {
       mainClass = [...mainClass, "container"];
     }
-    // console.log(this.state.tasks);
-    // console.log(this.state.inputList);
 
     return (
       <Aux>
@@ -147,6 +144,7 @@ class ExperimentPage extends Component {
           name={this.state.name}
           type={this.state.type}
           lang={this.state.lang}
+          prev={true}
         />
         <div className={mainClass.join(" ")}>
           <div className="pcoded-main-container full-screenable-node">
@@ -158,7 +156,6 @@ class ExperimentPage extends Component {
                       <Aux>
                         {this.state.inputList.map(function (input, index) {
                           return input;
-                          // alert(index);
                         })}
                       </Aux>
                     </div>
@@ -188,4 +185,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperimentPage);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentPage)
+);
