@@ -20,7 +20,7 @@ class FormsElements extends React.Component {
       deleteAll: false,
       taskId: props.taskId,
       answersNum: 2,
-      answers: [],
+      answers: props.answers,
     };
 
     this.onInputchange = this.onInputchange.bind(this);
@@ -155,10 +155,16 @@ class FormsElements extends React.Component {
 
   onAnswerchange(event) {
     console.log("Answeeeeeersss");
+    console.log(this.state);
+    console.log(this.props);
 
     let index = event.target.id - 1;
     let answer_content = event.target.value;
-    let answers = [...this.state.answers];
+    let answers = [];
+    if (this.state.answers !== undefined) {
+      answers = [...this.state.answers];
+    }
+    // let answers = [...this.state.answers];
     if (event.target.name === "check") {
       if (
         this.props.answers !== undefined &&
