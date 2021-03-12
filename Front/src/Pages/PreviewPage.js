@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import NavBar from "../Components/NavBars/NavBarExp";
-
+// import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
 
@@ -21,7 +21,9 @@ class ExperimentPage extends Component {
   async componentDidMount() {
     // cookies
     const { cookies } = this.props;
+    // const tasks = PreviewResponse.tasks;
 
+    // console.log(this.state);
     //////
     await fetch(
       "http://127.0.0.1:8000/viewset/questionnaire/" +
@@ -55,68 +57,77 @@ class ExperimentPage extends Component {
   }
 
   putInputList() {
+    console.log();
     this.state.tasks.forEach((task, index) => {
+      // tasks.forEach((task, index) => {
       const inputList = this.state.inputList;
       ///////
-      task.components.forEach((component, index) => {
-        if (component.component_type === "Welcome") {
-          this.setState({
-            inputList: inputList.concat(
-              <div
-                key="welcome"
-                dangerouslySetInnerHTML={{ __html: component.label }}
-              ></div>
-            ),
-          });
-        } else if (component.component_type === "Explanation") {
-          this.setState({
-            inputList: inputList.concat(
-              <div
-                key="explain"
-                dangerouslySetInnerHTML={{ __html: component.label }}
-              ></div>
-            ),
-          });
-        } else if (component.component_type === "Range") {
-          this.setState({
-            inputList: inputList.concat(
-              <div key={"range" + index}>
-                <p>{component.label}</p>
-                <input
-                  type="range"
-                  className="custom-range"
-                  defaultValue="22"
-                  id="customRange1"
-                />
-              </div>
-            ),
-          });
-        } else if (component.component_type === "Text") {
-          this.setState({
-            inputList: inputList.concat(
-              <div>
-                <p>{component.label}</p>
-                <input
-                  type="text"
-                  className="custom-range"
-                  // defaultValue="22"
-                  id="customRange1"
-                />
-              </div>
-            ),
-          });
-        } else {
-          this.setState({
-            inputList: inputList.concat(
-              <div
-                key="thaks"
-                dangerouslySetInnerHTML={{ __html: component.label }}
-              ></div>
-            ),
-          });
-        }
-      });
+      // console.log(task);
+      // task.components.forEach((component, index) => {
+      if (task.component_type_id === 1) {
+        this.setState({
+          inputList: inputList.concat(
+            <div key="1" dangerouslySetInnerHTML={{ __html: task.label }}></div>
+          ),
+        });
+      }
+      // else if (task.component_type === "Explanation") {
+      //   this.setState({
+      //     inputList: inputList.concat(
+      //       <div
+      //         key="explain"
+      //         dangerouslySetInnerHTML={{ __html: task.label }}
+      //       ></div>
+      //     ),
+      //   });
+      // }
+      else if (task.component_type_id === 2) {
+        this.setState({
+          inputList: inputList.concat(
+            <div key={"range" + index}>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>
+              {task.answers.map(function (answer, index) {
+                // return <p>{answer.answer_content}</p>;
+                // console.log(answer.answer_content);
+                return (
+                  <div key={index}>
+                    {answer.answer_content}
+                    <input
+                      key={"range" + index}
+                      type="range"
+                      className="custom-range"
+                      defaultValue="22"
+                      id="customRange1"
+                    />{" "}
+                  </div>
+                );
+              })}
+            </div>
+          ),
+        });
+      } else if (task.component_type_id === 3) {
+        this.setState({
+          inputList: inputList.concat(
+            <div key={"task" + index}>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>{" "}
+              {task.answers.map(function (answer, index) {
+                // return <p>{answer.answer_content}</p>;
+                // console.log(answer.answer_content);
+                return (
+                  <div key={index}>
+                    <input type="radio" key={index} name="ans" />
+                    {answer.answer_content}
+                  </div>
+                );
+              })}
+            </div>
+          ),
+        });
+      }
     });
+    // });
   }
 
   render() {

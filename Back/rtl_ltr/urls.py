@@ -6,8 +6,8 @@ from rest_framework.authtoken.views import obtain_auth_token
 # Routers
 
 # Component
-router_component = DefaultRouter()
-router_component.register('component', ComponentViewSet, basename='component')
+router_component_type = DefaultRouter()
+router_component_type.register('component_type', ComponentTypeViewSet, basename='component_type')
 
 # HciBackground
 router_hci_background = DefaultRouter()
@@ -32,6 +32,10 @@ router_task.register('task', TaskViewSet, basename='task')
 # Participant
 router_participant = DefaultRouter()
 router_participant.register('participant', ParticipantViewSet, basename='participant')
+
+# Participant
+router_proficiency = DefaultRouter()
+router_proficiency.register('proficiency', ProficiencyViewSet, basename='proficiency')
 
 # Answer
 router_answer = DefaultRouter()
@@ -64,10 +68,6 @@ router_questionnaire_participant.register('questionnaire_participant', Questionn
 router_questionnaire_task = DefaultRouter()
 router_questionnaire_task.register('questionnaire_task', QuestionnaireTaskViewSet, basename='questionnaire_task')
 
-# TaskComponent
-router_task_component = DefaultRouter()
-router_task_component.register('task_component', TaskComponentViewSet, basename='task_component')
-
 # TaskImage
 router_task_image = DefaultRouter()
 router_task_image.register('task_image', TaskImageViewSet, basename='task_image')
@@ -78,7 +78,7 @@ router_task_image.register('task_image', TaskImageViewSet, basename='task_image'
 urlpatterns = [
     path('auth/', obtain_auth_token),
 
-    path('viewset/', include(router_component.urls)),
+    path('viewset/', include(router_component_type.urls)),
     path('viewset/', include(router_hci_background.urls)),
     path('viewset/', include(router_image.urls)),
     path('viewset/', include(router_language.urls)),
@@ -92,8 +92,10 @@ urlpatterns = [
     path('viewset/', include(router_questionnaire.urls)),
     path('viewset/', include(router_questionnaire_participant.urls)),
     path('viewset/', include(router_questionnaire_task.urls)),
-    path('viewset/', include(router_task_component.urls)),
     path('viewset/', include(router_task_image.urls)),
+    path('viewset/', include(router_proficiency.urls)),
+
+
 
     ### DECORATORS ###
     # GET list of questionnaire names
@@ -104,5 +106,9 @@ urlpatterns = [
     ### CLASS BASED VIEWS ###
     # QuestionnairePreviewAPIView (GET, POST, PUT, DELETE)
     path('questionnaire-preview-data', QuestionnairePreviewAPIView.as_view()),
-    path('questionnaire-preview-data/<int:id>', QuestionnairePreviewAPIView.as_view())
+    path('questionnaire-preview-data/<int:id>', QuestionnairePreviewAPIView.as_view()),
+
+    # ParticipantAPIView (GET, POST, PUT, DELETE)
+    path('participant-data', ParticipantAPIView.as_view()),
+    path('participant-data/<int:id>', ParticipantAPIView.as_view())
 ]

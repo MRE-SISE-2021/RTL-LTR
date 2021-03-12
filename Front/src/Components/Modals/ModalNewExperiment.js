@@ -17,6 +17,7 @@ class NewExperimentModal extends React.Component {
       chosenRadio: "english",
       expName: "exp",
       toDashboard: false,
+      // expId: "1",
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.submitHandler = this.submitHandler.bind(this);

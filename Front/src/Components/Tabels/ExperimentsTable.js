@@ -31,7 +31,6 @@ class ExperimentTable extends Component {
 
   componentDidMount() {
     const { cookies } = this.props;
-    console.log(cookies.cookies.token);
     //////
     fetch("http://127.0.0.1:8000/viewset/questionnaire", {
       headers: new Headers({
@@ -41,7 +40,6 @@ class ExperimentTable extends Component {
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result);
           if (result[0] !== undefined) {
             this.setState({
               isLoaded: true,
