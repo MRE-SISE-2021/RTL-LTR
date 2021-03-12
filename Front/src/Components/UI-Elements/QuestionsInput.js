@@ -160,11 +160,23 @@ class FormsElements extends React.Component {
     let answer_content = event.target.value;
     let answers = [...this.state.answers];
     if (event.target.name === "check") {
-      answers[index] = {
-        answer_content: this.state.answers[index].answer_content,
-        is_correct: event.target.checked,
-        value: "defalut",
-      };
+      if (
+        this.props.answers !== undefined &&
+        this.props.answers[index] !== undefined
+      ) {
+        answers[index] = {
+          answer_content: this.props.answers[index].answer_content,
+          is_correct: event.target.checked,
+          value: "defalut",
+        };
+      } else {
+        answers[index] = {
+          answer_content: this.state.answers[index].answer_content,
+          is_correct: event.target.checked,
+          value: "defalut",
+        };
+      }
+
       this.setState({ answers });
       return;
     }
