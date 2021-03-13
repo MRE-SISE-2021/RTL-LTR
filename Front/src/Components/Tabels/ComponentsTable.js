@@ -1,21 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Tabs, Tab, Form, Button } from "react-bootstrap";
-import Card from "../../App/components/MainCard";
 import { MDBIcon } from "mdbreact";
-import Input from "../PagesInput";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
-import QuestionsInput from "../QuestionsInput";
 import NavBar from "../NavBars/NavBarExp";
-
+import Task from "../UI-Elements/Task";
 class ComponentsTable extends Component {
   constructor(props) {
     super(props);
     console.log(props);
     this.state = { inputList: [] };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
-    this.onAddBtnClick2 = this.onAddBtnClick2.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -24,52 +20,23 @@ class ComponentsTable extends Component {
     let inputListNew = [];
     if (propsIncoming.tasks.length > 0) {
       propsIncoming.tasks.forEach((task, index) => {
+        console.log(task);
         const task_id = task.task_id;
         const task_title = task.task_title;
-        task.components.forEach((comp) => {
-          // console.log(inputList);
-          if (
-            comp.component_type === "Welcome" ||
-            comp.component_type === "Thank You" ||
-            comp.component_type === "Explanation"
-          ) {
-            console.log(comp.component_id);
-            // this.addTasks(comp.component_type, comp.label);
 
-            inputListNew = inputListNew.concat(
-              <Input
-                key={inputListNew.length}
-                name={comp.component_type}
-                expId={id}
-                keyOrder={index}
-                label={comp.label}
-                taskId={task_id}
-                // title={}
-                compId={comp.component_id}
-              />
-            );
-            // console.log("heyyyyyyyyy");
-          } else if (
-            comp.component_type === "Range" ||
-            comp.component_type === "Text"
-          ) {
-            // this.addTasksQuestions(comp.component_type, comp.label, comp.title);
-            // console.log(task_title);
-
-            inputListNew = inputListNew.concat(
-              <QuestionsInput
-                key={inputListNew.length}
-                name={comp.component_type}
-                expId={id}
-                keyOrder={index}
-                label={comp.label}
-                taskId={task_id}
-                title={task_title}
-                compId={comp.component_id}
-              />
-            );
-          }
-        });
+        inputListNew = inputListNew.concat(
+          <Task
+            key={index}
+            expId={id}
+            keyOrder={index}
+            label={task.label}
+            taskId={task_id}
+            title={task_title}
+            compTypeId={task.component_type_id}
+            answers={task.answers}
+          />
+        );
+        // }
       });
     }
     this.setState({ inputList: inputListNew });
@@ -82,32 +49,15 @@ class ComponentsTable extends Component {
     const id = this.props.expId;
     this.setState({
       inputList: inputList.concat(
-        <Input
-          key={this.state.inputList.length}
-          name={event.target.id}
-          expId={id}
-          keyOrder={inputList.length}
-        />
-      ),
-    });
-  }
-
-  onAddBtnClick2(event) {
-    // event.persist();
-    const inputList = this.state.inputList;
-    const id = this.props.expId;
-    this.setState({
-      inputList: inputList.concat(
-        <QuestionsInput
+        <Task
           key={inputList.length}
-          name={event.target.id}
+          compTypeId={parseInt(event.target.id)}
           expId={id}
           keyOrder={inputList.length}
         />
       ),
     });
   }
-
   UNSAFE_componentWillMount() {
     if (
       this.props.windowWidth > 992 &&
@@ -125,7 +75,7 @@ class ComponentsTable extends Component {
   }
 
   render() {
-    console.log(this.props.tasks.length);
+    // console.log(this.props.tasks.length);
 
     let navClass = ["pcoded-navbar"];
 
@@ -152,7 +102,7 @@ class ComponentsTable extends Component {
       navClass = [...navClass, "navbar-collapsed"];
     }
 
-    console.log(this.state.inputList);
+    // console.log(this.state.inputList);
     return (
       <Aux>
         <NavBar
@@ -193,29 +143,11 @@ class ComponentsTable extends Component {
                 <h5>Genral forms</h5>
                 <li className="list-group-item">
                   <Button
-                    id="Welcome"
+                    id="1"
                     onClick={this.onAddBtnClick}
                     variant="outline-info"
                   >
-                    <i className="feather icon-file-text" /> Welcome Page
-                  </Button>
-                </li>
-                <li className="list-group-item">
-                  <Button
-                    id="Explanation"
-                    onClick={this.onAddBtnClick}
-                    variant="outline-info"
-                  >
-                    <i className="feather icon-file-text" /> Explanation page
-                  </Button>
-                </li>
-                <li className="list-group-item">
-                  <Button
-                    id="Thank You"
-                    onClick={this.onAddBtnClick}
-                    variant="outline-info"
-                  >
-                    <i className="feather icon-file-text" /> Thank you page
+                    <i className="feather icon-file-text" /> New Page
                   </Button>
                 </li>
                 <br />
@@ -223,17 +155,17 @@ class ComponentsTable extends Component {
 
                 <li className="list-group-item">
                   <Button
-                    id="Range"
-                    onClick={this.onAddBtnClick2}
+                    id="2"
+                    onClick={this.onAddBtnClick}
                     variant="outline-info"
                   >
-                    <i className="feather icon-file" /> Range
+                    <i className="feather icon-file" /> Range Questions
                   </Button>
                 </li>
                 <li className="list-group-item">
                   <Button
-                    id="Text"
-                    onClick={this.onAddBtnClick2}
+                    id="3"
+                    onClick={this.onAddBtnClick}
                     variant="outline-info"
                   >
                     <i className="feather icon-file" /> Text

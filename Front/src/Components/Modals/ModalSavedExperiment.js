@@ -40,19 +40,19 @@ class SaveModal extends React.Component {
 
   getComponents() {
     const tasks = [];
-    this.props.data.tasks.map(function (task, index) {
-      tasks[index] = {
-        order_key: task.key,
-        component_type: task.props.name,
-        direction: "RTL",
-        label: "whatsssssuppp",
-      };
-    });
+    // this.props.data.tasks.map(function (task, index) {
+    //   tasks[index] = {
+    //     order_key: task.key,
+    //     component_type: task.props.name,
+    //     direction: "RTL",
+    //     label: "whatsssssuppp",
+    //   };
+    // });
     return tasks;
   }
 
   onAddBtnClick() {
-    const langId = this.getLangId();
+    // const langId = this.getLangId();
     console.log(this.props.data);
     // const response = {
     //   //tasks
