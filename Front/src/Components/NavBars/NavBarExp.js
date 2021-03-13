@@ -139,20 +139,20 @@ class NavBar extends Component {
                   style={{ color: "white" }}
                   onClick={this.submitPreview}
                 >
-                  <MDBIcon className="mr-5" far icon="eye" />
+                  <MDBIcon className="mr-5" far icon="eye" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-5" icon="paperclip" />
+                  <MDBIcon className="mr-5" icon="paperclip" size="2x"/>
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-5" far icon="clone" />
+                  <MDBIcon className="mr-5" far icon="clone" size="2x"/>
                 </Button>
                 <Button
                   variant="outline-*"
                   style={{ color: "white" }}
                   onClick={this.submitDelete}
                 >
-                  <MDBIcon className="mr-5" far icon="trash-alt" />
+                  <MDBIcon className="mr-5" far icon="trash-alt" size="2x" />
                 </Button>
               </div>
             )}

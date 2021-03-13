@@ -172,9 +172,7 @@ class ExperimentTable extends Component {
             <h5>My Experiments</h5>
             <Modal />
           </Row>
-          <Table striped bordered hover 
-           
-          >
+          <Table striped bordered hover >
             <thead>
               <tr>
                 <th >#</th>

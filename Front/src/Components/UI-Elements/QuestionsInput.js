@@ -283,18 +283,8 @@ class FormsElements extends React.Component {
 
     return (
       <Aux>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Card
-            style={{
-              width: "500px",
-            }}
-          >
+      
+          <Card>
             <Card.Header>
               <Row>
                 <Card.Title as="h5">
@@ -350,7 +340,7 @@ class FormsElements extends React.Component {
               {/* /////// */}
             </Card.Body>
           </Card>
-        </div>
+        
       </Aux>
     );
   }

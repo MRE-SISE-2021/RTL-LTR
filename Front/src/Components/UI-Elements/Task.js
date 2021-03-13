@@ -4,6 +4,8 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import QuestionsInput from "../UI-Elements/QuestionsInput";
 import Input from "../UI-Elements/PagesInput";
+import { Card } from "react-bootstrap";
+import { CardBody } from "react-bootstrap/Card";
 
 class Task extends Component {
   constructor(props) {
@@ -75,9 +77,19 @@ class Task extends Component {
     return (
       <Aux>
 
-        {this.state.inputList.map(function (input, index) {
-          return input;
-        })}
+        <div style={{
+          width: '60rem',
+          marginBottom:"3%",
+          marginLeft: "25%"
+        }}>
+             {this.state.inputList.map(function (input, index) {
+              return input;
+            })}
+        
+
+        </div>
+       
+          
       </Aux>
     );
   }

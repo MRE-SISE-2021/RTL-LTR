@@ -123,7 +123,7 @@ class ExperimentInfo extends Component {
       <Aux>
         <nav
           className="bg-info text-white"
-          style={{ height:"30%", marginTop: "10%", marginLeft: "25%" }}
+          style={{ height:"30%", marginTop: "13%", marginLeft: "25%" }}
         >
           <Aux>
             <Card >
