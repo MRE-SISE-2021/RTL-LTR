@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from django.http import HttpResponse
 from django.db import transaction
+import numpy as np
 
 import ast
 
@@ -478,9 +479,12 @@ def insert_data_into_table(serializer, id_name=None):
 # update answer and image in db or inset them and associate them with a task
 def update_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer,
                                model_name):
+    data_id_list = []
     for data in data_list:
         # data exists in db
         if data_id_name in data:
+            data_id_list.append(data[data_id_name])
+
             # update the data
             try:
                 update_serializer = None
@@ -502,9 +506,31 @@ def update_associate_task_data(association_task_id, data_list, data_id_name, ser
         data_id = insert_data_into_table(serializer(data=data),
                                          data_id_name)
 
+        data_id_list.append(data_id)
+
         # associate the new data with the new task
         insert_data_into_table(association_task_serializer(data={data_id_name: data_id,
                                                                  'task_id': association_task_id}))
+
+    if model_name == 'Answer':
+        task_answer_queryset = TaskAnswer.objects.filter(task_id=association_task_id).values_list('answer_id')
+        split_lst = zip(*task_answer_queryset)
+        task_answer_db_ids = list(split_lst)[0]
+        answer_ids_to_delete = list(np.setdiff1d(task_answer_db_ids, data_id_list))
+
+        for answer_id in answer_ids_to_delete:
+            TaskAnswer.objects.get(answer_id=answer_id).delete()
+            Answer.objects.get(answer_id=answer_id).delete()
+
+    if model_name == 'Image':
+        task_image_queryset = TaskImage.objects.filter(task_id=association_task_id).values_list('image_id')
+        split_lst = zip(*task_image_queryset)
+        task_image_db_ids = list(split_lst)[0]
+        image_ids_to_delete = list(np.setdiff1d(task_image_db_ids, data_id_list))
+
+        for image_id in image_ids_to_delete:
+            TaskImage.objects.get(image_id=image_id).delete()
+            Image.objects.get(image_id=image_id).delete()
 
 
 # PUT QuestionnairePreviewAPIView
