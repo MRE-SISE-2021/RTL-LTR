@@ -189,12 +189,6 @@ class ExperimentTable extends Component {
             </thead>
 
             <tbody>
-            <tr>
-      <td>1</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
               {/* {console.log(names)} */}
               {names.map((value, index) => {
                 return (
@@ -210,6 +204,9 @@ class ExperimentTable extends Component {
                     </td>
                     <td>
                       <MDBIcon far icon="play-circle" />
+                    </td>
+                    <td>
+                      ?
                     </td>
                   </tr>
                 );

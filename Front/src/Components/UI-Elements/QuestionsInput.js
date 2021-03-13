@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Row, Col, Card, Form, Button , Modal,Container } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions";
 // import Card from "../App/components/MainCard";
@@ -209,8 +209,13 @@ class FormsElements extends React.Component {
         ans = this.props.answers[i].answer_content;
       }
       answers.push(
+
+        <Container>
+  
+
         <Row key={i}>
           {/* <p key={i}>answ</p> */}
+         
           <Form.Control
             type="checkbox"
             name="check"
@@ -223,7 +228,7 @@ class FormsElements extends React.Component {
 
           <Form.Control
             style={{
-              width: "68%",
+              width: "60%",
               border: "2px solid black",
               marginLeft: "1%",
             }}
@@ -238,9 +243,10 @@ class FormsElements extends React.Component {
             // required
             // readOnly={this.state.deleteAll}
           />
-          <br />
+
+
           {i + 1 === this.state.answersNum ? (
-            <Col md={3}>
+            <Col >
               <Button
                 variant="info"
                 onClick={this.onInputAdd}
@@ -259,23 +265,35 @@ class FormsElements extends React.Component {
               ) : null}
             </Col>
           ) : null}
-          {this.props.compTypeId === 2 && (
-            <Row>
-              {console.log(this.props.compTypeId)}
-              {/* <Col md={6}> */}
-              <Form.Group controlId="exampleForm.RangeInput">
-                <Form.Control
-                  type="range"
-                  className="form-control-range"
-                  // name="value"
-                  // onChange={this.onInputchange}
-                  readOnly={this.state.deleteAll}
-                />
-              </Form.Group>
-              {/* </Col> */}
-            </Row>
-          )}
+         
         </Row>
+        
+        {this.props.compTypeId === 2 && (
+         <Row >
+
+          <Col md={{ span: 6, offset: 1 }}>
+          
+            {console.log(this.props.compTypeId)}
+            {/* <Col md={6}> */}
+            <Form.Group controlId="exampleForm.RangeInput">
+              <Form.Control
+                type="range"
+                className="form-control-range"
+                // name="value"
+                // onChange={this.onInputchange}
+                readOnly={this.state.deleteAll}
+              />
+            </Form.Group>
+            {/* </Col> */}  
+            </Col>
+            </Row>   
+         
+       
+        )}
+  <br/>
+       
+        </Container>
+
       );
     }
     //// -------- Answers
@@ -288,7 +306,11 @@ class FormsElements extends React.Component {
             <Card.Header>
               <Row>
                 <Card.Title as="h5">
+                <Form.Label>Task Title</Form.Label>
+             
                   <Form.Control
+                    
+                    size="lg"
                     type="text"
                     placeholder="Enter Your Task Title"
                     onChange={this.onInputchange}
@@ -296,10 +318,38 @@ class FormsElements extends React.Component {
                     value={this.state.title}
                     required
                     readOnly={this.state.deleteAll}
-                    style={{ border: "2px solid red", width: "110%" }}
+                    border="info" 
+                    variant="info"
+                    style={{ border: " 2px solid ", width: "110%" }}
                   />
                 </Card.Title>
-                <Col md={7}>
+               
+              </Row>
+            </Card.Header>
+            <Card.Body>
+              <hr />
+            
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="exampleForm.ControlInput1">
+                    <Form.Control
+                      variant="info"
+                      type="text"
+                      placeholder="Enter Your Question"
+                      name="label"
+                      value={this.state.label}
+                      onChange={this.onInputchange}
+                      required
+                      readOnly={this.state.deleteAll}
+                      style={{ width: "160%", border: "2px solid " }}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              {/* ///// */}
+              {answers}
+              {/* /////// */}
+              <Modal.Footer>
                   <Button
                     variant="info"
                     onClick={this.sendData}
@@ -314,30 +364,9 @@ class FormsElements extends React.Component {
                   >
                     <MDBIcon icon="trash-alt" />
                   </Button>
-                </Col>
-              </Row>
-            </Card.Header>
-            <Card.Body>
-              <hr />
-              <Row>
-                <Col md={6}>
-                  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Your Question"
-                      name="label"
-                      value={this.state.label}
-                      onChange={this.onInputchange}
-                      required
-                      readOnly={this.state.deleteAll}
-                      style={{ width: "160%", border: "2px solid black" }}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              {/* ///// */}
-              {answers}
-              {/* /////// */}
+             
+
+              </Modal.Footer>
             </Card.Body>
           </Card>
         

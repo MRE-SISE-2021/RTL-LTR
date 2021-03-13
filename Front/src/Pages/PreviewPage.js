@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component ,variant,idx } from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
@@ -6,6 +6,7 @@ import NavBar from "../Components/NavBars/NavBarExp";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
+import { Card } from "react-bootstrap";
 
 class ExperimentPage extends Component {
   constructor() {
@@ -146,6 +147,7 @@ class ExperimentPage extends Component {
           lang={this.state.lang}
           prev={true}
         />
+        
         <div className={mainClass.join(" ")}>
           <div className="pcoded-main-container full-screenable-node">
             <div className="pcoded-wrapper">
@@ -153,10 +155,27 @@ class ExperimentPage extends Component {
                 <div className="pcoded-inner-content">
                   <div className="main-body">
                     <div className="page-wrapper">
+                      
                       <Aux>
-                        {this.state.inputList.map(function (input, index) {
-                          return input;
-                        })}
+
+                        <Card border="info" 
+                     
+                        style={{border: "2px solid ",
+                        width:"50rem", 
+                        
+                      
+                        }}>
+
+                        <Card.Header className="text-center" style={{ fontSize: "30px"}} >Preview</Card.Header>
+                        <Card.Body style={{marginLeft:"3%" , marginRight:"3%"}}>
+                          
+                            {this.state.inputList.map(function (input, index) {
+                                return input;
+                            })}
+
+                        </Card.Body>
+                       
+                        </Card>
                       </Aux>
                     </div>
                   </div>
