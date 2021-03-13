@@ -147,8 +147,11 @@ class FormsElements extends React.Component {
 
   onInputSub() {
     console.log(this.state.answersNum);
+    const newList = this.state.answers.splice(this.state.answersNum - 1, 1);
+    console.log(this.state.answers);
     this.setState({
       answersNum: this.state.answersNum - 1,
+      // answers: newList,
     });
   }
   //// -------- Answers
