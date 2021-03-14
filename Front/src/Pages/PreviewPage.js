@@ -1,4 +1,4 @@
-import React, { Component ,variant,idx } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
@@ -6,7 +6,7 @@ import NavBar from "../Components/NavBars/NavBarExp";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
-import { Card } from "react-bootstrap";
+import { Card ,ListGroup} from "react-bootstrap";
 
 class ExperimentPage extends Component {
   constructor() {
@@ -162,17 +162,18 @@ class ExperimentPage extends Component {
                      
                         style={{border: "2px solid ",
                         width:"50rem", 
-                        
-                      
                         }}>
-
                         <Card.Header className="text-center" style={{ fontSize: "30px"}} >Preview</Card.Header>
                         <Card.Body style={{marginLeft:"3%" , marginRight:"3%"}}>
-                          
-                            {this.state.inputList.map(function (input, index) {
-                                return input;
+                            <ListGroup.Item>
+                            {this.state.inputList.map(
+                              function (input, index) {
+                                 return (
+                                 
+                                     input
+                                 );
                             })}
-
+                          </ListGroup.Item>
                         </Card.Body>
                        
                         </Card>
