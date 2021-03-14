@@ -7,6 +7,28 @@ import Aux from "../../hoc/_Aux";
 import { MDBIcon } from "mdbreact";
 import API from "../../Api/Api";
 import { withCookies } from "react-cookie";
+import Rating from "react-rating";
+import Slider from "rc-slider";
+import Tooltip from "rc-tooltip";
+
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+const Range = createSliderWithTooltip(Slider.Range);
+const Handle = Slider.Handle;
+
+const handle = (props) => {
+  const { value, dragging, index, ...restProps } = props;
+  return (
+    <Tooltip
+      prefixCls="rc-slider-tooltip"
+      overlay={value}
+      visible={dragging}
+      placement="top"
+      key={index}
+    >
+      <Handle value={value} {...restProps} />
+    </Tooltip>
+  );
+};
 
 class FormsElements extends React.Component {
   constructor(props) {
@@ -147,8 +169,11 @@ class FormsElements extends React.Component {
 
   onInputSub() {
     console.log(this.state.answersNum);
+    const newList = this.state.answers.splice(this.state.answersNum - 1, 1);
+    console.log(this.state.answers);
     this.setState({
       answersNum: this.state.answersNum - 1,
+      // answers: newList,
     });
   }
   //// -------- Answers
@@ -196,6 +221,16 @@ class FormsElements extends React.Component {
   }
 
   render() {
+    const settingsBasic = {
+      dots: true,
+      infinite: true,
+      speed: 1000,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      centerPadding: "500px",
+      autoplay: true,
+      autoplaySpeed: 5000,
+    };
     //// Answers --------
     var answers = [];
     for (var i = 0; i < this.state.answersNum; i++) {
@@ -235,7 +270,7 @@ class FormsElements extends React.Component {
             // value={this.state.label}
             value={ans}
             onChange={this.onAnswerchange}
-            // required
+            required
             // readOnly={this.state.deleteAll}
           />
           <br />
@@ -259,17 +294,71 @@ class FormsElements extends React.Component {
               ) : null}
             </Col>
           ) : null}
+          <br />
           {this.props.compTypeId === 2 && (
+            <Row>
+              {console.log(this.props.compTypeId)}
+              {/* <Card>
+                <Card.Body> */}
+              <Slider
+                style={{
+                  width: "200px",
+                  top: "2%",
+                  left: "30%",
+                  bottom: "2%",
+                }}
+                className="pc-range-slider"
+                {...settingsBasic}
+              />
+              {/* </Card.Body>
+              </Card> */}
+            </Row>
+          )}
+          {this.props.compTypeId === 4 && (
             <Row>
               {console.log(this.props.compTypeId)}
               {/* <Col md={6}> */}
               <Form.Group controlId="exampleForm.RangeInput">
-                <Form.Control
-                  type="range"
-                  className="form-control-range"
-                  // name="value"
-                  // onChange={this.onInputchange}
-                  readOnly={this.state.deleteAll}
+                <Range
+                  className="pc-range-slider"
+                  allowCross={false}
+                  defaultValue={[0, 20]}
+                />
+              </Form.Group>
+              {/* </Col> */}
+            </Row>
+          )}
+          {this.props.compTypeId === 5 && (
+            <Row>
+              {console.log(this.props.compTypeId)}
+              {/* <Col md={6}> */}
+              <Form.Group controlId="exampleForm.RangeInput">
+                <Rating
+                  emptySymbol="far fa-star fa-2x"
+                  fullSymbol="fas fa-star fa-2x"
+                />
+              </Form.Group>
+              {/* </Col> */}
+            </Row>
+          )}
+          {this.props.compTypeId === 6 && (
+            <Row>
+              {console.log(this.props.compTypeId)}
+              {/* <Col md={6}> */}
+              <Form.Group controlId="exampleForm.RangeInput">
+                <Rating
+                  initialRating={this.state.squareRating}
+                  emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                    <span className="theme-bar-square">
+                      <span>{n}</span>
+                    </span>
+                  ))}
+                  fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                    <span className="theme-bar-square">
+                      <span className="active">{n}</span>
+                    </span>
+                  ))}
+                  onChange={(rate) => this.setState({ squareRating: rate })}
                 />
               </Form.Group>
               {/* </Col> */}
