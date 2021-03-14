@@ -4,6 +4,8 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import QuestionsInput from "../UI-Elements/QuestionsInput";
 import Input from "../UI-Elements/PagesInput";
+import { Card } from "react-bootstrap";
+import { CardBody } from "react-bootstrap/Card";
 
 class Task extends Component {
   constructor(props) {
@@ -34,23 +36,7 @@ class Task extends Component {
           ),
         });
         break;
-      case 2:
-        this.setState({
-          inputList: inputList.concat(
-            <QuestionsInput
-              key={"range" + this.props.key}
-              expId={this.props.expId}
-              keyOrder={this.props.keyOrder}
-              label={this.props.label}
-              taskId={this.props.taskId}
-              title={this.props.title}
-              compTypeId={this.props.compTypeId}
-              answers={this.props.answers}
-            />
-          ),
-        });
-        break;
-      case 3:
+      default:
         this.setState({
           inputList: inputList.concat(
             <QuestionsInput
@@ -66,17 +52,26 @@ class Task extends Component {
           ),
         });
         break;
-      default:
-        break;
     }
     // console.log(this.state);
   }
   render() {
     return (
       <Aux>
-        {this.state.inputList.map(function (input, index) {
-          return input;
-        })}
+
+        <div style={{
+          width: '60rem',
+          marginBottom:"3%",
+          marginLeft: "25%"
+        }}>
+             {this.state.inputList.map(function (input, index) {
+              return input;
+            })}
+        
+
+        </div>
+       
+          
       </Aux>
     );
   }
