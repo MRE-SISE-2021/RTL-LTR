@@ -221,6 +221,16 @@ class FormsElements extends React.Component {
   }
 
   render() {
+    const settingsBasic = {
+      dots: true,
+      infinite: true,
+      speed: 1000,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      centerPadding: "500px",
+      autoplay: true,
+      autoplaySpeed: 5000,
+    };
     //// Answers --------
     var answers = [];
     for (var i = 0; i < this.state.answersNum; i++) {
@@ -288,15 +298,20 @@ class FormsElements extends React.Component {
           {this.props.compTypeId === 2 && (
             <Row>
               {console.log(this.props.compTypeId)}
-              {/* <Col md={6}> */}
-              <Form.Group>
-                <Slider
-                  className="pc-range-slider"
-                  defaultValue={20}
-                  handle={handle}
-                />{" "}
-              </Form.Group>
-              {/* </Col> */}
+              {/* <Card>
+                <Card.Body> */}
+              <Slider
+                style={{
+                  width: "200px",
+                  top: "2%",
+                  left: "30%",
+                  bottom: "2%",
+                }}
+                className="pc-range-slider"
+                {...settingsBasic}
+              />
+              {/* </Card.Body>
+              </Card> */}
             </Row>
           )}
           {this.props.compTypeId === 4 && (
