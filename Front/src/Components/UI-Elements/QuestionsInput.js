@@ -1,5 +1,13 @@
 import React from "react";
-import { Row, Col, Card, Form, Button } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Modal,
+  Container,
+} from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions";
 // import Card from "../App/components/MainCard";
@@ -244,127 +252,150 @@ class FormsElements extends React.Component {
         ans = this.props.answers[i].answer_content;
       }
       answers.push(
-        <Row key={i}>
-          {/* <p key={i}>answ</p> */}
-          <Form.Control
-            type="checkbox"
-            name="check"
-            id={i + 1}
-            // value="show_title"
-            // defaultChecked={this.state.showTitle}
-            onChange={this.onAnswerchange}
-            style={{ marginLeft: "0", width: "5%" }}
-          />
+        <Container>
+          <Row key={i}>
+            {/* <p key={i}>answ</p> */}
 
-          <Form.Control
-            style={{
-              width: "68%",
-              border: "2px solid black",
-              marginLeft: "1%",
-            }}
-            id={i + 1}
-            key={i}
-            type="text"
-            placeholder={"Answer " + i}
-            name="answer_content"
-            // value={this.state.label}
-            value={ans}
-            onChange={this.onAnswerchange}
-            required
-            // readOnly={this.state.deleteAll}
-          />
-          <br />
-          {i + 1 === this.state.answersNum ? (
-            <Col md={3}>
-              <Button
-                variant="info"
-                onClick={this.onInputAdd}
-                // disabled={this.state.deleteAll}
-              >
-                <MDBIcon icon="plus" />
-              </Button>
-              {this.state.answersNum - 1 >= 2 ? (
+            <Form.Control
+              type="checkbox"
+              name="check"
+              id={i + 1}
+              // value="show_title"
+              // defaultChecked={this.state.showTitle}
+              onChange={this.onAnswerchange}
+              style={{ marginLeft: "0", width: "5%" }}
+            />
+
+            <Form.Control
+              style={{
+                width: "60%",
+                border: "2px solid black",
+                marginLeft: "1%",
+              }}
+              id={i + 1}
+              key={i}
+              type="text"
+              placeholder={"Answer " + i}
+              name="answer_content"
+              // value={this.state.label}
+              value={ans}
+              onChange={this.onAnswerchange}
+              required
+              // readOnly={this.state.deleteAll}
+            />
+
+            {i + 1 === this.state.answersNum ? (
+              <Col>
                 <Button
-                  variant="danger"
-                  // disabled={this.state.delete}
-                  onClick={this.onInputSub}
+                  variant="info"
+                  onClick={this.onInputAdd}
+                  // disabled={this.state.deleteAll}
                 >
-                  <MDBIcon icon="times" />
+                  <MDBIcon icon="plus" />
                 </Button>
-              ) : null}
-            </Col>
-          ) : null}
-          <br />
+                {this.state.answersNum - 1 >= 2 ? (
+                  <Button
+                    variant="danger"
+                    // disabled={this.state.delete}
+                    onClick={this.onInputSub}
+                  >
+                    <MDBIcon icon="times" />
+                  </Button>
+                ) : null}
+              </Col>
+            ) : null}
+            <br />
+            {this.props.compTypeId === 2 && (
+              <Row>
+                {console.log(this.props.compTypeId)}
+                {/* <Card>
+                <Card.Body> */}
+                <Slider
+                  style={{
+                    width: "200px",
+                    top: "2%",
+                    left: "30%",
+                    bottom: "2%",
+                  }}
+                  className="pc-range-slider"
+                  {...settingsBasic}
+                />
+                {/* </Card.Body>
+              </Card> */}
+              </Row>
+            )}
+            {this.props.compTypeId === 4 && (
+              <Row>
+                {console.log(this.props.compTypeId)}
+                {/* <Col md={6}> */}
+                <Form.Group controlId="exampleForm.RangeInput">
+                  <Range
+                    className="pc-range-slider"
+                    allowCross={false}
+                    defaultValue={[0, 20]}
+                  />
+                </Form.Group>
+                {/* </Col> */}
+              </Row>
+            )}
+            {this.props.compTypeId === 5 && (
+              <Row>
+                {console.log(this.props.compTypeId)}
+                {/* <Col md={6}> */}
+                <Form.Group controlId="exampleForm.RangeInput">
+                  <Rating
+                    emptySymbol="far fa-star fa-2x"
+                    fullSymbol="fas fa-star fa-2x"
+                  />
+                </Form.Group>
+                {/* </Col> */}
+              </Row>
+            )}
+            {this.props.compTypeId === 6 && (
+              <Row>
+                {console.log(this.props.compTypeId)}
+                {/* <Col md={6}> */}
+                <Form.Group controlId="exampleForm.RangeInput">
+                  <Rating
+                    initialRating={this.state.squareRating}
+                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                      <span className="theme-bar-square">
+                        <span>{n}</span>
+                      </span>
+                    ))}
+                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                      <span className="theme-bar-square">
+                        <span className="active">{n}</span>
+                      </span>
+                    ))}
+                    onChange={(rate) => this.setState({ squareRating: rate })}
+                  />
+                </Form.Group>
+                {/* </Col> */}
+              </Row>
+            )}
+          </Row>
+
           {this.props.compTypeId === 2 && (
             <Row>
-              {console.log(this.props.compTypeId)}
-              {/* <Card>
-                <Card.Body> */}
-              <Slider
-                style={{
-                  width: "200px",
-                  top: "2%",
-                  left: "30%",
-                  bottom: "2%",
-                }}
-                className="pc-range-slider"
-                {...settingsBasic}
-              />
-              {/* </Card.Body>
-              </Card> */}
+              <Col md={{ span: 6, offset: 1 }}>
+                {console.log(this.props.compTypeId)}
+                {/* <Col md={6}> */}
+                <Form.Group controlId="exampleForm.RangeInput">
+                  <Form.Control
+                    type="range"
+                    className="form-control-range"
+                    // name="value"
+                    // onChange={this.onInputchange}
+                    readOnly={this.state.deleteAll}
+                  />
+                </Form.Group>
+                {/* </Col> */}
+              </Col>
             </Row>
           )}
-          {this.props.compTypeId === 4 && (
-            <Row>
-              {console.log(this.props.compTypeId)}
-              {/* <Col md={6}> */}
-              <Form.Group controlId="exampleForm.RangeInput">
-                <Range
-                  className="pc-range-slider"
-                  allowCross={false}
-                  defaultValue={[0, 20]}
-                />
-              </Form.Group>
-              {/* </Col> */}
-            </Row>
-          )}
-          {this.props.compTypeId === 5 && (
-            <Row>
-              {console.log(this.props.compTypeId)}
-              {/* <Col md={6}> */}
-              <Form.Group controlId="exampleForm.RangeInput">
-                <Rating
-                  emptySymbol="far fa-star fa-2x"
-                  fullSymbol="fas fa-star fa-2x"
-                />
-              </Form.Group>
-              {/* </Col> */}
-            </Row>
-          )}
-          {this.props.compTypeId === 6 && (
-            <Row>
-              {console.log(this.props.compTypeId)}
-              {/* <Col md={6}> */}
-              <Form.Group controlId="exampleForm.RangeInput">
-                <Rating
-                  initialRating={this.state.squareRating}
-                  emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                    <span className="theme-bar-square">
-                      <span>{n}</span>
-                    </span>
-                  ))}
-                  fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                    <span className="theme-bar-square">
-                      <span className="active">{n}</span>
-                    </span>
-                  ))}
-                  onChange={(rate) => this.setState({ squareRating: rate })}
-                />
-              </Form.Group>
-              {/* </Col> */}
-            </Row>
-          )}
-        </Row>
+          <br />
+        </Container>
       );
     }
     //// -------- Answers
@@ -372,74 +403,69 @@ class FormsElements extends React.Component {
 
     return (
       <Aux>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Card
-            style={{
-              width: "500px",
-            }}
-          >
-            <Card.Header>
-              <Row>
-                <Card.Title as="h5">
+        <Card>
+          <Card.Header>
+            <Row>
+              <Card.Title as="h5">
+                <Form.Label>Task Title</Form.Label>
+
+                <Form.Control
+                  size="lg"
+                  type="text"
+                  placeholder="Enter Your Task Title"
+                  onChange={this.onInputchange}
+                  name="title"
+                  value={this.state.title}
+                  required
+                  readOnly={this.state.deleteAll}
+                  border="info"
+                  variant="info"
+                  style={{ border: " 2px solid ", width: "110%" }}
+                />
+              </Card.Title>
+            </Row>
+          </Card.Header>
+          <Card.Body>
+            <hr />
+
+            <Row>
+              <Col md={6}>
+                <Form.Group controlId="exampleForm.ControlInput1">
                   <Form.Control
+                    variant="info"
                     type="text"
-                    placeholder="Enter Your Task Title"
+                    placeholder="Enter Your Question"
+                    name="label"
+                    value={this.state.label}
                     onChange={this.onInputchange}
-                    name="title"
-                    value={this.state.title}
                     required
                     readOnly={this.state.deleteAll}
-                    style={{ border: "2px solid red", width: "110%" }}
+                    style={{ width: "160%", border: "2px solid " }}
                   />
-                </Card.Title>
-                <Col md={7}>
-                  <Button
-                    variant="info"
-                    onClick={this.sendData}
-                    disabled={this.state.deleteAll}
-                  >
-                    <MDBIcon icon="save" />
-                  </Button>
-                  <Button
-                    variant="danger"
-                    disabled={this.state.delete}
-                    onClick={this.deleteData}
-                  >
-                    <MDBIcon icon="trash-alt" />
-                  </Button>
-                </Col>
-              </Row>
-            </Card.Header>
-            <Card.Body>
-              <hr />
-              <Row>
-                <Col md={6}>
-                  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Your Question"
-                      name="label"
-                      value={this.state.label}
-                      onChange={this.onInputchange}
-                      required
-                      readOnly={this.state.deleteAll}
-                      style={{ width: "160%", border: "2px solid black" }}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              {/* ///// */}
-              {answers}
-              {/* /////// */}
-            </Card.Body>
-          </Card>
-        </div>
+                </Form.Group>
+              </Col>
+            </Row>
+            {/* ///// */}
+            {answers}
+            {/* /////// */}
+            <Modal.Footer>
+              <Button
+                variant="info"
+                onClick={this.sendData}
+                disabled={this.state.deleteAll}
+              >
+                <MDBIcon icon="save" />
+              </Button>
+              <Button
+                variant="danger"
+                disabled={this.state.delete}
+                onClick={this.deleteData}
+              >
+                <MDBIcon icon="trash-alt" />
+              </Button>
+            </Modal.Footer>
+          </Card.Body>
+        </Card>
       </Aux>
     );
   }

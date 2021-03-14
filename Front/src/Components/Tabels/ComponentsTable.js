@@ -6,6 +6,8 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import NavBar from "../NavBars/NavBarExp";
 import Task from "../UI-Elements/Task";
+
+
 class ComponentsTable extends Component {
   constructor(props) {
     super(props);
@@ -105,6 +107,7 @@ class ComponentsTable extends Component {
     // console.log(this.state.inputList);
     return (
       <Aux>
+
         <NavBar
           name={this.props.name}
           type={this.props.type}
@@ -124,24 +127,28 @@ class ComponentsTable extends Component {
         <nav
           className={navClass.join(" ")}
           style={{
-            width: "300px",
+            width: "20%",
             background: "white",
             position: "fixed",
-            top: "0",
-            left: "0",
+            top: "2%",
+            left: "1%",
           }}
         >
-          <Tabs defaultActiveKey="home">
-            <Tab eventKey="home" title={<MDBIcon icon="plus" />}>
+
+
+
+          <Tabs className="nav-justified" defaultActiveKey="home">
+            <Tab eventKey="home" 
+            title={<MDBIcon icon="plus" />}>
               <ul
                 style={{
-                  width: "300px",
+                  width: "100%",
                   textAlign: "center",
                 }}
-                className="list-group list-group-full"
+                className="mt-4 list-group list-group-full"
               >
                 <h5>Genral forms</h5>
-                <li className="list-group-item">
+                <li  className=" list-group-item">
                   <Button
                     id="1"
                     onClick={this.onAddBtnClick}
@@ -209,15 +216,15 @@ class ComponentsTable extends Component {
             <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
               <ul
                 style={{
-                  width: "300px",
+                  width: "100%",
                   textAlign: "center",
                 }}
-                className="list-group list-group-full"
+                className="mt-4 list-group list-group-full"
               >
                 <h5>Settings Tab</h5>
                 <br />
 
-                <Form style={{ textAlign: "left", color: "black" }}>
+                <Form style={{marginLeft:"2%", textAlign: "left", color: "black" }}>
                   <Form.Check
                     type="switch"
                     id="rtl-switch"
@@ -248,6 +255,7 @@ class ComponentsTable extends Component {
             </Tab>
           </Tabs>
         </nav>
+        
       </Aux>
     );
   }

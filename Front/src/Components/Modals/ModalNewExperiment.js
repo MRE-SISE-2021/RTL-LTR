@@ -4,6 +4,9 @@ import { Redirect } from "react-router-dom";
 import Aux from "../../hoc/_Aux";
 import "../../styles/homePageStyle.css";
 
+import '../../styles/homePageStyle.css'; 
+
+
 class NewExperimentModal extends React.Component {
   constructor() {
     super();
@@ -71,7 +74,7 @@ class NewExperimentModal extends React.Component {
     }
     return (
       <Aux>
-        <div style={{ marginLeft: "180px", marginBottom: "20px" }}>
+        <div style={{ marginLeft: "40%", marginBottom: "4%" }}>
           <Button
             variant="info"
             onClick={() => this.setState({ isBasic: true })}
@@ -157,6 +160,7 @@ class NewExperimentModal extends React.Component {
                 </button>
               </Modal.Footer>
             </Form>
+
           </Modal.Body>
         </Modal>
       </Aux>

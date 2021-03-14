@@ -37,13 +37,10 @@ class Input extends React.Component {
 
     return (
       <Aux>
-        <div className={mainClass.join(" ")}>
-          <div className="pcoded-main-container full-screenable-node">
-            <div className="pcoded-wrapper">
-              <div className="pcoded-content">
-                <div className="pcoded-inner-content">
-                  <div className="main-body">
-                    <div className="page-wrapper">
+  
+
+      
+      
                       <Card title="Edit Page" isOption>
                         {this.state.label === undefined ? (
                           <AllCkEditor
@@ -64,13 +61,8 @@ class Input extends React.Component {
                           />
                         )}
                       </Card>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                   
+
       </Aux>
     );
   }
