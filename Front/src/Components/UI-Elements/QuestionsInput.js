@@ -449,6 +449,41 @@ class FormsElements extends React.Component {
             {answers}
             {/* /////// */}
             <Modal.Footer>
+              <Form
+                style={{
+                  marginRight: "30%",
+                  textAlign: "left",
+                  color: "black",
+                }}
+              >
+                <Row>
+                  <Col>
+                    <Form.Check
+                      type="switch"
+                      id="rtl-switch"
+                      label="RTL/LTR customazation"
+                    />
+                    <Form.Check
+                      type="switch"
+                      label="is required"
+                      id="is-required-switch"
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Check
+                      type="switch"
+                      id="new-page-switch"
+                      label="Open on a new page"
+                    />
+
+                    <Form.Check
+                      type="switch"
+                      id="picture-switch"
+                      label="Add picture under the question"
+                    />
+                  </Col>
+                </Row>
+              </Form>
               <Button
                 variant="info"
                 onClick={this.sendData}

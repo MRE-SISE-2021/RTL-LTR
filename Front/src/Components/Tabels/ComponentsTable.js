@@ -207,7 +207,7 @@ class ComponentsTable extends Component {
                 </li>
               </ul>
             </Tab>
-            <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
+            <Tab eventKey="profile" title={<MDBIcon icon="cog" />} disabled>
               <ul
                 style={{
                   width: "100%",
