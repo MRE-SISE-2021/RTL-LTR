@@ -162,15 +162,6 @@ class ComponentsTable extends Component {
 
                 <li className="list-group-item">
                   <Button
-                    id="2"
-                    onClick={this.onAddBtnClick}
-                    variant="outline-info"
-                  >
-                    <i className="feather icon-file" /> Range Questions
-                  </Button>
-                </li>
-                <li className="list-group-item">
-                  <Button
                     id="3"
                     onClick={this.onAddBtnClick}
                     variant="outline-info"
@@ -178,7 +169,49 @@ class ComponentsTable extends Component {
                     <i className="feather icon-file" /> Text
                   </Button>
                 </li>
-              </ul>{" "}
+
+                <br />
+                <h5>Range Sliders</h5>
+                <li className="list-group-item">
+                  <Button
+                    id="2"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Slider
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="4"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" />
+                    Double Slider
+                  </Button>
+                </li>
+                <h5>Rating</h5>
+
+                <li className="list-group-item">
+                  <Button
+                    id="5"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Stars
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="6"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Numeric
+                  </Button>
+                </li>
+              </ul>
             </Tab>
             <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
               <ul

@@ -36,23 +36,7 @@ class Task extends Component {
           ),
         });
         break;
-      case 2:
-        this.setState({
-          inputList: inputList.concat(
-            <QuestionsInput
-              key={"range" + this.props.key}
-              expId={this.props.expId}
-              keyOrder={this.props.keyOrder}
-              label={this.props.label}
-              taskId={this.props.taskId}
-              title={this.props.title}
-              compTypeId={this.props.compTypeId}
-              answers={this.props.answers}
-            />
-          ),
-        });
-        break;
-      case 3:
+      default:
         this.setState({
           inputList: inputList.concat(
             <QuestionsInput
@@ -67,8 +51,6 @@ class Task extends Component {
             />
           ),
         });
-        break;
-      default:
         break;
     }
     // console.log(this.state);
