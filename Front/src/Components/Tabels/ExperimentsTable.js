@@ -18,9 +18,13 @@ class ExperimentTable extends Component {
       error: null,
       isLoaded: false,
       items: [],
+    
     };
   }
 
+
+
+  
   resize = () => {
     const contentWidth = document.getElementById("root").clientWidth;
 
@@ -92,8 +96,9 @@ class ExperimentTable extends Component {
   }
 
   render() {
+    
     let navClass = ["pcoded-navbar"];
-
+    
     navClass = [...navClass, this.props.layoutType];
 
     if (this.props.layout === "horizontal") {
@@ -138,6 +143,7 @@ class ExperimentTable extends Component {
             this.setState({
               isLoaded: true,
               chosen: result,
+            
             });
           },
           (error) => {
@@ -149,10 +155,15 @@ class ExperimentTable extends Component {
         );
     };
     const names = this.state.items;
+/*
+  <div class="infoStyle">
+          
+        </div>
 
+*/
     return (
       <Aux>
-        <nav style={{ marginLeft: "200px" }}>
+        <nav style={{ marginLeft: "15%" }}>
           <QuestionnaireInfo chosen={this.state.chosen} />
         </nav>
 
@@ -161,18 +172,10 @@ class ExperimentTable extends Component {
             <h5>My Experiments</h5>
             <Modal />
           </Row>
-          <Table
-            style={{
-              borderStyle: "solid",
-              width: "320px",
-              height: "450px",
-              overflow: "auto",
-              display: "inline-block",
-            }}
-          >
+          <Table striped bordered hover >
             <thead>
               <tr>
-                <th>#</th>
+                <th >#</th>
                 <th>Experiment Name</th>
                 <th>status</th>
                 <th>
@@ -191,7 +194,7 @@ class ExperimentTable extends Component {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>
+                    <td> 
                       <Button
                         variant="outline-info"
                         onClick={() => handleClick(value.questionnaire_id)}
@@ -201,6 +204,9 @@ class ExperimentTable extends Component {
                     </td>
                     <td>
                       <MDBIcon far icon="play-circle" />
+                    </td>
+                    <td>
+                      ?
                     </td>
                   </tr>
                 );
@@ -235,3 +241,4 @@ const mapDispatchToProps = (dispatch) => {
 export default withCookies(
   withRouter(connect(mapStateToProps, mapDispatchToProps)(ExperimentTable))
 );
+
