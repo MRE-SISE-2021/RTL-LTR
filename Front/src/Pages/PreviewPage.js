@@ -6,14 +6,14 @@ import NavBar from "../Components/NavBars/NavBarExp";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
-import { Card ,ListGroup} from "react-bootstrap";
+import { Card, ListGroup } from "react-bootstrap";
 
 class ExperimentPage extends Component {
   constructor() {
     super();
     this.state = {
-      tasks: [],
-      inputList: [],
+      tasks: [], //what we get from db
+      inputList: [], //what we show to the user
       name: "",
       lang: "",
       type: "",
@@ -132,6 +132,7 @@ class ExperimentPage extends Component {
   }
 
   render() {
+    console.log(this.state);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
@@ -147,7 +148,7 @@ class ExperimentPage extends Component {
           lang={this.state.lang}
           prev={true}
         />
-        
+
         <div className={mainClass.join(" ")}>
           <div className="pcoded-main-container full-screenable-node">
             <div className="pcoded-wrapper">
@@ -155,27 +156,29 @@ class ExperimentPage extends Component {
                 <div className="pcoded-inner-content">
                   <div className="main-body">
                     <div className="page-wrapper">
-                      
                       <Aux>
-
-                        <Card border="info" 
-                     
-                        style={{border: "2px solid ",
-                        width:"50rem", 
-                        }}>
-                        <Card.Header className="text-center" style={{ fontSize: "30px"}} >Preview</Card.Header>
-                        <Card.Body style={{marginLeft:"3%" , marginRight:"3%"}}>
+                        <Card
+                          border="info"
+                          style={{ border: "2px solid ", width: "50rem" }}
+                        >
+                          <Card.Header
+                            className="text-center"
+                            style={{ fontSize: "30px" }}
+                          >
+                            Preview
+                          </Card.Header>
+                          <Card.Body
+                            style={{ marginLeft: "3%", marginRight: "3%" }}
+                          >
                             <ListGroup.Item>
-                            {this.state.inputList.map(
-                              function (input, index) {
-                                 return (
-                                 
-                                     input
-                                 );
-                            })}
-                          </ListGroup.Item>
-                        </Card.Body>
-                       
+                              {this.state.inputList.map(function (
+                                input,
+                                index
+                              ) {
+                                return input;
+                              })}
+                            </ListGroup.Item>
+                          </Card.Body>
                         </Card>
                       </Aux>
                     </div>

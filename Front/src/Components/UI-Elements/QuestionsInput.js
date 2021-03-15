@@ -51,12 +51,19 @@ class FormsElements extends React.Component {
       taskId: props.taskId,
       answersNum: 2,
       answers: props.answers,
+      settings: {
+        direction: false,
+        required: false,
+        new_page: false,
+        add_picture: false,
+      },
     };
 
     this.onInputchange = this.onInputchange.bind(this);
     this.onInputAdd = this.onInputAdd.bind(this);
     this.onInputSub = this.onInputSub.bind(this);
     this.onAnswerchange = this.onAnswerchange.bind(this);
+    this.setSettings = this.setSettings.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -80,12 +87,13 @@ class FormsElements extends React.Component {
             answers: this.state.answers,
             order_key: this.props.keyOrder,
             component_type_id: this.props.compTypeId,
-            direction: "RTL",
+            direction: "RTL", ////////DELETE
             label: this.state.label,
             images: [],
             task_title: this.state.title,
-            is_required: true, ///////?
+            is_required: true, ////////DELETE
             task_id: this.state.taskId,
+            settings: this.state.settings,
           },
         ],
         questionnaire_id: this.state.id, //
@@ -98,12 +106,13 @@ class FormsElements extends React.Component {
             answers: this.props.answers,
             order_key: this.props.keyOrder,
             component_type_id: this.props.compTypeId,
-            direction: "RTL",
+            direction: "RTL", ////////DELETE
             label: this.state.label,
             images: [],
             task_title: this.state.title,
             task_content: "", ////////?
-            is_required: true, ///////?
+            is_required: true, ////////DELETE
+            settings: this.state.settings,
           },
         ],
         questionnaire_id: this.state.id, //
@@ -228,6 +237,31 @@ class FormsElements extends React.Component {
     console.log(this.state.answers);
   }
 
+  ///settings----
+  setSettings(event) {
+    var id = event.target.id;
+    var checked = event.target.checked;
+    this.setState((prevState) => {
+      let settings = Object.assign({}, prevState.settings); // creating copy of state variable jasper
+      switch (id) {
+        case "add_picture":
+          settings.add_picture = checked;
+          break;
+        case "new_page":
+          settings.new_page = checked;
+          break;
+        case "required":
+          settings.required = checked;
+          break;
+        case "direction":
+          settings.direction = checked;
+          break;
+      }
+
+      // update the name property, assign a new value
+      return { settings }; // return new object jasper object
+    });
+  }
   render() {
     const settingsBasic = {
       dots: true,
@@ -239,6 +273,7 @@ class FormsElements extends React.Component {
       autoplay: true,
       autoplaySpeed: 5000,
     };
+
     //// Answers --------
     var answers = [];
     for (var i = 0; i < this.state.answersNum; i++) {
@@ -407,21 +442,28 @@ class FormsElements extends React.Component {
           <Card.Header>
             <Row>
               <Card.Title as="h5">
-                <Form.Label>Task Title</Form.Label>
+                <Col>
+                  <Form.Label>Task Title</Form.Label>
 
-                <Form.Control
-                  size="lg"
-                  type="text"
-                  placeholder="Enter Your Task Title"
-                  onChange={this.onInputchange}
-                  name="title"
-                  value={this.state.title}
-                  required
-                  readOnly={this.state.deleteAll}
-                  border="info"
-                  variant="info"
-                  style={{ border: " 2px solid ", width: "110%" }}
-                />
+                  <Form.Control
+                    size="lg"
+                    type="text"
+                    placeholder="Enter Your Task Title"
+                    onChange={this.onInputchange}
+                    name="title"
+                    value={this.state.title}
+                    required
+                    readOnly={this.state.deleteAll}
+                    border="info"
+                    variant="info"
+                    style={{ border: " 2px solid " }}
+                  />
+                </Col>
+                <Col>
+                  {this.state.settings.required ? (
+                    <p style={{ color: "red" }}>*required</p>
+                  ) : null}
+                </Col>
               </Card.Title>
             </Row>
           </Card.Header>
@@ -460,26 +502,30 @@ class FormsElements extends React.Component {
                   <Col>
                     <Form.Check
                       type="switch"
-                      id="rtl-switch"
+                      id="direction"
                       label="RTL/LTR customazation"
+                      onClick={this.setSettings}
                     />
                     <Form.Check
                       type="switch"
                       label="is required"
-                      id="is-required-switch"
+                      id="required"
+                      onClick={this.setSettings}
                     />
                   </Col>
                   <Col>
                     <Form.Check
                       type="switch"
-                      id="new-page-switch"
+                      id="new_page"
                       label="Open on a new page"
+                      onClick={this.setSettings}
                     />
 
                     <Form.Check
                       type="switch"
-                      id="picture-switch"
+                      id="add_picture"
                       label="Add picture under the question"
+                      onClick={this.setSettings}
                     />
                   </Col>
                 </Row>
