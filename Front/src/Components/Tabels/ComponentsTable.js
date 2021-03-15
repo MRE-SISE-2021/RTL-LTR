@@ -130,6 +130,8 @@ class ComponentsTable extends Component {
             position: "fixed",
             top: "2%",
             left: "1%",
+            overflow: "auto",
+            overflowX: "hidden",
           }}
         >
           <Tabs className="nav-justified" defaultActiveKey="home">
@@ -194,6 +196,15 @@ class ComponentsTable extends Component {
                     variant="outline-info"
                   >
                     <i className="feather icon-file" /> Stars
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="6"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Numeric
                   </Button>
                 </li>
                 <li className="list-group-item">
