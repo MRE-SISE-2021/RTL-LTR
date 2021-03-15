@@ -72,10 +72,10 @@ class Task(models.Model):
     component_type_id = models.ForeignKey(ComponentType, models.DO_NOTHING, db_column='ComponentTypeId')
     order_key = models.IntegerField(db_column='OrderKey')
 
-    is_direction = models.BooleanField(db_column='IsDirection')
-    is_required = models.BooleanField(db_column='IsRequired')
-    is_new_page = models.BooleanField(db_column='IsNewPage')
-    is_add_picture = models.BooleanField(db_column='IsAddPicture')
+    is_direction_setting = models.BooleanField(db_column='IsDirectionSetting')
+    is_required_setting = models.BooleanField(db_column='IsRequiredSetting')
+    is_new_page_setting = models.BooleanField(db_column='IsNewPageSetting')
+    is_add_picture_setting = models.BooleanField(db_column='IsAddPictureSetting')
 
     answers = models.ManyToManyField(Answer, through='TaskAnswer')
     images = models.ManyToManyField(Image, through='TaskImage')

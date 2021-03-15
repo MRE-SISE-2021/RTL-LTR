@@ -128,6 +128,24 @@ def get_questionnaire_name_list(request):
         return Response(names_list, status=status.HTTP_200_OK)
 
 
+# get list of questionnaire name for main page
+@api_view(['GET'])
+def get_tasks_with_settings_from_questionnaire(request, id):
+    if request.method == "GET":
+        queryset = Questionnaire.objects.get(questionnaire_id=id)
+        questionnaire_data = QuestionnaireSerializer(queryset).data
+
+        tasks_data = questionnaire_data["tasks"]
+        for task in tasks_data:
+            task['settings'] = {}
+
+            for key, value in list(task.items()):
+                if "_setting" in key:
+                    task['settings'][key] = task.pop(key)
+
+        return Response(tasks_data, status=status.HTTP_200_OK)
+
+
 # DELETE task from questionnaire
 @api_view(['DELETE'])
 def delete_task_from_questionnaire(request, id):
