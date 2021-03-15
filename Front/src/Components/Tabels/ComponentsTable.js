@@ -207,15 +207,6 @@ class ComponentsTable extends Component {
                     <i className="feather icon-file" /> Numeric
                   </Button>
                 </li>
-                <li className="list-group-item">
-                  <Button
-                    id="6"
-                    onClick={this.onAddBtnClick}
-                    variant="outline-info"
-                  >
-                    <i className="feather icon-file" /> Numeric
-                  </Button>
-                </li>
               </ul>
             </Tab>
             <Tab eventKey="profile" title={<MDBIcon icon="cog" />} disabled>
