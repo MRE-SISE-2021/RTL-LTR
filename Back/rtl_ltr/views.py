@@ -182,6 +182,12 @@ class QuestionnairePreviewAPIView(APIView):
         tasks = request.data.pop('tasks')
         questionnaire_table_data = request.data
 
+        # get settings
+        if tasks is not None:
+            for task in tasks:
+                for key in task['settings']:
+                    task[key] = task['settings'][key]
+
         # create a new questionnaire in the table and get its id
         questionnaire_id = insert_data_into_table(QuestionnaireSerializer(data=questionnaire_table_data),
                                                   'questionnaire_id')
@@ -250,6 +256,12 @@ class QuestionnairePreviewAPIView(APIView):
         # get parameters for update
         questionnaire_put = request.data
         tasks_put = questionnaire_put.pop('tasks') if 'tasks' in questionnaire_put else None
+
+        # get settings
+        if tasks_put is not None:
+            for task in tasks_put:
+                for key in task['settings']:
+                    task[key] = task['settings'][key]
 
         # get queryset of questionnaire table by questionnaire_id
         try:
