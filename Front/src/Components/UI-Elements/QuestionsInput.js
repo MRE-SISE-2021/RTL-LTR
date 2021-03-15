@@ -18,7 +18,10 @@ import { withCookies } from "react-cookie";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 import Tooltip from "rc-tooltip";
-
+///// --- rtl
+import { ThemeProvider } from "styled-components";
+import rtl from "styled-components-rtl";
+////---rtl
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
@@ -52,10 +55,10 @@ class FormsElements extends React.Component {
       answersNum: 2,
       answers: props.answers,
       settings: {
-        direction: false,
-        required: false,
-        new_page: false,
-        add_picture: false,
+        is_direction: false,
+        is_required: false,
+        is_new_page: false,
+        is_add_picture: false,
       },
     };
 
@@ -87,11 +90,11 @@ class FormsElements extends React.Component {
             answers: this.state.answers,
             order_key: this.props.keyOrder,
             component_type_id: this.props.compTypeId,
-            direction: "RTL", ////////DELETE
+            // direction: "RTL", ////////DELETE
             label: this.state.label,
             images: [],
             task_title: this.state.title,
-            is_required: true, ////////DELETE
+            // is_required: true, ////////DELETE
             task_id: this.state.taskId,
             settings: this.state.settings,
           },
@@ -106,12 +109,12 @@ class FormsElements extends React.Component {
             answers: this.props.answers,
             order_key: this.props.keyOrder,
             component_type_id: this.props.compTypeId,
-            direction: "RTL", ////////DELETE
+            // direction: "RTL", ////////DELETE
             label: this.state.label,
             images: [],
             task_title: this.state.title,
             task_content: "", ////////?
-            is_required: true, ////////DELETE
+            // is_required: true, ////////DELETE
             settings: this.state.settings,
           },
         ],
@@ -244,17 +247,17 @@ class FormsElements extends React.Component {
     this.setState((prevState) => {
       let settings = Object.assign({}, prevState.settings); // creating copy of state variable jasper
       switch (id) {
-        case "add_picture":
-          settings.add_picture = checked;
+        case "is_add_picture " + this.props.keyOrder:
+          settings.is_add_picture = checked;
           break;
-        case "new_page":
-          settings.new_page = checked;
+        case "is_new_page " + this.props.keyOrder:
+          settings.is_new_page = checked;
           break;
-        case "required":
-          settings.required = checked;
+        case "is_required " + this.props.keyOrder:
+          settings.is_required = checked;
           break;
-        case "direction":
-          settings.direction = checked;
+        case "is_direction " + this.props.keyOrder:
+          settings.is_direction = checked;
           break;
       }
 
@@ -273,7 +276,19 @@ class FormsElements extends React.Component {
       autoplay: true,
       autoplaySpeed: 5000,
     };
-
+    ///rtl
+    let theme = {
+      dir: "ltr",
+      // OR direction: "rtl"
+    };
+    if (this.state.settings.is_direction) {
+      theme = {
+        dir: "rtl",
+        // OR direction: "rtl"
+      };
+    }
+    console.log(theme);
+    //rtl
     //// Answers --------
     var answers = [];
     for (var i = 0; i < this.state.answersNum; i++) {
@@ -287,7 +302,7 @@ class FormsElements extends React.Component {
         ans = this.props.answers[i].answer_content;
       }
       answers.push(
-        <Container>
+        <Container key={i}>
           <Row key={i}>
             {/* <p key={i}>answ</p> */}
 
@@ -438,115 +453,121 @@ class FormsElements extends React.Component {
 
     return (
       <Aux>
-        <Card>
-          <Card.Header>
-            <Row>
-              <Card.Title as="h5">
-                <Col>
-                  <Form.Label>Task Title</Form.Label>
-
-                  <Form.Control
-                    size="lg"
-                    type="text"
-                    placeholder="Enter Your Task Title"
-                    onChange={this.onInputchange}
-                    name="title"
-                    value={this.state.title}
-                    required
-                    readOnly={this.state.deleteAll}
-                    border="info"
-                    variant="info"
-                    style={{ border: " 2px solid " }}
-                  />
-                </Col>
-                <Col>
-                  {this.state.settings.required ? (
-                    <p style={{ color: "red" }}>*required</p>
-                  ) : null}
-                </Col>
-              </Card.Title>
-            </Row>
-          </Card.Header>
-          <Card.Body>
-            <hr />
-
-            <Row>
-              <Col md={6}>
-                <Form.Group controlId="exampleForm.ControlInput1">
-                  <Form.Control
-                    variant="info"
-                    type="text"
-                    placeholder="Enter Your Question"
-                    name="label"
-                    value={this.state.label}
-                    onChange={this.onInputchange}
-                    required
-                    readOnly={this.state.deleteAll}
-                    style={{ width: "160%", border: "2px solid " }}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            {/* ///// */}
-            {answers}
-            {/* /////// */}
-            <Modal.Footer>
-              <Form
-                style={{
-                  marginRight: "30%",
-                  textAlign: "left",
-                  color: "black",
-                }}
-              >
-                <Row>
+        <ThemeProvider theme={theme}>
+          <Card dir={theme.dir}>
+            <Card.Header>
+              <Row>
+                <Card.Title as="h5">
                   <Col>
-                    <Form.Check
-                      type="switch"
-                      id="direction"
-                      label="RTL/LTR customazation"
-                      onClick={this.setSettings}
-                    />
-                    <Form.Check
-                      type="switch"
-                      label="is required"
-                      id="required"
-                      onClick={this.setSettings}
+                    <Form.Label>Task Title</Form.Label>
+
+                    <Form.Control
+                      size="lg"
+                      type="text"
+                      placeholder="Enter Your Task Title"
+                      onChange={this.onInputchange}
+                      name="title"
+                      value={this.state.title}
+                      required
+                      readOnly={this.state.deleteAll}
+                      border="info"
+                      variant="info"
+                      style={{ border: " 2px solid " }}
                     />
                   </Col>
                   <Col>
-                    <Form.Check
-                      type="switch"
-                      id="new_page"
-                      label="Open on a new page"
-                      onClick={this.setSettings}
-                    />
-
-                    <Form.Check
-                      type="switch"
-                      id="add_picture"
-                      label="Add picture under the question"
-                      onClick={this.setSettings}
-                    />
+                    {this.state.settings.is_required ? (
+                      <p style={{ color: "red" }}>*required</p>
+                    ) : null}
                   </Col>
-                </Row>
-              </Form>
-              <Button
-                variant="info"
-                onClick={this.sendData}
-                disabled={this.state.deleteAll}
-              >
-                <MDBIcon icon="save" />
-              </Button>
-              <Button
-                variant="danger"
-                disabled={this.state.delete}
-                onClick={this.deleteData}
-              >
-                <MDBIcon icon="trash-alt" />
-              </Button>
-            </Modal.Footer>
-          </Card.Body>
-        </Card>
+                </Card.Title>
+              </Row>
+            </Card.Header>
+            <Card.Body>
+              <hr />
+
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="exampleForm.ControlInput1">
+                    <Form.Control
+                      variant="info"
+                      type="text"
+                      placeholder="Enter Your Question"
+                      name="label"
+                      value={this.state.label}
+                      onChange={this.onInputchange}
+                      required
+                      readOnly={this.state.deleteAll}
+                      style={{ width: "160%", border: "2px solid " }}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              {/* ///// */}
+              {answers}
+              {/* /////// */}
+              <Modal.Footer>
+                <Form
+                  style={{
+                    marginRight: "30%",
+                    textAlign: "left",
+                    color: "black",
+                  }}
+                >
+                  <Row>
+                    <Col>
+                      <Form.Check
+                        type="switch"
+                        id={"is_direction " + this.props.keyOrder}
+                        // id="is_direction"
+                        label="RTL/LTR customazation"
+                        onClick={this.setSettings}
+                      />
+                      <Form.Check
+                        type="switch"
+                        id={"is_required " + this.props.keyOrder}
+                        label="is required"
+                        // id="is_required"
+                        onClick={this.setSettings}
+                      />
+                    </Col>
+                    <Col>
+                      <Form.Check
+                        type="switch"
+                        id={"is_new_page " + this.props.keyOrder}
+                        // id="is_new_page"
+                        label="Open on a new page"
+                        onClick={this.setSettings}
+                      />
+
+                      <Form.Check
+                        type="switch"
+                        id={"is_add_picture " + this.props.keyOrder}
+                        // id="is_add_picture"
+                        label="Add picture under the question"
+                        onClick={this.setSettings}
+                      />
+                    </Col>
+                  </Row>
+                </Form>
+                <Button
+                  variant="info"
+                  onClick={this.sendData}
+                  disabled={this.state.deleteAll}
+                >
+                  <MDBIcon icon="save" />
+                </Button>
+                <Button
+                  variant="danger"
+                  disabled={this.state.delete}
+                  onClick={this.deleteData}
+                >
+                  <MDBIcon icon="trash-alt" />
+                </Button>
+              </Modal.Footer>
+            </Card.Body>
+          </Card>
+        </ThemeProvider>
       </Aux>
     );
   }
