@@ -154,7 +154,7 @@ class ComponentsTable extends Component {
                   </Button>
                 </li>
                 <br />
-                <h5>Text Based</h5>
+                <h5>Choice Based</h5>
 
                 <li className="list-group-item">
                   <Button
@@ -162,12 +162,29 @@ class ComponentsTable extends Component {
                     onClick={this.onAddBtnClick}
                     variant="outline-info"
                   >
-                    <i className="feather icon-file" /> Text
+                    <i className="feather icon-file" /> Radio
                   </Button>
                 </li>
-
+                <li className="list-group-item">
+                  <Button
+                    id="7"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Dropdown
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="8"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Checkbox
+                  </Button>
+                </li>
                 <br />
-                <h5>Range Sliders</h5>
+                <h5>Sliders</h5>
                 <li className="list-group-item">
                   <Button
                     id="2"
@@ -205,6 +222,25 @@ class ComponentsTable extends Component {
                     variant="outline-info"
                   >
                     <i className="feather icon-file" /> Numeric
+                  </Button>
+                </li>
+
+                <li className="list-group-item">
+                  <Button
+                    id="9"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Counter
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="10"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> TimeLine
                   </Button>
                 </li>
               </ul>

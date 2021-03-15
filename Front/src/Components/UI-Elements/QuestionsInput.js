@@ -55,10 +55,10 @@ class FormsElements extends React.Component {
       answersNum: 2,
       answers: props.answers,
       settings: {
-        is_direction: false,
-        is_required: false,
-        is_new_page: false,
-        is_add_picture: false,
+        is_direction_setting: false,
+        is_required_setting: false,
+        is_new_page_setting: false,
+        is_add_picture_setting: false,
       },
     };
 
@@ -248,16 +248,16 @@ class FormsElements extends React.Component {
       let settings = Object.assign({}, prevState.settings); // creating copy of state variable jasper
       switch (id) {
         case "is_add_picture " + this.props.keyOrder:
-          settings.is_add_picture = checked;
+          settings.is_add_picture_setting = checked;
           break;
         case "is_new_page " + this.props.keyOrder:
-          settings.is_new_page = checked;
+          settings.is_new_page_setting = checked;
           break;
         case "is_required " + this.props.keyOrder:
-          settings.is_required = checked;
+          settings.is_required_setting = checked;
           break;
-        case "is_direction " + this.props.keyOrder:
-          settings.is_direction = checked;
+        case "is_direction " + this.props.keyOrderP:
+          settings.is_direction_setting = checked;
           break;
       }
 
@@ -281,7 +281,7 @@ class FormsElements extends React.Component {
       dir: "ltr",
       // OR direction: "rtl"
     };
-    if (this.state.settings.is_direction) {
+    if (this.state.settings.is_direction_setting) {
       theme = {
         dir: "rtl",
         // OR direction: "rtl"
@@ -450,7 +450,19 @@ class FormsElements extends React.Component {
     }
     //// -------- Answers
     // console.log(this.state);
-
+    let compArray = [
+      "New Page",
+      "Slider",
+      "Single choice",
+      "Double Slider",
+      "Stars",
+      "Numiric",
+      "Dropdown",
+      "Multi Choice",
+      "Counter",
+      "Timeline",
+    ];
+    console.log(compArray[this.props.compTypeId - 1]);
     return (
       <Aux>
         <ThemeProvider theme={theme}>
@@ -459,7 +471,9 @@ class FormsElements extends React.Component {
               <Row>
                 <Card.Title as="h5">
                   <Col>
-                    <Form.Label>Task Title</Form.Label>
+                    <Form.Label>
+                      {compArray[this.props.compTypeId - 1]}: Task Title
+                    </Form.Label>
 
                     <Form.Control
                       size="lg"
@@ -476,7 +490,7 @@ class FormsElements extends React.Component {
                     />
                   </Col>
                   <Col>
-                    {this.state.settings.is_required ? (
+                    {this.state.settings.is_required_setting ? (
                       <p style={{ color: "red" }}>*required</p>
                     ) : null}
                   </Col>
