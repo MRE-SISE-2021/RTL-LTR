@@ -2,17 +2,23 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import NavBar from "../Components/NavBars/NavBarExp";
-
+import NavBar from "../Components/NavBars/NavBar";
+// import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
-import { useCookies } from 'react-cookie';
+import { withCookies } from "react-cookie";
+import { Card, ListGroup, Form } from "react-bootstrap";
+import Rating from "react-rating";
+import Slider from "rc-slider";
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+
+const Range = createSliderWithTooltip(Slider.Range);
 
 class ExperimentPage extends Component {
   constructor() {
     super();
     this.state = {
-      tasks: [],
-      inputList: [],
+      tasks: [], //what we get from db
+      inputList: [], //what we show to the user
       name: "",
       lang: "",
       type: "",
@@ -20,17 +26,19 @@ class ExperimentPage extends Component {
   }
   async componentDidMount() {
     // cookies
-    const [token, setToken] = useCookies(['rtl_ltr_session'])
+    const { cookies } = this.props;
+    // const tasks = PreviewResponse.tasks;
 
+    // console.log(this.state);
     //////
     await fetch(
-      "http://127.0.0.1:8000/viewset/questionnaire/" + 
-      this.props.match.params.id + 
-      "/", 
+      "http://127.0.0.1:8000/viewset/questionnaire/" +
+        this.props.match.params.id +
+        "/",
       {
-        headers: {
-          "Authorization": `Token ${token}`
-        },
+        headers: new Headers({
+          Authorization: `Token ${cookies.cookies.token}`,
+        }),
       }
     )
       .then((res) => res.json())
@@ -55,71 +63,152 @@ class ExperimentPage extends Component {
   }
 
   putInputList() {
+    console.log();
     this.state.tasks.forEach((task, index) => {
+      // tasks.forEach((task, index) => {
       const inputList = this.state.inputList;
       ///////
-      task.components.forEach((component, index) => {
-        if (component.component_type === "Welcome") {
-          this.setState({
-            inputList: inputList.concat(
-              <div
-                key="welcome"
-                dangerouslySetInnerHTML={{ __html: component.label }}
-              ></div>
-            ),
-          });
-        } else if (component.component_type === "Explanation") {
-          this.setState({
-            inputList: inputList.concat(
-              <div
-                key="explain"
-                dangerouslySetInnerHTML={{ __html: component.label }}
-              ></div>
-            ),
-          });
-        } else if (component.component_type === "Range") {
-          this.setState({
-            inputList: inputList.concat(
-              <div key={"range" + index}>
-                <p>{component.label}</p>
-                <input
-                  type="range"
-                  className="custom-range"
-                  defaultValue="22"
-                  id="customRange1"
-                />
-              </div>
-            ),
-          });
-        } else if (component.component_type === "Text") {
-          this.setState({
-            inputList: inputList.concat(
-              <div>
-                <p>{component.label}</p>
-                <input
-                  type="text"
-                  className="custom-range"
-                  // defaultValue="22"
-                  id="customRange1"
-                />
-              </div>
-            ),
-          });
-        } else {
-          this.setState({
-            inputList: inputList.concat(
-              <div
-                key="thaks"
-                dangerouslySetInnerHTML={{ __html: component.label }}
-              ></div>
-            ),
-          });
+      // console.log(task);
+      // task.components.forEach((component, index) => {
+      if (task.component_type_id === 1) {
+        this.setState({
+          inputList: inputList.concat(
+            <div key="1" dangerouslySetInnerHTML={{ __html: task.label }}></div>
+          ),
+        });
+      } else if (
+        task.component_type_id === 2 ||
+        task.component_type_id === 5 ||
+        task.component_type_id === 6 ||
+        task.component_type_id === 4 ||
+        task.component_type_id === 7
+      ) {
+        this.setState({
+          inputList: inputList.concat(
+            <div key={"range" + index}>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>
+              {task.component_type_id === 7 ? (
+                <Form.Group controlId="exampleForm.ControlSelect1">
+                  <Form.Control as="select">
+                    {task.answers.map(function (answer, index) {
+                      return (
+                        <option key={index}>{answer.answer_content}</option>
+                      );
+                    })}
+                  </Form.Control>
+                </Form.Group>
+              ) : (
+                task.answers.map(function (answer, index) {
+                  // return <p>{answer.answer_content}</p>;
+                  // console.log(answer.answer_content);
+                  return (
+                    <div key={index}>
+                      {answer.answer_content}
+                      {task.component_type_id === 2 ? (
+                        <Slider
+                          style={{
+                            width: "80%",
+                            top: "2%",
+                            left: "5%",
+                            bottom: "2%",
+                          }}
+                          className="pc-range-slider"
+                          // {...settingsBasic}
+                        />
+                      ) : task.component_type_id === 5 ? (
+                        <Rating
+                          emptySymbol="far fa-star fa-2x"
+                          fullSymbol="fas fa-star fa-2x"
+                        />
+                      ) : task.component_type_id === 4 ? (
+                        <Range
+                          className="pc-range-slider"
+                          style={{
+                            width: "80%",
+                            top: "2%",
+                            left: "5%",
+                            bottom: "2%",
+                          }}
+                          step={10}
+                          defaultValue={[20, 30]}
+                        />
+                      ) : (
+                        <Rating
+                          // initialRating={this.state.squareRating}
+                          emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                            <span className="theme-bar-square">
+                              <span>{n}</span>
+                            </span>
+                          ))}
+                          fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                            <span className="theme-bar-square">
+                              <span className="active">{n}</span>
+                            </span>
+                          ))}
+                          onChange={(rate) =>
+                            this.setState({ squareRating: rate })
+                          }
+                        />
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          ),
+        });
+      } else if (task.component_type_id === 3 || task.component_type_id === 8) {
+        let type = "radio";
+        if (task.component_type_id === 8) {
+          type = "checkbox";
         }
-      });
+        this.setState({
+          inputList: inputList.concat(
+            <div key={"task" + index}>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>{" "}
+              {task.answers.map(function (answer, index) {
+                // return <p>{answer.answer_content}</p>;
+                // console.log(answer.answer_content);
+                return (
+                  <div key={index}>
+                    <input type={type} key={index} name="ans" />
+                    {answer.answer_content}
+                  </div>
+                );
+              })}
+            </div>
+          ),
+        });
+      } else if (
+        task.component_type_id === 9 ||
+        task.component_type_id === 10
+      ) {
+        let type = "radio";
+        if (task.component_type_id === 8) {
+          type = "checkbox";
+        }
+        this.setState({
+          inputList: inputList.concat(
+            <div key={"task" + index}>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>{" "}
+              {this.props.compTypeId === 9
+                ? null
+                : this.props.compTypeId === 10
+                ? null
+                : null}
+            </div>
+          ),
+        });
+      }
     });
+    // });
   }
 
   render() {
+    console.log(this.state);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
@@ -133,26 +222,61 @@ class ExperimentPage extends Component {
           name={this.state.name}
           type={this.state.type}
           lang={this.state.lang}
+          taskId={this.props.match.params.id}
         />
+
         <div className={mainClass.join(" ")}>
-          <div className="pcoded-main-container full-screenable-node">
-            <div className="pcoded-wrapper">
-              <div className="pcoded-content">
-                <div className="pcoded-inner-content">
-                  <div className="main-body">
-                    <div className="page-wrapper">
-                      <Aux>
-                        {this.state.inputList.map(function (input, index) {
-                          return input;
-                        })}
-                      </Aux>
-                    </div>
+          {/* <div className="pcoded-main-container full-screenable-node"> */}
+          <div className="pcoded-wrapper">
+            <div className="pcoded-content">
+              <div className="pcoded-inner-content">
+                <div className="main-body">
+                  <div className="page-wrapper">
+                    <Aux>
+                      <Card
+                        border="info"
+                        style={{
+                          border: "2px solid ",
+                          width: "90%",
+                          marginTop: "10%",
+                          marginLeft: "5%",
+                        }}
+                      >
+                        <Card.Header
+                          className="text-center"
+                          style={{ fontSize: "30px" }}
+                        >
+                          Preview
+                        </Card.Header>
+                        <Card.Body
+                          style={{ marginLeft: "3%", marginRight: "3%" }}
+                        >
+                          <ListGroup.Item>
+                            {this.state.inputList.map(function (input, index) {
+                              return (
+                                <div
+                                  border="info"
+                                  style={{
+                                    border: "2px solid",
+                                    marginBottom: "2%",
+                                    padding: "1%",
+                                  }}
+                                >
+                                  {input}
+                                </div>
+                              );
+                            })}
+                          </ListGroup.Item>
+                        </Card.Body>
+                      </Card>
+                    </Aux>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        {/* </div> */}
       </Aux>
     );
   }
@@ -173,4 +297,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperimentPage);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentPage)
+);

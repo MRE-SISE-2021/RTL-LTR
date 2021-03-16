@@ -4,6 +4,7 @@ import ExperimentsTable from "../Components/Tabels/ExperimentsTable";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 
+
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -38,11 +39,12 @@ class HomePage extends Component {
     return (
       <Aux>
         <div
-          style={{ margin: "0", marginTop: "0px" }}
+          style={{ margin: "0", marginTop: "0" }}
           className={mainClass.join(" ")}
         >
           <ExperimentsTable />
         </div>
+      
       </Aux>
     );
   }

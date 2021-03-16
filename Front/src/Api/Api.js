@@ -7,7 +7,7 @@ async function postData(url = "", data = {}, token) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Token ${token}`,
+      Authorization: `Token ${token}`,
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error
@@ -26,7 +26,8 @@ async function putData(url = "", data = {}, token) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Token ${token}`,
+      Authorization: `Token ${token}`,
+
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error
@@ -45,7 +46,8 @@ async function deleteData(url = "", data = {}, token) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Token ${token}`
+      Authorization: `Token ${token}`,
+
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error
@@ -59,16 +61,16 @@ async function deleteData(url = "", data = {}, token) {
 class API {
   ENDPOINT = "http://127.0.0.1:8000/";
 
-  putRequest(url, response) {
-    return putData(this.ENDPOINT + url, response);
+  putRequest(url, response, token) {
+    return putData(this.ENDPOINT + url, response, token);
   }
 
-  deleteRequest(url, response) {
-    return deleteData(this.ENDPOINT + url, response);
+  deleteRequest(url, response, token) {
+    return deleteData(this.ENDPOINT + url, response, token);
   }
 
-  postRequest(url, response) {
-    return postData(this.ENDPOINT + url, response);
+  postRequest(url, response, token) {
+    return postData(this.ENDPOINT + url, response, token);
   }
 }
 export default new API();

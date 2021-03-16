@@ -8,12 +8,13 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-import Navbar from "react-bootstrap/Navbar";
+//import Navbar from "react-bootstrap/Navbar";
 import "../../styles/homePageStyle.css";
 import API from "../../Api/Api";
+import { withCookies } from "react-cookie";
 
-// cookies
-import { useCookies } from 'react-cookie';
+import { Navbar } from "react-bootstrap";
+import "../../styles/homePageStyle.css";
 
 class NavBar extends Component {
   constructor() {
@@ -34,10 +35,9 @@ class NavBar extends Component {
   }
 
   submitDelete(event) {
-    // cookies
-    const [token, setToken] = useCookies(['rtl_ltr_session'])
-
     event.preventDefault();
+    const { cookies } = this.props;
+
     if (this.props.expId === undefined) {
       return;
     }
@@ -57,7 +57,7 @@ class NavBar extends Component {
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.expId,
           response,
-          token['rtl_ltr_session']
+          cookies.cookies.token
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });
@@ -71,7 +71,7 @@ class NavBar extends Component {
     });
   }
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     if (this.state.toPreview === true) {
       return <Redirect to={"/preview/" + this.props.expId} />;
     }
@@ -92,9 +92,13 @@ class NavBar extends Component {
 
     let navBar = (
       <Aux>
-        <Navbar fixed="top" bg="info" variant="dark">
+        <Navbar fixed="top" bg="info" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <MDBIcon className="mr-5" icon="home" />
+            <ul className="mb-1 bg-info text-white">
+              <li>
+                <MDBIcon icon="home" size="3x" className="indigo-text pr-5" />{" "}
+              </li>
+            </ul>
           </Link>
 
           <div className="collapse navbar-collapse">
@@ -125,23 +129,32 @@ class NavBar extends Component {
             >
               {this.props.lang}
             </Button>
+            {this.props.prev ? null : (
+              <div className="d-flex justify-content-lg-end">
+                <Modal className="mr-4" data={this.props} />
 
-            <div className="d-flex justify-content-lg-end">
-              <Modal className="mr-4" data={this.props} />
-
-              <Button variant="outline-*" onClick={this.submitPreview}>
-                <MDBIcon className="mr-5" far icon="eye" />
-              </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" icon="paperclip" />
-              </Button>
-              <Button variant="outline-*" disabled>
-                <MDBIcon className="mr-5" far icon="clone" />
-              </Button>
-              <Button variant="outline-*" onClick={this.submitDelete}>
-                <MDBIcon className="mr-5" far icon="trash-alt" />
-              </Button>
-            </div>
+                <Button
+                  variant="outline-*"
+                  style={{ color: "white" }}
+                  onClick={this.submitPreview}
+                >
+                  <MDBIcon className="mr-5" far icon="eye" size="2x" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" icon="paperclip" size="2x" />
+                </Button>
+                <Button variant="outline-*" disabled>
+                  <MDBIcon className="mr-5" far icon="clone" size="2x" />
+                </Button>
+                <Button
+                  variant="outline-*"
+                  style={{ color: "white" }}
+                  onClick={this.submitDelete}
+                >
+                  <MDBIcon className="mr-5" far icon="trash-alt" size="2x" />
+                </Button>
+              </div>
+            )}
           </div>
         </Navbar>
       </Aux>
@@ -172,4 +185,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(NavBar)
+);

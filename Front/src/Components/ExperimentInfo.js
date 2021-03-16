@@ -9,11 +9,9 @@ import Swal from "sweetalert2";
 import API from "../Api/Api";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
+import { withCookies } from "react-cookie";
 
 import "../styles/homePageStyle.css";
-
-// cookies
-import { useCookies } from 'react-cookie';
 
 class ExperimentInfo extends Component {
   constructor(props) {
@@ -48,10 +46,9 @@ class ExperimentInfo extends Component {
     }));
   }
   submitHandlerDelete(event) {
-    // cookies
-    const [token, setToken] = useCookies(['rtl_ltr_session'])
-
     //DELETE request -- delete task
+    const { cookies } = this.props;
+
     if (this.props.chosen.questionnaire_id === undefined) {
       return;
     }
@@ -71,7 +68,7 @@ class ExperimentInfo extends Component {
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
           response,
-          token['rtl_ltr_session']
+          cookies.cookies.token
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });
@@ -100,7 +97,6 @@ class ExperimentInfo extends Component {
 
   render() {
     const data = this.props.chosen;
-    console.log(data);
     if (this.state.toDashboard === true) {
       return <Redirect to={"/preview/" + data.questionnaire_id} />;
     }
@@ -127,11 +123,11 @@ class ExperimentInfo extends Component {
       <Aux>
         <nav
           className="bg-info text-white"
-          style={{ marginTop: "90px", marginLeft: "200px" }}
+          style={{ height:"30%", marginTop: "13%", marginLeft: "25%" }}
         >
           <Aux>
-            <Card>
-              <Card.Header style={{ height: "90px" }}>
+            <Card >
+              <Card.Header >
                 <Card.Title>
                   <b className="text-info">{data.questionnaire_name}</b>
                   <div className="d-flex justify-content-lg-end">
@@ -164,7 +160,7 @@ class ExperimentInfo extends Component {
                 </Card.Title>
               </Card.Header>
               <Card.Body>
-                <div style={{ height: "425px" }} className="bg-info text-white">
+                <div style={{height:"450px"}} className="bg-info text-white">
                   <ul className="p-3 mb-2 text-white">
                     <Row>
                       <Col>
@@ -195,6 +191,11 @@ class ExperimentInfo extends Component {
                           : null}
                       </Col>
                     </Row>
+                    <Row>
+                      <Col>
+                        <b>Mesaures: </b>
+                      </Col>
+                    </Row>
                   </ul>
                 </div>
               </Card.Body>
@@ -202,6 +203,7 @@ class ExperimentInfo extends Component {
           </Aux>
         </nav>
       </Aux>
+      
     );
   }
 }
@@ -221,4 +223,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperimentInfo);
+export default withCookies(
+  connect(mapStateToProps, mapDispatchToProps)(ExperimentInfo)
+);

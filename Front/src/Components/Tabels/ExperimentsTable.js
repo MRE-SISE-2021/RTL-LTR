@@ -8,6 +8,7 @@ import { Table, Button, Row } from "react-bootstrap";
 import QuestionnaireInfo from "../ExperimentInfo";
 import { MDBIcon } from "mdbreact";
 import "../../styles/homePageStyle.css";
+import { withCookies } from "react-cookie";
 
 class ExperimentTable extends Component {
   constructor(props) {
@@ -29,12 +30,16 @@ class ExperimentTable extends Component {
   };
 
   componentDidMount() {
+    const { cookies } = this.props;
     //////
-    fetch("http://127.0.0.1:8000/viewset/questionnaire")
+    fetch("http://127.0.0.1:8000/viewset/questionnaire", {
+      headers: new Headers({
+        Authorization: `Token ${cookies.cookies.token}`,
+      }),
+    })
       .then((res) => res.json())
       .then(
         (result) => {
-          // console.log(result);
           if (result[0] !== undefined) {
             this.setState({
               isLoaded: true,
@@ -50,6 +55,7 @@ class ExperimentTable extends Component {
           }
         },
         (error) => {
+          console.log(error);
           this.setState({
             isLoaded: true,
             error,
@@ -119,7 +125,12 @@ class ExperimentTable extends Component {
       this.forceUpdate();
     };
     const handleClick = (value) => {
-      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`)
+      const { cookies } = this.props;
+      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`, {
+        headers: new Headers({
+          Authorization: `Token ${cookies.cookies.token}`,
+        }),
+      })
         .then((res) => res.json())
         .then(
           (result) => {
@@ -138,27 +149,31 @@ class ExperimentTable extends Component {
         );
     };
     const names = this.state.items;
+    /*
+  <div class="infoStyle">
+          
+        </div>
 
+*/
     return (
       <Aux>
-        <nav style={{ marginLeft: "200px" }}>
+        <nav style={{ marginLeft: "15%" }}>
           <QuestionnaireInfo chosen={this.state.chosen} />
         </nav>
 
-        <nav style={{ width: "30%" }} className={navClass.join(" ")}>
+        <nav
+          style={{
+            width: "30%",
+            overflow: "auto",
+            overflowX: "hidden",
+          }}
+          className={navClass.join(" ")}
+        >
           <Row className="mt-4 ml-1">
             <h5>My Experiments</h5>
             <Modal />
           </Row>
-          <Table
-            style={{
-              borderStyle: "solid",
-              width: "320px",
-              height: "450px",
-              overflow: "auto",
-              display: "inline-block",
-            }}
-          >
+          <Table striped bordered hover>
             <thead>
               <tr>
                 <th>#</th>
@@ -191,6 +206,7 @@ class ExperimentTable extends Component {
                     <td>
                       <MDBIcon far icon="play-circle" />
                     </td>
+                    <td>?</td>
                   </tr>
                 );
               })}
@@ -221,6 +237,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ExperimentTable)
+export default withCookies(
+  withRouter(connect(mapStateToProps, mapDispatchToProps)(ExperimentTable))
 );

@@ -31,9 +31,9 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
 
-class ComponentSerializer(DynamicFieldsModelSerializer):
+class ComponentTypeSerializer(DynamicFieldsModelSerializer):
     class Meta:
-        model = Component
+        model = ComponentType
         fields = '__all__'
         # fields = ['component_id', 'component_type']
 
@@ -66,7 +66,14 @@ class QuestionnaireTypeSerializer(DynamicFieldsModelSerializer):
         # fields = ['questionnaire_type_id', 'name']
 
 
+class ProficiencySerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = Proficiency
+        fields = '__all__'
+
+
 class ParticipantSerializer(DynamicFieldsModelSerializer):
+    # hci_background_id = HciBackgroundSerializer()
     class Meta:
         model = Participant
         fields = '__all__'
@@ -124,13 +131,6 @@ class QuestionnaireTaskSerializer(DynamicFieldsModelSerializer):
         # fields = ['questionnaire_id', 'task_id']
 
 
-class TaskComponentSerializer(DynamicFieldsModelSerializer):
-    class Meta:
-        model = TaskComponent
-        fields = '__all__'
-        # fields = ['task_id', 'component_id', 'direction']
-
-
 class TaskImageSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = TaskImage
@@ -145,7 +145,6 @@ class TaskSerializer(DynamicFieldsModelSerializer):
         # fields = ['task_id', 'title', 'task_content', 'language_id', 'is_required']
 
     answers = AnswerSerializer(many=True, required=False, read_only=True)
-    components = ComponentSerializer(many=True, required=False, read_only=True)
     images = ImageSerializer(many=True, required=False, read_only=True)
 
 

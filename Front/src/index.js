@@ -12,10 +12,7 @@ import "./assets/scss/style.scss";
 import ExperimentPage from "./Pages/ExperimentPage";
 import PreviewPage from "./Pages/PreviewPage";
 import Login from "./Components/Login";
-
-// cookies
-import {CookiesProvider} from 'react-cookie'
-
+import { CookiesProvider } from "react-cookie";
 
 const store = createStore(reducer);
 
@@ -24,8 +21,8 @@ const app = (
     <Provider store={store}>
       <BrowserRouter basename={config.basename}>
         <Switch>
-          <Route exact path="/" component={Login} />
           <Route exact path="/home" component={App} />
+          <Route exact path="/" component={Login} />
           <Route
             path="/create/:name/:type/:language/:id"
             component={ExperimentPage}
