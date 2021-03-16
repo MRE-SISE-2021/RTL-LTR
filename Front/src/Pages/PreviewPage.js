@@ -8,6 +8,10 @@ import NavBar from "../Components/NavBars/NavBar";
 import { withCookies } from "react-cookie";
 import { Card, ListGroup } from "react-bootstrap";
 import Rating from "react-rating";
+import Slider from "rc-slider";
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+
+const Range = createSliderWithTooltip(Slider.Range);
 
 class ExperimentPage extends Component {
   constructor() {
@@ -75,7 +79,8 @@ class ExperimentPage extends Component {
       } else if (
         task.component_type_id === 2 ||
         task.component_type_id === 5 ||
-        task.component_type_id === 6
+        task.component_type_id === 6 ||
+        task.component_type_id === 4
       ) {
         this.setState({
           inputList: inputList.concat(
@@ -89,17 +94,32 @@ class ExperimentPage extends Component {
                   <div key={index}>
                     {answer.answer_content}
                     {task.component_type_id === 2 ? (
-                      <input
-                        key={"range" + index}
-                        type="range"
-                        className="custom-range"
-                        defaultValue="22"
-                        id="customRange1"
+                      <Slider
+                        style={{
+                          width: "80%",
+                          top: "2%",
+                          left: "5%",
+                          bottom: "2%",
+                        }}
+                        className="pc-range-slider"
+                        // {...settingsBasic}
                       />
                     ) : task.component_type_id === 5 ? (
                       <Rating
                         emptySymbol="far fa-star fa-2x"
                         fullSymbol="fas fa-star fa-2x"
+                      />
+                    ) : task.component_type_id === 4 ? (
+                      <Range
+                        className="pc-range-slider"
+                        style={{
+                          width: "80%",
+                          top: "2%",
+                          left: "5%",
+                          bottom: "2%",
+                        }}
+                        step={10}
+                        defaultValue={[20, 30]}
                       />
                     ) : (
                       <Rating

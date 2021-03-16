@@ -363,13 +363,13 @@ class FormsElements extends React.Component {
                 <Card.Body> */}
               <Slider
                 style={{
-                  width: "200px",
+                  width: "80%",
                   top: "2%",
-                  left: "30%",
+                  left: "5%",
                   bottom: "2%",
                 }}
                 className="pc-range-slider"
-                {...settingsBasic}
+                // {...settingsBasic}
               />
               {/* </Card.Body>
               </Card> */}
@@ -379,13 +379,19 @@ class FormsElements extends React.Component {
             <Row>
               {console.log(this.props.compTypeId)}
               {/* <Col md={6}> */}
-              <Form.Group controlId="exampleForm.RangeInput">
-                <Range
-                  className="pc-range-slider"
-                  allowCross={false}
-                  defaultValue={[0, 20]}
-                />
-              </Form.Group>
+              {/* <Form.Group controlId="exampleForm.RangeInput"> */}
+              <Range
+                className="pc-range-slider"
+                style={{
+                  width: "80%",
+                  top: "2%",
+                  left: "5%",
+                  bottom: "2%",
+                }}
+                step={10}
+                defaultValue={[20, 30]}
+              />
+              {/* </Form.Group> */}
               {/* </Col> */}
             </Row>
           )}
@@ -427,24 +433,6 @@ class FormsElements extends React.Component {
           )}
           {/* </Row> */}
 
-          {this.props.compTypeId === 2 && (
-            <Row>
-              <Col md={{ span: 6, offset: 1 }}>
-                {console.log(this.props.compTypeId)}
-                {/* <Col md={6}> */}
-                <Form.Group controlId="exampleForm.RangeInput">
-                  <Form.Control
-                    type="range"
-                    className="form-control-range"
-                    // name="value"
-                    // onChange={this.onInputchange}
-                    readOnly={this.state.deleteAll}
-                  />
-                </Form.Group>
-                {/* </Col> */}
-              </Col>
-            </Row>
-          )}
           <br />
         </Container>
       );
