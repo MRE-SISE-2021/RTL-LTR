@@ -70,9 +70,12 @@ class Task(models.Model):
     label = models.TextField(db_column='Label', null=True, blank=True)
 
     component_type_id = models.ForeignKey(ComponentType, models.DO_NOTHING, db_column='ComponentTypeId')
-    direction = models.CharField(db_column='Direction', max_length=10)
     order_key = models.IntegerField(db_column='OrderKey')
-    is_required = models.BooleanField(db_column='IsRequired')
+
+    is_direction_setting = models.BooleanField(db_column='IsDirectionSetting')
+    is_required_setting = models.BooleanField(db_column='IsRequiredSetting')
+    is_new_page_setting = models.BooleanField(db_column='IsNewPageSetting')
+    is_add_picture_setting = models.BooleanField(db_column='IsAddPictureSetting')
 
     answers = models.ManyToManyField(Answer, through='TaskAnswer')
     images = models.ManyToManyField(Image, through='TaskImage')

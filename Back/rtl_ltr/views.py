@@ -128,6 +128,24 @@ def get_questionnaire_name_list(request):
         return Response(names_list, status=status.HTTP_200_OK)
 
 
+# get list of questionnaire name for main page
+@api_view(['GET'])
+def get_tasks_with_settings_from_questionnaire(request, id):
+    if request.method == "GET":
+        queryset = Questionnaire.objects.get(questionnaire_id=id)
+        questionnaire_data = QuestionnaireSerializer(queryset).data
+
+        tasks_data = questionnaire_data["tasks"]
+        for task in tasks_data:
+            task['settings'] = {}
+
+            for key, value in list(task.items()):
+                if "_setting" in key:
+                    task['settings'][key] = task.pop(key)
+
+        return Response(tasks_data, status=status.HTTP_200_OK)
+
+
 # DELETE task from questionnaire
 @api_view(['DELETE'])
 def delete_task_from_questionnaire(request, id):
@@ -181,6 +199,12 @@ class QuestionnairePreviewAPIView(APIView):
 
         tasks = request.data.pop('tasks')
         questionnaire_table_data = request.data
+
+        # get settings
+        if tasks is not None:
+            for task in tasks:
+                for key in task['settings']:
+                    task[key] = task['settings'][key]
 
         # create a new questionnaire in the table and get its id
         questionnaire_id = insert_data_into_table(QuestionnaireSerializer(data=questionnaire_table_data),
@@ -250,6 +274,12 @@ class QuestionnairePreviewAPIView(APIView):
         # get parameters for update
         questionnaire_put = request.data
         tasks_put = questionnaire_put.pop('tasks') if 'tasks' in questionnaire_put else None
+
+        # get settings
+        if tasks_put is not None:
+            for task in tasks_put:
+                for key in task['settings']:
+                    task[key] = task['settings'][key]
 
         # get queryset of questionnaire table by questionnaire_id
         try:

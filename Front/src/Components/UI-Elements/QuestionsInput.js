@@ -18,7 +18,10 @@ import { withCookies } from "react-cookie";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 import Tooltip from "rc-tooltip";
-
+///// --- rtl
+import { ThemeProvider } from "styled-components";
+import rtl from "styled-components-rtl";
+////---rtl
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
@@ -51,12 +54,19 @@ class FormsElements extends React.Component {
       taskId: props.taskId,
       answersNum: 2,
       answers: props.answers,
+      settings: {
+        is_direction_setting: false,
+        is_required_setting: false,
+        is_new_page_setting: false,
+        is_add_picture_setting: false,
+      },
     };
 
     this.onInputchange = this.onInputchange.bind(this);
     this.onInputAdd = this.onInputAdd.bind(this);
     this.onInputSub = this.onInputSub.bind(this);
     this.onAnswerchange = this.onAnswerchange.bind(this);
+    this.setSettings = this.setSettings.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -80,12 +90,13 @@ class FormsElements extends React.Component {
             answers: this.state.answers,
             order_key: this.props.keyOrder,
             component_type_id: this.props.compTypeId,
-            direction: "RTL",
+            // direction: "RTL", ////////DELETE
             label: this.state.label,
             images: [],
             task_title: this.state.title,
-            is_required: true, ///////?
+            // is_required: true, ////////DELETE
             task_id: this.state.taskId,
+            settings: this.state.settings,
           },
         ],
         questionnaire_id: this.state.id, //
@@ -98,12 +109,13 @@ class FormsElements extends React.Component {
             answers: this.props.answers,
             order_key: this.props.keyOrder,
             component_type_id: this.props.compTypeId,
-            direction: "RTL",
+            // direction: "RTL", ////////DELETE
             label: this.state.label,
             images: [],
             task_title: this.state.title,
             task_content: "", ////////?
-            is_required: true, ///////?
+            // is_required: true, ////////DELETE
+            settings: this.state.settings,
           },
         ],
         questionnaire_id: this.state.id, //
@@ -228,6 +240,31 @@ class FormsElements extends React.Component {
     console.log(this.state.answers);
   }
 
+  ///settings----
+  setSettings(event) {
+    var id = event.target.id;
+    var checked = event.target.checked;
+    this.setState((prevState) => {
+      let settings = Object.assign({}, prevState.settings); // creating copy of state variable jasper
+      switch (id) {
+        case "is_add_picture " + this.props.keyOrder:
+          settings.is_add_picture_setting = checked;
+          break;
+        case "is_new_page " + this.props.keyOrder:
+          settings.is_new_page_setting = checked;
+          break;
+        case "is_required " + this.props.keyOrder:
+          settings.is_required_setting = checked;
+          break;
+        case "is_direction " + this.props.keyOrder:
+          settings.is_direction_setting = checked;
+          break;
+      }
+
+      // update the name property, assign a new value
+      return { settings }; // return new object jasper object
+    });
+  }
   render() {
     const settingsBasic = {
       dots: true,
@@ -239,6 +276,19 @@ class FormsElements extends React.Component {
       autoplay: true,
       autoplaySpeed: 5000,
     };
+    ///rtl
+    let theme = {
+      dir: "ltr",
+      // OR direction: "rtl"
+    };
+    if (this.state.settings.is_direction_setting) {
+      theme = {
+        dir: "rtl",
+        // OR direction: "rtl"
+      };
+    }
+    console.log(theme);
+    //rtl
     //// Answers --------
     var answers = [];
     for (var i = 0; i < this.state.answersNum; i++) {
@@ -252,7 +302,7 @@ class FormsElements extends React.Component {
         ans = this.props.answers[i].answer_content;
       }
       answers.push(
-        <Container>
+        <Container key={i}>
           <Row key={i}>
             {/* <p key={i}>answ</p> */}
 
@@ -304,168 +354,225 @@ class FormsElements extends React.Component {
                 ) : null}
               </Col>
             ) : null}
-            <br />
-            {this.props.compTypeId === 2 && (
-              <Row>
-                {console.log(this.props.compTypeId)}
-                {/* <Card>
-                <Card.Body> */}
-                <Slider
-                  style={{
-                    width: "200px",
-                    top: "2%",
-                    left: "30%",
-                    bottom: "2%",
-                  }}
-                  className="pc-range-slider"
-                  {...settingsBasic}
-                />
-                {/* </Card.Body>
-              </Card> */}
-              </Row>
-            )}
-            {this.props.compTypeId === 4 && (
-              <Row>
-                {console.log(this.props.compTypeId)}
-                {/* <Col md={6}> */}
-                <Form.Group controlId="exampleForm.RangeInput">
-                  <Range
-                    className="pc-range-slider"
-                    allowCross={false}
-                    defaultValue={[0, 20]}
-                  />
-                </Form.Group>
-                {/* </Col> */}
-              </Row>
-            )}
-            {this.props.compTypeId === 5 && (
-              <Row>
-                {console.log(this.props.compTypeId)}
-                {/* <Col md={6}> */}
-                <Form.Group controlId="exampleForm.RangeInput">
-                  <Rating
-                    emptySymbol="far fa-star fa-2x"
-                    fullSymbol="fas fa-star fa-2x"
-                  />
-                </Form.Group>
-                {/* </Col> */}
-              </Row>
-            )}
-            {this.props.compTypeId === 6 && (
-              <Row>
-                {console.log(this.props.compTypeId)}
-                {/* <Col md={6}> */}
-                <Form.Group controlId="exampleForm.RangeInput">
-                  <Rating
-                    initialRating={this.state.squareRating}
-                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                      <span className="theme-bar-square">
-                        <span>{n}</span>
-                      </span>
-                    ))}
-                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                      <span className="theme-bar-square">
-                        <span className="active">{n}</span>
-                      </span>
-                    ))}
-                    onChange={(rate) => this.setState({ squareRating: rate })}
-                  />
-                </Form.Group>
-                {/* </Col> */}
-              </Row>
-            )}
           </Row>
-
+          <br />
           {this.props.compTypeId === 2 && (
             <Row>
-              <Col md={{ span: 6, offset: 1 }}>
-                {console.log(this.props.compTypeId)}
-                {/* <Col md={6}> */}
-                <Form.Group controlId="exampleForm.RangeInput">
-                  <Form.Control
-                    type="range"
-                    className="form-control-range"
-                    // name="value"
-                    // onChange={this.onInputchange}
-                    readOnly={this.state.deleteAll}
-                  />
-                </Form.Group>
-                {/* </Col> */}
-              </Col>
+              {console.log(this.props.compTypeId)}
+              {/* <Card>
+                <Card.Body> */}
+              <Slider
+                style={{
+                  width: "80%",
+                  top: "2%",
+                  left: "5%",
+                  bottom: "2%",
+                }}
+                className="pc-range-slider"
+                // {...settingsBasic}
+              />
+              {/* </Card.Body>
+              </Card> */}
             </Row>
           )}
+          {this.props.compTypeId === 4 && (
+            <Row>
+              {console.log(this.props.compTypeId)}
+              {/* <Col md={6}> */}
+              {/* <Form.Group controlId="exampleForm.RangeInput"> */}
+              <Range
+                className="pc-range-slider"
+                style={{
+                  width: "80%",
+                  top: "2%",
+                  left: "5%",
+                  bottom: "2%",
+                }}
+                step={10}
+                defaultValue={[20, 30]}
+              />
+              {/* </Form.Group> */}
+              {/* </Col> */}
+            </Row>
+          )}
+          {this.props.compTypeId === 5 && (
+            <Row>
+              {console.log(this.props.compTypeId)}
+              {/* <Col md={6}> */}
+              <Form.Group controlId="exampleForm.RangeInput">
+                <Rating
+                  emptySymbol="far fa-star fa-2x"
+                  fullSymbol="fas fa-star fa-2x"
+                />
+              </Form.Group>
+              {/* </Col> */}
+            </Row>
+          )}
+          {this.props.compTypeId === 6 && (
+            <Row>
+              {console.log(this.props.compTypeId)}
+              {/* <Col md={6}> */}
+              <Form.Group controlId="exampleForm.RangeInput">
+                <Rating
+                  initialRating={this.state.squareRating}
+                  emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                    <span className="theme-bar-square">
+                      <span>{n}</span>
+                    </span>
+                  ))}
+                  fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                    <span className="theme-bar-square">
+                      <span className="active">{n}</span>
+                    </span>
+                  ))}
+                  onChange={(rate) => this.setState({ squareRating: rate })}
+                />
+              </Form.Group>
+              {/* </Col> */}
+            </Row>
+          )}
+          {/* </Row> */}
+
           <br />
         </Container>
       );
     }
     //// -------- Answers
     // console.log(this.state);
-
+    let compArray = [
+      "New Page",
+      "Slider",
+      "Single choice",
+      "Double Slider",
+      "Stars",
+      "Numiric",
+      "Dropdown",
+      "Multi Choice",
+      "Counter",
+      "Timeline",
+    ];
+    console.log(compArray[this.props.compTypeId - 1]);
     return (
       <Aux>
-        <Card>
-          <Card.Header>
-            <Row>
-              <Card.Title as="h5">
-                <Form.Label>Task Title</Form.Label>
+        <ThemeProvider theme={theme}>
+          <Card dir={theme.dir}>
+            <Card.Header>
+              <Row>
+                <Card.Title as="h5">
+                  <Col>
+                    <Form.Label>
+                      {compArray[this.props.compTypeId - 1]}: Task Title
+                    </Form.Label>
 
-                <Form.Control
-                  size="lg"
-                  type="text"
-                  placeholder="Enter Your Task Title"
-                  onChange={this.onInputchange}
-                  name="title"
-                  value={this.state.title}
-                  required
-                  readOnly={this.state.deleteAll}
-                  border="info"
+                    <Form.Control
+                      size="lg"
+                      type="text"
+                      placeholder="Enter Your Task Title"
+                      onChange={this.onInputchange}
+                      name="title"
+                      value={this.state.title}
+                      required
+                      readOnly={this.state.deleteAll}
+                      border="info"
+                      variant="info"
+                      style={{ border: " 2px solid " }}
+                    />
+                  </Col>
+                  <Col>
+                    {this.state.settings.is_required_setting ? (
+                      <p style={{ color: "red" }}>*required</p>
+                    ) : null}
+                  </Col>
+                </Card.Title>
+              </Row>
+            </Card.Header>
+            <Card.Body>
+              <hr />
+
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="exampleForm.ControlInput1">
+                    <Form.Control
+                      variant="info"
+                      type="text"
+                      placeholder="Enter Your Question"
+                      name="label"
+                      value={this.state.label}
+                      onChange={this.onInputchange}
+                      required
+                      readOnly={this.state.deleteAll}
+                      style={{ width: "160%", border: "2px solid " }}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              {/* ///// */}
+              {this.props.compTypeId === 9 || this.props.compTypeId === 10
+                ? null
+                : answers}
+              {/* /////// */}
+              <Modal.Footer>
+                <Form
+                  style={{
+                    marginRight: "30%",
+                    textAlign: "left",
+                    color: "black",
+                  }}
+                >
+                  <Row>
+                    <Col>
+                      <Form.Check
+                        type="switch"
+                        id={"is_direction " + this.props.keyOrder}
+                        // id="is_direction"
+                        label="RTL/LTR customazation"
+                        onClick={this.setSettings}
+                      />
+                      <Form.Check
+                        type="switch"
+                        id={"is_required " + this.props.keyOrder}
+                        label="is required"
+                        // id="is_required"
+                        onClick={this.setSettings}
+                      />
+                    </Col>
+                    <Col>
+                      <Form.Check
+                        type="switch"
+                        id={"is_new_page " + this.props.keyOrder}
+                        // id="is_new_page"
+                        label="Open on a new page"
+                        onClick={this.setSettings}
+                      />
+
+                      <Form.Check
+                        type="switch"
+                        id={"is_add_picture " + this.props.keyOrder}
+                        // id="is_add_picture"
+                        label="Add picture under the question"
+                        onClick={this.setSettings}
+                      />
+                    </Col>
+                  </Row>
+                </Form>
+                <Button
                   variant="info"
-                  style={{ border: " 2px solid ", width: "110%" }}
-                />
-              </Card.Title>
-            </Row>
-          </Card.Header>
-          <Card.Body>
-            <hr />
-
-            <Row>
-              <Col md={6}>
-                <Form.Group controlId="exampleForm.ControlInput1">
-                  <Form.Control
-                    variant="info"
-                    type="text"
-                    placeholder="Enter Your Question"
-                    name="label"
-                    value={this.state.label}
-                    onChange={this.onInputchange}
-                    required
-                    readOnly={this.state.deleteAll}
-                    style={{ width: "160%", border: "2px solid " }}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            {/* ///// */}
-            {answers}
-            {/* /////// */}
-            <Modal.Footer>
-              <Button
-                variant="info"
-                onClick={this.sendData}
-                disabled={this.state.deleteAll}
-              >
-                <MDBIcon icon="save" />
-              </Button>
-              <Button
-                variant="danger"
-                disabled={this.state.delete}
-                onClick={this.deleteData}
-              >
-                <MDBIcon icon="trash-alt" />
-              </Button>
-            </Modal.Footer>
-          </Card.Body>
-        </Card>
+                  onClick={this.sendData}
+                  disabled={this.state.deleteAll}
+                >
+                  <MDBIcon icon="save" />
+                </Button>
+                <Button
+                  variant="danger"
+                  disabled={this.state.delete}
+                  onClick={this.deleteData}
+                >
+                  <MDBIcon icon="trash-alt" />
+                </Button>
+              </Modal.Footer>
+            </Card.Body>
+          </Card>
+        </ThemeProvider>
       </Aux>
     );
   }
