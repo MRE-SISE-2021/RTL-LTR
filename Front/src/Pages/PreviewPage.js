@@ -253,7 +253,18 @@ class ExperimentPage extends Component {
                         >
                           <ListGroup.Item>
                             {this.state.inputList.map(function (input, index) {
-                              return input;
+                              return (
+                                <div
+                                  border="info"
+                                  style={{
+                                    border: "2px solid",
+                                    marginBottom: "2%",
+                                    padding: "1%",
+                                  }}
+                                >
+                                  {input}
+                                </div>
+                              );
                             })}
                           </ListGroup.Item>
                         </Card.Body>
