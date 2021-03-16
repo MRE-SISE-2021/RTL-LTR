@@ -6,7 +6,7 @@ import NavBar from "../Components/NavBars/NavBar";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
-import { Card, ListGroup } from "react-bootstrap";
+import { Card, ListGroup, Form } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
@@ -80,68 +80,81 @@ class ExperimentPage extends Component {
         task.component_type_id === 2 ||
         task.component_type_id === 5 ||
         task.component_type_id === 6 ||
-        task.component_type_id === 4
+        task.component_type_id === 4 ||
+        task.component_type_id === 7
       ) {
         this.setState({
           inputList: inputList.concat(
             <div key={"range" + index}>
               <h3>--- {task.task_title} ---</h3>
               <h4>{task.label}</h4>
-              {task.answers.map(function (answer, index) {
-                // return <p>{answer.answer_content}</p>;
-                // console.log(answer.answer_content);
-                return (
-                  <div key={index}>
-                    {answer.answer_content}
-                    {task.component_type_id === 2 ? (
-                      <Slider
-                        style={{
-                          width: "80%",
-                          top: "2%",
-                          left: "5%",
-                          bottom: "2%",
-                        }}
-                        className="pc-range-slider"
-                        // {...settingsBasic}
-                      />
-                    ) : task.component_type_id === 5 ? (
-                      <Rating
-                        emptySymbol="far fa-star fa-2x"
-                        fullSymbol="fas fa-star fa-2x"
-                      />
-                    ) : task.component_type_id === 4 ? (
-                      <Range
-                        className="pc-range-slider"
-                        style={{
-                          width: "80%",
-                          top: "2%",
-                          left: "5%",
-                          bottom: "2%",
-                        }}
-                        step={10}
-                        defaultValue={[20, 30]}
-                      />
-                    ) : (
-                      <Rating
-                        // initialRating={this.state.squareRating}
-                        emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                          <span className="theme-bar-square">
-                            <span>{n}</span>
-                          </span>
-                        ))}
-                        fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                          <span className="theme-bar-square">
-                            <span className="active">{n}</span>
-                          </span>
-                        ))}
-                        onChange={(rate) =>
-                          this.setState({ squareRating: rate })
-                        }
-                      />
-                    )}
-                  </div>
-                );
-              })}
+              {task.component_type_id === 7 ? (
+                <Form.Group controlId="exampleForm.ControlSelect1">
+                  <Form.Control as="select">
+                    {task.answers.map(function (answer, index) {
+                      return (
+                        <option key={index}>{answer.answer_content}</option>
+                      );
+                    })}
+                  </Form.Control>
+                </Form.Group>
+              ) : (
+                task.answers.map(function (answer, index) {
+                  // return <p>{answer.answer_content}</p>;
+                  // console.log(answer.answer_content);
+                  return (
+                    <div key={index}>
+                      {answer.answer_content}
+                      {task.component_type_id === 2 ? (
+                        <Slider
+                          style={{
+                            width: "80%",
+                            top: "2%",
+                            left: "5%",
+                            bottom: "2%",
+                          }}
+                          className="pc-range-slider"
+                          // {...settingsBasic}
+                        />
+                      ) : task.component_type_id === 5 ? (
+                        <Rating
+                          emptySymbol="far fa-star fa-2x"
+                          fullSymbol="fas fa-star fa-2x"
+                        />
+                      ) : task.component_type_id === 4 ? (
+                        <Range
+                          className="pc-range-slider"
+                          style={{
+                            width: "80%",
+                            top: "2%",
+                            left: "5%",
+                            bottom: "2%",
+                          }}
+                          step={10}
+                          defaultValue={[20, 30]}
+                        />
+                      ) : (
+                        <Rating
+                          // initialRating={this.state.squareRating}
+                          emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                            <span className="theme-bar-square">
+                              <span>{n}</span>
+                            </span>
+                          ))}
+                          fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                            <span className="theme-bar-square">
+                              <span className="active">{n}</span>
+                            </span>
+                          ))}
+                          onChange={(rate) =>
+                            this.setState({ squareRating: rate })
+                          }
+                        />
+                      )}
+                    </div>
+                  );
+                })
+              )}
             </div>
           ),
         });
