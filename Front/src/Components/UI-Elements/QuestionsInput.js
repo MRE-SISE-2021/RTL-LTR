@@ -256,7 +256,7 @@ class FormsElements extends React.Component {
         case "is_required " + this.props.keyOrder:
           settings.is_required_setting = checked;
           break;
-        case "is_direction " + this.props.keyOrderP:
+        case "is_direction " + this.props.keyOrder:
           settings.is_direction_setting = checked;
           break;
       }
@@ -507,7 +507,9 @@ class FormsElements extends React.Component {
                 </Col>
               </Row>
               {/* ///// */}
-              {answers}
+              {this.props.compTypeId === 9 || this.props.compTypeId === 10
+                ? null
+                : answers}
               {/* /////// */}
               <Modal.Footer>
                 <Form

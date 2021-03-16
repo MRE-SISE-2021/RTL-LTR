@@ -181,6 +181,27 @@ class ExperimentPage extends Component {
             </div>
           ),
         });
+      } else if (
+        task.component_type_id === 9 ||
+        task.component_type_id === 10
+      ) {
+        let type = "radio";
+        if (task.component_type_id === 8) {
+          type = "checkbox";
+        }
+        this.setState({
+          inputList: inputList.concat(
+            <div key={"task" + index}>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>{" "}
+              {this.props.compTypeId === 9
+                ? null
+                : this.props.compTypeId === 10
+                ? null
+                : null}
+            </div>
+          ),
+        });
       }
     });
     // });
