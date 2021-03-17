@@ -80,8 +80,8 @@ router_task_image.register('task_image', TaskImageViewSet, basename='task_image'
 # URL dispatcher:
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
 urlpatterns = [
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('viewset/', include(router_component_type.urls)),
     path('viewset/', include(router_hci_background.urls)),

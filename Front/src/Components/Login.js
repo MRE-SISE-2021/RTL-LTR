@@ -5,6 +5,9 @@ import Aux from "./../hoc/_Aux";
 import Breadcrumb from "./../App/components/Breadcrumb";
 import { Alert } from "react-bootstrap";
 
+import axiosInstance from '../axios';
+import inMemoryToken from '../inMemoryToken'
+
 //////
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
@@ -15,7 +18,6 @@ class Login extends React.Component {
     this.state = {
       username: "",
       password: "",
-      token: this.props.cookies.get("access") || "",
       toHome: false,
       error: false,
     };
@@ -47,47 +49,45 @@ class Login extends React.Component {
     if (this.state.toHome === true) {
       return <Redirect to={"/home/"} />;
     }
+
+    
+
     const handleClick = (username, password) => {
-      fetch("http://127.0.0.1:8000/api/token/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
+      axiosInstance
+			.post(`token/`, {
+				username: username,
+				password: password,
+			})
+			.then((result) => {
+        //console.log(result)
+				// cookies.set("access_token", result.data.access, { path: "/" }); // setting the cookie
+        debugger
+        inMemoryToken.setToken(result.data.access)
+        console.log(inMemoryToken.getToken())
+        cookies.set("refresh_token", result.data.refresh, { path: "/", maxAge: 43200 }); // setting the cookie
+
+				axiosInstance.defaults.headers['Authorization'] =
+					'JWT ' + result.data.access;
+				//history.push('/');
+        
+        if (result.data.access !== undefined) {
+              
+          this.setState({
+            // access_token: result.data.access,
+            // refresh_token: result.data.refresh,
+            toHome: true,
+          });
+        }
+
+        // console.log(result.access);
+        // console.log(result.refresh);
       })
-        .then((res) => {
-          if (!res.ok) {
-            this.setState({
-              error: true,
-            });
-            return new Error();
-          } else {
-            return res.json();
-          }
-        })
-        .then(
-          (result) => {
-            // console.log(result);
-            if (result.access !== undefined) {
-              cookies.set("access", result.access, { path: "/" }); // setting the cookie
-              cookies.set("refresh", result.refresh, { path: "/" }); // setting the cookie
-              this.setState({
-                access: cookies.get("access"),
-                refresh: result.refresh,
-                toHome: true,
-              });
-            }
-            
-            console.log(result.access);
-            console.log(result.refresh);
-          },
-          (error) => {
-            // this.setState({
-            //   error: true,
-            // });
-            console.log(error);
-          }
-        );
+      .catch(err => {
+          // this.setState({
+          //   error: true,
+          // });
+        console.log(err);
+      })
     };
 
     return (

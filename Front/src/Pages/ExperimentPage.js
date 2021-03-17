@@ -59,10 +59,9 @@ class ExperimentPage extends Component {
 
     API.postRequest(
       "questionnaire-preview-data",
-      response,
-      cookies.cookies.access
+      response
     ).then((data) => {
-      // console.log(data); // JSON data parsed by `data.json()` call
+      console.log(data); // JSON data parsed by `data.json()` call
       this.setState({ expId: data.questionnaire_id });
     });
   }

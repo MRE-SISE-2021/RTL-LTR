@@ -165,6 +165,15 @@ def get_tasks_with_settings_from_questionnaire(request, id):
         return Response(tasks_data, status=status.HTTP_200_OK)
 
 
+# get list of questionnaire name for main page
+# @api_view(['POST'])
+# def refresh_cookies(request, ):
+#     if request.method == "POST":
+#         x = request
+#         c = 0
+#         return Response(status=status.HTTP_200_OK)
+
+
 # DELETE task from questionnaire
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
