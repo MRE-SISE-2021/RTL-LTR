@@ -4,7 +4,7 @@ from .serializers import *
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -18,95 +18,112 @@ import ast
 
 ####### MODEL VIEWSETS #######
 # Component
+@permission_classes([IsAuthenticated])
 class ComponentTypeViewSet(viewsets.ModelViewSet):
     serializer_class = ComponentTypeSerializer
     queryset = ComponentType.objects.all()
 
 
 # HciBackground
+@permission_classes([IsAuthenticated])
 class HciBackgroundViewSet(viewsets.ModelViewSet):
     serializer_class = HciBackgroundSerializer
     queryset = HciBackground.objects.all()
 
 
 # Image
+@permission_classes([IsAuthenticated])
 class ImageViewSet(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
 
 
 # Language
+@permission_classes([IsAuthenticated])
 class LanguageViewSet(viewsets.ModelViewSet):
     serializer_class = LanguageSerializer
     queryset = Language.objects.all()
 
 
 # QuestionnaireType
+@permission_classes([IsAuthenticated])
 class QuestionnaireTypeViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireTypeSerializer
     queryset = QuestionnaireType.objects.all()
 
 
 # Task
+@permission_classes([IsAuthenticated])
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
 
 # Participant
+@permission_classes([IsAuthenticated])
 class ParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = ParticipantSerializer
     queryset = Participant.objects.all()
 
 
+# Proficiency
+@permission_classes([IsAuthenticated])
 class ProficiencyViewSet(viewsets.ModelViewSet):
     serializer_class = ProficiencySerializer
     queryset = Proficiency.objects.all()
 
 
 # Answer
+@permission_classes([IsAuthenticated])
 class AnswerViewSet(viewsets.ModelViewSet):
     serializer_class = AnswerSerializer
     queryset = Answer.objects.all()
 
 
 # TaskAnswer
+@permission_classes([IsAuthenticated])
 class TaskAnswerViewSet(viewsets.ModelViewSet):
     serializer_class = TaskAnswerSerializer
     queryset = TaskAnswer.objects.all()
 
 
 # ParticipantLanguageProficiency
+@permission_classes([IsAuthenticated])
 class ParticipantLanguageProficiencyViewSet(viewsets.ModelViewSet):
     serializer_class = ParticipantLanguageProficiencySerializer
     queryset = ParticipantLanguageProficiency.objects.all()
 
 
 # TaskParticipant
+@permission_classes([IsAuthenticated])
 class TaskParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = TaskParticipantSerializer
     queryset = TaskParticipant.objects.all()
 
 
 # Questionnaire
+@permission_classes([IsAuthenticated])
 class QuestionnaireViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireSerializer
     queryset = Questionnaire.objects.all()
 
 
 # QuestionnaireParticipant
+@permission_classes([IsAuthenticated])
 class QuestionnaireParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireParticipantSerializer
     queryset = QuestionnaireParticipant.objects.all()
 
 
 # QuestionnaireTask
+@permission_classes([IsAuthenticated])
 class QuestionnaireTaskViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireTaskSerializer
     queryset = QuestionnaireTask.objects.all()
 
 
 # TaskImage
+@permission_classes([IsAuthenticated])
 class TaskImageViewSet(viewsets.ModelViewSet):
     serializer_class = TaskImageSerializer
     queryset = TaskImage.objects.all()
@@ -116,6 +133,7 @@ class TaskImageViewSet(viewsets.ModelViewSet):
 
 # get list of questionnaire name for main page
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_questionnaire_name_list(request):
     if request.method == "GET":
         queryset = Questionnaire.objects.all()
@@ -130,6 +148,7 @@ def get_questionnaire_name_list(request):
 
 # get list of questionnaire name for main page
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_tasks_with_settings_from_questionnaire(request, id):
     if request.method == "GET":
         queryset = Questionnaire.objects.get(questionnaire_id=id)
@@ -148,6 +167,7 @@ def get_tasks_with_settings_from_questionnaire(request, id):
 
 # DELETE task from questionnaire
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def delete_task_from_questionnaire(request, id):
     # check if the questionnaire was already participated
     if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
@@ -174,6 +194,7 @@ def delete_task_from_questionnaire(request, id):
 
 ####### CLASS BASED VIEWS #######
 
+@permission_classes([IsAuthenticated])
 class QuestionnairePreviewAPIView(APIView):
     # get preview data for home page of a questionnaire by questionnaire_id
     def get(self, request, id):
@@ -376,6 +397,7 @@ class QuestionnairePreviewAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@permission_classes([IsAuthenticated])
 class ParticipantAPIView(APIView):
     rtl_languages_list = ['Aramaic', 'Azeri', 'Dhivehi', 'Maldivian', 'Kurdish', 'Sorani', 'Persian', 'Farsi', 'Urdu']
 

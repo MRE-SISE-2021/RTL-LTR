@@ -125,7 +125,7 @@ class FormsElements extends React.Component {
     API.putRequest(
       "questionnaire-preview-data/" + this.state.id,
       response,
-      cookies.cookies.token
+      cookies.cookies.access
     ).then((data) => {
       this.setState({ taskId: data.task_id[0] });
     });
@@ -148,7 +148,7 @@ class FormsElements extends React.Component {
     API.deleteRequest(
       "delete-task-from-questionnaire/" + this.state.id,
       response,
-      cookies.cookies.token
+      cookies.cookies.access
     ).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
     });

@@ -7,7 +7,7 @@ async function postData(url = "", data = {}, token) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Token ${token}`,
+      Authorization: `JWT ${token}`,
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error
@@ -26,7 +26,7 @@ async function putData(url = "", data = {}, token) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Token ${token}`,
+      Authorization: `JWT ${token}`,
 
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
@@ -46,7 +46,7 @@ async function deleteData(url = "", data = {}, token) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Token ${token}`,
+      Authorization: `JWT ${token}`,
 
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },

@@ -34,7 +34,7 @@ class ExperimentTable extends Component {
     //////
     fetch("http://127.0.0.1:8000/viewset/questionnaire", {
       headers: new Headers({
-        Authorization: `Token ${cookies.cookies.token}`,
+        Authorization: `JWT ${cookies.cookies.access}`,
       }),
     })
       .then((res) => res.json())
@@ -128,7 +128,7 @@ class ExperimentTable extends Component {
       const { cookies } = this.props;
       fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`, {
         headers: new Headers({
-          Authorization: `Token ${cookies.cookies.token}`,
+          Authorization: `JWT ${cookies.cookies.access}`,
         }),
       })
         .then((res) => res.json())

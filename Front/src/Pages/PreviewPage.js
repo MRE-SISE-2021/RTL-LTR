@@ -37,7 +37,7 @@ class ExperimentPage extends Component {
         "/",
       {
         headers: new Headers({
-          Authorization: `Token ${cookies.cookies.token}`,
+          Authorization: `JWT ${cookies.cookies.access}`,
         }),
       }
     )

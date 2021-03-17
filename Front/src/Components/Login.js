@@ -15,7 +15,7 @@ class Login extends React.Component {
     this.state = {
       username: "",
       password: "",
-      token: this.props.cookies.get("token") || "",
+      token: this.props.cookies.get("access") || "",
       toHome: false,
       error: false,
     };
@@ -48,7 +48,7 @@ class Login extends React.Component {
       return <Redirect to={"/home/"} />;
     }
     const handleClick = (username, password) => {
-      fetch("http://127.0.0.1:8000/auth/", {
+      fetch("http://127.0.0.1:8000/api/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,15 +68,18 @@ class Login extends React.Component {
         .then(
           (result) => {
             // console.log(result);
-            if (result.token !== undefined) {
-              cookies.set("token", result.token, { path: "/" }); // setting the cookie
+            if (result.access !== undefined) {
+              cookies.set("access", result.access, { path: "/" }); // setting the cookie
+              cookies.set("refresh", result.refresh, { path: "/" }); // setting the cookie
               this.setState({
-                token: cookies.get("token"),
+                access: cookies.get("access"),
+                refresh: result.refresh,
                 toHome: true,
               });
             }
-
-            console.log(result.token);
+            
+            console.log(result.access);
+            console.log(result.refresh);
           },
           (error) => {
             // this.setState({

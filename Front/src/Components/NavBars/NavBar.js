@@ -26,7 +26,7 @@ class NavBar extends Component {
 
     const handleClick = () => {
       this.setState({ toLogin: true });
-      cookies.remove("token");
+      cookies.remove("access");
     };
 
     let headerClass = [
