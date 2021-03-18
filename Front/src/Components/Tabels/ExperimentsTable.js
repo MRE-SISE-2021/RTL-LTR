@@ -10,6 +10,8 @@ import { MDBIcon } from "mdbreact";
 import "../../styles/homePageStyle.css";
 import { withCookies } from "react-cookie";
 
+import axiosInstance from '../../axios';
+
 class ExperimentTable extends Component {
   constructor(props) {
     super(props);
@@ -29,17 +31,13 @@ class ExperimentTable extends Component {
     }
   };
 
-  componentDidMount() {
-    const { cookies } = this.props;
+  async componentDidMount() {
     //////
-    fetch("http://127.0.0.1:8000/viewset/questionnaire", {
-      headers: new Headers({
-        Authorization: `Token ${cookies.cookies.token}`,
-      }),
-    })
-      .then((res) => res.json())
+    await axiosInstance
+      .get("viewset/questionnaire/")
       .then(
         (result) => {
+          result = result.data
           if (result[0] !== undefined) {
             this.setState({
               isLoaded: true,
@@ -124,16 +122,12 @@ class ExperimentTable extends Component {
       this.componentDidMount();
       this.forceUpdate();
     };
-    const handleClick = (value) => {
-      const { cookies } = this.props;
-      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`, {
-        headers: new Headers({
-          Authorization: `Token ${cookies.cookies.token}`,
-        }),
-      })
-        .then((res) => res.json())
+    const handleClick = async (value) =>  {
+      await axiosInstance
+        .get(`viewset/questionnaire/${value}`)
         .then(
           (result) => {
+            result = result.data
             // console.log(result);
             this.setState({
               isLoaded: true,

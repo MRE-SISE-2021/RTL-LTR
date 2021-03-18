@@ -12,6 +12,8 @@ import Slider from "rc-slider";
 //
 import Pagination from "../Pagination";
 
+import axiosInstance from "../axios";
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
@@ -36,31 +38,25 @@ class ExperimentPage extends Component {
   }
 
   async componentDidMount() {
-    // cookies
-    const { cookies } = this.props;
     // const tasks = PreviewResponse.tasks;
 
     // console.log(this.state);
     //////
-    await fetch(
-      "http://127.0.0.1:8000/viewset/questionnaire/" +
-        this.props.match.params.id +
-        "/",
-      {
-        headers: new Headers({
-          Authorization: `Token ${cookies.cookies.token}`,
-        }),
-      }
-    )
-      .then((res) => res.json())
+    await axiosInstance
+      .get("viewset/questionnaire/" + this.props.match.params.id + "/")
+      //.then((result) => result.data.json())
       .then(
         (result) => {
+          // console.log(result.data)
+          result = result.data;
           this.setState(() => ({
             tasks: result.tasks,
             name: result.questionnaire_name,
             type: result.questionnaire_type_id,
             lang: result.language_id,
           }));
+
+          // console.log(this.state)
         },
         (error) => {
           this.setState({
@@ -74,12 +70,12 @@ class ExperimentPage extends Component {
   }
 
   putInputList() {
-    console.log();
+    console.log(this.state);
     this.state.tasks.forEach((task, index) => {
       // tasks.forEach((task, index) => {
       const inputList = this.state.inputList;
       ///////
-      // console.log(task);
+      console.log(task);
       // task.components.forEach((component, index) => {
       if (task.component_type_id === 1) {
         this.setState({
@@ -226,6 +222,7 @@ class ExperimentPage extends Component {
     } else {
       mainClass = [...mainClass, "container"];
     }
+    // console.log(this.state);
 
     return (
       <Aux>
