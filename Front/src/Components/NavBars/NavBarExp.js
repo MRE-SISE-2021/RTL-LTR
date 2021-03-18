@@ -56,8 +56,7 @@ class NavBar extends Component {
 
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.expId,
-          response,
-          cookies.cookies.token
+          response
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });

@@ -19,14 +19,14 @@ class NavBar extends Component {
 
   render() {
     const { cookies } = this.props;
-    console.log(cookies);
+    //console.log(cookies);
     if (this.state.toLogin === true) {
       return <Redirect to={"/"} />;
     }
 
     const handleClick = () => {
       this.setState({ toLogin: true });
-      cookies.remove("token");
+      cookies.remove("access");
     };
 
     let headerClass = [
