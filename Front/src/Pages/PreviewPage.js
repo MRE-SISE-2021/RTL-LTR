@@ -9,9 +9,13 @@ import { withCookies } from "react-cookie";
 import { Card, ListGroup, Form } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
+//
+import Pagination from "../Pagination";
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
+//
 
 class ExperimentPage extends Component {
   constructor() {
@@ -19,11 +23,18 @@ class ExperimentPage extends Component {
     this.state = {
       tasks: [], //what we get from db
       inputList: [], //what we show to the user
+      pageOfComponents: [], // show on one page
       name: "",
       lang: "",
       type: "",
     };
+    this.onChangePage = this.onChangePage.bind(this);
   }
+  onChangePage(pageOfComponents) {
+    // update state with new page of items
+    this.setState({ pageOfComponents: pageOfComponents });
+  }
+
   async componentDidMount() {
     // cookies
     const { cookies } = this.props;
@@ -252,7 +263,7 @@ class ExperimentPage extends Component {
                           style={{ marginLeft: "3%", marginRight: "3%" }}
                         >
                           <ListGroup.Item>
-                            {this.state.inputList.map(function (input, index) {
+                            {/* {this.state.inputList.map(function (input, index) {
                               return (
                                 <div
                                   style={{
@@ -264,7 +275,25 @@ class ExperimentPage extends Component {
                                   {input}
                                 </div>
                               );
-                            })}
+                            })} */}
+
+                            {this.state.pageOfComponents.map((item, index) => (
+                              <div
+                                style={{
+                                  border: "5px outset black",
+                                  marginBottom: "2%",
+                                  padding: "1%",
+                                }}
+                                key={index}
+                              >
+                                {item}
+                              </div>
+                            ))}
+                            <Pagination
+                              items={this.state.inputList}
+                              onChangePage={this.onChangePage}
+                              pageSize={2}
+                            />
                           </ListGroup.Item>
                         </Card.Body>
                       </Card>
