@@ -255,9 +255,8 @@ class ExperimentPage extends Component {
                             {this.state.inputList.map(function (input, index) {
                               return (
                                 <div
-                                  border="info"
                                   style={{
-                                    border: "2px solid",
+                                    border: "5px outset black",
                                     marginBottom: "2%",
                                     padding: "1%",
                                   }}
