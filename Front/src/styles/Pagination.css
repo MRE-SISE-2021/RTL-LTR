@@ -1,8 +1,8 @@
-ul {
+#pagination {
   display: flex;
   justify-content: center;
 }
-a {
+.item-page {
   border: 10px;
   box-sizing: border-box;
   display: inline-block;
