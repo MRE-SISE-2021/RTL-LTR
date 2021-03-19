@@ -52,23 +52,23 @@ class NavBar extends Component {
       <Aux>
         <Navbar fixed="top" bg="info" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            {/* <ul class="mb-1 bg-info text-white">
-              <li> */}
-            <MDBIcon icon="home" size="2x" className="indigo-text pr-3" />{" "}
-            {/* </li> */}
-            {/* </ul> */}
+            <ul class="mb-1 bg-info text-white">
+              <li>
+                <MDBIcon icon="home" size="3x" className="indigo-text pr-3" />{" "}
+              </li>
+            </ul>
           </Link>
           <div style={{ marginLeft: "93%" }}>
             <Button variant="outline-*" onClick={() => handleClick()}>
-              {/* <ul class="mb-1 bg-info text-white">
-                <li> */}
-              <MDBIcon
-                icon="sign-out-alt"
-                size="2x"
-                className="indigo-text pr-3"
-              />
-              {/* </li>
-              </ul> */}
+              <ul class="mb-1 bg-info text-white">
+                <li>
+                  <MDBIcon
+                    icon="sign-out-alt"
+                    size="3x"
+                    className="indigo-text pr-3"
+                  />
+                </li>
+              </ul>
             </Button>
           </div>
         </Navbar>
