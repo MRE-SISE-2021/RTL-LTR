@@ -53,7 +53,7 @@ class FormsElements extends React.Component {
       deleteAll: false,
       taskId: props.taskId,
       answersNum: 2,
-      answers: props.answers,
+      answers: props.answers || [],
       settings: {
         is_direction_setting: false,
         is_required_setting: false,
@@ -124,7 +124,7 @@ class FormsElements extends React.Component {
     console.log(response);
     API.putRequest(
       "questionnaire-preview-data/" + this.state.id,
-      response,
+      response
     ).then((data) => {
       this.setState({ taskId: data.task_id[0] });
     });

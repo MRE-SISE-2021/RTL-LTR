@@ -9,17 +9,21 @@ import { withCookies } from "react-cookie";
 import { Card, ListGroup, Form } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
-//
+//import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
+import rtl from "styled-components-rtl";
+
 import Pagination from "../Pagination";
 
 import axiosInstance from "../axios";
+import "../styles/PreviewPage.css";
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
 //
 
-class ExperimentPage extends Component {
+class PreviewPage extends Component {
   constructor() {
     super();
     this.state = {
@@ -38,16 +42,10 @@ class ExperimentPage extends Component {
   }
 
   async componentDidMount() {
-    // const tasks = PreviewResponse.tasks;
-
-    // console.log(this.state);
-    //////
     await axiosInstance
       .get("viewset/questionnaire/" + this.props.match.params.id + "/")
-      //.then((result) => result.data.json())
       .then(
         (result) => {
-          // console.log(result.data)
           result = result.data;
           this.setState(() => ({
             tasks: result.tasks,
@@ -55,8 +53,6 @@ class ExperimentPage extends Component {
             type: result.questionnaire_type_id,
             lang: result.language_id,
           }));
-
-          // console.log(this.state)
         },
         (error) => {
           this.setState({
@@ -72,15 +68,37 @@ class ExperimentPage extends Component {
   putInputList() {
     console.log(this.state);
     this.state.tasks.forEach((task, index) => {
-      // tasks.forEach((task, index) => {
       const inputList = this.state.inputList;
-      ///////
-      console.log(task);
-      // task.components.forEach((component, index) => {
+      ///////////////---RTL support --- ///////////////
+      const Div = styled.div`
+        border: 2px solid BLACK;
+        background: gainsboro;
+        padding: 10px;
+        ${rtl`
+        margin-right: 50px;
+        text-align: left;
+        direction: ltr;
+        `};
+      `;
+      let theme = {
+        dir: "ltr",
+      };
+      if (task.is_direction_setting) {
+        theme = {
+          dir: "rtl",
+        };
+      }
+      ///////////////---RTL support --- ///////////////
       if (task.component_type_id === 1) {
         this.setState({
           inputList: inputList.concat(
-            <div key="1" dangerouslySetInnerHTML={{ __html: task.label }}></div>
+            <ThemeProvider theme={theme}>
+              <Div
+                key="1"
+                dir={theme.dir}
+                dangerouslySetInnerHTML={{ __html: task.label }}
+              ></Div>
+            </ThemeProvider>
           ),
         });
       } else if (
@@ -90,79 +108,81 @@ class ExperimentPage extends Component {
         task.component_type_id === 4 ||
         task.component_type_id === 7
       ) {
+        console.log(task.is_direction_setting);
+
         this.setState({
           inputList: inputList.concat(
-            <div key={"range" + index}>
-              <h3>--- {task.task_title} ---</h3>
-              <h4>{task.label}</h4>
-              {task.component_type_id === 7 ? (
-                <Form.Group controlId="exampleForm.ControlSelect1">
-                  <Form.Control as="select">
-                    {task.answers.map(function (answer, index) {
-                      return (
-                        <option key={index}>{answer.answer_content}</option>
-                      );
-                    })}
-                  </Form.Control>
-                </Form.Group>
-              ) : (
-                task.answers.map(function (answer, index) {
-                  // return <p>{answer.answer_content}</p>;
-                  // console.log(answer.answer_content);
-                  return (
-                    <div key={index}>
-                      {answer.answer_content}
-                      {task.component_type_id === 2 ? (
-                        <Slider
-                          style={{
-                            width: "80%",
-                            top: "2%",
-                            left: "5%",
-                            bottom: "2%",
-                          }}
-                          className="pc-range-slider"
-                          // {...settingsBasic}
-                        />
-                      ) : task.component_type_id === 5 ? (
-                        <Rating
-                          emptySymbol="far fa-star fa-2x"
-                          fullSymbol="fas fa-star fa-2x"
-                        />
-                      ) : task.component_type_id === 4 ? (
-                        <Range
-                          className="pc-range-slider"
-                          style={{
-                            width: "80%",
-                            top: "2%",
-                            left: "5%",
-                            bottom: "2%",
-                          }}
-                          step={10}
-                          defaultValue={[20, 30]}
-                        />
-                      ) : (
-                        <Rating
-                          // initialRating={this.state.squareRating}
-                          emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                            <span className="theme-bar-square">
-                              <span>{n}</span>
-                            </span>
-                          ))}
-                          fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                            <span className="theme-bar-square">
-                              <span className="active">{n}</span>
-                            </span>
-                          ))}
-                          onChange={(rate) =>
-                            this.setState({ squareRating: rate })
-                          }
-                        />
-                      )}
-                    </div>
-                  );
-                })
-              )}
-            </div>
+            <ThemeProvider theme={theme}>
+              <Div key={"range" + index}>
+                <h3>--- {task.task_title} ---</h3>
+                <h4>{task.label}</h4>
+                {task.component_type_id === 7 ? (
+                  <Form.Group controlId="exampleForm.ControlSelect1">
+                    <Form.Control as="select">
+                      {task.answers.map(function (answer, index) {
+                        return (
+                          <option key={index}>{answer.answer_content}</option>
+                        );
+                      })}
+                    </Form.Control>
+                  </Form.Group>
+                ) : (
+                  task.answers.map(function (answer, index) {
+                    return (
+                      <div key={index} dir={theme.dir}>
+                        {answer.answer_content}:
+                        {task.component_type_id === 2 ? (
+                          <Slider
+                            style={{
+                              width: "80%",
+                              top: "2%",
+                              left: "5%",
+                              bottom: "2%",
+                            }}
+                            className="pc-range-slider"
+                            // {...settingsBasic}
+                          />
+                        ) : task.component_type_id === 5 ? (
+                          <Rating
+                            emptySymbol="far fa-star fa-2x"
+                            fullSymbol="fas fa-star fa-2x"
+                          />
+                        ) : task.component_type_id === 4 ? (
+                          <Range
+                            className="pc-range-slider"
+                            style={{
+                              width: "80%",
+                              top: "2%",
+                              left: "5%",
+                              bottom: "2%",
+                            }}
+                            step={10}
+                            defaultValue={[20, 30]}
+                          />
+                        ) : (
+                          <Rating
+                            // initialRating={this.state.squareRating}
+                            emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                              <span className="theme-bar-square">
+                                <span>{n}</span>
+                              </span>
+                            ))}
+                            fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                              <span className="theme-bar-square">
+                                <span className="active">{n}</span>
+                              </span>
+                            ))}
+                            onChange={(rate) =>
+                              this.setState({ squareRating: rate })
+                            }
+                          />
+                        )}
+                      </div>
+                    );
+                  })
+                )}
+              </Div>
+            </ThemeProvider>
           ),
         });
       } else if (task.component_type_id === 3 || task.component_type_id === 8) {
@@ -170,42 +190,45 @@ class ExperimentPage extends Component {
         if (task.component_type_id === 8) {
           type = "checkbox";
         }
+        console.log(theme.dir);
         this.setState({
           inputList: inputList.concat(
-            <div key={"task" + index}>
-              <h3>--- {task.task_title} ---</h3>
-              <h4>{task.label}</h4>{" "}
-              {task.answers.map(function (answer, index) {
-                // return <p>{answer.answer_content}</p>;
-                // console.log(answer.answer_content);
-                return (
-                  <div key={index}>
-                    <input type={type} key={index} name="ans" />
-                    {answer.answer_content}
-                  </div>
-                );
-              })}
-            </div>
+            <ThemeProvider theme={theme}>
+              <Div key={"task" + index}>
+                <h3>--- {task.task_title} ---</h3>
+                <h4>{task.label}</h4>{" "}
+                {task.answers.map(function (answer, index) {
+                  // return <p>{answer.answer_content}</p>;
+                  // console.log(answer.answer_content);
+                  return (
+                    <div key={index}>
+                      <input type={type} key={index} name="ans" />
+                      {answer.answer_content}
+                    </div>
+                  );
+                })}
+              </Div>
+            </ThemeProvider>
           ),
         });
       } else if (
         task.component_type_id === 9 ||
         task.component_type_id === 10
       ) {
-        let type = "radio";
-        if (task.component_type_id === 8) {
-          type = "checkbox";
-        }
         this.setState({
           inputList: inputList.concat(
             <div key={"task" + index}>
               <h3>--- {task.task_title} ---</h3>
               <h4>{task.label}</h4>{" "}
-              {this.props.compTypeId === 9
-                ? null
-                : this.props.compTypeId === 10
-                ? null
-                : null}
+              {task.component_type_id === 9 ? (
+                <div class="number">
+                  <span class="minus">-</span>
+                  <input id="counter" type="text" value="1" />
+                  <span class="plus">+</span>
+                </div>
+              ) : task.component_type_id === 10 ? (
+                <h1>Timeline</h1>
+              ) : null}
             </div>
           ),
         });
@@ -215,7 +238,7 @@ class ExperimentPage extends Component {
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
@@ -234,74 +257,43 @@ class ExperimentPage extends Component {
         />
 
         <div className={mainClass.join(" ")}>
-          {/* <div className="pcoded-main-container full-screenable-node"> */}
-          <div className="pcoded-wrapper">
-            <div className="pcoded-content">
-              <div className="pcoded-inner-content">
-                <div className="main-body">
-                  <div className="page-wrapper">
-                    <Aux>
-                      <Card
-                        border="info"
-                        style={{
-                          border: "2px solid ",
-                          width: "90%",
-                          marginTop: "10%",
-                          marginLeft: "5%",
-                        }}
-                      >
-                        <Card.Header
-                          className="text-center"
-                          style={{ fontSize: "30px" }}
-                        >
-                          Preview
-                        </Card.Header>
-                        <Card.Body
-                          style={{ marginLeft: "3%", marginRight: "3%" }}
-                        >
-                          <ListGroup.Item>
-                            {/* {this.state.inputList.map(function (input, index) {
-                              return (
-                                <div
-                                  style={{
-                                    border: "5px outset black",
-                                    marginBottom: "2%",
-                                    padding: "1%",
-                                  }}
-                                >
-                                  {input}
-                                </div>
-                              );
-                            })} */}
-
-                            {this.state.pageOfComponents.map((item, index) => (
-                              <div
-                                style={{
-                                  border: "5px outset black",
-                                  marginBottom: "2%",
-                                  padding: "1%",
-                                }}
-                                key={index}
-                              >
-                                {item}
-                              </div>
-                            ))}
-                            <Pagination
-                              items={this.state.inputList}
-                              onChangePage={this.onChangePage}
-                              pageSize={2}
-                            />
-                          </ListGroup.Item>
-                        </Card.Body>
-                      </Card>
-                    </Aux>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Aux>
+            <Card
+              border="info"
+              style={{
+                border: "2px solid ",
+                width: "90%",
+                marginTop: "8%",
+                marginLeft: "5%",
+                hight: "100%",
+              }}
+            >
+              <Card.Header className="text-center" style={{ fontSize: "30px" }}>
+                Preview
+              </Card.Header>
+              <Card.Body style={{ marginLeft: "3%", marginRight: "3%" }}>
+                <ListGroup.Item>
+                  {this.state.pageOfComponents.map((item, index) => (
+                    <div
+                      style={{
+                        marginBottom: "2%",
+                        padding: "1%",
+                      }}
+                      key={index}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                  <Pagination
+                    items={this.state.inputList}
+                    onChangePage={this.onChangePage}
+                    pageSize={2}
+                  />
+                </ListGroup.Item>
+              </Card.Body>
+            </Card>
+          </Aux>
         </div>
-        {/* </div> */}
       </Aux>
     );
   }
@@ -323,5 +315,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withCookies(
-  connect(mapStateToProps, mapDispatchToProps)(ExperimentPage)
+  connect(mapStateToProps, mapDispatchToProps)(PreviewPage)
 );
