@@ -9,10 +9,10 @@ import { withCookies } from "react-cookie";
 import { Card, ListGroup, Form } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
-//import { ThemeProvider } from "styled-components";
+//RTL
 import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
-
+//new Page
 import Pagination from "../Pagination";
 
 import axiosInstance from "../axios";
@@ -139,16 +139,7 @@ class PreviewPage extends Component {
                       <div key={index} dir={theme.dir}>
                         {answer.answer_content}:
                         {task.component_type_id === 2 ? (
-                          <Slider
-                            style={{
-                              width: "80%",
-                              top: "2%",
-                              left: "5%",
-                              bottom: "2%",
-                            }}
-                            className="pc-range-slider"
-                            // {...settingsBasic}
-                          />
+                          <Slider className="pc-range-slider" id="slider" />
                         ) : task.component_type_id === 5 ? (
                           <Rating
                             emptySymbol="far fa-star fa-2x"
@@ -158,15 +149,9 @@ class PreviewPage extends Component {
                         ) : task.component_type_id === 4 ? (
                           <Range
                             className="pc-range-slider"
-                            style={{
-                              width: "80%",
-                              top: "2%",
-                              left: "5%",
-                              bottom: "2%",
-                            }}
                             step={10}
                             defaultValue={[20, 30]}
-                            id="slider"
+                            id="double_slider"
                           />
                         ) : (
                           <Rating
@@ -208,8 +193,6 @@ class PreviewPage extends Component {
                 <h3>--- {task.task_title} ---</h3>
                 <h4>{task.label}</h4>{" "}
                 {task.answers.map(function (answer, index) {
-                  // return <p>{answer.answer_content}</p>;
-                  // console.log(answer.answer_content);
                   return (
                     <div key={index}>
                       <input type={type} key={index} name="ans" />

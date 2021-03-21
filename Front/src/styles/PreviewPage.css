@@ -33,9 +33,11 @@ input {
 
 #stars,
 #rating,
+#double_slider,
 #slider {
   /* height: 20px; */
   width: 50%;
   display: inline-block;
   vertical-align: middle;
+  /* left: 5%; */
 }
