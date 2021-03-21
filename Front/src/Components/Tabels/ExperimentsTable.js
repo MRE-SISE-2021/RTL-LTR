@@ -10,6 +10,8 @@ import { MDBIcon } from "mdbreact";
 import "../../styles/homePageStyle.css";
 import { withCookies } from "react-cookie";
 
+import axiosInstance from '../../axios';
+
 class ExperimentTable extends Component {
   constructor(props) {
     super(props);
@@ -18,13 +20,9 @@ class ExperimentTable extends Component {
       error: null,
       isLoaded: false,
       items: [],
-    
     };
   }
 
-
-
-  
   resize = () => {
     const contentWidth = document.getElementById("root").clientWidth;
 
@@ -33,17 +31,13 @@ class ExperimentTable extends Component {
     }
   };
 
-  componentDidMount() {
-    const { cookies } = this.props;
+  async componentDidMount() {
     //////
-    fetch("http://127.0.0.1:8000/viewset/questionnaire", {
-      headers: new Headers({
-        Authorization: `Token ${cookies.cookies.token}`,
-      }),
-    })
-      .then((res) => res.json())
+    await axiosInstance
+      .get("viewset/questionnaire/")
       .then(
         (result) => {
+          result = result.data
           if (result[0] !== undefined) {
             this.setState({
               isLoaded: true,
@@ -96,9 +90,8 @@ class ExperimentTable extends Component {
   }
 
   render() {
-    
     let navClass = ["pcoded-navbar"];
-    
+
     navClass = [...navClass, this.props.layoutType];
 
     if (this.props.layout === "horizontal") {
@@ -129,21 +122,16 @@ class ExperimentTable extends Component {
       this.componentDidMount();
       this.forceUpdate();
     };
-    const handleClick = (value) => {
-      const { cookies } = this.props;
-      fetch(`http://127.0.0.1:8000/viewset/questionnaire/${value}`, {
-        headers: new Headers({
-          Authorization: `Token ${cookies.cookies.token}`,
-        }),
-      })
-        .then((res) => res.json())
+    const handleClick = async (value) =>  {
+      await axiosInstance
+        .get(`viewset/questionnaire/${value}`)
         .then(
           (result) => {
+            result = result.data
             // console.log(result);
             this.setState({
               isLoaded: true,
               chosen: result,
-            
             });
           },
           (error) => {
@@ -155,7 +143,7 @@ class ExperimentTable extends Component {
         );
     };
     const names = this.state.items;
-/*
+    /*
   <div class="infoStyle">
           
         </div>
@@ -167,15 +155,22 @@ class ExperimentTable extends Component {
           <QuestionnaireInfo chosen={this.state.chosen} />
         </nav>
 
-        <nav style={{ width: "30%" }} className={navClass.join(" ")}>
+        <nav
+          style={{
+            width: "30%",
+            overflow: "auto",
+            overflowX: "hidden",
+          }}
+          className={navClass.join(" ")}
+        >
           <Row className="mt-4 ml-1">
             <h5>My Experiments</h5>
             <Modal />
           </Row>
-          <Table striped bordered hover >
+          <Table striped bordered hover>
             <thead>
               <tr>
-                <th >#</th>
+                <th>#</th>
                 <th>Experiment Name</th>
                 <th>status</th>
                 <th>
@@ -194,7 +189,7 @@ class ExperimentTable extends Component {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td> 
+                    <td>
                       <Button
                         variant="outline-info"
                         onClick={() => handleClick(value.questionnaire_id)}
@@ -205,9 +200,7 @@ class ExperimentTable extends Component {
                     <td>
                       <MDBIcon far icon="play-circle" />
                     </td>
-                    <td>
-                      ?
-                    </td>
+                    <td>?</td>
                   </tr>
                 );
               })}
@@ -241,4 +234,3 @@ const mapDispatchToProps = (dispatch) => {
 export default withCookies(
   withRouter(connect(mapStateToProps, mapDispatchToProps)(ExperimentTable))
 );
-

@@ -7,7 +7,6 @@ import * as actionTypes from "../../store/actions";
 import NavBar from "../NavBars/NavBarExp";
 import Task from "../UI-Elements/Task";
 
-
 class ComponentsTable extends Component {
   constructor(props) {
     super(props);
@@ -107,7 +106,6 @@ class ComponentsTable extends Component {
     // console.log(this.state.inputList);
     return (
       <Aux>
-
         <NavBar
           name={this.props.name}
           type={this.props.type}
@@ -132,14 +130,12 @@ class ComponentsTable extends Component {
             position: "fixed",
             top: "2%",
             left: "1%",
+            overflow: "auto",
+            overflowX: "hidden",
           }}
         >
-
-
-
           <Tabs className="nav-justified" defaultActiveKey="home">
-            <Tab eventKey="home" 
-            title={<MDBIcon icon="plus" />}>
+            <Tab eventKey="home" title={<MDBIcon icon="plus" />}>
               <ul
                 style={{
                   width: "100%",
@@ -148,7 +144,7 @@ class ComponentsTable extends Component {
                 className="mt-4 list-group list-group-full"
               >
                 <h5>Genral forms</h5>
-                <li  className=" list-group-item">
+                <li className=" list-group-item">
                   <Button
                     id="1"
                     onClick={this.onAddBtnClick}
@@ -158,7 +154,7 @@ class ComponentsTable extends Component {
                   </Button>
                 </li>
                 <br />
-                <h5>Text Based</h5>
+                <h5>Choice Based</h5>
 
                 <li className="list-group-item">
                   <Button
@@ -166,12 +162,29 @@ class ComponentsTable extends Component {
                     onClick={this.onAddBtnClick}
                     variant="outline-info"
                   >
-                    <i className="feather icon-file" /> Text
+                    <i className="feather icon-file" /> Radio
                   </Button>
                 </li>
-
+                <li className="list-group-item">
+                  <Button
+                    id="7"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Dropdown
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="8"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Checkbox
+                  </Button>
+                </li>
                 <br />
-                <h5>Range Sliders</h5>
+                <h5>Sliders</h5>
                 <li className="list-group-item">
                   <Button
                     id="2"
@@ -211,9 +224,28 @@ class ComponentsTable extends Component {
                     <i className="feather icon-file" /> Numeric
                   </Button>
                 </li>
+
+                <li className="list-group-item">
+                  <Button
+                    id="9"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> Counter
+                  </Button>
+                </li>
+                <li className="list-group-item">
+                  <Button
+                    id="10"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-info"
+                  >
+                    <i className="feather icon-file" /> TimeLine
+                  </Button>
+                </li>
               </ul>
             </Tab>
-            <Tab eventKey="profile" title={<MDBIcon icon="cog" />}>
+            <Tab eventKey="profile" title={<MDBIcon icon="cog" />} disabled>
               <ul
                 style={{
                   width: "100%",
@@ -224,7 +256,13 @@ class ComponentsTable extends Component {
                 <h5>Settings Tab</h5>
                 <br />
 
-                <Form style={{marginLeft:"2%", textAlign: "left", color: "black" }}>
+                <Form
+                  style={{
+                    marginLeft: "2%",
+                    textAlign: "left",
+                    color: "black",
+                  }}
+                >
                   <Form.Check
                     type="switch"
                     id="rtl-switch"
@@ -255,7 +293,6 @@ class ComponentsTable extends Component {
             </Tab>
           </Tabs>
         </nav>
-        
       </Aux>
     );
   }

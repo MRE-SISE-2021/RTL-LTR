@@ -67,8 +67,7 @@ class ExperimentInfo extends Component {
 
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
-          response,
-          cookies.cookies.token
+          response
         ).then((data) => {
           console.log(data); // JSON data parsed by `data.json()` call
         });

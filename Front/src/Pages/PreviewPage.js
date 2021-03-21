@@ -2,49 +2,56 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import NavBar from "../Components/NavBars/NavBarExp";
+import NavBar from "../Components/NavBars/NavBar";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
-import { Card ,ListGroup} from "react-bootstrap";
+import { Card, ListGroup, Form } from "react-bootstrap";
+import Rating from "react-rating";
+import Slider from "rc-slider";
+
+import axiosInstance from '../axios';
+
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+
+const Range = createSliderWithTooltip(Slider.Range);
 
 class ExperimentPage extends Component {
   constructor() {
     super();
     this.state = {
-      tasks: [],
-      inputList: [],
+      tasks: [], //what we get from db
+      inputList: [], //what we show to the user
       name: "",
       lang: "",
       type: "",
     };
   }
   async componentDidMount() {
-    // cookies
-    const { cookies } = this.props;
+
     // const tasks = PreviewResponse.tasks;
 
     // console.log(this.state);
     //////
-    await fetch(
-      "http://127.0.0.1:8000/viewset/questionnaire/" +
-        this.props.match.params.id +
-        "/",
-      {
-        headers: new Headers({
-          Authorization: `Token ${cookies.cookies.token}`,
-        }),
-      }
-    )
-      .then((res) => res.json())
+    await axiosInstance
+      .get("viewset/questionnaire/" +
+          this.props.match.params.id +
+          "/"
+      )
+      //.then((result) => result.data.json())
       .then(
         (result) => {
+
+          // console.log(result.data)
+          result = result.data
           this.setState(() => ({
             tasks: result.tasks,
             name: result.questionnaire_name,
             type: result.questionnaire_type_id,
             lang: result.language_id,
           }));
+
+          // console.log(this.state)
         },
         (error) => {
           this.setState({
@@ -58,12 +65,12 @@ class ExperimentPage extends Component {
   }
 
   putInputList() {
-    console.log();
+    console.log(this.state);
     this.state.tasks.forEach((task, index) => {
       // tasks.forEach((task, index) => {
       const inputList = this.state.inputList;
       ///////
-      // console.log(task);
+      console.log(task);
       // task.components.forEach((component, index) => {
       if (task.component_type_id === 1) {
         this.setState({
@@ -71,43 +78,93 @@ class ExperimentPage extends Component {
             <div key="1" dangerouslySetInnerHTML={{ __html: task.label }}></div>
           ),
         });
-      }
-      // else if (task.component_type === "Explanation") {
-      //   this.setState({
-      //     inputList: inputList.concat(
-      //       <div
-      //         key="explain"
-      //         dangerouslySetInnerHTML={{ __html: task.label }}
-      //       ></div>
-      //     ),
-      //   });
-      // }
-      else if (task.component_type_id === 2) {
+      } else if (
+        task.component_type_id === 2 ||
+        task.component_type_id === 5 ||
+        task.component_type_id === 6 ||
+        task.component_type_id === 4 ||
+        task.component_type_id === 7
+      ) {
         this.setState({
           inputList: inputList.concat(
             <div key={"range" + index}>
               <h3>--- {task.task_title} ---</h3>
               <h4>{task.label}</h4>
-              {task.answers.map(function (answer, index) {
-                // return <p>{answer.answer_content}</p>;
-                // console.log(answer.answer_content);
-                return (
-                  <div key={index}>
-                    {answer.answer_content}
-                    <input
-                      key={"range" + index}
-                      type="range"
-                      className="custom-range"
-                      defaultValue="22"
-                      id="customRange1"
-                    />{" "}
-                  </div>
-                );
-              })}
+              {task.component_type_id === 7 ? (
+                <Form.Group controlId="exampleForm.ControlSelect1">
+                  <Form.Control as="select">
+                    {task.answers.map(function (answer, index) {
+                      return (
+                        <option key={index}>{answer.answer_content}</option>
+                      );
+                    })}
+                  </Form.Control>
+                </Form.Group>
+              ) : (
+                task.answers.map(function (answer, index) {
+                  // return <p>{answer.answer_content}</p>;
+                  // console.log(answer.answer_content);
+                  return (
+                    <div key={index}>
+                      {answer.answer_content}
+                      {task.component_type_id === 2 ? (
+                        <Slider
+                          style={{
+                            width: "80%",
+                            top: "2%",
+                            left: "5%",
+                            bottom: "2%",
+                          }}
+                          className="pc-range-slider"
+                          // {...settingsBasic}
+                        />
+                      ) : task.component_type_id === 5 ? (
+                        <Rating
+                          emptySymbol="far fa-star fa-2x"
+                          fullSymbol="fas fa-star fa-2x"
+                        />
+                      ) : task.component_type_id === 4 ? (
+                        <Range
+                          className="pc-range-slider"
+                          style={{
+                            width: "80%",
+                            top: "2%",
+                            left: "5%",
+                            bottom: "2%",
+                          }}
+                          step={10}
+                          defaultValue={[20, 30]}
+                        />
+                      ) : (
+                        <Rating
+                          // initialRating={this.state.squareRating}
+                          emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                            <span className="theme-bar-square">
+                              <span>{n}</span>
+                            </span>
+                          ))}
+                          fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                            <span className="theme-bar-square">
+                              <span className="active">{n}</span>
+                            </span>
+                          ))}
+                          onChange={(rate) =>
+                            this.setState({ squareRating: rate })
+                          }
+                        />
+                      )}
+                    </div>
+                  );
+                })
+              )}
             </div>
           ),
         });
-      } else if (task.component_type_id === 3) {
+      } else if (task.component_type_id === 3 || task.component_type_id === 8) {
+        let type = "radio";
+        if (task.component_type_id === 8) {
+          type = "checkbox";
+        }
         this.setState({
           inputList: inputList.concat(
             <div key={"task" + index}>
@@ -118,11 +175,32 @@ class ExperimentPage extends Component {
                 // console.log(answer.answer_content);
                 return (
                   <div key={index}>
-                    <input type="radio" key={index} name="ans" />
+                    <input type={type} key={index} name="ans" />
                     {answer.answer_content}
                   </div>
                 );
               })}
+            </div>
+          ),
+        });
+      } else if (
+        task.component_type_id === 9 ||
+        task.component_type_id === 10
+      ) {
+        let type = "radio";
+        if (task.component_type_id === 8) {
+          type = "checkbox";
+        }
+        this.setState({
+          inputList: inputList.concat(
+            <div key={"task" + index}>
+              <h3>--- {task.task_title} ---</h3>
+              <h4>{task.label}</h4>{" "}
+              {this.props.compTypeId === 9
+                ? null
+                : this.props.compTypeId === 10
+                ? null
+                : null}
             </div>
           ),
         });
@@ -138,6 +216,7 @@ class ExperimentPage extends Component {
     } else {
       mainClass = [...mainClass, "container"];
     }
+    // console.log(this.state);
 
     return (
       <Aux>
@@ -145,46 +224,61 @@ class ExperimentPage extends Component {
           name={this.state.name}
           type={this.state.type}
           lang={this.state.lang}
-          prev={true}
+          taskId={this.props.match.params.id}
         />
-        
-        <div className={mainClass.join(" ")}>
-          <div className="pcoded-main-container full-screenable-node">
-            <div className="pcoded-wrapper">
-              <div className="pcoded-content">
-                <div className="pcoded-inner-content">
-                  <div className="main-body">
-                    <div className="page-wrapper">
-                      
-                      <Aux>
 
-                        <Card border="info" 
-                     
-                        style={{border: "2px solid ",
-                        width:"50rem", 
-                        }}>
-                        <Card.Header className="text-center" style={{ fontSize: "30px"}} >Preview</Card.Header>
-                        <Card.Body style={{marginLeft:"3%" , marginRight:"3%"}}>
-                            <ListGroup.Item>
-                            {this.state.inputList.map(
-                              function (input, index) {
-                                 return (
-                                 
-                                     input
-                                 );
+        <div className={mainClass.join(" ")}>
+          {/* <div className="pcoded-main-container full-screenable-node"> */}
+          <div className="pcoded-wrapper">
+            <div className="pcoded-content">
+              <div className="pcoded-inner-content">
+                <div className="main-body">
+                  <div className="page-wrapper">
+                    <Aux>
+                      <Card
+                        border="info"
+                        style={{
+                          border: "2px solid ",
+                          width: "90%",
+                          marginTop: "10%",
+                          marginLeft: "5%",
+                        }}
+                      >
+                        <Card.Header
+                          className="text-center"
+                          style={{ fontSize: "30px" }}
+                        >
+                          Preview
+                        </Card.Header>
+                        <Card.Body
+                          style={{ marginLeft: "3%", marginRight: "3%" }}
+                        >
+                          <ListGroup.Item>
+                            {this.state.inputList.map(function (input, index) {
+                              return (
+                                <div
+                                  border="info"
+                                  style={{
+                                    border: "2px solid",
+                                    marginBottom: "2%",
+                                    padding: "1%",
+                                  }}
+                                >
+                                  {input}
+                                </div>
+                              );
                             })}
                           </ListGroup.Item>
                         </Card.Body>
-                       
-                        </Card>
-                      </Aux>
-                    </div>
+                      </Card>
+                    </Aux>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        {/* </div> */}
       </Aux>
     );
   }
