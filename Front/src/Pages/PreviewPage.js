@@ -68,7 +68,14 @@ class PreviewPage extends Component {
   putInputList() {
     console.log(this.state);
     this.state.tasks.forEach((task, index) => {
-      const inputList = this.state.inputList;
+      let inputList = this.state.inputList;
+      //////// ----- add in a new page ----- //////////
+      if (task.is_new_page_setting) {
+        this.setState({
+          inputList: inputList.concat(<div></div>),
+        });
+        inputList = this.state.inputList;
+      }
       ///////////////---RTL support --- ///////////////
       const Div = styled.div`
         border: 2px solid BLACK;
@@ -146,6 +153,7 @@ class PreviewPage extends Component {
                           <Rating
                             emptySymbol="far fa-star fa-2x"
                             fullSymbol="fas fa-star fa-2x"
+                            id="stars"
                           />
                         ) : task.component_type_id === 4 ? (
                           <Range
@@ -158,10 +166,12 @@ class PreviewPage extends Component {
                             }}
                             step={10}
                             defaultValue={[20, 30]}
+                            id="slider"
                           />
                         ) : (
                           <Rating
                             // initialRating={this.state.squareRating}
+                            id="rating"
                             emptySymbol={[1, 2, 3, 4, 5].map((n) => (
                               <span className="theme-bar-square">
                                 <span>{n}</span>
@@ -217,19 +227,21 @@ class PreviewPage extends Component {
       ) {
         this.setState({
           inputList: inputList.concat(
-            <div key={"task" + index}>
-              <h3>--- {task.task_title} ---</h3>
-              <h4>{task.label}</h4>{" "}
-              {task.component_type_id === 9 ? (
-                <div class="number">
-                  <span class="minus">-</span>
-                  <input id="counter" type="text" value="1" />
-                  <span class="plus">+</span>
-                </div>
-              ) : task.component_type_id === 10 ? (
-                <h1>Timeline</h1>
-              ) : null}
-            </div>
+            <ThemeProvider theme={theme}>
+              <Div key={"task" + index}>
+                <h3>--- {task.task_title} ---</h3>
+                <h4>{task.label}</h4>{" "}
+                {task.component_type_id === 9 ? (
+                  <div class="number">
+                    <span class="minus">-</span>
+                    <input id="counter" type="text" value="1" />
+                    <span class="plus">+</span>
+                  </div>
+                ) : task.component_type_id === 10 ? (
+                  <h1>Timeline</h1>
+                ) : null}
+              </Div>
+            </ThemeProvider>
           ),
         });
       }

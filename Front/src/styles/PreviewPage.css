@@ -30,3 +30,12 @@ input {
   display: inline-block;
   vertical-align: middle;
 }
+
+#stars,
+#rating,
+#slider {
+  /* height: 20px; */
+  width: 50%;
+  display: inline-block;
+  vertical-align: middle;
+}
