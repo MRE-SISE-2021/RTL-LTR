@@ -24,7 +24,6 @@ axiosInstance.interceptors.response.use(
 		return response;
 	},
 	async function (error) {
-		debugger
 		const originalRequest = error.config;
 		// debugger
 		if (typeof error.response === 'undefined') {
@@ -88,8 +87,8 @@ axiosInstance.interceptors.response.use(
 			}
 		}
 		else {
-			console.log('TODO: create 404 or something');
-			window.location.href = '/';
+			console.log(error);
+			//window.location.href = '/';
 		}
 
 		// specific error handling done elsewhere

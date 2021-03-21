@@ -14,6 +14,9 @@ async function postData(url = "", data = {}) {
   // })
   .then((result) => {
     return result.data;
+  })
+  .catch((error) => {
+    console.error(error);
   });
 
   return response; // parses JSON response into native JavaScript objects
@@ -33,6 +36,9 @@ async function putData(url = "", data = {}) {
   // });
   .then((result) => {
     return result.data;
+  })
+  .catch((error) => {
+    console.error(error);
   });
 
   return response; // parses JSON response into native JavaScript objects
@@ -40,7 +46,7 @@ async function putData(url = "", data = {}) {
 
 async function deleteData(url = "", data = {}) {
   // Default options are marked with *
-  const response = await axiosInstance.delete(url, data)
+  const response = await axiosInstance.delete(url, {data})
   // {
   //   method: "DELETE", // *GET, POST, PUT, DELETE, etc.
   //   mode: "cors", // no-cors, *cors, same-origin
@@ -52,7 +58,11 @@ async function deleteData(url = "", data = {}) {
   // });
   .then((result) => {
     return result.data;
+  })
+  .catch((error) => {
+    console.error(error);
   });
+  
   
   return response; // parses JSON response into native JavaScript objects
 }
