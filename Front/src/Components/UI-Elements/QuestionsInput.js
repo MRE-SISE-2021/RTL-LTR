@@ -188,7 +188,7 @@ class FormsElements extends React.Component {
 
   onInputSub() {
     console.log(this.state.answersNum);
-    const newList = this.state.answers.splice(this.state.answersNum - 1, 1);
+    this.state.answers.splice(this.state.answersNum - 1, 1);
     console.log(this.state.answers);
     this.setState({
       answersNum: this.state.answersNum - 1,
@@ -201,7 +201,7 @@ class FormsElements extends React.Component {
     console.log("Answeeeeeersss");
     console.log(this.state);
     console.log(this.props);
-
+    // console.log(event.target.index);
     let index = event.target.id - 1;
     let answer_content = event.target.value;
     let answers = [];
@@ -301,7 +301,7 @@ class FormsElements extends React.Component {
         ans = this.props.answers[i].answer_content;
       }
       answers.push(
-        <Container key={i}>
+        <div key={i}>
           <Row key={i}>
             {/* <p key={i}>answ</p> */}
 
@@ -321,6 +321,7 @@ class FormsElements extends React.Component {
                 border: "2px solid black",
                 marginLeft: "1%",
               }}
+              // id={i + 1 + " task " + this.state.taskId}
               id={i + 1}
               key={i}
               type="text"
@@ -329,9 +330,9 @@ class FormsElements extends React.Component {
               // value="5"
               // value={this.props.answers[i].answer_content}
               value={
-                this.props.answers[i] === undefined
+                this.state.answers[i] === undefined
                   ? ans
-                  : this.props.answers[i].answer_content
+                  : this.state.answers[i].answer_content
               }
               onChange={this.onAnswerchange}
               required
@@ -438,7 +439,7 @@ class FormsElements extends React.Component {
           {/* </Row> */}
 
           <br />
-        </Container>
+        </div>
       );
     }
     //// -------- Answers
@@ -495,7 +496,7 @@ class FormsElements extends React.Component {
 
               <Row>
                 <Col md={6}>
-                  <Form.Group controlId="exampleForm.ControlInput1">
+                  <Form.Group>
                     <Form.Control
                       variant="info"
                       type="text"
@@ -506,6 +507,7 @@ class FormsElements extends React.Component {
                       required
                       readOnly={this.state.deleteAll}
                       style={{ width: "160%", border: "2px solid " }}
+                      id={"ques " + this.state.taskId}
                     />
                   </Form.Group>
                 </Col>
