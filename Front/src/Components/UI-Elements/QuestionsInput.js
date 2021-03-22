@@ -326,8 +326,13 @@ class FormsElements extends React.Component {
               type="text"
               placeholder={"Answer " + i}
               name="answer_content"
-              // value={this.state.label}
-              value={ans}
+              // value="5"
+              // value={this.props.answers[i].answer_content}
+              value={
+                this.props.answers[i] === undefined
+                  ? ans
+                  : this.props.answers[i].answer_content
+              }
               onChange={this.onAnswerchange}
               required
               // readOnly={this.state.deleteAll}
