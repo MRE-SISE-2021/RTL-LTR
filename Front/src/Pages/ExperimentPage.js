@@ -14,6 +14,7 @@ class ExperimentPage extends Component {
       expId: "",
       tasks: [],
     };
+    this.getLangId = this.getLangId.bind(this);
   }
   UNSAFE_componentWillMount() {
     if (
@@ -28,6 +29,21 @@ class ExperimentPage extends Component {
   mobileOutClickHandler() {
     if (this.props.windowWidth < 992 && this.props.collapseMenu) {
       this.props.onComponentWillMount();
+    }
+  }
+
+  getLangId() {
+    switch (this.props.match.params.language) {
+      case "english":
+        return "2";
+      case "hebrew":
+        return "3";
+      case "arabic":
+        return "1";
+      case "russian":
+        return "4";
+      default:
+        return "2";
     }
   }
 
@@ -54,7 +70,7 @@ class ExperimentPage extends Component {
       direction: this.props.match.params.dir,
       hosted_link: "", //
       is_active: "true",
-      language_id: "1",
+      language_id: this.getLangId(),
       questionnaire_type_id: "1", //
     };
 
@@ -74,6 +90,7 @@ class ExperimentPage extends Component {
           name={this.props.match.params.name}
           type={this.props.match.params.type}
           dir={this.props.match.params.dir}
+          lang={this.props.match.params.language}
           expId={this.state.expId}
           tasks={this.state.tasks}
         />

@@ -118,6 +118,7 @@ class ComponentsTable extends Component {
           lang={this.props.lang}
           tasks={this.state.inputList}
           expId={this.props.expId}
+          dir={this.props.dir}
         />
         <div
           style={{
