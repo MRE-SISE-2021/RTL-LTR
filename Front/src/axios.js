@@ -8,7 +8,7 @@ const cookies = new Cookies()
 
 const axiosInstance = axios.create({
 	baseURL: baseURL,
-	timeout: 5000,
+	timeout: 15000,
 
 	headers: {
 		Authorization: inMemoryToken.getToken()

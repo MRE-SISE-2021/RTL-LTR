@@ -165,6 +165,7 @@ class Questionnaire(models.Model):
     is_active = models.BooleanField(db_column='IsActive')
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     creation_date = models.DateTimeField(db_column='CreationDate')
+    direction = models.TextField(db_column='Direction')
     questionnaire_type_id = models.ForeignKey(QuestionnaireType, models.DO_NOTHING, db_column='QuestionnaireTypeId',
                                               blank=True, null=True)
 
