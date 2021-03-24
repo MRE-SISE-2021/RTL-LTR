@@ -24,7 +24,7 @@ span {
   display: inline-block;
   vertical-align: middle;
 }
-input {
+.input_preview {
   height: 20px;
   width: 50px;
   display: inline-block;
