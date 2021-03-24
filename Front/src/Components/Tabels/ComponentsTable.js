@@ -40,6 +40,7 @@ class ComponentsTable extends Component {
             is_direction_setting={task.is_direction_setting}
             is_new_page_setting={task.is_new_page_setting}
             is_required_setting={task.is_required_setting}
+            lang={this.props.lang}
           />
         );
         // }
@@ -61,6 +62,7 @@ class ComponentsTable extends Component {
           expId={id}
           keyOrder={inputList.length}
           dir={this.props.dir}
+          lang={this.props.lang}
         />
       ),
     });

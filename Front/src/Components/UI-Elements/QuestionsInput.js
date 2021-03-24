@@ -67,6 +67,8 @@ class FormsElements extends React.Component {
     this.onInputSub = this.onInputSub.bind(this);
     this.onAnswerchange = this.onAnswerchange.bind(this);
     this.setSettings = this.setSettings.bind(this);
+    this.getLangAnswer = this.getLangAnswer.bind(this);
+    this.getLangQuestion = this.getLangQuestion.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -264,6 +266,34 @@ class FormsElements extends React.Component {
       return { settings }; // return new object jasper object
     });
   }
+  getLangAnswer() {
+    switch (this.props.lang) {
+      case "1":
+        return "إجابه";
+      case "2":
+        return "Answer";
+      case "3":
+        return "תשובה";
+      case "4":
+        return "Отвечать";
+      default:
+        return "2";
+    }
+  }
+  getLangQuestion() {
+    switch (this.props.lang) {
+      case "1":
+        return "أدخل سؤالك";
+      case "2":
+        return "Enter your question";
+      case "3":
+        return "הזן את השאלה שלך";
+      case "4":
+        return "Введите свой вопрос";
+      default:
+        return "2";
+    }
+  }
   render() {
     const settingsBasic = {
       dots: true,
@@ -291,6 +321,8 @@ class FormsElements extends React.Component {
     //rtl
     //// Answers --------
     var answers = [];
+    let lang = this.props.lang;
+
     for (var i = 0; i < this.state.answersNum; i++) {
       // note: we are adding a key prop here to allow react to uniquely identify each
       // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
@@ -326,7 +358,7 @@ class FormsElements extends React.Component {
               id={i + 1}
               key={i}
               type="text"
-              placeholder={"Answer " + i}
+              placeholder={this.getLangAnswer() + " " + i}
               name="answer_content"
               readOnly={this.state.deleteAll}
               value={
@@ -500,7 +532,7 @@ class FormsElements extends React.Component {
                     <Form.Control
                       variant="info"
                       type="text"
-                      placeholder="Enter Your Question"
+                      placeholder={this.getLangQuestion()}
                       name="label"
                       value={this.state.label}
                       onChange={this.onInputchange}

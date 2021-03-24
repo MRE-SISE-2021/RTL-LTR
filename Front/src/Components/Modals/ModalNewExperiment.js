@@ -67,7 +67,7 @@ class NewExperimentModal extends React.Component {
             "/create/" +
             this.state.expName +
             "/exp/" +
-            this.state.chosenRadio +
+            this.getLangId() +
             "/" +
             this.state.direction +
             "/0"
