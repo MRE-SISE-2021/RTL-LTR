@@ -29,7 +29,7 @@ class ComponentsTable extends Component {
           <Task
             key={index}
             expId={id}
-            lang={this.props.lang}
+            dir={this.props.dir}
             keyOrder={index}
             label={task.label}
             taskId={task_id}
@@ -60,6 +60,7 @@ class ComponentsTable extends Component {
           compTypeId={parseInt(event.target.id)}
           expId={id}
           keyOrder={inputList.length}
+          dir={this.props.dir}
         />
       ),
     });

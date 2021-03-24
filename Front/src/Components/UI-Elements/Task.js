@@ -46,7 +46,7 @@ class Task extends Component {
             <QuestionsInput
               key={"text" + this.props.key}
               expId={this.props.expId}
-              lang={this.props.lang}
+              dir={this.props.dir}
               keyOrder={this.props.keyOrder}
               label={this.props.label}
               taskId={this.props.taskId}

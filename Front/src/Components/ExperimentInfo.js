@@ -110,6 +110,8 @@ class ExperimentInfo extends Component {
               "/exp/" +
               data.language_id +
               "/" +
+              data.direction +
+              "/" +
               data.questionnaire_id,
             state: { tasks: data.tasks },
           }}
@@ -122,11 +124,11 @@ class ExperimentInfo extends Component {
       <Aux>
         <nav
           className="bg-info text-white"
-          style={{ height:"30%", marginTop: "13%", marginLeft: "25%" }}
+          style={{ height: "30%", marginTop: "13%", marginLeft: "25%" }}
         >
           <Aux>
-            <Card >
-              <Card.Header >
+            <Card>
+              <Card.Header>
                 <Card.Title>
                   <b className="text-info">{data.questionnaire_name}</b>
                   <div className="d-flex justify-content-lg-end">
@@ -159,7 +161,7 @@ class ExperimentInfo extends Component {
                 </Card.Title>
               </Card.Header>
               <Card.Body>
-                <div style={{height:"450px"}} className="bg-info text-white">
+                <div style={{ height: "450px" }} className="bg-info text-white">
                   <ul className="p-3 mb-2 text-white">
                     <Row>
                       <Col>
@@ -202,7 +204,6 @@ class ExperimentInfo extends Component {
           </Aux>
         </nav>
       </Aux>
-      
     );
   }
 }

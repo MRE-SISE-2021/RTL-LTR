@@ -281,7 +281,7 @@ class FormsElements extends React.Component {
       // OR direction: "rtl"
     };
     console.log(this.props);
-    if (this.props.lang === "1") {
+    if (this.props.dir === "RTL") {
       theme = {
         dir: "rtl",
         // OR direction: "rtl"

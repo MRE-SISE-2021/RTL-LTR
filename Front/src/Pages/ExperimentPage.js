@@ -66,14 +66,14 @@ class ExperimentPage extends Component {
 
   render() {
     // console.log(this.props.location.state);
-    console.log(this.state);
+    console.log(this.props.match.params);
     //for creating a new EXP the tasks array will be empty
     return (
       <Aux>
         <ComponentsTable
           name={this.props.match.params.name}
           type={this.props.match.params.type}
-          lang={this.props.match.params.language}
+          dir={this.props.match.params.dir}
           expId={this.state.expId}
           tasks={this.state.tasks}
         />
