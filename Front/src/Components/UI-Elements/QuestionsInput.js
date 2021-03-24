@@ -55,10 +55,10 @@ class FormsElements extends React.Component {
       answersNum: 2,
       answers: props.answers || [],
       settings: {
-        is_direction_setting: false,
-        is_required_setting: false,
-        is_new_page_setting: false,
-        is_add_picture_setting: false,
+        is_direction_setting: props.is_direction_setting || false,
+        is_required_setting: props.is_required_setting || false,
+        is_new_page_setting: props.is_new_page_setting || false,
+        is_add_picture_setting: props.is_add_picture_setting || false,
       },
     };
 
@@ -236,7 +236,7 @@ class FormsElements extends React.Component {
       value: "defalut",
     };
     this.setState({ answers });
-    console.log(this.state.answers);
+    // console.log(this.state.answers);
   }
 
   ///settings----
@@ -286,7 +286,7 @@ class FormsElements extends React.Component {
         // OR direction: "rtl"
       };
     }
-    console.log(theme);
+    // console.log(theme);
     //rtl
     //// Answers --------
     var answers = [];
@@ -456,7 +456,7 @@ class FormsElements extends React.Component {
       "Counter",
       "Timeline",
     ];
-    console.log(compArray[this.props.compTypeId - 1]);
+    // console.log(compArray[this.props.compTypeId - 1]);
     return (
       <Aux>
         <ThemeProvider theme={theme}>
@@ -533,6 +533,7 @@ class FormsElements extends React.Component {
                         // id="is_direction"
                         label="RTL/LTR customazation"
                         onClick={this.setSettings}
+                        checked={this.state.settings.is_direction_setting}
                       />
                       <Form.Check
                         type="switch"
@@ -540,6 +541,7 @@ class FormsElements extends React.Component {
                         label="is required"
                         // id="is_required"
                         onClick={this.setSettings}
+                        checked={this.state.settings.is_required_setting}
                       />
                     </Col>
                     <Col>
@@ -549,6 +551,7 @@ class FormsElements extends React.Component {
                         // id="is_new_page"
                         label="Open on a new page"
                         onClick={this.setSettings}
+                        checked={this.state.settings.is_new_page_setting}
                       />
 
                       <Form.Check
@@ -557,6 +560,7 @@ class FormsElements extends React.Component {
                         // id="is_add_picture"
                         label="Add picture under the question"
                         onClick={this.setSettings}
+                        checked={this.state.settings.is_add_picture_setting}
                       />
                     </Col>
                   </Row>
