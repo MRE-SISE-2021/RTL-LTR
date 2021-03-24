@@ -1,6 +1,6 @@
 #pagination {
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  justify-content: right;
 }
 .item-page {
   border: 10px;
@@ -25,5 +25,5 @@
   user-select: none;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0);
-  text-align: center;
+  text-align: right;
 }

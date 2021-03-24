@@ -108,7 +108,7 @@ class Pagination extends React.Component {
 
   render() {
     var pager = this.state.pager;
-
+    console.log(pager);
     if (!pager.pages || pager.pages.length <= 1) {
       // don't display pager if there is only 1 page
       return null;
@@ -116,7 +116,7 @@ class Pagination extends React.Component {
 
     return (
       <ul id="pagination">
-        <li disabled={pager.currentPage === 1}>
+        {/* <li disabled={pager.currentPage === 1}>
           <a className="item-page" onClick={() => this.setPage(1)}>
             First
           </a>
@@ -128,8 +128,8 @@ class Pagination extends React.Component {
           >
             Previous
           </a>
-        </li>
-        {pager.pages.map((page, index) => (
+        </li> */}
+        {/* {pager.pages.map((page, index) => (
           <li
             key={index}
             className={pager.currentPage === page ? "active" : ""}
@@ -138,18 +138,29 @@ class Pagination extends React.Component {
               {page}
             </a>
           </li>
-        ))}
-        <li
-          className={pager.currentPage === pager.totalPages ? "disabled" : ""}
-        >
-          <a
-            className="item-page"
-            onClick={() => this.setPage(pager.currentPage + 1)}
-          >
-            Next
-          </a>
-        </li>
-        <li
+        ))} */}
+
+        {pager.currentPage < pager.totalPages ? (
+          <li>
+            <a
+              className="item-page"
+              onClick={() => this.setPage(pager.currentPage + 1)}
+            >
+              Next
+            </a>
+          </li>
+        ) : (
+          <li>
+            <a
+              className="item-page"
+              onClick={() => this.setPage(pager.currentPage + 1)}
+            >
+              Finish
+            </a>
+          </li>
+        )}
+
+        {/* <li
           className={pager.currentPage === pager.totalPages ? "disabled" : ""}
         >
           <a
@@ -158,7 +169,7 @@ class Pagination extends React.Component {
           >
             Last
           </a>
-        </li>
+        </li> */}
       </ul>
     );
   }
