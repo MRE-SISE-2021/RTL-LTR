@@ -29,6 +29,7 @@ class ComponentsTable extends Component {
           <Task
             key={index}
             expId={id}
+            lang={this.props.lang}
             keyOrder={index}
             label={task.label}
             taskId={task_id}

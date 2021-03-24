@@ -280,7 +280,8 @@ class FormsElements extends React.Component {
       dir: "ltr",
       // OR direction: "rtl"
     };
-    if (this.state.settings.is_direction_setting) {
+    console.log(this.props);
+    if (this.props.lang === "1") {
       theme = {
         dir: "rtl",
         // OR direction: "rtl"

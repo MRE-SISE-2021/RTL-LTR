@@ -51,16 +51,14 @@ class ExperimentPage extends Component {
       //data
       creation_date: "2021-01-06 23:25", //
       questionnaire_name: this.props.match.params.name,
+      direction: this.props.match.params.dir,
       hosted_link: "", //
       is_active: "true",
       language_id: "1",
       questionnaire_type_id: "1", //
     };
 
-    API.postRequest(
-      "questionnaire-preview-data",
-      response
-    ).then((data) => {
+    API.postRequest("questionnaire-preview-data", response).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
       this.setState({ expId: data.questionnaire_id });
     });

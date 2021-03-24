@@ -24,7 +24,7 @@ const app = (
           <Route exact path="/home" component={App} />
           <Route exact path="/" component={Login} />
           <Route
-            path="/create/:name/:type/:language/:id"
+            path="/create/:name/:type/:language/:dir/:id"
             component={ExperimentPage}
           />
           <Route path="/preview/:id" component={PreviewPage} />
