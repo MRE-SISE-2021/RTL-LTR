@@ -9,6 +9,10 @@ import { Navbar } from "react-bootstrap";
 import { withCookies } from "react-cookie";
 import { Redirect } from "react-router-dom";
 import { Button } from "react-bootstrap";
+
+import {Cookies} from "react-cookie";
+import inMemoryToken from '../../inMemoryToken'
+
 class NavBar extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +22,7 @@ class NavBar extends Component {
   }
 
   render() {
-    const { cookies } = this.props;
+    const cookies = new Cookies()
     //console.log(cookies);
     if (this.state.toLogin === true) {
       return <Redirect to={"/"} />;
@@ -26,7 +30,8 @@ class NavBar extends Component {
 
     const handleClick = () => {
       this.setState({ toLogin: true });
-      cookies.remove("access");
+      inMemoryToken.ereaseToken();
+      cookies.remove("refresh_token");
     };
 
     let headerClass = [

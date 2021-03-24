@@ -25,12 +25,10 @@ axiosInstance.interceptors.response.use(
 	},
 	async function (error) {
 		const originalRequest = error.config;
-		// debugger
+		debugger
 		if (typeof error.response === 'undefined') {
 			alert(
-				'A server/network error occurred. ' +
-					'Looks like CORS might be the problem. ' +
-					'Sorry about this - we will get it fixed shortly.'
+				error.message
 			);
 			return Promise.reject(error);
 		}
@@ -47,7 +45,7 @@ axiosInstance.interceptors.response.use(
 			// error.response.data.code === 'token_not_valid' &&
 			error.response.status === 401 &&
 			error.response.statusText === 'Unauthorized' &&
-			cookies.get('refresh_token') != null
+			cookies.get('refresh_token') !== 'undefined'
 		) {
 			const refreshToken = cookies.get('refresh_token');
 
