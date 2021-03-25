@@ -11,8 +11,24 @@ class ComponentsTable extends Component {
   constructor(props) {
     super(props);
     console.log(props);
-    this.state = { inputList: [] };
+    this.state = {
+      inputList: [],
+      demographic: {
+        is_age_demo: true,
+        is_native_demo: true,
+        is_other_demo: true,
+        is_knowledge_demo: true,
+        is_daily_demo: true,
+        is_writing_demo: true,
+        is_mobile_demo: true,
+        is_mouse_demo: true,
+        is_design_demo: true,
+        is_hci_demo: true,
+        is_develop_demo: true,
+      },
+    };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
+    this.onDemoChanged = this.onDemoChanged.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -83,6 +99,15 @@ class ComponentsTable extends Component {
     }
   }
 
+  onDemoChanged(event) {
+    this.setState({
+      demographic: {
+        ...this.state.demographic,
+        [event.target.id]: event.target.checked,
+      },
+    });
+    console.log(this.state);
+  }
   render() {
     // console.log(this.props.tasks.length);
 
@@ -121,6 +146,7 @@ class ComponentsTable extends Component {
           tasks={this.state.inputList}
           expId={this.props.expId}
           dir={this.props.dir}
+          demo={this.state.demographic}
         />
         <div
           style={{
@@ -268,9 +294,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={1}
+                    id="is_age_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">Age</Form.Label>
                 </Row>
@@ -278,9 +304,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={2}
+                    id="is_native_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Native Language
@@ -290,9 +316,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={3}
+                    id="is_other_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Other Languages
@@ -302,9 +328,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={4}
+                    id="is_knowledge_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Language Knowledge
@@ -314,9 +340,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={5}
+                    id="is_daily_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Characterizing daily work
@@ -326,9 +352,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={6}
+                    id="is_writing_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Preferred hand - writing
@@ -338,9 +364,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={7}
+                    id="is_mobile_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Preferred hand- mobile telephone
@@ -350,9 +376,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={8}
+                    id="is_mouse_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Preferred hand - computer mouse
@@ -362,9 +388,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={9}
+                    id="is_design_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     experience in UX, UI design
@@ -374,9 +400,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={10}
+                    id="is_hci_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Your professional HCI experience
@@ -386,9 +412,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={11}
+                    id="is_develop_demo"
                     defaultChecked
-                    // onChange={this.onAnswerchange}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     languages - interfaces developed

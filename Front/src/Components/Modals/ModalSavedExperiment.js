@@ -17,10 +17,15 @@ class SaveModal extends React.Component {
       toDashboard: false,
       name: props.data.name,
       lang: props.data.lang,
+      demographic: props.data.demo,
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
     this.getComponents = this.getComponents.bind(this);
+  }
+  componentWillReceiveProps(propsIncoming) {
+    let demo = propsIncoming.data.demo;
+    this.setState({ demographic: demo });
   }
 
   getLangId() {
@@ -53,7 +58,7 @@ class SaveModal extends React.Component {
 
   onAddBtnClick() {
     // const langId = this.getLangId();
-    console.log(this.props.data);
+    console.log(this.state.demographic);
     // const response = {
     //   //tasks
     //   tasks: [
@@ -108,13 +113,11 @@ class SaveModal extends React.Component {
     }
     return (
       <div className="mr-5">
-     
         <Button
           variant="outline-*"
           onClick={() => this.setState({ isBasic: true })}
-          
         >
-          <MDBIcon icon="save" className="text-white"   size="2x" />
+          <MDBIcon icon="save" className="text-white" size="2x" />
         </Button>
         <Modal
           show={this.state.isBasic}
