@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./styles/Pagination.css";
+import { ProgressBar } from "react-bootstrap";
+
 const propTypes = {
   items: PropTypes.array.isRequired,
   onChangePage: PropTypes.func.isRequired,
@@ -113,10 +115,12 @@ class Pagination extends React.Component {
       // don't display pager if there is only 1 page
       return null;
     }
+    const percentage = ((pager.currentPage - 1) / pager.totalPages) * 100;
 
     return (
-      <ul id="pagination">
-        {/* <li disabled={pager.currentPage === 1}>
+      <div>
+        <ul id="pagination">
+          {/* <li disabled={pager.currentPage === 1}>
           <a className="item-page" onClick={() => this.setPage(1)}>
             First
           </a>
@@ -129,7 +133,7 @@ class Pagination extends React.Component {
             Previous
           </a>
         </li> */}
-        {/* {pager.pages.map((page, index) => (
+          {/* {pager.pages.map((page, index) => (
           <li
             key={index}
             className={pager.currentPage === page ? "active" : ""}
@@ -140,27 +144,26 @@ class Pagination extends React.Component {
           </li>
         ))} */}
 
-        {pager.currentPage < pager.totalPages ? (
-          <li>
-            <a
-              className="item-page"
-              onClick={() => this.setPage(pager.currentPage + 1)}
-            >
-              Next
-            </a>
-          </li>
-        ) : (
-          <li>
-            <a
-              className="item-page"
-              onClick={() => this.setPage(pager.currentPage + 1)}
-            >
-              Finish
-            </a>
-          </li>
-        )}
-
-        {/* <li
+          {pager.currentPage < pager.totalPages ? (
+            <li>
+              <a
+                className="item-page"
+                onClick={() => this.setPage(pager.currentPage + 1)}
+              >
+                Next
+              </a>
+            </li>
+          ) : (
+            <li>
+              <a
+                className="item-page"
+                onClick={() => this.setPage(pager.currentPage + 1)}
+              >
+                Finish
+              </a>
+            </li>
+          )}
+          {/* <li
           className={pager.currentPage === pager.totalPages ? "disabled" : ""}
         >
           <a
@@ -170,7 +173,9 @@ class Pagination extends React.Component {
             Last
           </a>
         </li> */}
-      </ul>
+        </ul>
+        <ProgressBar now={percentage} label={`${percentage}%`} animated />
+      </div>
     );
   }
 }

@@ -269,7 +269,6 @@ class PreviewPage extends Component {
       mainClass = [...mainClass, "container"];
     }
     // console.log(this.state);
-
     return (
       <Aux>
         <NavBar
