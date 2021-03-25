@@ -389,84 +389,6 @@ class FormsElements extends React.Component {
             ) : null}
           </Row>
           <br />
-          {this.props.compTypeId === 2 && (
-            <Row>
-              {console.log(this.props.compTypeId)}
-              {/* <Card>
-                <Card.Body> */}
-              <Slider
-                style={{
-                  width: "80%",
-                  top: "2%",
-                  left: "5%",
-                  bottom: "2%",
-                }}
-                className="pc-range-slider"
-                // {...settingsBasic}
-              />
-              {/* </Card.Body>
-              </Card> */}
-            </Row>
-          )}
-          {this.props.compTypeId === 4 && (
-            <Row>
-              {console.log(this.props.compTypeId)}
-              {/* <Col md={6}> */}
-              {/* <Form.Group controlId="exampleForm.RangeInput"> */}
-              <Range
-                className="pc-range-slider"
-                style={{
-                  width: "80%",
-                  top: "2%",
-                  left: "5%",
-                  bottom: "2%",
-                }}
-                step={10}
-                defaultValue={[20, 30]}
-              />
-              {/* </Form.Group> */}
-              {/* </Col> */}
-            </Row>
-          )}
-          {this.props.compTypeId === 5 && (
-            <Row>
-              {console.log(this.props.compTypeId)}
-              {/* <Col md={6}> */}
-              <Form.Group controlId="exampleForm.RangeInput">
-                <Rating
-                  emptySymbol="far fa-star fa-2x"
-                  fullSymbol="fas fa-star fa-2x"
-                />
-              </Form.Group>
-              {/* </Col> */}
-            </Row>
-          )}
-          {this.props.compTypeId === 6 && (
-            <Row>
-              {console.log(this.props.compTypeId)}
-              {/* <Col md={6}> */}
-              <Form.Group controlId="exampleForm.RangeInput">
-                <Rating
-                  initialRating={this.state.squareRating}
-                  emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                    <span className="theme-bar-square">
-                      <span>{n}</span>
-                    </span>
-                  ))}
-                  fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                    <span className="theme-bar-square">
-                      <span className="active">{n}</span>
-                    </span>
-                  ))}
-                  onChange={(rate) => this.setState({ squareRating: rate })}
-                />
-              </Form.Group>
-              {/* </Col> */}
-            </Row>
-          )}
-          {/* </Row> */}
-
-          <br />
         </div>
       );
     }
@@ -497,7 +419,7 @@ class FormsElements extends React.Component {
                       {compArray[this.props.compTypeId - 1]}
                     </Form.Label>
 
-                    <Form.Control
+                    {/* <Form.Control
                       size="lg"
                       type="text"
                       placeholder="Enter Your Task Title"
@@ -509,7 +431,85 @@ class FormsElements extends React.Component {
                       border="info"
                       variant="info"
                       style={{ border: " 2px solid " }}
-                    />
+                    /> */}
+                    <br />
+                    {this.props.compTypeId === 2 && (
+                      <Row>
+                        {console.log(this.props.compTypeId)}
+                        {/* <Card>
+                <Card.Body> */}
+                        <Slider
+                          style={{
+                            width: "80%",
+                            top: "2%",
+                            left: "5%",
+                            bottom: "2%",
+                          }}
+                          className="pc-range-slider"
+                          // {...settingsBasic}
+                        />
+                        {/* </Card.Body>
+              </Card> */}
+                      </Row>
+                    )}
+                    {this.props.compTypeId === 4 && (
+                      <Row>
+                        {console.log(this.props.compTypeId)}
+                        {/* <Col md={6}> */}
+                        {/* <Form.Group controlId="exampleForm.RangeInput"> */}
+                        <Range
+                          className="pc-range-slider"
+                          style={{
+                            width: "80%",
+                            top: "2%",
+                            left: "5%",
+                            bottom: "2%",
+                          }}
+                          step={10}
+                          defaultValue={[20, 30]}
+                        />
+                        {/* </Form.Group> */}
+                        {/* </Col> */}
+                      </Row>
+                    )}
+                    {this.props.compTypeId === 5 && (
+                      <Row>
+                        {console.log(this.props.compTypeId)}
+                        {/* <Col md={6}> */}
+                        <Form.Group controlId="exampleForm.RangeInput">
+                          <Rating
+                            emptySymbol="far fa-star fa-2x"
+                            fullSymbol="fas fa-star fa-2x"
+                          />
+                        </Form.Group>
+                        {/* </Col> */}
+                      </Row>
+                    )}
+                    {this.props.compTypeId === 6 && (
+                      <Row>
+                        {console.log(this.props.compTypeId)}
+                        {/* <Col md={6}> */}
+                        <Form.Group controlId="exampleForm.RangeInput">
+                          <Rating
+                            initialRating={this.state.squareRating}
+                            emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                              <span className="theme-bar-square">
+                                <span>{n}</span>
+                              </span>
+                            ))}
+                            fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                              <span className="theme-bar-square">
+                                <span className="active">{n}</span>
+                              </span>
+                            ))}
+                            onChange={(rate) =>
+                              this.setState({ squareRating: rate })
+                            }
+                          />
+                        </Form.Group>
+                        {/* </Col> */}
+                      </Row>
+                    )}
                   </Col>
                   <Col>
                     {this.state.settings.is_required_setting ? (
