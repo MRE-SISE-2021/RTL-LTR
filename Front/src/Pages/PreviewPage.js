@@ -6,7 +6,7 @@ import NavBar from "../Components/NavBars/NavBar";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
-import { Card, ListGroup, Form } from "react-bootstrap";
+import { Card, ListGroup, Form, Button } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 //RTL
@@ -87,7 +87,7 @@ class PreviewPage extends Component {
         `;
       }
       //////// ----- add in a new page ----- //////////
-      if (task.is_new_page_setting) {
+      if (task.is_new_page_setting || task.component_type_id === 1) {
         this.setState({
           inputList: inputList.concat(<div></div>),
         });
@@ -310,6 +310,7 @@ class PreviewPage extends Component {
                     items={this.state.inputList}
                     onChangePage={this.onChangePage}
                     pageSize={2}
+                    lang={this.state.lang}
                   />
                 </ListGroup.Item>
               </Card.Body>

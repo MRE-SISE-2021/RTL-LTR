@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./styles/Pagination.css";
-import { ProgressBar } from "react-bootstrap";
+import { ProgressBar, Button } from "react-bootstrap";
 
 const propTypes = {
   items: PropTypes.array.isRequired,
@@ -19,6 +19,9 @@ class Pagination extends React.Component {
   constructor(props) {
     super(props);
     this.state = { pager: {} };
+    this.getLangStart = this.getLangStart.bind(this);
+    this.getLangNext = this.getLangNext.bind(this);
+    this.getLangFinish = this.getLangFinish.bind(this);
   }
 
   componentWillMount() {
@@ -107,7 +110,48 @@ class Pagination extends React.Component {
       pages: pages,
     };
   }
-
+  getLangStart() {
+    switch (this.props.lang) {
+      case 1:
+        return "ابدأ";
+      case 2:
+        return "Start";
+      case 3:
+        return "להתחלה";
+      case 4:
+        return "Начать исследование";
+      default:
+        return "2";
+    }
+  }
+  getLangNext() {
+    switch (this.props.lang) {
+      case 1:
+        return "اكمل";
+      case 2:
+        return "Next";
+      case 3:
+        return "המשך";
+      case 4:
+        return "Далее";
+      default:
+        return "2";
+    }
+  }
+  getLangFinish() {
+    switch (this.props.lang) {
+      case 1:
+        return "انهاء";
+      case 2:
+        return "Finish";
+      case 3:
+        return "לסיום";
+      case 4:
+        return "Закончить";
+      default:
+        return "2";
+    }
+  }
   render() {
     var pager = this.state.pager;
     console.log(pager);
@@ -144,13 +188,20 @@ class Pagination extends React.Component {
           </li>
         ))} */}
 
-          {pager.currentPage < pager.totalPages ? (
+          {pager.currentPage === 1 ? (
+            <Button
+              style={{ width: "50%" }}
+              onClick={() => this.setPage(pager.currentPage + 1)}
+            >
+              {this.getLangStart()}
+            </Button>
+          ) : pager.currentPage < pager.totalPages ? (
             <li>
               <a
                 className="item-page"
                 onClick={() => this.setPage(pager.currentPage + 1)}
               >
-                Next
+                {this.getLangNext()}
               </a>
             </li>
           ) : (
@@ -159,7 +210,7 @@ class Pagination extends React.Component {
                 className="item-page"
                 onClick={() => this.setPage(pager.currentPage + 1)}
               >
-                Finish
+                {this.getLangFinish()}
               </a>
             </li>
           )}
@@ -174,7 +225,11 @@ class Pagination extends React.Component {
           </a>
         </li> */}
         </ul>
-        <ProgressBar now={percentage} label={`${percentage}%`} animated />
+        <ProgressBar
+          now={percentage}
+          label={`${Math.round(percentage)}%`}
+          animated
+        />
       </div>
     );
   }
