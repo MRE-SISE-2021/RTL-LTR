@@ -62,6 +62,7 @@ class Input extends React.Component {
               is_direction_setting={this.props.is_direction_setting}
               is_new_page_setting={this.props.is_new_page_setting}
               is_required_setting={this.props.is_required_setting}
+              dir={this.props.dir}
             />
           )}
         </Card>
