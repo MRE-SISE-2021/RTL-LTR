@@ -139,7 +139,6 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"range" + index}>
-                <h3>--- {task.task_title} ---</h3>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 7 ? (
                   <CompDiv>
@@ -215,8 +214,7 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
-                <h3>--- {task.task_title} ---</h3>
-                <h4>{task.label}</h4>{" "}
+                <h4>{task.label}</h4>
                 {task.answers.map(function (answer, index) {
                   return (
                     <CompDiv key={index}>
@@ -243,8 +241,7 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
-                <h3>--- {task.task_title} ---</h3>
-                <h4>{task.label}</h4>{" "}
+                <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
                   <CompDiv class="number">
                     <span class="minus">-</span>
