@@ -33,6 +33,7 @@ class PreviewPage extends Component {
       name: "",
       lang: "",
       type: "",
+      direction: "LTR",
     };
     this.onChangePage = this.onChangePage.bind(this);
   }
@@ -52,6 +53,7 @@ class PreviewPage extends Component {
             name: result.questionnaire_name,
             type: result.questionnaire_type_id,
             lang: result.language_id,
+            direction: result.direction,
           }));
         },
         (error) => {
@@ -90,7 +92,7 @@ class PreviewPage extends Component {
       let theme = {
         dir: "ltr",
       };
-      if (task.is_direction_setting) {
+      if (this.state.direction === "RTL") {
         theme = {
           dir: "rtl",
         };

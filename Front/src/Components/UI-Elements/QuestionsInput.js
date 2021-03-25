@@ -498,7 +498,7 @@ class FormsElements extends React.Component {
                 <Card.Title as="h5">
                   <Col>
                     <Form.Label>
-                      {compArray[this.props.compTypeId - 1]}: Task Title
+                      {compArray[this.props.compTypeId - 1]}
                     </Form.Label>
 
                     <Form.Control
@@ -549,70 +549,73 @@ class FormsElements extends React.Component {
                 ? null
                 : answers}
               {/* /////// */}
-              <Modal.Footer>
-                <Form
-                  style={{
-                    marginRight: "30%",
-                    textAlign: "left",
-                    color: "black",
-                  }}
-                >
-                  <Row>
-                    <Col>
-                      <Form.Check
-                        type="switch"
-                        id={"is_direction " + this.props.keyOrder}
-                        // id="is_direction"
-                        label="RTL/LTR customazation"
-                        onClick={this.setSettings}
-                        checked={this.state.settings.is_direction_setting}
-                      />
-                      <Form.Check
-                        type="switch"
-                        id={"is_required " + this.props.keyOrder}
-                        label="is required"
-                        // id="is_required"
-                        onClick={this.setSettings}
-                        checked={this.state.settings.is_required_setting}
-                      />
-                    </Col>
-                    <Col>
-                      <Form.Check
-                        type="switch"
-                        id={"is_new_page " + this.props.keyOrder}
-                        // id="is_new_page"
-                        label="Open on a new page"
-                        onClick={this.setSettings}
-                        checked={this.state.settings.is_new_page_setting}
-                      />
+              {/* <Modal.Footer> */}
 
-                      <Form.Check
-                        type="switch"
-                        id={"is_add_picture " + this.props.keyOrder}
-                        // id="is_add_picture"
-                        label="Add picture under the question"
-                        onClick={this.setSettings}
-                        checked={this.state.settings.is_add_picture_setting}
-                      />
-                    </Col>
-                  </Row>
-                </Form>
-                <Button
-                  variant="info"
-                  onClick={this.sendData}
-                  disabled={this.state.deleteAll}
-                >
-                  <MDBIcon icon="save" />
-                </Button>
-                <Button
-                  variant="danger"
-                  disabled={this.state.delete}
-                  onClick={this.deleteData}
-                >
-                  <MDBIcon icon="trash-alt" />
-                </Button>
-              </Modal.Footer>
+              {/* </Modal.Footer> */}
             </Card.Body>
+            <Card.Footer>
+              <Row
+                style={{
+                  // marginRight: "30%",
+                  textAlign: "left",
+                  color: "black",
+                }}
+              >
+                <Col xs="auto">
+                  <Form.Check
+                    type="switch"
+                    id={"is_direction " + this.props.keyOrder}
+                    // id="is_direction"
+                    label="RTL/LTR customazation"
+                    onClick={this.setSettings}
+                    checked={this.state.settings.is_direction_setting}
+                  />
+                  <Form.Check
+                    type="switch"
+                    id={"is_required " + this.props.keyOrder}
+                    label="is required"
+                    // id="is_required"
+                    onClick={this.setSettings}
+                    checked={this.state.settings.is_required_setting}
+                  />
+                </Col>
+                <Col xs="auto">
+                  <Form.Check
+                    type="switch"
+                    id={"is_new_page " + this.props.keyOrder}
+                    // id="is_new_page"
+                    label="Open on a new page"
+                    onClick={this.setSettings}
+                    checked={this.state.settings.is_new_page_setting}
+                  />
+
+                  <Form.Check
+                    type="switch"
+                    id={"is_add_picture " + this.props.keyOrder}
+                    // id="is_add_picture"
+                    label="Add picture under the question"
+                    onClick={this.setSettings}
+                    checked={this.state.settings.is_add_picture_setting}
+                  />
+                </Col>
+                <Col>
+                  <Button
+                    variant="info"
+                    onClick={this.sendData}
+                    disabled={this.state.deleteAll}
+                  >
+                    <MDBIcon icon="save" />
+                  </Button>
+                  <Button
+                    variant="danger"
+                    disabled={this.state.delete}
+                    onClick={this.deleteData}
+                  >
+                    <MDBIcon icon="trash-alt" />
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Footer>
           </Card>
         </ThemeProvider>
       </Aux>
