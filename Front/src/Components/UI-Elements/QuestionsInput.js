@@ -297,7 +297,7 @@ class FormsElements extends React.Component {
   render() {
     const ColStyled = styled.div`
       ${rtl`
-    direction: rtl;
+    direction: ltr;
     margin-left: auto;
     `};
     `;
@@ -368,7 +368,7 @@ class FormsElements extends React.Component {
             />
 
             {i + 1 === this.state.answersNum ? (
-              <Col>
+              <ColStyled>
                 <Button
                   variant="info"
                   onClick={this.onInputAdd}
@@ -385,7 +385,7 @@ class FormsElements extends React.Component {
                     <MDBIcon icon="times" />
                   </Button>
                 ) : null}
-              </Col>
+              </ColStyled>
             ) : null}
           </Row>
           <br />

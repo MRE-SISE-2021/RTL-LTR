@@ -71,6 +71,15 @@ class PreviewPage extends Component {
     console.log(this.state);
     this.state.tasks.forEach((task, index) => {
       let inputList = this.state.inputList;
+
+      ////Task Comp Direction
+      let compdirection = "rtl";
+      if (
+        (task.is_direction_setting && this.state.direction === "RTL") ||
+        (!task.is_direction_setting && this.state.direction === "LTR")
+      ) {
+        compdirection = "ltr";
+      }
       //////// ----- add in a new page ----- //////////
       if (task.is_new_page_setting) {
         this.setState({
@@ -79,6 +88,15 @@ class PreviewPage extends Component {
         inputList = this.state.inputList;
       }
       ///////////////---RTL support --- ///////////////
+      let CompDiv = styled.div`
+        direction: rtl;
+      `;
+      if (task.is_direction_setting) {
+        CompDiv = styled.div`
+          direction: ltr;
+        `;
+      }
+
       const Div = styled.div`
         border: 2px solid BLACK;
         background: gainsboro;
@@ -126,7 +144,7 @@ class PreviewPage extends Component {
                 <h3>--- {task.task_title} ---</h3>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 7 ? (
-                  <Form.Group controlId="exampleForm.ControlSelect1">
+                  <CompDiv>
                     <Form.Control as="select">
                       {task.answers.map(function (answer, index) {
                         return (
@@ -134,19 +152,24 @@ class PreviewPage extends Component {
                         );
                       })}
                     </Form.Control>
-                  </Form.Group>
+                  </CompDiv>
                 ) : (
                   task.answers.map(function (answer, index) {
                     return (
                       <div key={index} dir={theme.dir}>
                         {answer.answer_content}:
                         {task.component_type_id === 2 ? (
-                          <Slider className="pc-range-slider" id="slider" />
+                          <Slider
+                            className="pc-range-slider"
+                            id="slider"
+                            direction={compdirection}
+                          />
                         ) : task.component_type_id === 5 ? (
                           <Rating
                             emptySymbol="far fa-star fa-2x"
                             fullSymbol="fas fa-star fa-2x"
                             id="stars"
+                            direction={compdirection}
                           />
                         ) : task.component_type_id === 4 ? (
                           <Range
@@ -154,10 +177,12 @@ class PreviewPage extends Component {
                             step={10}
                             defaultValue={[20, 30]}
                             id="double_slider"
+                            direction={compdirection}
                           />
                         ) : (
                           <Rating
                             // initialRating={this.state.squareRating}
+                            direction={compdirection}
                             id="rating"
                             emptySymbol={[1, 2, 3, 4, 5].map((n) => (
                               <span className="theme-bar-square">
@@ -196,7 +221,7 @@ class PreviewPage extends Component {
                 <h4>{task.label}</h4>{" "}
                 {task.answers.map(function (answer, index) {
                   return (
-                    <div style={{ direction: "ltr" }} key={index}>
+                    <CompDiv key={index}>
                       <input
                         // className="input_preview"
 
@@ -205,7 +230,7 @@ class PreviewPage extends Component {
                         name="ans"
                       />
                       {answer.answer_content}
-                    </div>
+                    </CompDiv>
                   );
                 })}
               </Div>
@@ -223,11 +248,11 @@ class PreviewPage extends Component {
                 <h3>--- {task.task_title} ---</h3>
                 <h4>{task.label}</h4>{" "}
                 {task.component_type_id === 9 ? (
-                  <div class="number">
+                  <CompDiv class="number">
                     <span class="minus">-</span>
                     <input id="counter" type="text" value="1" />
                     <span class="plus">+</span>
-                  </div>
+                  </CompDiv>
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
                 ) : null}
