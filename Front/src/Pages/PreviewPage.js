@@ -196,9 +196,10 @@ class PreviewPage extends Component {
                 <h4>{task.label}</h4>{" "}
                 {task.answers.map(function (answer, index) {
                   return (
-                    <div key={index}>
+                    <div style={{ direction: "ltr" }} key={index}>
                       <input
-                        className="input_preview"
+                        // className="input_preview"
+
                         type={type}
                         key={index}
                         name="ans"

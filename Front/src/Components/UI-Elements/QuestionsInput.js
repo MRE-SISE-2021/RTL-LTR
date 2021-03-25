@@ -19,7 +19,7 @@ import Rating from "react-rating";
 import Slider from "rc-slider";
 import Tooltip from "rc-tooltip";
 ///// --- rtl
-import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 ////---rtl
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
@@ -295,16 +295,12 @@ class FormsElements extends React.Component {
     }
   }
   render() {
-    const settingsBasic = {
-      dots: true,
-      infinite: true,
-      speed: 1000,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      centerPadding: "500px",
-      autoplay: true,
-      autoplaySpeed: 5000,
-    };
+    const ColStyled = styled.div`
+      ${rtl`
+    direction: rtl;
+    margin-left: auto;
+    `};
+    `;
     ///rtl
     let theme = {
       dir: "ltr",
@@ -598,7 +594,7 @@ class FormsElements extends React.Component {
                     checked={this.state.settings.is_add_picture_setting}
                   />
                 </Col>
-                <Col>
+                <ColStyled>
                   <Button
                     variant="info"
                     onClick={this.sendData}
@@ -613,7 +609,7 @@ class FormsElements extends React.Component {
                   >
                     <MDBIcon icon="trash-alt" />
                   </Button>
-                </Col>
+                </ColStyled>
               </Row>
             </Card.Footer>
           </Card>
