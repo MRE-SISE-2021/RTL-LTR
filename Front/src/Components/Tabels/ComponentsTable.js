@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Tabs, Tab, Form, Button } from "react-bootstrap";
+import { Tabs, Tab, Form, Button, Row } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import NavBar from "../NavBars/NavBarExp";
 import Task from "../UI-Elements/Task";
-
+import "../../styles/ComponentsTableStyle.css";
 class ComponentsTable extends Component {
   constructor(props) {
     super(props);
@@ -29,12 +29,18 @@ class ComponentsTable extends Component {
           <Task
             key={index}
             expId={id}
+            dir={this.props.dir}
             keyOrder={index}
             label={task.label}
             taskId={task_id}
             title={task_title}
             compTypeId={task.component_type_id}
             answers={task.answers}
+            is_add_picture_setting={task.is_add_picture_setting}
+            is_direction_setting={task.is_direction_setting}
+            is_new_page_setting={task.is_new_page_setting}
+            is_required_setting={task.is_required_setting}
+            lang={this.props.lang}
           />
         );
         // }
@@ -55,6 +61,8 @@ class ComponentsTable extends Component {
           compTypeId={parseInt(event.target.id)}
           expId={id}
           keyOrder={inputList.length}
+          dir={this.props.dir}
+          lang={this.props.lang}
         />
       ),
     });
@@ -112,6 +120,7 @@ class ComponentsTable extends Component {
           lang={this.props.lang}
           tasks={this.state.inputList}
           expId={this.props.expId}
+          dir={this.props.dir}
         />
         <div
           style={{
@@ -245,7 +254,7 @@ class ComponentsTable extends Component {
                 </li>
               </ul>
             </Tab>
-            <Tab eventKey="profile" title={<MDBIcon icon="cog" />} disabled>
+            <Tab eventKey="profile" title={<MDBIcon icon="id-card" />}>
               <ul
                 style={{
                   width: "100%",
@@ -253,42 +262,114 @@ class ComponentsTable extends Component {
                 }}
                 className="mt-4 list-group list-group-full"
               >
-                <h5>Settings Tab</h5>
-                <br />
+                <h5>Demographic Questions tab</h5>
 
-                <Form
-                  style={{
-                    marginLeft: "2%",
-                    textAlign: "left",
-                    color: "black",
-                  }}
-                >
-                  <Form.Check
-                    type="switch"
-                    id="rtl-switch"
-                    label="RTL/LTR customazation"
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={1}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
                   />
-                  <br />
-                  <Form.Check
-                    type="switch"
-                    label="is required"
-                    id="is-required-switch"
+                  <Form.Label className="label_demo">Gender</Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={2}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
                   />
-                  <br />
-
-                  <Form.Check
-                    type="switch"
-                    id="new-page-switch"
-                    label="Open on a new page"
+                  <Form.Label className="label_demo">Age</Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={3}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
                   />
-                  <br />
-
-                  <Form.Check
-                    type="switch"
-                    id="picture-switch"
-                    label="Add picture under the question"
+                  <Form.Label className="label_demo">Mother tounge</Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={4}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
                   />
-                </Form>
+                  <Form.Label className="label_demo">
+                    Language proficiency
+                  </Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={5}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
+                  />
+                  <Form.Label className="label_demo">
+                    RTL|LTR proficiency
+                  </Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={6}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
+                  />
+                  <Form.Label className="label_demo">Domiant hand</Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={7}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
+                  />
+                  <Form.Label className="label_demo">With RTL</Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={8}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
+                  />
+                  <Form.Label className="label_demo">With LTR</Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={9}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
+                  />
+                  <Form.Label className="label_demo">Hci</Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={10}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
+                  />
+                  <Form.Label className="label_demo">
+                    Other languages
+                  </Form.Label>
+                </Row>
               </ul>
             </Tab>
           </Tabs>

@@ -53,12 +53,12 @@ class FormsElements extends React.Component {
       deleteAll: false,
       taskId: props.taskId,
       answersNum: 2,
-      answers: props.answers,
+      answers: props.answers || [],
       settings: {
-        is_direction_setting: false,
-        is_required_setting: false,
-        is_new_page_setting: false,
-        is_add_picture_setting: false,
+        is_direction_setting: props.is_direction_setting || false,
+        is_required_setting: props.is_required_setting || false,
+        is_new_page_setting: props.is_new_page_setting || false,
+        is_add_picture_setting: props.is_add_picture_setting || false,
       },
     };
 
@@ -67,6 +67,8 @@ class FormsElements extends React.Component {
     this.onInputSub = this.onInputSub.bind(this);
     this.onAnswerchange = this.onAnswerchange.bind(this);
     this.setSettings = this.setSettings.bind(this);
+    this.getLangAnswer = this.getLangAnswer.bind(this);
+    this.getLangQuestion = this.getLangQuestion.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -124,7 +126,7 @@ class FormsElements extends React.Component {
     console.log(response);
     API.putRequest(
       "questionnaire-preview-data/" + this.state.id,
-      response,
+      response
     ).then((data) => {
       this.setState({ taskId: data.task_id[0] });
     });
@@ -188,7 +190,7 @@ class FormsElements extends React.Component {
 
   onInputSub() {
     console.log(this.state.answersNum);
-    const newList = this.state.answers.splice(this.state.answersNum - 1, 1);
+    this.state.answers.splice(this.state.answersNum - 1, 1);
     console.log(this.state.answers);
     this.setState({
       answersNum: this.state.answersNum - 1,
@@ -201,7 +203,7 @@ class FormsElements extends React.Component {
     console.log("Answeeeeeersss");
     console.log(this.state);
     console.log(this.props);
-
+    // console.log(event.target.index);
     let index = event.target.id - 1;
     let answer_content = event.target.value;
     let answers = [];
@@ -236,7 +238,7 @@ class FormsElements extends React.Component {
       value: "defalut",
     };
     this.setState({ answers });
-    console.log(this.state.answers);
+    // console.log(this.state.answers);
   }
 
   ///settings----
@@ -264,6 +266,34 @@ class FormsElements extends React.Component {
       return { settings }; // return new object jasper object
     });
   }
+  getLangAnswer() {
+    switch (this.props.lang) {
+      case "1":
+        return "إجابه";
+      case "2":
+        return "Answer";
+      case "3":
+        return "תשובה";
+      case "4":
+        return "Отвечать";
+      default:
+        return "2";
+    }
+  }
+  getLangQuestion() {
+    switch (this.props.lang) {
+      case "1":
+        return "أدخل سؤالك";
+      case "2":
+        return "Enter your question";
+      case "3":
+        return "הזן את השאלה שלך";
+      case "4":
+        return "Введите свой вопрос";
+      default:
+        return "2";
+    }
+  }
   render() {
     const settingsBasic = {
       dots: true,
@@ -280,16 +310,19 @@ class FormsElements extends React.Component {
       dir: "ltr",
       // OR direction: "rtl"
     };
-    if (this.state.settings.is_direction_setting) {
+    console.log(this.props);
+    if (this.props.dir === "RTL") {
       theme = {
         dir: "rtl",
         // OR direction: "rtl"
       };
     }
-    console.log(theme);
+    // console.log(theme);
     //rtl
     //// Answers --------
     var answers = [];
+    let lang = this.props.lang;
+
     for (var i = 0; i < this.state.answersNum; i++) {
       // note: we are adding a key prop here to allow react to uniquely identify each
       // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
@@ -301,7 +334,7 @@ class FormsElements extends React.Component {
         ans = this.props.answers[i].answer_content;
       }
       answers.push(
-        <Container key={i}>
+        <div key={i}>
           <Row key={i}>
             {/* <p key={i}>answ</p> */}
 
@@ -321,13 +354,18 @@ class FormsElements extends React.Component {
                 border: "2px solid black",
                 marginLeft: "1%",
               }}
+              // id={i + 1 + " task " + this.state.taskId}
               id={i + 1}
               key={i}
               type="text"
-              placeholder={"Answer " + i}
+              placeholder={this.getLangAnswer() + " " + i}
               name="answer_content"
-              // value={this.state.label}
-              value={ans}
+              readOnly={this.state.deleteAll}
+              value={
+                this.state.answers[i] === undefined
+                  ? ans
+                  : this.state.answers[i].answer_content
+              }
               onChange={this.onAnswerchange}
               required
               // readOnly={this.state.deleteAll}
@@ -433,7 +471,7 @@ class FormsElements extends React.Component {
           {/* </Row> */}
 
           <br />
-        </Container>
+        </div>
       );
     }
     //// -------- Answers
@@ -450,7 +488,7 @@ class FormsElements extends React.Component {
       "Counter",
       "Timeline",
     ];
-    console.log(compArray[this.props.compTypeId - 1]);
+    // console.log(compArray[this.props.compTypeId - 1]);
     return (
       <Aux>
         <ThemeProvider theme={theme}>
@@ -460,7 +498,7 @@ class FormsElements extends React.Component {
                 <Card.Title as="h5">
                   <Col>
                     <Form.Label>
-                      {compArray[this.props.compTypeId - 1]}: Task Title
+                      {compArray[this.props.compTypeId - 1]}
                     </Form.Label>
 
                     <Form.Control
@@ -490,17 +528,18 @@ class FormsElements extends React.Component {
 
               <Row>
                 <Col md={6}>
-                  <Form.Group controlId="exampleForm.ControlInput1">
+                  <Form.Group>
                     <Form.Control
                       variant="info"
                       type="text"
-                      placeholder="Enter Your Question"
+                      placeholder={this.getLangQuestion()}
                       name="label"
                       value={this.state.label}
                       onChange={this.onInputchange}
                       required
                       readOnly={this.state.deleteAll}
                       style={{ width: "160%", border: "2px solid " }}
+                      id={"ques " + this.state.taskId}
                     />
                   </Form.Group>
                 </Col>
@@ -510,66 +549,73 @@ class FormsElements extends React.Component {
                 ? null
                 : answers}
               {/* /////// */}
-              <Modal.Footer>
-                <Form
-                  style={{
-                    marginRight: "30%",
-                    textAlign: "left",
-                    color: "black",
-                  }}
-                >
-                  <Row>
-                    <Col>
-                      <Form.Check
-                        type="switch"
-                        id={"is_direction " + this.props.keyOrder}
-                        // id="is_direction"
-                        label="RTL/LTR customazation"
-                        onClick={this.setSettings}
-                      />
-                      <Form.Check
-                        type="switch"
-                        id={"is_required " + this.props.keyOrder}
-                        label="is required"
-                        // id="is_required"
-                        onClick={this.setSettings}
-                      />
-                    </Col>
-                    <Col>
-                      <Form.Check
-                        type="switch"
-                        id={"is_new_page " + this.props.keyOrder}
-                        // id="is_new_page"
-                        label="Open on a new page"
-                        onClick={this.setSettings}
-                      />
+              {/* <Modal.Footer> */}
 
-                      <Form.Check
-                        type="switch"
-                        id={"is_add_picture " + this.props.keyOrder}
-                        // id="is_add_picture"
-                        label="Add picture under the question"
-                        onClick={this.setSettings}
-                      />
-                    </Col>
-                  </Row>
-                </Form>
-                <Button
-                  variant="info"
-                  onClick={this.sendData}
-                  disabled={this.state.deleteAll}
-                >
-                  <MDBIcon icon="save" />
-                </Button>
-                <Button
-                  variant="danger"
-                  disabled={this.state.delete}
-                  onClick={this.deleteData}
-                >
-                  <MDBIcon icon="trash-alt" />
-                </Button>
-              </Modal.Footer>
+              {/* </Modal.Footer> */}
             </Card.Body>
+            <Card.Footer>
+              <Row
+                style={{
+                  // marginRight: "30%",
+                  textAlign: "left",
+                  color: "black",
+                }}
+              >
+                <Col xs="auto">
+                  <Form.Check
+                    type="switch"
+                    id={"is_direction " + this.props.keyOrder}
+                    // id="is_direction"
+                    label="RTL/LTR customazation"
+                    onClick={this.setSettings}
+                    checked={this.state.settings.is_direction_setting}
+                  />
+                  <Form.Check
+                    type="switch"
+                    id={"is_required " + this.props.keyOrder}
+                    label="is required"
+                    // id="is_required"
+                    onClick={this.setSettings}
+                    checked={this.state.settings.is_required_setting}
+                  />
+                </Col>
+                <Col xs="auto">
+                  <Form.Check
+                    type="switch"
+                    id={"is_new_page " + this.props.keyOrder}
+                    // id="is_new_page"
+                    label="Open on a new page"
+                    onClick={this.setSettings}
+                    checked={this.state.settings.is_new_page_setting}
+                  />
+
+                  <Form.Check
+                    type="switch"
+                    id={"is_add_picture " + this.props.keyOrder}
+                    // id="is_add_picture"
+                    label="Add picture under the question"
+                    onClick={this.setSettings}
+                    checked={this.state.settings.is_add_picture_setting}
+                  />
+                </Col>
+                <Col>
+                  <Button
+                    variant="info"
+                    onClick={this.sendData}
+                    disabled={this.state.deleteAll}
+                  >
+                    <MDBIcon icon="save" />
+                  </Button>
+                  <Button
+                    variant="danger"
+                    disabled={this.state.delete}
+                    onClick={this.deleteData}
+                  >
+                    <MDBIcon icon="trash-alt" />
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Footer>
           </Card>
         </ThemeProvider>
       </Aux>

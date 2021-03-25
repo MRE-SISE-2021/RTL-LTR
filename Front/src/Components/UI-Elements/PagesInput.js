@@ -37,32 +37,34 @@ class Input extends React.Component {
 
     return (
       <Aux>
-  
-
-      
-      
-                      <Card title="Edit Page" isOption>
-                        {this.state.label === undefined ? (
-                          <AllCkEditor
-                            html={html}
-                            editor="classic"
-                            expId={this.state.id}
-                            keyOrder={this.state.keyOrder}
-                            compTypeId={this.state.compTypeId}
-                          />
-                        ) : (
-                          <AllCkEditor
-                            html={this.state.label}
-                            editor="classic"
-                            expId={this.state.id}
-                            keyOrder={this.state.keyOrder}
-                            compTypeId={this.state.compTypeId}
-                            taskId={this.state.taskId}
-                          />
-                        )}
-                      </Card>
-                   
-
+        <Card title="Edit Page" isOption>
+          {this.state.label === undefined ? (
+            <AllCkEditor
+              html={html}
+              editor="classic"
+              expId={this.state.id}
+              keyOrder={this.state.keyOrder}
+              compTypeId={this.state.compTypeId}
+              is_add_picture_setting={this.props.is_add_picture_setting}
+              is_direction_setting={this.props.is_direction_setting}
+              is_new_page_setting={this.props.is_new_page_setting}
+              is_required_setting={this.props.is_required_setting}
+            />
+          ) : (
+            <AllCkEditor
+              html={this.state.label}
+              editor="classic"
+              expId={this.state.id}
+              keyOrder={this.state.keyOrder}
+              compTypeId={this.state.compTypeId}
+              taskId={this.state.taskId}
+              is_add_picture_setting={this.props.is_add_picture_setting}
+              is_direction_setting={this.props.is_direction_setting}
+              is_new_page_setting={this.props.is_new_page_setting}
+              is_required_setting={this.props.is_required_setting}
+            />
+          )}
+        </Card>
       </Aux>
     );
   }

@@ -32,6 +32,10 @@ class Task extends Component {
               title={this.props.title}
               compTypeId={this.props.compTypeId}
               answers={this.props.answers}
+              is_add_picture_setting={this.props.is_add_picture_setting}
+              is_direction_setting={this.props.is_direction_setting}
+              is_new_page_setting={this.props.is_new_page_setting}
+              is_required_setting={this.props.is_required_setting}
             />
           ),
         });
@@ -42,12 +46,18 @@ class Task extends Component {
             <QuestionsInput
               key={"text" + this.props.key}
               expId={this.props.expId}
+              dir={this.props.dir}
               keyOrder={this.props.keyOrder}
               label={this.props.label}
               taskId={this.props.taskId}
               title={this.props.title}
               compTypeId={this.props.compTypeId}
               answers={this.props.answers}
+              is_add_picture_setting={this.props.is_add_picture_setting}
+              is_direction_setting={this.props.is_direction_setting}
+              is_new_page_setting={this.props.is_new_page_setting}
+              is_required_setting={this.props.is_required_setting}
+              lang={this.props.lang}
             />
           ),
         });
@@ -58,20 +68,17 @@ class Task extends Component {
   render() {
     return (
       <Aux>
-
-        <div style={{
-          width: '60rem',
-          marginBottom:"3%",
-          marginLeft: "25%"
-        }}>
-             {this.state.inputList.map(function (input, index) {
-              return input;
-            })}
-        
-
+        <div
+          style={{
+            width: "60rem",
+            marginBottom: "3%",
+            marginLeft: "25%",
+          }}
+        >
+          {this.state.inputList.map(function (input, index) {
+            return input;
+          })}
         </div>
-       
-          
       </Aux>
     );
   }
