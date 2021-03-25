@@ -169,6 +169,19 @@ class Questionnaire(models.Model):
     questionnaire_type_id = models.ForeignKey(QuestionnaireType, models.DO_NOTHING, db_column='QuestionnaireTypeId',
                                               blank=True, null=True)
 
+    # demographic
+    is_age_demo = models.BooleanField(db_column='IsAgeDemo')
+    is_native_demo = models.BooleanField(db_column='IsNativeDemo')
+    is_other_demo = models.BooleanField(db_column='IsOtherDemo')
+    is_knowledge_demo = models.BooleanField(db_column='IsKnowledgeDemo')
+    is_daily_demo = models.BooleanField(db_column='IsDailyDemo')
+    is_writing_demo = models.BooleanField(db_column='IsWritingDemo')
+    is_mobile_demo = models.BooleanField(db_column='IsMobileDemo')
+    is_mouse_demo = models.BooleanField(db_column='IsMouseDemo')
+    is_design_demo = models.BooleanField(db_column='IsDesignDemo')
+    is_hci_demo = models.BooleanField(db_column='IsHciDemo')
+    is_develop_demo = models.BooleanField(db_column='IsDevelopDemo')
+
     tasks = models.ManyToManyField(Task, through='QuestionnaireTask')
 
     class Meta:
