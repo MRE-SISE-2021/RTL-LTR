@@ -9,6 +9,10 @@ import { Navbar } from "react-bootstrap";
 import { withCookies } from "react-cookie";
 import { Redirect } from "react-router-dom";
 import { Button } from "react-bootstrap";
+
+import {Cookies} from "react-cookie";
+import inMemoryToken from '../../inMemoryToken'
+
 class NavBar extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +22,7 @@ class NavBar extends Component {
   }
 
   render() {
-    const { cookies } = this.props;
+    const cookies = new Cookies()
     //console.log(cookies);
     if (this.state.toLogin === true) {
       return <Redirect to={"/"} />;
@@ -26,7 +30,8 @@ class NavBar extends Component {
 
     const handleClick = () => {
       this.setState({ toLogin: true });
-      cookies.remove("access");
+      inMemoryToken.ereaseToken();
+      cookies.remove("refresh_token");
     };
 
     let headerClass = [
@@ -52,7 +57,7 @@ class NavBar extends Component {
       <Aux>
         <Navbar fixed="top" bg="info" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <ul class="mb-1 bg-info text-white">
+            <ul className="mb-1 bg-info text-white">
               <li>
                 <MDBIcon icon="home" size="3x" className="indigo-text pr-3" />{" "}
               </li>
@@ -60,7 +65,7 @@ class NavBar extends Component {
           </Link>
           <div style={{ marginLeft: "93%" }}>
             <Button variant="outline-*" onClick={() => handleClick()}>
-              <ul class="mb-1 bg-info text-white">
+              <ul className="mb-1 bg-info text-white">
                 <li>
                   <MDBIcon
                     icon="sign-out-alt"

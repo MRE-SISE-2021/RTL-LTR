@@ -61,7 +61,7 @@ class Login extends React.Component {
 			.then((result) => {
         //console.log(result)
 				// cookies.set("access_token", result.data.access, { path: "/" }); // setting the cookie
-        debugger
+        // debugger
         inMemoryToken.setToken(result.data.access)
         console.log(inMemoryToken.getToken())
         cookies.set("refresh_token", result.data.refresh, { path: "/", maxAge: 43200 }); // setting the cookie

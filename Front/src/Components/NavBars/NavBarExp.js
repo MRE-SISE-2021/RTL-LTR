@@ -104,7 +104,7 @@ class NavBar extends Component {
             <h5 className="mr-4">ExpName: </h5>
             <Button
               className="btn-primary tn-edit btn btn-default mr-5"
-              size="lg"
+              // size="lg"
               variant="light"
             >
               {this.props.name}
@@ -113,7 +113,7 @@ class NavBar extends Component {
 
             <Button
               className="btn-primary tn-edit btn btn-default mr-5 "
-              size="lg"
+              // size="lg"
               variant="light"
             >
               {this.props.type}
@@ -123,10 +123,19 @@ class NavBar extends Component {
 
             <Button
               className="btn-primary tn-edit btn btn-default mr-5"
-              size="lg"
+              // size="lg"
               variant="light"
             >
               {this.props.lang}
+            </Button>
+            <h5 className="mr-4"> Direction </h5>
+
+            <Button
+              className="btn-primary tn-edit btn btn-default mr-5"
+              // size="lg"
+              variant="light"
+            >
+              {this.props.dir}
             </Button>
             {this.props.prev ? null : (
               <div className="d-flex justify-content-lg-end">

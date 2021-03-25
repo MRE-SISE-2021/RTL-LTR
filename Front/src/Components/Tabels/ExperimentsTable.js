@@ -10,7 +10,7 @@ import { MDBIcon } from "mdbreact";
 import "../../styles/homePageStyle.css";
 import { withCookies } from "react-cookie";
 
-import axiosInstance from '../../axios';
+import axiosInstance from "../../axios";
 
 class ExperimentTable extends Component {
   constructor(props) {
@@ -33,33 +33,32 @@ class ExperimentTable extends Component {
 
   async componentDidMount() {
     //////
-    await axiosInstance
-      .get("viewset/questionnaire/")
-      .then(
-        (result) => {
-          result = result.data
-          if (result[0] !== undefined) {
-            this.setState({
-              isLoaded: true,
-              items: result,
-              chosen: result[0],
-            });
-          } else {
-            this.setState({
-              isLoaded: true,
-              items: [],
-              chosen: {},
-            });
-          }
-        },
-        (error) => {
-          console.log(error);
+    await axiosInstance.get("viewset/questionnaire/").then(
+      (result) => {
+        result = result.data;
+        console.log(result);
+        if (result[0] !== undefined) {
           this.setState({
             isLoaded: true,
-            error,
+            items: result,
+            chosen: result[0],
+          });
+        } else {
+          this.setState({
+            isLoaded: true,
+            items: [],
+            chosen: {},
           });
         }
-      );
+      },
+      (error) => {
+        console.log(error);
+        this.setState({
+          isLoaded: true,
+          error,
+        });
+      }
+    );
     this.resize();
     window.addEventListener("resize", this.resize);
   }
@@ -122,25 +121,23 @@ class ExperimentTable extends Component {
       this.componentDidMount();
       this.forceUpdate();
     };
-    const handleClick = async (value) =>  {
-      await axiosInstance
-        .get(`viewset/questionnaire/${value}`)
-        .then(
-          (result) => {
-            result = result.data
-            // console.log(result);
-            this.setState({
-              isLoaded: true,
-              chosen: result,
-            });
-          },
-          (error) => {
-            this.setState({
-              isLoaded: true,
-              error,
-            });
-          }
-        );
+    const handleClick = async (value) => {
+      await axiosInstance.get(`viewset/questionnaire/${value}`).then(
+        (result) => {
+          result = result.data;
+          // console.log(result);
+          this.setState({
+            isLoaded: true,
+            chosen: result,
+          });
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        }
+      );
     };
     const names = this.state.items;
     /*

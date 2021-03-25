@@ -51,16 +51,14 @@ class ExperimentPage extends Component {
       //data
       creation_date: "2021-01-06 23:25", //
       questionnaire_name: this.props.match.params.name,
+      direction: this.props.match.params.dir,
       hosted_link: "", //
       is_active: "true",
-      language_id: "1",
+      language_id: this.props.match.params.language,
       questionnaire_type_id: "1", //
     };
 
-    API.postRequest(
-      "questionnaire-preview-data",
-      response
-    ).then((data) => {
+    API.postRequest("questionnaire-preview-data", response).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
       this.setState({ expId: data.questionnaire_id });
     });
@@ -68,13 +66,14 @@ class ExperimentPage extends Component {
 
   render() {
     // console.log(this.props.location.state);
-    console.log(this.state);
+    console.log(this.props.match.params);
     //for creating a new EXP the tasks array will be empty
     return (
       <Aux>
         <ComponentsTable
           name={this.props.match.params.name}
           type={this.props.match.params.type}
+          dir={this.props.match.params.dir}
           lang={this.props.match.params.language}
           expId={this.state.expId}
           tasks={this.state.tasks}

@@ -4,8 +4,7 @@ import { Redirect } from "react-router-dom";
 import Aux from "../../hoc/_Aux";
 import "../../styles/homePageStyle.css";
 
-import '../../styles/homePageStyle.css'; 
-
+import "../../styles/homePageStyle.css";
 
 class NewExperimentModal extends React.Component {
   constructor() {
@@ -20,6 +19,7 @@ class NewExperimentModal extends React.Component {
       chosenRadio: "english",
       expName: "exp",
       toDashboard: false,
+      direction: "RTL",
       // expId: "1",
     };
     this.onInputchange = this.onInputchange.bind(this);
@@ -59,6 +59,7 @@ class NewExperimentModal extends React.Component {
 
   //////////
   render() {
+    console.log(this.state);
     if (this.state.toDashboard === true) {
       return (
         <Redirect
@@ -66,7 +67,9 @@ class NewExperimentModal extends React.Component {
             "/create/" +
             this.state.expName +
             "/exp/" +
-            this.state.chosenRadio +
+            this.getLangId() +
+            "/" +
+            this.state.direction +
             "/0"
           }
         />
@@ -106,6 +109,19 @@ class NewExperimentModal extends React.Component {
                 <Form.Label>Type</Form.Label>
                 <Form.Control as="select">
                   <option>Experiment</option>
+                </Form.Control>
+              </Form.Group>
+
+              <Form.Group controlId="formType">
+                <Form.Label>Direction</Form.Label>
+                <Form.Control
+                  as="select"
+                  onChange={(event) =>
+                    this.setState({ direction: event.target.value })
+                  }
+                >
+                  <option value="RTL">RTL</option>
+                  <option value="LTR">LTR</option>
                 </Form.Control>
               </Form.Group>
 
@@ -160,7 +176,6 @@ class NewExperimentModal extends React.Component {
                 </button>
               </Modal.Footer>
             </Form>
-
           </Modal.Body>
         </Modal>
       </Aux>
