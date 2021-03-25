@@ -74,11 +74,17 @@ class PreviewPage extends Component {
 
       ////Task Comp Direction
       let compdirection = "rtl";
+      let CompDiv = styled.div`
+        direction: rtl;
+      `;
       if (
         (task.is_direction_setting && this.state.direction === "RTL") ||
         (!task.is_direction_setting && this.state.direction === "LTR")
       ) {
         compdirection = "ltr";
+        CompDiv = styled.div`
+          direction: ltr;
+        `;
       }
       //////// ----- add in a new page ----- //////////
       if (task.is_new_page_setting) {
@@ -88,14 +94,6 @@ class PreviewPage extends Component {
         inputList = this.state.inputList;
       }
       ///////////////---RTL support --- ///////////////
-      let CompDiv = styled.div`
-        direction: rtl;
-      `;
-      if (task.is_direction_setting) {
-        CompDiv = styled.div`
-          direction: ltr;
-        `;
-      }
 
       const Div = styled.div`
         border: 2px solid BLACK;
