@@ -272,7 +272,7 @@ class ComponentsTable extends Component {
                     defaultChecked
                     // onChange={this.onAnswerchange}
                   />
-                  <Form.Label className="label_demo">Gender</Form.Label>
+                  <Form.Label className="label_demo">Age</Form.Label>
                 </Row>
                 <Row>
                   <Form.Control
@@ -282,7 +282,9 @@ class ComponentsTable extends Component {
                     defaultChecked
                     // onChange={this.onAnswerchange}
                   />
-                  <Form.Label className="label_demo">Age</Form.Label>
+                  <Form.Label className="label_demo">
+                    Native Language
+                  </Form.Label>
                 </Row>
                 <Row>
                   <Form.Control
@@ -292,7 +294,9 @@ class ComponentsTable extends Component {
                     defaultChecked
                     // onChange={this.onAnswerchange}
                   />
-                  <Form.Label className="label_demo">Mother tounge</Form.Label>
+                  <Form.Label className="label_demo">
+                    Other Languages
+                  </Form.Label>
                 </Row>
                 <Row>
                   <Form.Control
@@ -303,7 +307,7 @@ class ComponentsTable extends Component {
                     // onChange={this.onAnswerchange}
                   />
                   <Form.Label className="label_demo">
-                    Language proficiency
+                    Language Knowledge
                   </Form.Label>
                 </Row>
                 <Row>
@@ -315,7 +319,7 @@ class ComponentsTable extends Component {
                     // onChange={this.onAnswerchange}
                   />
                   <Form.Label className="label_demo">
-                    RTL|LTR proficiency
+                    Characterizing daily work
                   </Form.Label>
                 </Row>
                 <Row>
@@ -326,7 +330,9 @@ class ComponentsTable extends Component {
                     defaultChecked
                     // onChange={this.onAnswerchange}
                   />
-                  <Form.Label className="label_demo">Domiant hand</Form.Label>
+                  <Form.Label className="label_demo">
+                    Preferred hand - writing
+                  </Form.Label>
                 </Row>
                 <Row>
                   <Form.Control
@@ -336,7 +342,9 @@ class ComponentsTable extends Component {
                     defaultChecked
                     // onChange={this.onAnswerchange}
                   />
-                  <Form.Label className="label_demo">With RTL</Form.Label>
+                  <Form.Label className="label_demo">
+                    Preferred hand- mobile telephone
+                  </Form.Label>
                 </Row>
                 <Row>
                   <Form.Control
@@ -346,7 +354,9 @@ class ComponentsTable extends Component {
                     defaultChecked
                     // onChange={this.onAnswerchange}
                   />
-                  <Form.Label className="label_demo">With LTR</Form.Label>
+                  <Form.Label className="label_demo">
+                    Preferred hand - computer mouse
+                  </Form.Label>
                 </Row>
                 <Row>
                   <Form.Control
@@ -356,7 +366,9 @@ class ComponentsTable extends Component {
                     defaultChecked
                     // onChange={this.onAnswerchange}
                   />
-                  <Form.Label className="label_demo">Hci</Form.Label>
+                  <Form.Label className="label_demo">
+                    experience in UX, UI design
+                  </Form.Label>
                 </Row>
                 <Row>
                   <Form.Control
@@ -367,7 +379,19 @@ class ComponentsTable extends Component {
                     // onChange={this.onAnswerchange}
                   />
                   <Form.Label className="label_demo">
-                    Other languages
+                    Your professional HCI experience
+                  </Form.Label>
+                </Row>
+                <Row>
+                  <Form.Control
+                    type="checkbox"
+                    className="check_demo"
+                    id={11}
+                    defaultChecked
+                    // onChange={this.onAnswerchange}
+                  />
+                  <Form.Label className="label_demo">
+                    languages - interfaces developed
                   </Form.Label>
                 </Row>
               </ul>

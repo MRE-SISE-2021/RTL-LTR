@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./styles/Pagination.css";
+import { ProgressBar, Button } from "react-bootstrap";
+
 const propTypes = {
   items: PropTypes.array.isRequired,
   onChangePage: PropTypes.func.isRequired,
@@ -17,6 +19,9 @@ class Pagination extends React.Component {
   constructor(props) {
     super(props);
     this.state = { pager: {} };
+    this.getLangStart = this.getLangStart.bind(this);
+    this.getLangNext = this.getLangNext.bind(this);
+    this.getLangFinish = this.getLangFinish.bind(this);
   }
 
   componentWillMount() {
@@ -105,7 +110,48 @@ class Pagination extends React.Component {
       pages: pages,
     };
   }
-
+  getLangStart() {
+    switch (this.props.lang) {
+      case 1:
+        return "ابدأ";
+      case 2:
+        return "Start";
+      case 3:
+        return "להתחלה";
+      case 4:
+        return "Начать исследование";
+      default:
+        return "2";
+    }
+  }
+  getLangNext() {
+    switch (this.props.lang) {
+      case 1:
+        return "اكمل";
+      case 2:
+        return "Next";
+      case 3:
+        return "המשך";
+      case 4:
+        return "Далее";
+      default:
+        return "2";
+    }
+  }
+  getLangFinish() {
+    switch (this.props.lang) {
+      case 1:
+        return "انهاء";
+      case 2:
+        return "Finish";
+      case 3:
+        return "לסיום";
+      case 4:
+        return "Закончить";
+      default:
+        return "2";
+    }
+  }
   render() {
     var pager = this.state.pager;
     console.log(pager);
@@ -113,10 +159,12 @@ class Pagination extends React.Component {
       // don't display pager if there is only 1 page
       return null;
     }
+    const percentage = ((pager.currentPage - 1) / pager.totalPages) * 100;
 
     return (
-      <ul id="pagination">
-        {/* <li disabled={pager.currentPage === 1}>
+      <div>
+        <ul id="pagination">
+          {/* <li disabled={pager.currentPage === 1}>
           <a className="item-page" onClick={() => this.setPage(1)}>
             First
           </a>
@@ -129,7 +177,7 @@ class Pagination extends React.Component {
             Previous
           </a>
         </li> */}
-        {/* {pager.pages.map((page, index) => (
+          {/* {pager.pages.map((page, index) => (
           <li
             key={index}
             className={pager.currentPage === page ? "active" : ""}
@@ -140,27 +188,33 @@ class Pagination extends React.Component {
           </li>
         ))} */}
 
-        {pager.currentPage < pager.totalPages ? (
-          <li>
-            <a
-              className="item-page"
+          {pager.currentPage === 1 ? (
+            <Button
+              style={{ width: "50%" }}
               onClick={() => this.setPage(pager.currentPage + 1)}
             >
-              Next
-            </a>
-          </li>
-        ) : (
-          <li>
-            <a
-              className="item-page"
-              onClick={() => this.setPage(pager.currentPage + 1)}
-            >
-              Finish
-            </a>
-          </li>
-        )}
-
-        {/* <li
+              {this.getLangStart()}
+            </Button>
+          ) : pager.currentPage < pager.totalPages ? (
+            <li>
+              <a
+                className="item-page"
+                onClick={() => this.setPage(pager.currentPage + 1)}
+              >
+                {this.getLangNext()}
+              </a>
+            </li>
+          ) : (
+            <li>
+              <a
+                className="item-page"
+                onClick={() => this.setPage(pager.currentPage + 1)}
+              >
+                {this.getLangFinish()}
+              </a>
+            </li>
+          )}
+          {/* <li
           className={pager.currentPage === pager.totalPages ? "disabled" : ""}
         >
           <a
@@ -170,7 +224,13 @@ class Pagination extends React.Component {
             Last
           </a>
         </li> */}
-      </ul>
+        </ul>
+        <ProgressBar
+          now={percentage}
+          label={`${Math.round(percentage)}%`}
+          animated
+        />
+      </div>
     );
   }
 }

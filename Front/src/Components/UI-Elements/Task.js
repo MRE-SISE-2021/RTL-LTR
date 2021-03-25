@@ -32,10 +32,12 @@ class Task extends Component {
               title={this.props.title}
               compTypeId={this.props.compTypeId}
               answers={this.props.answers}
+              dir={this.props.dir}
               is_add_picture_setting={this.props.is_add_picture_setting}
               is_direction_setting={this.props.is_direction_setting}
               is_new_page_setting={this.props.is_new_page_setting}
               is_required_setting={this.props.is_required_setting}
+              lang={this.props.lang}
             />
           ),
         });

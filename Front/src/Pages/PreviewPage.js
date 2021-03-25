@@ -6,7 +6,7 @@ import NavBar from "../Components/NavBars/NavBar";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
-import { Card, ListGroup, Form } from "react-bootstrap";
+import { Card, ListGroup, Form, Button } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 //RTL
@@ -71,14 +71,30 @@ class PreviewPage extends Component {
     console.log(this.state);
     this.state.tasks.forEach((task, index) => {
       let inputList = this.state.inputList;
+      console.log(task.label);
+      ////Task Comp Direction
+      let compdirection = "rtl";
+      let CompDiv = styled.div`
+        direction: rtl;
+      `;
+      if (
+        (task.is_direction_setting && this.state.direction === "RTL") ||
+        (!task.is_direction_setting && this.state.direction === "LTR")
+      ) {
+        compdirection = "ltr";
+        CompDiv = styled.div`
+          direction: ltr;
+        `;
+      }
       //////// ----- add in a new page ----- //////////
-      if (task.is_new_page_setting) {
+      if (task.is_new_page_setting || task.component_type_id === 1) {
         this.setState({
           inputList: inputList.concat(<div></div>),
         });
         inputList = this.state.inputList;
       }
       ///////////////---RTL support --- ///////////////
+
       const Div = styled.div`
         border: 2px solid BLACK;
         background: gainsboro;
@@ -123,10 +139,9 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"range" + index}>
-                <h3>--- {task.task_title} ---</h3>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 7 ? (
-                  <Form.Group controlId="exampleForm.ControlSelect1">
+                  <CompDiv>
                     <Form.Control as="select">
                       {task.answers.map(function (answer, index) {
                         return (
@@ -134,19 +149,24 @@ class PreviewPage extends Component {
                         );
                       })}
                     </Form.Control>
-                  </Form.Group>
+                  </CompDiv>
                 ) : (
                   task.answers.map(function (answer, index) {
                     return (
                       <div key={index} dir={theme.dir}>
                         {answer.answer_content}:
                         {task.component_type_id === 2 ? (
-                          <Slider className="pc-range-slider" id="slider" />
+                          <Slider
+                            className="pc-range-slider"
+                            id="slider"
+                            direction={compdirection}
+                          />
                         ) : task.component_type_id === 5 ? (
                           <Rating
                             emptySymbol="far fa-star fa-2x"
                             fullSymbol="fas fa-star fa-2x"
                             id="stars"
+                            direction={compdirection}
                           />
                         ) : task.component_type_id === 4 ? (
                           <Range
@@ -154,10 +174,12 @@ class PreviewPage extends Component {
                             step={10}
                             defaultValue={[20, 30]}
                             id="double_slider"
+                            direction={compdirection}
                           />
                         ) : (
                           <Rating
                             // initialRating={this.state.squareRating}
+                            direction={compdirection}
                             id="rating"
                             emptySymbol={[1, 2, 3, 4, 5].map((n) => (
                               <span className="theme-bar-square">
@@ -192,19 +214,19 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
-                <h3>--- {task.task_title} ---</h3>
-                <h4>{task.label}</h4>{" "}
+                <h4>{task.label}</h4>
                 {task.answers.map(function (answer, index) {
                   return (
-                    <div key={index}>
+                    <CompDiv key={index}>
                       <input
-                        className="input_preview"
+                        // className="input_preview"
+
                         type={type}
                         key={index}
                         name="ans"
                       />
                       {answer.answer_content}
-                    </div>
+                    </CompDiv>
                   );
                 })}
               </Div>
@@ -219,14 +241,13 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
-                <h3>--- {task.task_title} ---</h3>
-                <h4>{task.label}</h4>{" "}
+                <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                  <div class="number">
+                  <CompDiv class="number">
                     <span class="minus">-</span>
                     <input id="counter" type="text" value="1" />
                     <span class="plus">+</span>
-                  </div>
+                  </CompDiv>
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
                 ) : null}
@@ -248,7 +269,6 @@ class PreviewPage extends Component {
       mainClass = [...mainClass, "container"];
     }
     // console.log(this.state);
-
     return (
       <Aux>
         <NavBar
@@ -290,6 +310,7 @@ class PreviewPage extends Component {
                     items={this.state.inputList}
                     onChangePage={this.onChangePage}
                     pageSize={2}
+                    lang={this.state.lang}
                   />
                 </ListGroup.Item>
               </Card.Body>

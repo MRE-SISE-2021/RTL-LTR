@@ -66,7 +66,7 @@ class QuestionnaireType(models.Model):
 
 class Task(models.Model):
     task_id = models.AutoField(db_column='TaskId', primary_key=True)
-    task_title = models.CharField(db_column='TaskTitle', max_length=100)
+    # task_title = models.CharField(db_column='TaskTitle', max_length=100)
     label = models.TextField(db_column='Label', null=True, blank=True)
 
     component_type_id = models.ForeignKey(ComponentType, models.DO_NOTHING, db_column='ComponentTypeId')
