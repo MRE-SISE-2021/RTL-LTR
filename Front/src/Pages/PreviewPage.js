@@ -71,7 +71,7 @@ class PreviewPage extends Component {
     console.log(this.state);
     this.state.tasks.forEach((task, index) => {
       let inputList = this.state.inputList;
-
+      console.log(task.label);
       ////Task Comp Direction
       let compdirection = "rtl";
       let CompDiv = styled.div`
