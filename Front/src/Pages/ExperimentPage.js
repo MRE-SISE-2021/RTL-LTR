@@ -13,6 +13,19 @@ class ExperimentPage extends Component {
     this.state = {
       expId: "",
       tasks: [],
+      demographic: {
+        is_age_demo: true,
+        is_native_demo: true,
+        is_other_demo: true,
+        is_knowledge_demo: true,
+        is_daily_demo: true,
+        is_writing_demo: true,
+        is_mobile_demo: true,
+        is_mouse_demo: true,
+        is_design_demo: true,
+        is_hci_demo: true,
+        is_develop_demo: true,
+      },
     };
   }
   UNSAFE_componentWillMount() {
@@ -40,6 +53,7 @@ class ExperimentPage extends Component {
       this.setState({
         expId: this.props.match.params.id,
         tasks: this.props.location.state.tasks,
+        demographic: this.props.location.state.demographic,
       });
       return;
     }
@@ -77,6 +91,7 @@ class ExperimentPage extends Component {
           lang={this.props.match.params.language}
           expId={this.state.expId}
           tasks={this.state.tasks}
+          demographic={this.state.demographic}
         />
       </Aux>
     );

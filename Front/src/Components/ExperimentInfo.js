@@ -20,10 +20,34 @@ class ExperimentInfo extends Component {
       toDashboard: false,
       reload: false,
       edit: false,
+      demographic: {},
     };
     this.submitHandlerPreview = this.submitHandlerPreview.bind(this);
     this.submitHandlerDelete = this.submitHandlerDelete.bind(this);
     this.submitHandlerEdit = this.submitHandlerEdit.bind(this);
+  }
+
+  componentWillReceiveProps(propsIncoming) {
+    //Edit EXP
+    console.log(propsIncoming.chosen);
+    let propsIn = propsIncoming.chosen;
+    if (propsIn.is_age_demo !== undefined) {
+      this.setState({
+        demographic: {
+          is_age_demo: propsIn.is_age_demo,
+          is_native_demo: propsIn.is_native_demo,
+          is_other_demo: propsIn.is_other_demo,
+          is_knowledge_demo: propsIn.is_knowledge_demo,
+          is_daily_demo: propsIn.is_daily_demo,
+          is_writing_demo: propsIn.is_writing_demo,
+          is_mobile_demo: propsIn.is_mobile_demo,
+          is_mouse_demo: propsIn.is_mouse_demo,
+          is_design_demo: propsIn.is_design_demo,
+          is_hci_demo: propsIn.is_hci_demo,
+          is_develop_demo: propsIn.is_develop_demo,
+        },
+      });
+    }
   }
 
   submitHandlerPreview(event) {
@@ -96,7 +120,7 @@ class ExperimentInfo extends Component {
 
   render() {
     const data = this.props.chosen;
-    // console.log(data);
+    console.log(this.state);
     if (this.state.toDashboard === true) {
       return <Redirect to={"/preview/" + data.questionnaire_id} />;
     }
@@ -114,7 +138,10 @@ class ExperimentInfo extends Component {
               data.direction +
               "/" +
               data.questionnaire_id,
-            state: { tasks: data.tasks },
+            state: {
+              tasks: data.tasks,
+              demographic: this.state.demographic,
+            },
           }}
         />
       );
