@@ -22,11 +22,13 @@ class ComponentsTable extends Component {
   componentWillReceiveProps(propsIncoming) {
     //Edit EXP
     console.log(propsIncoming);
+    console.log(propsIncoming.demographic.is_age_demo);
     const id = propsIncoming.expId;
-    if (propsIncoming.is_age_demo !== undefined) {
+    if (propsIncoming.demographic.is_age_demo !== undefined) {
       this.setState({
         demographic: propsIncoming.demographic,
       });
+      console.log(this.state);
     }
 
     let inputListNew = [];
@@ -290,7 +292,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_age_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_age_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">Age</Form.Label>
@@ -300,7 +302,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_native_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_native_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
@@ -312,7 +314,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_other_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_other_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
@@ -324,7 +326,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_knowledge_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_knowledge_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
@@ -336,7 +338,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_daily_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_daily_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
@@ -348,7 +350,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_writing_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_writing_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
@@ -360,7 +362,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_mobile_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_mobile_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
@@ -372,7 +374,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_mouse_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_mouse_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
@@ -384,7 +386,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_design_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_design_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
@@ -396,7 +398,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_hci_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_hci_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
@@ -408,7 +410,7 @@ class ComponentsTable extends Component {
                     type="checkbox"
                     className="check_demo"
                     id="is_develop_demo"
-                    defaultChecked
+                    checked={this.state.demographic.is_develop_demo}
                     onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
