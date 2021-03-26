@@ -272,7 +272,7 @@ class ComponentsTable extends Component {
                     onClick={this.onAddBtnClick}
                     variant="outline-info"
                   >
-                    <i className="feather icon-file" /> TimeLine
+                    <i className="feather icon-file" /> Text
                   </Button>
                 </li>
               </ul>
