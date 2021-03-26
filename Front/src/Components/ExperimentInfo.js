@@ -126,10 +126,14 @@ class ExperimentInfo extends Component {
         
            <nav
           className=" text-white"
-          style={{ width: "70%" , height: "30%", marginTop: "15%", marginLeft: "38%"  }}
+          style={{ width: "70%" , marginTop: "8%", marginLeft: "38%"  }}
         >
-        <b className="text-info">{data.questionnaire_name}</b>
                   <div className="d-flex justify-content-lg-end">
+                  <Row  style={{marginRight: "50%"  }} className="text-info">
+            <h5>{data.questionnaire_name}</h5>
+            
+          </Row>
+                 
                     <Button variant="outline-*" disabled>
                       <MDBIcon className="mr-2" icon="upload" />
                     </Button>
@@ -159,15 +163,11 @@ class ExperimentInfo extends Component {
                   </nav>
         <nav
           className="bg-Light "
-          style={{ width: "70%" , height: "30%", marginLeft: "38%"  }}
+          style={{ width: "70%", marginTop: "2%",height: "30%", marginLeft: "38%"  }}
         >
           <Aux>
             <Card>
-              <Card.Header>
-                <Card.Title>
-                  
-                </Card.Title>
-              </Card.Header>
+             
               <Card.Body>
                 <div style={{ height: "450px" }} className="bg-Light text-dark  ">
                   <ul className="p-3 mb-2">

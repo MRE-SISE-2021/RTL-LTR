@@ -189,13 +189,22 @@ class ExperimentTable extends Component {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>
-                      <Button
-                        variant="outline-info"
+                    <td >
+                      <Button 
+                        variant="flat-primary"
                         onClick={() => handleClick(value.questionnaire_id)}
                       >
                         {value.questionnaire_name}
                       </Button>
+                    </td>
+                    <td>
+                      date
+                    </td>
+                    <td>
+                      language
+                    </td>
+                    <td>
+                      sum
                     </td>
                     <td>
                       <MDBIcon far icon="play-circle" />
