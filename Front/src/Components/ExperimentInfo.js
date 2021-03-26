@@ -123,47 +123,54 @@ class ExperimentInfo extends Component {
     // console.log(data);
     return (
       <Aux>
-        <nav
-          className="bg-info text-white"
-          style={{ height: "30%", marginTop: "13%", marginLeft: "25%" }}
+        
+           <nav
+          className=" text-white"
+          style={{ width: "70%" , height: "30%", marginTop: "15%", marginLeft: "38%"  }}
         >
-          <Aux>
-            <Card>
-              <Card.Header>
-                <Card.Title>
-                  <b className="text-info">{data.questionnaire_name}</b>
+        <b className="text-info">{data.questionnaire_name}</b>
                   <div className="d-flex justify-content-lg-end">
                     <Button variant="outline-*" disabled>
-                      <MDBIcon className="mr-5" icon="upload" />
+                      <MDBIcon className="mr-2" icon="upload" />
                     </Button>
                     <Button
                       variant="outline-*"
                       onClick={this.submitHandlerPreview}
                     >
-                      <MDBIcon className="mr-5" icon="eye" />
+                      <MDBIcon className="mr-2" icon="eye" />
                     </Button>
 
                     <Button variant="outline-*" disabled>
-                      <MDBIcon className="mr-5" icon="clone" />
+                      <MDBIcon className="mr-2" icon="clone" />
                     </Button>
                     <Button
                       variant="outline-*"
                       onClick={this.submitHandlerEdit}
                     >
-                      <MDBIcon className="mr-5" icon="edit" />
+                      <MDBIcon className="mr-2" icon="edit" />
                     </Button>
                     <Button
                       variant="outline-*"
                       onClick={this.submitHandlerDelete}
                     >
-                      <MDBIcon className="mr-5" icon="trash-alt" />
+                      <MDBIcon className="mr-2" icon="trash-alt" />
                     </Button>
                   </div>
+                  </nav>
+        <nav
+          className="bg-Light "
+          style={{ width: "70%" , height: "30%", marginLeft: "38%"  }}
+        >
+          <Aux>
+            <Card>
+              <Card.Header>
+                <Card.Title>
+                  
                 </Card.Title>
               </Card.Header>
               <Card.Body>
-                <div style={{ height: "450px" }} className="bg-info text-white">
-                  <ul className="p-3 mb-2 text-white">
+                <div style={{ height: "450px" }} className="bg-Light text-dark  ">
+                  <ul className="p-3 mb-2">
                     <Row>
                       <Col>
                         <b>Created: </b> {data.creation_date}
