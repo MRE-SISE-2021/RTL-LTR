@@ -19,6 +19,7 @@ class SaveModal extends React.Component {
       name: props.data.name,
       lang: props.data.lang,
       demographic: props.data.demo,
+      id: props.data.expId,
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
@@ -26,7 +27,11 @@ class SaveModal extends React.Component {
   }
   componentWillReceiveProps(propsIncoming) {
     let demo = propsIncoming.data.demo;
-    this.setState({ demographic: demo });
+    let expId = propsIncoming.data.expId;
+    this.setState({
+      demographic: demo,
+      id: expId,
+    });
   }
 
   getLangId() {

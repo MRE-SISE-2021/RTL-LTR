@@ -33,7 +33,26 @@ class ComponentsTable extends Component {
 
   componentWillReceiveProps(propsIncoming) {
     //Edit EXP
+    console.log(propsIncoming);
     const id = propsIncoming.expId;
+    if (propsIncoming.is_age_demo !== undefined) {
+      this.setState({
+        demographic: {
+          is_age_demo: propsIncoming.is_age_demo,
+          is_native_demo: propsIncoming.is_native_demo,
+          is_other_demo: propsIncoming.is_other_demo,
+          is_knowledge_demo: propsIncoming.is_knowledge_demo,
+          is_daily_demo: propsIncoming.is_daily_demo,
+          is_writing_demo: propsIncoming.is_writing_demo,
+          is_mobile_demo: propsIncoming.is_mobile_demo,
+          is_mouse_demo: propsIncoming.is_mouse_demo,
+          is_design_demo: propsIncoming.is_design_demo,
+          is_hci_demo: propsIncoming.is_hci_demo,
+          is_develop_demo: propsIncoming.is_develop_demo,
+        },
+      });
+    }
+
     let inputListNew = [];
     if (propsIncoming.tasks.length > 0) {
       propsIncoming.tasks.forEach((task, index) => {

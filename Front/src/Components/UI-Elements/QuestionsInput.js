@@ -44,7 +44,7 @@ const handle = (props) => {
 class FormsElements extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    // console.log(props);
     this.state = {
       title: props.title || "",
       label: props.label || "",
@@ -306,7 +306,7 @@ class FormsElements extends React.Component {
       dir: "ltr",
       // OR direction: "rtl"
     };
-    console.log(this.props);
+    // console.log(this.props);
     if (this.props.dir === "RTL") {
       theme = {
         dir: "rtl",

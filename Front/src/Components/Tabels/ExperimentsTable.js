@@ -125,7 +125,7 @@ class ExperimentTable extends Component {
       await axiosInstance.get(`viewset/questionnaire/${value}`).then(
         (result) => {
           result = result.data;
-          // console.log(result);
+          console.log(result);
           this.setState({
             isLoaded: true,
             chosen: result,

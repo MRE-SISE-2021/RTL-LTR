@@ -310,6 +310,8 @@ class QuestionnairePreviewAPIView(APIView):
             for task in tasks_put:
                 for key in task['settings']:
                     task[key] = task['settings'][key]
+        else:
+            tasks_put = {}
 
         # get queryset of questionnaire table by questionnaire_id
         try:
