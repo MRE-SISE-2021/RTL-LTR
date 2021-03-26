@@ -138,6 +138,13 @@ class TaskImageSerializer(DynamicFieldsModelSerializer):
         # fields = ['task_id', 'image_id']
 
 
+class TaskTypeSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = TaskType
+        fields = '__all__'
+        # fields = ['task_id', 'title', 'task_content', 'language_id', 'is_required']
+
+
 class TaskSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = Task
