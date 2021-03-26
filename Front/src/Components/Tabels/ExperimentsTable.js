@@ -154,7 +154,7 @@ class ExperimentTable extends Component {
 
         <nav
           style={{
-            width: "30%",
+            width: "40%",
             overflow: "auto",
             overflowX: "hidden",
           }}
@@ -167,8 +167,11 @@ class ExperimentTable extends Component {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>#</th>
+                <th></th>
                 <th>Experiment Name</th>
+                <th>Created</th>
+                <th>LNG</th>
+                <th># <MDBIcon size="1x" icon="users" /></th>
                 <th>status</th>
                 <th>
                   <MDBIcon
