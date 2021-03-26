@@ -149,22 +149,22 @@ class ComponentsTable extends Component {
                 style={{
                   width: "100%",
                 }}
-                className="mt-4 list-group list-group-full"
+                className=" list-group list-group-full"
               >
                 
                 <div className=" list-group-item">
                   <h5>Genral forms</h5>
-                  <Row>
-
+                  
                  
                   <Button
                     id="1"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file-text" /> New Page
                   </Button> 
-                  </Row>
+                
                 </div>
                 
 
@@ -174,46 +174,46 @@ class ComponentsTable extends Component {
                 <div className="list-group-item">
                   <h5>Choice Based</h5>
                   
-                  <Row>
-                    <Col>
+                 
+                   
                    
                   <Button
                     id="3"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Radio
                   </Button>
-                  </Col>
+               
                  
 
             
 
                
-                  
-              <Col>
-              
+          
+                
+
                   <Button
                     id="7"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
-                    <i className="feather icon-file" /> Dropdown
+                    <i className="feather icon-file active " /> Dropdown
+
                   </Button>
-                  </Col>
-                  </Row>
-
-                  <Row>
-
+                 
                  
                   <Button
                     id="8"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Checkbox
                   </Button>
-                   </Row>
+                 
                 </div>
                
                 
@@ -224,23 +224,30 @@ class ComponentsTable extends Component {
                 
                 <div className="list-group-item">
                 <h5>Sliders</h5>
+
+              
+                
                   <Button
                     id="2"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Slider
                   </Button>
-             
-            
+                           
+                
+           
                   <Button
                     id="4"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" />
                     Double Slider
                   </Button>
+                 
                 </div>
                
 
@@ -251,7 +258,8 @@ class ComponentsTable extends Component {
                   <Button
                     id="5"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Stars
                   </Button>
@@ -259,7 +267,8 @@ class ComponentsTable extends Component {
                   <Button
                     id="6"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Numeric
                   </Button>
@@ -269,7 +278,8 @@ class ComponentsTable extends Component {
                   <Button
                     id="9"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Counter
                   </Button>
@@ -277,7 +287,8 @@ class ComponentsTable extends Component {
                   <Button
                     id="10"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> TimeLine
                   </Button>
@@ -289,12 +300,14 @@ class ComponentsTable extends Component {
                 style={{
                   width: "100%",
                   textAlign: "center",
+                
                 }}
                 className="mt-4 list-group list-group-full"
               >
                 <h5>Demographic Questions tab</h5>
 
                 <Row>
+            
                   <Form.Control
                     type="checkbox"
                     className="check_demo"

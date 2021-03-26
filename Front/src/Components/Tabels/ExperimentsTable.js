@@ -6,7 +6,7 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import { Table, Button, Row } from "react-bootstrap";
 import QuestionnaireInfo from "../ExperimentInfo";
-import { MDBIcon } from "mdbreact";
+import { MDBIcon,MDBBtn  } from "mdbreact";
 import "../../styles/homePageStyle.css";
 import { withCookies } from "react-cookie";
 
@@ -190,12 +190,13 @@ class ExperimentTable extends Component {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td >
-                      <Button 
+                      <Button  
+                      
                         variant="flat-primary"
                         onClick={() => handleClick(value.questionnaire_id)}
                       >
                         {value.questionnaire_name}
-                      </Button>
+                      </Button >
                     </td>
                     <td>
                       date

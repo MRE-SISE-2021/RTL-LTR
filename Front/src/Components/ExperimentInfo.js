@@ -123,17 +123,23 @@ class ExperimentInfo extends Component {
     // console.log(data);
     return (
       <Aux>
-        
+      
            <nav
           className=" text-white"
-          style={{ width: "70%" , marginTop: "8%", marginLeft: "38%"  }}
+          style={{ marginTop: "8%" }}
         >
                   <div className="d-flex justify-content-lg-end">
-                  <Row  style={{marginRight: "50%"  }} className="text-info">
-            <h5>{data.questionnaire_name}</h5>
+                 <Row className=" text-white" style={{
+            width: "40%",
+            overflow: "auto",
+            overflowX: "hidden",
+          }}>
+          
             
-          </Row>
-                 
+            <h5>{data.questionnaire_name}</h5>
+            </Row>
+          
+        
                     <Button variant="outline-*" disabled>
                       <MDBIcon className="mr-2" icon="upload" />
                     </Button>
@@ -151,7 +157,7 @@ class ExperimentInfo extends Component {
                       variant="outline-*"
                       onClick={this.submitHandlerEdit}
                     >
-                      <MDBIcon className="mr-2" icon="edit" />
+                      <MDBIcon className="mr-2"  icon="edit" />
                     </Button>
                     <Button
                       variant="outline-*"
@@ -159,6 +165,8 @@ class ExperimentInfo extends Component {
                     >
                       <MDBIcon className="mr-2" icon="trash-alt" />
                     </Button>
+
+                    
                   </div>
                   </nav>
         <nav

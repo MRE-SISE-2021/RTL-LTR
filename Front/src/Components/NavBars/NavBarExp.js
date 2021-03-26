@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
-import { MDBIcon } from "mdbreact";
+import { MDBIcon  } from "mdbreact";
+import { MDBChip, MDBContainer } from "mdbreact";
+
 import { Link, Redirect } from "react-router-dom";
 import Modal from "../Modals/ModalSavedExperiment";
 import Aux from "../../hoc/_Aux";
@@ -91,12 +93,13 @@ class NavBar extends Component {
 
     let navBar = (
       <Aux>
-        <Navbar fixed="top" bg="info" variant="dark" style={{ height: "10%" }}>
+        <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <ul className="mb-1 bg-info text-white">
-              <li>
-                <MDBIcon icon="home" size="3x" className="indigo-text pr-5" />{" "}
+            <ul className="mb-1 text-Primary">
+              <li >
+                <MDBIcon  icon="home" size="1x" className="indigo-text pr-3"  />{" "}
               </li>
+             
             </ul>
           </Link>
 
@@ -109,17 +112,22 @@ class NavBar extends Component {
             >
               {this.props.name}
             </Button>
-            <h5 className="mr-4"> Type </h5>
-
-            <Button
-              className="btn-primary tn-edit btn btn-default mr-5 "
+          
+              
+            
+              
+            
+            <h5 className="mr-4"> Type: </h5>
+               <Button
+              className="btn-primary tn-edit btn btn-default mr-5"
               // size="lg"
               variant="light"
             >
               {this.props.type}
             </Button>
+          
 
-            <h5 className="mr-4"> Language </h5>
+            <h5 className="mr-4"> Language: </h5>
 
             <Button
               className="btn-primary tn-edit btn btn-default mr-5"
@@ -128,7 +136,7 @@ class NavBar extends Component {
             >
               {this.props.lang}
             </Button>
-            <h5 className="mr-4"> Direction </h5>
+            <h5 className="mr-4"> Direction: </h5>
 
             <Button
               className="btn-primary tn-edit btn btn-default mr-5"
@@ -143,23 +151,23 @@ class NavBar extends Component {
 
                 <Button
                   variant="outline-*"
-                  style={{ color: "white" }}
+                  //style={{ color: "white" }}
                   onClick={this.submitPreview}
                 >
-                  <MDBIcon className="mr-5" far icon="eye" size="2x" />
+                  <MDBIcon className="mr-5" far icon="eye" size="1x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-5" icon="paperclip" size="2x" />
+                  <MDBIcon className="mr-5" icon="paperclip" size="1x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-5" far icon="clone" size="2x" />
+                  <MDBIcon className="mr-5" far icon="clone" size="1x" />
                 </Button>
                 <Button
                   variant="outline-*"
-                  style={{ color: "white" }}
+                  //style={{ color: "white" }}
                   onClick={this.submitDelete}
                 >
-                  <MDBIcon className="mr-5" far icon="trash-alt" size="2x" />
+                  <MDBIcon className="mr-5" far icon="trash-alt" size="1x" />
                 </Button>
               </div>
             )}
