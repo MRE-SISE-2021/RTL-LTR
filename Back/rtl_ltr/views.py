@@ -303,15 +303,18 @@ class QuestionnairePreviewAPIView(APIView):
 
         # get parameters for update
         questionnaire_put = request.data
-        tasks_put = questionnaire_put.pop('tasks') if 'tasks' in questionnaire_put else None
+        tasks_put = questionnaire_put.pop('tasks') if 'tasks' in questionnaire_put else {}
 
         # get settings
-        if tasks_put is not None:
+        if tasks_put:
             for task in tasks_put:
                 for key in task['settings']:
                     task[key] = task['settings'][key]
-        else:
-            tasks_put = {}
+
+        # get demographic
+        if 'demographic' in questionnaire_put:
+            for key in questionnaire_put['demographic']:
+                questionnaire_put[key] = questionnaire_put['demographic'][key]
 
         # get queryset of questionnaire table by questionnaire_id
         try:
