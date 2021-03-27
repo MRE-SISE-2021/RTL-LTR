@@ -198,7 +198,7 @@ class ComponentsTable extends Component {
                   >
                     <i className="feather icon-file" /> Radio
                   </Button>
-
+                  
                   <Button
                     id="7"
                     onClick={this.onAddBtnClick}
@@ -281,25 +281,27 @@ class ComponentsTable extends Component {
                 </div>
               </ul>
             </Tab>
-            <Tab eventKey="profile" title={<MDBIcon icon="id-card" />}>
+            <Tab  eventKey="profile" title={<MDBIcon icon="id-card" />}>
               <ul
                 style={{
                   width: "100%",
                   textAlign: "center",
+                  
                 }}
                 className="mt-4 list-group list-group-full"
               >
                 <h5>Demographic Questions tab</h5>
 
-                <Row>
+                <Row >
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
                     id="is_age_demo"
                     checked={this.state.demographic.is_age_demo}
                     onChange={this.onDemoChanged}
+              
                   />
-                  <Form.Label className="label_demo">Age</Form.Label>
+                  <Form.Label className="label_demo ">Age</Form.Label>
                 </Row>
                 <Row>
                   <Form.Control
@@ -344,8 +346,9 @@ class ComponentsTable extends Component {
                     id="is_daily_demo"
                     checked={this.state.demographic.is_daily_demo}
                     onChange={this.onDemoChanged}
+                   
                   />
-                  <Form.Label className="label_demo">
+                  <Form.Label   className="label_demo">
                     Characterizing daily work
                   </Form.Label>
                 </Row>

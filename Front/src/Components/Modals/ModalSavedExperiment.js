@@ -88,7 +88,7 @@ class SaveModal extends React.Component {
       return <Redirect to={"/home/"} />;
     }
     return (
-      <div className="mr-5">
+      <div className="mr-3">
         <Button
           variant="outline-*"
           onClick={() => this.setState({ isBasic: true })}

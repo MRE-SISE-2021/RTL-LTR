@@ -57,7 +57,7 @@ class NavBar extends Component {
       <Aux>
         <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <ul className="mb-1 text-Primary">
+            <ul className="mb-1 text-primary">
               <li>
                 <MDBIcon icon="home" size="2x" className="indigo-text pr-3" />{" "}
               </li>
@@ -65,7 +65,7 @@ class NavBar extends Component {
           </Link>
           <div style={{ marginLeft: "90%" }}>
             <Button variant="outline-*" onClick={() => handleClick()}>
-              <ul className="mb-1 text-Primary">
+              <ul className="mb-1 text-primary">
                 <li>
                   <MDBIcon
                     icon="sign-out-alt"
