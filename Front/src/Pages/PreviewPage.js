@@ -44,10 +44,15 @@ class PreviewPage extends Component {
 
   async componentDidMount() {
     await axiosInstance
-      .get("viewset/questionnaire/" + this.props.match.params.id + "/")
+      .get("questionnaire-preview-data/" + this.props.match.params.id, {
+        params: {
+          task_type: "3",
+        },
+      })
       .then(
         (result) => {
           result = result.data;
+          console.log(result);
           this.setState(() => ({
             tasks: result.tasks,
             name: result.questionnaire_name,
