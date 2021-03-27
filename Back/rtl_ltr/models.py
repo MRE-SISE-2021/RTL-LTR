@@ -64,8 +64,17 @@ class QuestionnaireType(models.Model):
         db_table = 'QuestionnaireType'
 
 
+class TaskType(models.Model):
+    task_type_id = models.AutoField(db_column='TaskTypeId', primary_key=True)
+    task_type = models.TextField(db_column='TaskType')
+
+    class Meta:
+        db_table = 'TaskType'
+
+
 class Task(models.Model):
     task_id = models.AutoField(db_column='TaskId', primary_key=True)
+    task_type_id = models.ForeignKey(TaskType, models.DO_NOTHING, db_column='TaskTypeId')
     # task_title = models.CharField(db_column='TaskTitle', max_length=100)
     label = models.TextField(db_column='Label', null=True, blank=True)
 
