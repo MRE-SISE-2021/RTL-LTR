@@ -4,9 +4,9 @@ import { withRouter } from "react-router-dom";
 import Modal from "../Modals/ModalNewExperiment";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
-import { Table, Button, Row } from "react-bootstrap";
+import { Table, Button, Row, Col } from "react-bootstrap";
 import QuestionnaireInfo from "../ExperimentInfo";
-import { MDBIcon } from "mdbreact";
+import { MDBIcon, MDBBtn } from "mdbreact";
 import "../../styles/homePageStyle.css";
 import { withCookies } from "react-cookie";
 
@@ -147,29 +147,46 @@ class ExperimentTable extends Component {
 
 */
     return (
-      <Aux>
-        <nav style={{ marginLeft: "15%" }}>
-          <QuestionnaireInfo chosen={this.state.chosen} />
-        </nav>
-
-        <nav
+      <div>
+        <div
           style={{
-            width: "30%",
+            marginLeft: "50%",
+            marginTop: "8%",
+            width: "45%",
+            overflow: "auto",
+            overflowX: "hidden",
+          }}
+        >
+          <QuestionnaireInfo chosen={this.state.chosen} />
+        </div>
+
+        <div
+          style={{
+            width: "40%",
             overflow: "auto",
             overflowX: "hidden",
           }}
           className={navClass.join(" ")}
         >
           <Row className="mt-4 ml-1">
-            <h5>My Experiments</h5>
+            <Col sm={8}>
+              <h5>MY EXPERIMENTS ({names.length})</h5>
+            </Col>
+
             <Modal />
           </Row>
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>#</th>
-                <th>Experiment Name</th>
-                <th>status</th>
+                <th>NAME</th>
+                <th>CREATED</th>
+                <th>LNG</th>
+                <th>
+                  # <MDBIcon icon="user-friends" />
+                </th>
+                <th>
+                  NEW <MDBIcon icon="user-friends" />
+                </th>
                 <th>
                   <MDBIcon
                     type="button"
@@ -185,26 +202,35 @@ class ExperimentTable extends Component {
               {names.map((value, index) => {
                 return (
                   <tr key={index}>
-                    <td>{index + 1}</td>
                     <td>
                       <Button
-                        variant="outline-info"
+                        variant="flat-primary"
                         onClick={() => handleClick(value.questionnaire_id)}
                       >
                         {value.questionnaire_name}
                       </Button>
                     </td>
+                    <td>{value.creation_date}</td>
                     <td>
-                      <MDBIcon far icon="play-circle" />
+                      {
+                        {
+                          1: "Arabic",
+                          2: "English",
+                          3: "Hebrew",
+                          4: "Russian",
+                        }[value.language_id]
+                      }
                     </td>
+                    <td>sum</td>
+                    <td>sum</td>
                     <td>?</td>
                   </tr>
                 );
               })}
             </tbody>
           </Table>
-        </nav>
-      </Aux>
+        </div>
+      </div>
     );
   }
 }

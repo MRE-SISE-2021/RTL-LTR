@@ -77,14 +77,17 @@ class NewExperimentModal extends React.Component {
     }
     return (
       <Aux>
-        <div style={{ marginLeft: "40%", marginBottom: "4%" }}>
+        <Col className="d-flex justify-content-lg-end" sm={4}>
           <Button
-            variant="info"
+            size="sm"
+            // width="10%"
+
+            variant="primary"
             onClick={() => this.setState({ isBasic: true })}
           >
             + Create New
           </Button>
-        </div>
+        </Col>
         <Modal
           show={this.state.isBasic}
           onHide={() => this.setState({ isBasic: false })}

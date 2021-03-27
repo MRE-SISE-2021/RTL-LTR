@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Tabs, Tab, Form, Button, Row } from "react-bootstrap";
+import { Tabs, Tab, Form, Button, Row, Col } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
@@ -171,110 +171,114 @@ class ComponentsTable extends Component {
               <ul
                 style={{
                   width: "100%",
-                  textAlign: "center",
                 }}
-                className="mt-4 list-group list-group-full"
+                className=" list-group list-group-full"
               >
-                <h5>Genral forms</h5>
-                <li className=" list-group-item">
+                <div className=" list-group-item">
+                  <h5>Genral forms</h5>
+
                   <Button
                     id="1"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file-text" /> New Page
                   </Button>
-                </li>
-                <br />
-                <h5>Choice Based</h5>
+                </div>
 
-                <li className="list-group-item">
+                <div className="list-group-item">
+                  <h5>Choice Based</h5>
+
                   <Button
                     id="3"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Radio
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="7"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
-                    <i className="feather icon-file" /> Dropdown
+                    <i className="feather icon-file active " /> Dropdown
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="8"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Checkbox
                   </Button>
-                </li>
-                <br />
-                <h5>Sliders</h5>
-                <li className="list-group-item">
+                </div>
+
+                <div className="list-group-item">
+                  <h5>Sliders</h5>
+
                   <Button
                     id="2"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Slider
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="4"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" />
                     Double Slider
                   </Button>
-                </li>
-                <h5>Rating</h5>
+                </div>
 
-                <li className="list-group-item">
+                <div className="list-group-item">
+                  <h5>Rating</h5>
                   <Button
                     id="5"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Stars
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="6"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Numeric
                   </Button>
-                </li>
 
-                <li className="list-group-item">
                   <Button
                     id="9"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Counter
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="10"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
-                    <i className="feather icon-file" /> TimeLine
+                    <i className="feather icon-file" /> Text
                   </Button>
-                </li>
+                </div>
               </ul>
             </Tab>
             <Tab eventKey="profile" title={<MDBIcon icon="id-card" />}>
