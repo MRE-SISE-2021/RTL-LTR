@@ -29,6 +29,10 @@ router_language.register('language', LanguageViewSet, basename='language')
 router_questionnaire_type = DefaultRouter()
 router_questionnaire_type.register('questionnaire_type', QuestionnaireTypeViewSet, basename='questionnaire_type')
 
+# TaskType
+router_task_type = DefaultRouter()
+router_task_type.register('task_type', TaskTypeViewSet, basename='task_type')
+
 # Task
 router_task = DefaultRouter()
 router_task.register('task', TaskViewSet, basename='task')
@@ -88,6 +92,7 @@ urlpatterns = [
     path('viewset/', include(router_image.urls)),
     path('viewset/', include(router_language.urls)),
     path('viewset/', include(router_questionnaire_type.urls)),
+    path('viewset/', include(router_task_type.urls)),
     path('viewset/', include(router_task.urls)),
     path('viewset/', include(router_participant.urls)),
     path('viewset/', include(router_participant_language_proficiency.urls)),

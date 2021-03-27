@@ -17,7 +17,7 @@ import Pagination from "../Pagination";
 
 import axiosInstance from "../axios";
 import "../styles/PreviewPage.css";
-
+import Demographics from "../Components/UI-Elements/Demograpics";
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
@@ -54,6 +54,19 @@ class PreviewPage extends Component {
             type: result.questionnaire_type_id,
             lang: result.language_id,
             direction: result.direction,
+            demographic: {
+              is_age_demo: result.is_age_demo,
+              is_native_demo: result.is_native_demo,
+              is_other_demo: result.is_other_demo,
+              is_knowledge_demo: result.is_knowledge_demo,
+              is_daily_demo: result.is_daily_demo,
+              is_writing_demo: result.is_writing_demo,
+              is_mobile_demo: result.is_mobile_demo,
+              is_mouse_demo: result.is_mouse_demo,
+              is_design_demo: result.is_design_demo,
+              is_hci_demo: result.is_hci_demo,
+              is_develop_demo: result.is_develop_demo,
+            },
           }));
         },
         (error) => {
@@ -126,6 +139,21 @@ class PreviewPage extends Component {
             </ThemeProvider>
           ),
         });
+        inputList = this.state.inputList;
+        this.setState({
+          inputList: inputList.concat(
+            <ThemeProvider theme={theme}>
+              <Div>
+                <Demographics demo={this.state.demographic} />
+              </Div>
+            </ThemeProvider>
+          ),
+        });
+        inputList = this.state.inputList;
+        this.setState({
+          inputList: inputList.concat(<div></div>),
+        });
+        inputList = this.state.inputList;
       } else if (
         task.component_type_id === 2 ||
         task.component_type_id === 5 ||

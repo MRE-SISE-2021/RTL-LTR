@@ -20,10 +20,34 @@ class ExperimentInfo extends Component {
       toDashboard: false,
       reload: false,
       edit: false,
+      demographic: {},
     };
     this.submitHandlerPreview = this.submitHandlerPreview.bind(this);
     this.submitHandlerDelete = this.submitHandlerDelete.bind(this);
     this.submitHandlerEdit = this.submitHandlerEdit.bind(this);
+  }
+
+  componentWillReceiveProps(propsIncoming) {
+    //Edit EXP
+    console.log(propsIncoming.chosen);
+    let propsIn = propsIncoming.chosen;
+    if (propsIn.is_age_demo !== undefined) {
+      this.setState({
+        demographic: {
+          is_age_demo: propsIn.is_age_demo,
+          is_native_demo: propsIn.is_native_demo,
+          is_other_demo: propsIn.is_other_demo,
+          is_knowledge_demo: propsIn.is_knowledge_demo,
+          is_daily_demo: propsIn.is_daily_demo,
+          is_writing_demo: propsIn.is_writing_demo,
+          is_mobile_demo: propsIn.is_mobile_demo,
+          is_mouse_demo: propsIn.is_mouse_demo,
+          is_design_demo: propsIn.is_design_demo,
+          is_hci_demo: propsIn.is_hci_demo,
+          is_develop_demo: propsIn.is_develop_demo,
+        },
+      });
+    }
   }
 
   submitHandlerPreview(event) {
@@ -96,7 +120,7 @@ class ExperimentInfo extends Component {
 
   render() {
     const data = this.props.chosen;
-    console.log(data);
+    console.log(this.state);
     if (this.state.toDashboard === true) {
       return <Redirect to={"/preview/" + data.questionnaire_id} />;
     }
@@ -114,7 +138,10 @@ class ExperimentInfo extends Component {
               data.direction +
               "/" +
               data.questionnaire_id,
-            state: { tasks: data.tasks },
+            state: {
+              tasks: data.tasks,
+              demographic: this.state.demographic,
+            },
           }}
         />
       );
@@ -123,87 +150,77 @@ class ExperimentInfo extends Component {
     // console.log(data);
     return (
       <Aux>
-        <nav
-          className="bg-info text-white"
-          style={{ height: "30%", marginTop: "13%", marginLeft: "25%" }}
+        <Row>
+          <Col>
+            <h5>Experiment Details: {data.questionnaire_name}</h5>
+          </Col>
+
+          <Col className="d-flex justify-content-lg-end">
+            <Button variant="outline-*" disabled>
+              <MDBIcon icon="upload" />
+            </Button>
+            <Button variant="outline-*" onClick={this.submitHandlerPreview}>
+              <MDBIcon icon="eye" />
+            </Button>
+
+            <Button variant="outline-*" disabled>
+              <MDBIcon icon="clone" />
+            </Button>
+            <Button variant="outline-*" onClick={this.submitHandlerEdit}>
+              <MDBIcon icon="edit" />
+            </Button>
+            <Button variant="outline-*" onClick={this.submitHandlerDelete}>
+              <MDBIcon icon="trash-alt" />
+            </Button>
+          </Col>
+        </Row>
+
+        <Card
+          className="bg-Light "
+          style={{
+            marginTop: "2%",
+          }}
         >
-          <Aux>
-            <Card>
-              <Card.Header>
-                <Card.Title>
-                  <b className="text-info">{data.questionnaire_name}</b>
-                  <div className="d-flex justify-content-lg-end">
-                    <Button variant="outline-*" disabled>
-                      <MDBIcon className="mr-5" icon="upload" />
-                    </Button>
-                    <Button
-                      variant="outline-*"
-                      onClick={this.submitHandlerPreview}
-                    >
-                      <MDBIcon className="mr-5" icon="eye" />
-                    </Button>
+          <Card.Body>
+            <div className="bg-Light text-dark  ">
+              <ul className="p-3 mb-2">
+                <Row>
+                  <Col>
+                    <b>Created: </b> {data.creation_date} <b>by: Super USER</b>
+                  </Col>
+                </Row>
+                <br />
+                <Row>
+                  <Col>
+                    <b>Experiment Language: </b>
+                    {
+                      {
+                        1: "Arabic",
+                        2: "English",
+                        3: "Hebrew",
+                        4: "Russian",
+                      }[data.language_id]
+                    }
+                  </Col>
 
-                    <Button variant="outline-*" disabled>
-                      <MDBIcon className="mr-5" icon="clone" />
-                    </Button>
-                    <Button
-                      variant="outline-*"
-                      onClick={this.submitHandlerEdit}
-                    >
-                      <MDBIcon className="mr-5" icon="edit" />
-                    </Button>
-                    <Button
-                      variant="outline-*"
-                      onClick={this.submitHandlerDelete}
-                    >
-                      <MDBIcon className="mr-5" icon="trash-alt" />
-                    </Button>
-                  </div>
-                </Card.Title>
-              </Card.Header>
-              <Card.Body>
-                <div style={{ height: "450px" }} className="bg-info text-white">
-                  <ul className="p-3 mb-2 text-white">
-                    <Row>
-                      <Col>
-                        <b>Created: </b> {data.creation_date}
-                      </Col>
-                      <Col>
-                        <b>Language: </b>
-                        {
-                          {
-                            1: "Arabic",
-                            2: "English",
-                            3: "Hebrew",
-                            4: "Russian",
-                          }[data.language_id]
-                        }
-                      </Col>
-                    </Row>
-
-                    <Row>
-                      <Col>
-                        <b>Hosted Link: </b>
-                        {data.hosted_link}
-                      </Col>
-                      <Col>
-                        <b>Status: </b>
-                        {data.is_active !== undefined
-                          ? [data.is_active ? "True" : "False"]
-                          : null}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <b>Mesaures: </b>
-                      </Col>
-                    </Row>
-                  </ul>
-                </div>
-              </Card.Body>
-            </Card>
-          </Aux>
-        </nav>
+                  <Col>
+                    <b>Status: </b>
+                    {data.is_active !== undefined
+                      ? [data.is_active ? "True" : "False"]
+                      : null}
+                  </Col>
+                </Row>
+                <br />
+                <Row>
+                  <Col>
+                    <b>Hosted Link: </b>
+                    {data.hosted_link}
+                  </Col>
+                </Row>
+              </ul>
+            </div>
+          </Card.Body>
+        </Card>
       </Aux>
     );
   }

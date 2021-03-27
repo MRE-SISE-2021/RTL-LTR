@@ -44,7 +44,7 @@ const handle = (props) => {
 class FormsElements extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    // console.log(props);
     this.state = {
       title: props.title || "",
       label: props.label || "",
@@ -201,42 +201,52 @@ class FormsElements extends React.Component {
 
   onAnswerchange(event) {
     console.log("Answeeeeeersss");
-    console.log(this.state);
-    console.log(this.props);
     // console.log(event.target.index);
     let index = event.target.id - 1;
     let answer_content = event.target.value;
-    let answers = [];
-    if (this.state.answers !== undefined) {
-      answers = [...this.state.answers];
-    }
-    // let answers = [...this.state.answers];
+    let answers = [...this.state.answers];
     if (event.target.name === "check") {
       if (
-        this.props.answers !== undefined &&
-        this.props.answers[index] !== undefined
+        this.state.answers[index] !== undefined &&
+        this.state.answers[index].answer_content !== undefined
       ) {
-        answers[index] = {
-          answer_content: this.props.answers[index].answer_content,
-          is_correct: event.target.checked,
-          value: "defalut",
-        };
-      } else {
+        // update answer with new check value
         answers[index] = {
           answer_content: this.state.answers[index].answer_content,
           is_correct: event.target.checked,
           value: "defalut",
         };
+      } else {
+        // add new answer with new check value
+        answers[index] = {
+          answer_content: "",
+          is_correct: event.target.checked,
+          value: "defalut",
+        };
       }
-
       this.setState({ answers });
       return;
     }
-    answers[index] = {
-      answer_content: answer_content,
-      is_correct: false,
-      value: "defalut",
-    };
+
+    if (
+      this.state.answers[index] !== undefined &&
+      this.state.answers[index].answer_content !== undefined
+    ) {
+      // update answer with new ans value
+      answers[index] = {
+        answer_content: answer_content,
+        is_correct: this.state.answers[index].is_correct,
+        value: "defalut",
+      };
+    } else {
+      // add new answer with new ans value
+      answers[index] = {
+        answer_content: answer_content,
+        is_correct: false,
+        value: "defalut",
+      };
+    }
+
     this.setState({ answers });
     // console.log(this.state.answers);
   }
@@ -306,7 +316,7 @@ class FormsElements extends React.Component {
       dir: "ltr",
       // OR direction: "rtl"
     };
-    console.log(this.props);
+    // console.log(this.props);
     if (this.props.dir === "RTL") {
       theme = {
         dir: "rtl",
@@ -322,12 +332,16 @@ class FormsElements extends React.Component {
     for (var i = 0; i < this.state.answersNum; i++) {
       // note: we are adding a key prop here to allow react to uniquely identify each
       // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
+      console.log(this.props.answers);
       let ans = undefined;
+      let isCorrect = false;
       if (
-        this.props.answers !== undefined &&
-        this.props.answers[i] !== undefined
+        // this.props.answers !== undefined &&
+        this.state.answers[i] !== undefined
       ) {
-        ans = this.props.answers[i].answer_content;
+        ans = this.state.answers[i].answer_content;
+        isCorrect = this.state.answers[i].is_correct;
+        console.log(isCorrect);
       }
       answers.push(
         <div key={i}>
@@ -338,7 +352,7 @@ class FormsElements extends React.Component {
               type="checkbox"
               name="check"
               id={i + 1}
-              // value="show_title"
+              checked={isCorrect}
               // defaultChecked={this.state.showTitle}
               onChange={this.onAnswerchange}
               style={{ marginLeft: "0", width: "5%" }}
@@ -599,6 +613,7 @@ class FormsElements extends React.Component {
                     variant="info"
                     onClick={this.sendData}
                     disabled={this.state.deleteAll}
+                    type="submit"
                   >
                     <MDBIcon icon="save" />
                   </Button>

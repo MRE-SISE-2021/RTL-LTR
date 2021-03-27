@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Tabs, Tab, Form, Button, Row } from "react-bootstrap";
+import { Tabs, Tab, Form, Button, Row, Col } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
@@ -11,13 +11,26 @@ class ComponentsTable extends Component {
   constructor(props) {
     super(props);
     console.log(props);
-    this.state = { inputList: [] };
+    this.state = {
+      inputList: [],
+      demographic: {},
+    };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
+    this.onDemoChanged = this.onDemoChanged.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
     //Edit EXP
+    console.log(propsIncoming);
+    console.log(propsIncoming.demographic.is_age_demo);
     const id = propsIncoming.expId;
+    if (propsIncoming.demographic.is_age_demo !== undefined) {
+      this.setState({
+        demographic: propsIncoming.demographic,
+      });
+      console.log(this.state);
+    }
+
     let inputListNew = [];
     if (propsIncoming.tasks.length > 0) {
       propsIncoming.tasks.forEach((task, index) => {
@@ -83,6 +96,15 @@ class ComponentsTable extends Component {
     }
   }
 
+  onDemoChanged(event) {
+    this.setState({
+      demographic: {
+        ...this.state.demographic,
+        [event.target.id]: event.target.checked,
+      },
+    });
+    console.log(this.state);
+  }
   render() {
     // console.log(this.props.tasks.length);
 
@@ -121,6 +143,7 @@ class ComponentsTable extends Component {
           tasks={this.state.inputList}
           expId={this.props.expId}
           dir={this.props.dir}
+          demo={this.state.demographic}
         />
         <div
           style={{
@@ -148,110 +171,114 @@ class ComponentsTable extends Component {
               <ul
                 style={{
                   width: "100%",
-                  textAlign: "center",
                 }}
-                className="mt-4 list-group list-group-full"
+                className=" list-group list-group-full"
               >
-                <h5>Genral forms</h5>
-                <li className=" list-group-item">
+                <div className=" list-group-item">
+                  <h5>Genral forms</h5>
+
                   <Button
                     id="1"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file-text" /> New Page
                   </Button>
-                </li>
-                <br />
-                <h5>Choice Based</h5>
+                </div>
 
-                <li className="list-group-item">
+                <div className="list-group-item">
+                  <h5>Choice Based</h5>
+
                   <Button
                     id="3"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Radio
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="7"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
-                    <i className="feather icon-file" /> Dropdown
+                    <i className="feather icon-file active " /> Dropdown
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="8"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Checkbox
                   </Button>
-                </li>
-                <br />
-                <h5>Sliders</h5>
-                <li className="list-group-item">
+                </div>
+
+                <div className="list-group-item">
+                  <h5>Sliders</h5>
+
                   <Button
                     id="2"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Slider
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="4"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" />
                     Double Slider
                   </Button>
-                </li>
-                <h5>Rating</h5>
+                </div>
 
-                <li className="list-group-item">
+                <div className="list-group-item">
+                  <h5>Rating</h5>
                   <Button
                     id="5"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Stars
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="6"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Numeric
                   </Button>
-                </li>
 
-                <li className="list-group-item">
                   <Button
                     id="9"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
                     <i className="feather icon-file" /> Counter
                   </Button>
-                </li>
-                <li className="list-group-item">
+
                   <Button
                     id="10"
                     onClick={this.onAddBtnClick}
-                    variant="outline-info"
+                    variant="outline-primary"
+                    block
                   >
-                    <i className="feather icon-file" /> TimeLine
+                    <i className="feather icon-file" /> Text
                   </Button>
-                </li>
+                </div>
               </ul>
             </Tab>
             <Tab eventKey="profile" title={<MDBIcon icon="id-card" />}>
@@ -268,9 +295,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={1}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_age_demo"
+                    checked={this.state.demographic.is_age_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">Age</Form.Label>
                 </Row>
@@ -278,9 +305,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={2}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_native_demo"
+                    checked={this.state.demographic.is_native_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Native Language
@@ -290,9 +317,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={3}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_other_demo"
+                    checked={this.state.demographic.is_other_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Other Languages
@@ -302,9 +329,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={4}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_knowledge_demo"
+                    checked={this.state.demographic.is_knowledge_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Language Knowledge
@@ -314,9 +341,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={5}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_daily_demo"
+                    checked={this.state.demographic.is_daily_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Characterizing daily work
@@ -326,9 +353,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={6}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_writing_demo"
+                    checked={this.state.demographic.is_writing_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Preferred hand - writing
@@ -338,9 +365,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={7}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_mobile_demo"
+                    checked={this.state.demographic.is_mobile_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Preferred hand- mobile telephone
@@ -350,9 +377,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={8}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_mouse_demo"
+                    checked={this.state.demographic.is_mouse_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Preferred hand - computer mouse
@@ -362,9 +389,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={9}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_design_demo"
+                    checked={this.state.demographic.is_design_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     experience in UX, UI design
@@ -374,9 +401,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={10}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_hci_demo"
+                    checked={this.state.demographic.is_hci_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     Your professional HCI experience
@@ -386,9 +413,9 @@ class ComponentsTable extends Component {
                   <Form.Control
                     type="checkbox"
                     className="check_demo"
-                    id={11}
-                    defaultChecked
-                    // onChange={this.onAnswerchange}
+                    id="is_develop_demo"
+                    checked={this.state.demographic.is_develop_demo}
+                    onChange={this.onDemoChanged}
                   />
                   <Form.Label className="label_demo">
                     languages - interfaces developed

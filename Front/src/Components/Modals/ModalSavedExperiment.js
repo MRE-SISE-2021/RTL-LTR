@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Redirect } from "react-router-dom";
+import API from "../../Api/Api";
 
 class SaveModal extends React.Component {
   constructor(props) {
@@ -17,10 +18,20 @@ class SaveModal extends React.Component {
       toDashboard: false,
       name: props.data.name,
       lang: props.data.lang,
+      demographic: props.data.demo,
+      id: props.data.expId,
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
     this.getComponents = this.getComponents.bind(this);
+  }
+  componentWillReceiveProps(propsIncoming) {
+    let demo = propsIncoming.data.demo;
+    let expId = propsIncoming.data.expId;
+    this.setState({
+      demographic: demo,
+      id: expId,
+    });
   }
 
   getLangId() {
@@ -53,48 +64,18 @@ class SaveModal extends React.Component {
 
   onAddBtnClick() {
     // const langId = this.getLangId();
-    console.log(this.props.data);
-    // const response = {
-    //   //tasks
-    //   tasks: [
-    //     {
-    //       answers: [],
-    //       components: this.getComponents(),
-    //       images: [],
-    //       task_title: "Test create",
-    //       task_content: "", ////////?
-    //       is_required: true, ///////?
-    //     },
-    //   ],
-    //   //data
-    //   creation_date: "2021-01-06 23:25", //
-    //   questionnaire_name: this.state.name,
-    //   hosted_link: "https://www.youtube.com/", //
-    //   is_active: "true",
-    //   language_id: langId,
-    //   questionnaire_type_id: "1", //
-    // };
-
-    // console.log(response);
-    // const requestOptions = {
-    //   method: "post",
-    //   headers: {
-    //     Accept: "application/json, text/plain, */*",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(response),
-    // };
-
-    // fetch("http://127.0.0.1:8000/questionnaire-preview-data", requestOptions)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.ok) {
-    //       return response.json();
-    //     } else {
-    //       throw new Error("Something went wrong ...");
-    //     }
-    //   })
-    //   .catch((error) => this.setState({ error }));
+    console.log(this.state.demographic);
+    let response = {
+      questionnaire_id: this.state.id, //
+      demographic: this.state.demographic,
+    };
+    console.log(response);
+    API.putRequest(
+      "questionnaire-preview-data/" + this.state.id,
+      response
+    ).then((data) => {
+      console.log(data);
+    });
 
     this.setState({ isBasic: false });
     this.setState(() => ({
@@ -108,13 +89,15 @@ class SaveModal extends React.Component {
     }
     return (
       <div className="mr-5">
-     
         <Button
           variant="outline-*"
           onClick={() => this.setState({ isBasic: true })}
-          
         >
-          <MDBIcon icon="save" className="text-white"   size="2x" />
+          <MDBIcon
+            icon="save"
+            //className="text-white"
+            size="1x"
+          />
         </Button>
         <Modal
           show={this.state.isBasic}
