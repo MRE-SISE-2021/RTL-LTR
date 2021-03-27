@@ -22,6 +22,9 @@ import Tooltip from "rc-tooltip";
 import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 ////---rtl
+import "./../../assets/scss/style.scss";
+
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
@@ -40,6 +43,8 @@ const handle = (props) => {
     </Tooltip>
   );
 };
+
+
 
 class FormsElements extends React.Component {
   constructor(props) {
@@ -61,6 +66,7 @@ class FormsElements extends React.Component {
         is_add_picture_setting: props.is_add_picture_setting || false,
       },
     };
+
 
     this.onInputchange = this.onInputchange.bind(this);
     this.onInputAdd = this.onInputAdd.bind(this);
@@ -386,8 +392,9 @@ class FormsElements extends React.Component {
             {i + 1 === this.state.answersNum ? (
               <ColStyled>
                 <Button
-                  variant="info"
+                  variant="primary"
                   onClick={this.onInputAdd}
+                  
                   // disabled={this.state.deleteAll}
                 >
                   <MDBIcon icon="plus" />
@@ -542,7 +549,7 @@ class FormsElements extends React.Component {
                 <Col md={6}>
                   <Form.Group>
                     <Form.Control
-                      variant="info"
+                      variant="primary"
                       type="text"
                       placeholder={this.getLangQuestion()}
                       name="label"
@@ -612,13 +619,14 @@ class FormsElements extends React.Component {
                 </Col>
                 <ColStyled>
                   <Button
-                    variant="info"
+                    variant="success"
                     onClick={this.sendData}
                     disabled={this.state.deleteAll}
                     type="submit"
                   >
                     <MDBIcon icon="save" />
                   </Button>
+                  &nbsp;
                   <Button
                     variant="danger"
                     disabled={this.state.delete}
