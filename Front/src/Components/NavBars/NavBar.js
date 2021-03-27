@@ -55,17 +55,19 @@ class NavBar extends Component {
       </Aux>
 */
       <Aux>
-        <Navbar fixed="top" bg="info" variant="dark" style={{ height: "10%" }}>
+    
+        <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <ul className="mb-1 bg-info text-white">
-              <li>
-                <MDBIcon icon="home" size="3x" className="indigo-text pr-3" />{" "}
+            <ul className="mb-1 text-Primary">
+              <li >
+                <MDBIcon  icon="home" size="3x" className="indigo-text pr-3"  />{" "}
               </li>
+             
             </ul>
           </Link>
-          <div style={{ marginLeft: "93%" }}>
+          <div style={{ marginLeft: "90%" }}>
             <Button variant="outline-*" onClick={() => handleClick()}>
-              <ul className="mb-1 bg-info text-white">
+              <ul className="mb-1 text-Primary">
                 <li>
                   <MDBIcon
                     icon="sign-out-alt"

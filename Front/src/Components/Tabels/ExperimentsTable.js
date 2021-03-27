@@ -6,7 +6,7 @@ import Aux from "../../hoc/_Aux";
 import * as actionTypes from "../../store/actions";
 import { Table, Button, Row } from "react-bootstrap";
 import QuestionnaireInfo from "../ExperimentInfo";
-import { MDBIcon } from "mdbreact";
+import { MDBIcon,MDBBtn  } from "mdbreact";
 import "../../styles/homePageStyle.css";
 import { withCookies } from "react-cookie";
 
@@ -154,7 +154,7 @@ class ExperimentTable extends Component {
 
         <nav
           style={{
-            width: "30%",
+            width: "40%",
             overflow: "auto",
             overflowX: "hidden",
           }}
@@ -167,8 +167,11 @@ class ExperimentTable extends Component {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>#</th>
+                <th></th>
                 <th>Experiment Name</th>
+                <th>Created</th>
+                <th>LNG</th>
+                <th># <MDBIcon size="1x" icon="users" /></th>
                 <th>status</th>
                 <th>
                   <MDBIcon
@@ -186,13 +189,23 @@ class ExperimentTable extends Component {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>
-                      <Button
-                        variant="outline-info"
+                    <td >
+                      <Button  
+                      
+                        variant="flat-primary"
                         onClick={() => handleClick(value.questionnaire_id)}
                       >
                         {value.questionnaire_name}
-                      </Button>
+                      </Button >
+                    </td>
+                    <td>
+                      date
+                    </td>
+                    <td>
+                      language
+                    </td>
+                    <td>
+                      sum
                     </td>
                     <td>
                       <MDBIcon far icon="play-circle" />
