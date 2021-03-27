@@ -26,14 +26,7 @@ class Input extends React.Component {
       mainClass = [...mainClass, "container"];
     }
 
-    let html = `<h3>New Page! </h3>
-        <figure class="image image-style-side">
-           
-            <figcaption>Medieval Old Town square, destroyed in 1944 & rebuilt after WWII.</figcaption>
-        </figure>
-        <p>If you enjoyed my previous articles in which we discussed wandering around <a href={DEMO.BLANK_LINK} target="_blank" rel="noopener">Copenhagen</a> and <a href={DEMO.BLANK_LINK} target="_blank" rel="noopener">Vilnius</a>, you’ll definitely love exploring <a href="https://en.wikipedia.org/wiki/Warsaw" target="_blank" rel="noopener">Warsaw</a>.</p>
-        <h3>Time to put comfy sandals on!</h3>
-        <p>Best time to visit the city is July and August, when it’s cool enough to not break a sweat and hot enough to enjoy summer. The city which has quite a combination of both old and modern textures is located by the river of Vistula.</p>`;
+    let html = `<p>We are conducting the research aimed to improve user experience in interactive products (websites, mobile applications, etc.).</p><p>As users, you have probably encountered problems related to incorrect / inconvenient / unclear display of information on websites and apps. Thus, your opinion is very important to us.</p><p>Let's improve these interfaces together!</p><p>Please note: This is a completely anonymous survey, no identifying details about the respondents have are stored, and the results will be used for statistical analyzes only. You can stop answering the questionnaire at any stage.</p><p>&nbsp;</p><p>By clicking on the «Start button, I express my consent to participate in the study».</p><p>&nbsp;</p>`;
 
     if (this.props.lang === "1") {
       html = `<p>نجري بحثًا يهدف إلى تحسين تجربة المستخدم للأنظمة التفاعلية (مواقع الويب والتطبيقات وما إلى ذلك).</p><p>كمستخدمي مواقع الويب والتطبيقات المختلفة، من المحتمل أنكم واجهتم مشكلات تتعلق بالعرض الغير صحيح /غير ملائم /غير واضح للمعلومات على المواقع والأدوات العربية، لذا فإن رأيك مهم جدًا بالنسبة لنا.</p><p>لنقم بتحسين هذه الواجهات معًا!</p><p>يرجى ملاحظة ما يلي: هذا استطلاع مجهول الهوية تمامًا، ولن يتم الاحتفاظ بأي تفاصيل تعريفية عن المستجيبين وسيتم استخدام النتائج للتحليلات الإحصائية فقط. يمكنك التوقف عن الإجابة على الاستبانة في أي مرحلة.</p><p>من خلال النقر على زر "ابدأ"، أعبر عن موافقتي على المشاركة في الدراسة.</p>`;
