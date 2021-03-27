@@ -179,6 +179,8 @@ class Questionnaire(models.Model):
                                               blank=True, null=True)
 
     # demographic
+    task_type_id = models.ForeignKey(TaskType, models.DO_NOTHING, db_column='TaskTypeId')
+
     is_age_demo = models.BooleanField(db_column='IsAgeDemo')
     is_native_demo = models.BooleanField(db_column='IsNativeDemo')
     is_other_demo = models.BooleanField(db_column='IsOtherDemo')

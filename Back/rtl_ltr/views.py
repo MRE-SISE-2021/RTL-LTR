@@ -51,11 +51,13 @@ class QuestionnaireTypeViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireTypeSerializer
     queryset = QuestionnaireType.objects.all()
 
+
 # TaskType
 @permission_classes([IsAuthenticated])
 class TaskTypeViewSet(viewsets.ModelViewSet):
     serializer_class = TaskTypeSerializer
     queryset = TaskType.objects.all()
+
 
 # Task
 @permission_classes([IsAuthenticated])
@@ -222,6 +224,13 @@ class QuestionnairePreviewAPIView(APIView):
                                                                                    'questionnaire_name', 'hosted_link',
                                                                                    'is_active', 'language_id',
                                                                                    'questionnaire_type_id')).data
+        # get demographic tasks by task_type_id
+        try:
+            demographic_task_queryset = Task.objects.filter(task_type_id=request.GET.get('task_type', ''))
+        except Questionnaire.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+        data['demographic_task'] = TaskSerializer(demographic_task_queryset, many=True).data
 
         return Response(data, status=status.HTTP_200_OK)
 
