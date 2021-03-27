@@ -162,10 +162,11 @@ class NewExperimentModal extends React.Component {
                 </Col>
               </Form.Group>
               <Modal.Footer>
+                
                 <button
                   type="submit"
-                  variant="info"
-                  className="btn btn-info mr-auto"
+                  variant="success"
+                  className="btn btn-success mr-auto"
                 >
                   Create
                 </button>

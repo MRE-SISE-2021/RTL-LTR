@@ -309,7 +309,7 @@ class PreviewPage extends Component {
         <div className={mainClass.join(" ")}>
           <Aux>
             <Card
-              border="info"
+              border="primary"
               style={{
                 border: "2px solid ",
                 width: "90%",
