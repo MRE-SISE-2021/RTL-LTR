@@ -147,8 +147,16 @@ class ExperimentTable extends Component {
 
 */
     return (
-      <Aux>
-        <div style={{ marginLeft: "50%", marginTop: "8%", width: "45%" }}>
+      <div>
+        <div
+          style={{
+            marginLeft: "50%",
+            marginTop: "8%",
+            width: "45%",
+            overflow: "auto",
+            overflowX: "hidden",
+          }}
+        >
           <QuestionnaireInfo chosen={this.state.chosen} />
         </div>
 
@@ -161,7 +169,7 @@ class ExperimentTable extends Component {
           className={navClass.join(" ")}
         >
           <Row className="mt-4 ml-1">
-            <Col sm={9}>
+            <Col sm={8}>
               <h5>MY EXPERIMENTS ({names.length})</h5>
             </Col>
 
@@ -174,10 +182,10 @@ class ExperimentTable extends Component {
                 <th>CREATED</th>
                 <th>LNG</th>
                 <th>
-                  # <MDBIcon size="1x" icon="users" />
+                  # <MDBIcon icon="user-friends" />
                 </th>
                 <th>
-                  NEW <MDBIcon size="1x" icon="users" />
+                  NEW <MDBIcon icon="user-friends" />
                 </th>
                 <th>
                   <MDBIcon
@@ -222,7 +230,7 @@ class ExperimentTable extends Component {
             </tbody>
           </Table>
         </div>
-      </Aux>
+      </div>
     );
   }
 }

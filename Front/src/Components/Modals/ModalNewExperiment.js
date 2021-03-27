@@ -77,7 +77,7 @@ class NewExperimentModal extends React.Component {
     }
     return (
       <Aux>
-        <Col className="d-flex justify-content-lg-end" sm={3}>
+        <Col className="d-flex justify-content-lg-end" sm={4}>
           <Button
             size="sm"
             // width="10%"
