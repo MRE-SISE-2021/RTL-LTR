@@ -150,102 +150,77 @@ class ExperimentInfo extends Component {
     // console.log(data);
     return (
       <Aux>
-      
-           <nav
-          className=" text-white"
-          style={{ marginTop: "8%" }}
-        >
-                  <div className="d-flex justify-content-lg-end">
-                 <Row className=" text-white" style={{
-            width: "40%",
-            overflow: "auto",
-            overflowX: "hidden",
-          }}>
-          
-            
-            <h5>{data.questionnaire_name}</h5>
-            </Row>
-          
-        
-                    <Button variant="outline-*" disabled>
-                      <MDBIcon className="mr-2" icon="upload" />
-                    </Button>
-                    <Button
-                      variant="outline-*"
-                      onClick={this.submitHandlerPreview}
-                    >
-                      <MDBIcon className="mr-2" icon="eye" />
-                    </Button>
+        <Row>
+          <Col>
+            <h5>Experiment Details: {data.questionnaire_name}</h5>
+          </Col>
 
-                    <Button variant="outline-*" disabled>
-                      <MDBIcon className="mr-2" icon="clone" />
-                    </Button>
-                    <Button
-                      variant="outline-*"
-                      onClick={this.submitHandlerEdit}
-                    >
-                      <MDBIcon className="mr-2"  icon="edit" />
-                    </Button>
-                    <Button
-                      variant="outline-*"
-                      onClick={this.submitHandlerDelete}
-                    >
-                      <MDBIcon className="mr-2" icon="trash-alt" />
-                    </Button>
+          <Col className="d-flex justify-content-lg-end">
+            <Button variant="outline-*" disabled>
+              <MDBIcon icon="upload" />
+            </Button>
+            <Button variant="outline-*" onClick={this.submitHandlerPreview}>
+              <MDBIcon icon="eye" />
+            </Button>
 
-                    
-                  </div>
-                  </nav>
-        <nav
+            <Button variant="outline-*" disabled>
+              <MDBIcon icon="clone" />
+            </Button>
+            <Button variant="outline-*" onClick={this.submitHandlerEdit}>
+              <MDBIcon icon="edit" />
+            </Button>
+            <Button variant="outline-*" onClick={this.submitHandlerDelete}>
+              <MDBIcon icon="trash-alt" />
+            </Button>
+          </Col>
+        </Row>
+
+        <Card
           className="bg-Light "
-          style={{ width: "70%", marginTop: "2%",height: "30%", marginLeft: "38%"  }}
+          style={{
+            marginTop: "2%",
+          }}
         >
-          <Aux>
-            <Card>
-             
-              <Card.Body>
-                <div style={{ height: "450px" }} className="bg-Light text-dark  ">
-                  <ul className="p-3 mb-2">
-                    <Row>
-                      <Col>
-                        <b>Created: </b> {data.creation_date}
-                      </Col>
-                      <Col>
-                        <b>Language: </b>
-                        {
-                          {
-                            1: "Arabic",
-                            2: "English",
-                            3: "Hebrew",
-                            4: "Russian",
-                          }[data.language_id]
-                        }
-                      </Col>
-                    </Row>
+          <Card.Body>
+            <div className="bg-Light text-dark  ">
+              <ul className="p-3 mb-2">
+                <Row>
+                  <Col>
+                    <b>Created: </b> {data.creation_date} <b>by: Super USER</b>
+                  </Col>
+                </Row>
+                <br />
+                <Row>
+                  <Col>
+                    <b>Experiment Language: </b>
+                    {
+                      {
+                        1: "Arabic",
+                        2: "English",
+                        3: "Hebrew",
+                        4: "Russian",
+                      }[data.language_id]
+                    }
+                  </Col>
 
-                    <Row>
-                      <Col>
-                        <b>Hosted Link: </b>
-                        {data.hosted_link}
-                      </Col>
-                      <Col>
-                        <b>Status: </b>
-                        {data.is_active !== undefined
-                          ? [data.is_active ? "True" : "False"]
-                          : null}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <b>Mesaures: </b>
-                      </Col>
-                    </Row>
-                  </ul>
-                </div>
-              </Card.Body>
-            </Card>
-          </Aux>
-        </nav>
+                  <Col>
+                    <b>Status: </b>
+                    {data.is_active !== undefined
+                      ? [data.is_active ? "True" : "False"]
+                      : null}
+                  </Col>
+                </Row>
+                <br />
+                <Row>
+                  <Col>
+                    <b>Hosted Link: </b>
+                    {data.hosted_link}
+                  </Col>
+                </Row>
+              </ul>
+            </div>
+          </Card.Body>
+        </Card>
       </Aux>
     );
   }
