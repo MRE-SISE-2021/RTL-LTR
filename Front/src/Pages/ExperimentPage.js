@@ -70,6 +70,7 @@ class ExperimentPage extends Component {
       is_active: "true",
       language_id: this.props.match.params.language,
       questionnaire_type_id: "1", //
+      demographic: this.state.demographic,
     };
 
     API.postRequest("questionnaire-preview-data", response).then((data) => {
