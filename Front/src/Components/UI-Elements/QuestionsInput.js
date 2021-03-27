@@ -99,6 +99,7 @@ class FormsElements extends React.Component {
             // is_required: true, ////////DELETE
             task_id: this.state.taskId,
             settings: this.state.settings,
+            task_type_id: "1",
           },
         ],
         questionnaire_id: this.state.id, //
@@ -118,6 +119,7 @@ class FormsElements extends React.Component {
             task_content: "", ////////?
             // is_required: true, ////////DELETE
             settings: this.state.settings,
+            task_type_id: "1",
           },
         ],
         questionnaire_id: this.state.id, //
