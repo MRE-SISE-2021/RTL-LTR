@@ -34,6 +34,7 @@ class PreviewPage extends Component {
       lang: "",
       type: "",
       direction: "LTR",
+      demographic_task: [],
     };
     this.onChangePage = this.onChangePage.bind(this);
   }
@@ -59,6 +60,7 @@ class PreviewPage extends Component {
             type: result.questionnaire_type_id,
             lang: result.language_id,
             direction: result.direction,
+            demographic_task: result.demographic_task,
             demographic: {
               is_age_demo: result.is_age_demo,
               is_native_demo: result.is_native_demo,
@@ -149,7 +151,11 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div>
-                <Demographics demo={this.state.demographic} />
+                <Demographics
+                  isDemo={this.state.demographic}
+                  demoTasks={this.state.demographic_task}
+                  lang={this.state.lang}
+                />
               </Div>
             </ThemeProvider>
           ),
