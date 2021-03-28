@@ -590,8 +590,8 @@ def update_associate_task_data(association_task_id, data_list, data_id_name, ser
     if model_name == 'Answer':
         task_answer_queryset = TaskAnswer.objects.filter(task_id=association_task_id).values_list('answer_id')
         split_lst = zip(*task_answer_queryset)
-        task_answer_db_ids = list(split_lst)[0] if len(list(split_lst)) > 0 else None
-        answer_ids_to_delete = list(np.setdiff1d(task_answer_db_ids, data_id_list)) if task_answer_db_ids else []
+        task_answer_db_ids = list(split_lst)[0]
+        answer_ids_to_delete = list(np.setdiff1d(task_answer_db_ids, data_id_list))
 
         for answer_id in answer_ids_to_delete:
             TaskAnswer.objects.get(answer_id=answer_id).delete()
