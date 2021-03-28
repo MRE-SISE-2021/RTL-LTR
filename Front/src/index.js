@@ -27,7 +27,7 @@ const app = (
             path="/create/:name/:type/:language/:dir/:id"
             component={ExperimentPage}
           />
-          <Route path="/preview/:id" component={PreviewPage} />
+          <Route path="/preview/:id/:lang" component={PreviewPage} />
         </Switch>
       </BrowserRouter>
     </Provider>
