@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
-import { MDBIcon  } from "mdbreact";
+import { MDBIcon } from "mdbreact";
 import { MDBChip, MDBContainer } from "mdbreact";
 
 import { Link, Redirect } from "react-router-dom";
@@ -74,7 +74,9 @@ class NavBar extends Component {
   render() {
     // console.log(this.props);
     if (this.state.toPreview === true) {
-      return <Redirect to={"/preview/" + this.props.expId} />;
+      return (
+        <Redirect to={"/preview/" + this.props.expId + "/" + this.props.lang} />
+      );
     }
 
     if (this.state.toHome === true) {
@@ -96,31 +98,25 @@ class NavBar extends Component {
         <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
             <ul className="mb-1 text-primary">
-              <li >
-                <MDBIcon  icon="home" size="1x" className="indigo-text pr-3"  />{" "}
+              <li>
+                <MDBIcon icon="home" size="1x" className="indigo-text pr-3" />{" "}
               </li>
-             
             </ul>
           </Link>
 
-          <div className="collapse navbar-collapse" >
+          <div className="collapse navbar-collapse">
             <h5 className="mr-2">ExpName: </h5>
             <Button
               className="btn-primary btn-block mr-5"
               // size="lg"
               variant="light"
               active
-              
             >
               {this.props.name}
             </Button>
-          
-              
-            
-              
-            
+
             <h5 className="mr-2"> Type: </h5>
-               <Button
+            <Button
               className="btn-primary btn-block mr-5"
               // size="lg"
               variant="light"
@@ -128,7 +124,6 @@ class NavBar extends Component {
             >
               {this.props.type}
             </Button>
-          
 
             <h5 className="mr-2"> Language: </h5>
 
