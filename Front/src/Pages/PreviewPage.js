@@ -47,7 +47,7 @@ class PreviewPage extends Component {
     await axiosInstance
       .get("questionnaire-preview-data/" + this.props.match.params.id, {
         params: {
-          task_type: "3",
+          language: "2",
         },
       })
       .then(
