@@ -619,6 +619,7 @@ class FormsElements extends React.Component {
                 </Col>
                 <ColStyled>
                   <Button
+                   style={{ border:"#00897B" ,backgroundColor: "#00897B"}}
                     variant="success"
                     onClick={this.sendData}
                     disabled={this.state.deleteAll}
