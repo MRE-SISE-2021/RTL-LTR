@@ -164,9 +164,10 @@ class NewExperimentModal extends React.Component {
               <Modal.Footer>
                 
                 <button
+                  style={{ border:"#1266F1" ,backgroundColor: "#1266F1"}}
                   type="submit"
-                  variant="success"
-                  className="btn btn-success mr-auto"
+                  variant="success  "
+                  className="btn btn-success   mr-auto"
                 >
                   Create
                 </button>
