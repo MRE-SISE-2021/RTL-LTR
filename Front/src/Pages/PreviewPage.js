@@ -34,6 +34,7 @@ class PreviewPage extends Component {
       lang: "",
       type: "",
       direction: "LTR",
+      demographic_task: [],
     };
     this.onChangePage = this.onChangePage.bind(this);
   }
@@ -44,16 +45,22 @@ class PreviewPage extends Component {
 
   async componentDidMount() {
     await axiosInstance
-      .get("viewset/questionnaire/" + this.props.match.params.id + "/")
+      .get("questionnaire-preview-data/" + this.props.match.params.id, {
+        params: {
+          task_type: "3",
+        },
+      })
       .then(
         (result) => {
           result = result.data;
+          console.log(result);
           this.setState(() => ({
             tasks: result.tasks,
             name: result.questionnaire_name,
             type: result.questionnaire_type_id,
             lang: result.language_id,
             direction: result.direction,
+            demographic_task: result.demographic_task,
             demographic: {
               is_age_demo: result.is_age_demo,
               is_native_demo: result.is_native_demo,
@@ -144,7 +151,11 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div>
-                <Demographics demo={this.state.demographic} />
+                <Demographics
+                  isDemo={this.state.demographic}
+                  demoTasks={this.state.demographic_task}
+                  lang={this.state.lang}
+                />
               </Div>
             </ThemeProvider>
           ),
