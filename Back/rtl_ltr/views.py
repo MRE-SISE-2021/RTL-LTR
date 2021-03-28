@@ -590,8 +590,8 @@ def update_associate_task_data(association_task_id, data_list, data_id_name, ser
     if model_name == 'Answer':
         task_answer_queryset = TaskAnswer.objects.filter(task_id=association_task_id).values_list('answer_id')
         split_lst = zip(*task_answer_queryset)
-        task_answer_db_ids = list(split_lst)[0]
-        answer_ids_to_delete = list(np.setdiff1d(task_answer_db_ids, data_id_list))
+        task_answer_db_ids = list(split_lst)[0] if len(list(split_lst)) > 0 else None
+        answer_ids_to_delete = list(np.setdiff1d(task_answer_db_ids, data_id_list)) if task_answer_db_ids else []
 
         for answer_id in answer_ids_to_delete:
             TaskAnswer.objects.get(answer_id=answer_id).delete()
@@ -652,3 +652,45 @@ def delete_tasks(task_ids):
     for image_id in image_ids:
         for image_queryset in Image.objects.filter(image_id=image_id):
             image_queryset.delete()
+
+
+########################################################################################################################
+@api_view(['POST'])
+@transaction.atomic
+def demo_task_post(request):
+    # lists of key-value {task_id: data}
+    task_ids = []
+    task_answers = []
+    task_images = []
+
+    # get parameters for update
+    tasks_put = request.data
+
+    # insert or update Task table
+    # insert a new task to questionnaire and get id of the new task
+    task_id = insert_data_into_table(TaskSerializer(data=tasks_put),
+                                     'task_id')
+
+    # map the new task_id with its answers, images
+    task_ids.append(task_id)
+    task_answers.append({task_id: tasks_put.pop('answers')}) if tasks_put['answers'] else None
+    task_images.append({task_id: tasks_put.pop('images')}) if tasks_put['images'] else None
+
+    # insert or update Answer table (the same architecture as Task)
+    for task_answer in task_answers:
+        task_id = next(iter(task_answer))
+        answers = task_answer[task_id]
+
+        for answer in answers:
+            if 'answer_id' in answer:
+                answer_id = answer['answer_id']
+            else:
+                serializer = AnswerSerializer(data=answer)
+                answer_id = insert_data_into_table(serializer, 'answer_id')
+
+            serializer = TaskAnswerSerializer(data={'task_id': task_id,
+                                                    'answer_id': answer_id})
+            if serializer.is_valid():
+                serializer.save()
+
+    return Response({'task_id': task_ids}, status=status.HTTP_200_OK)
