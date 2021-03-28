@@ -122,7 +122,11 @@ class ExperimentInfo extends Component {
     const data = this.props.chosen;
     console.log(this.state);
     if (this.state.toDashboard === true) {
-      return <Redirect to={"/preview/" + data.questionnaire_id} />;
+      return (
+        <Redirect
+          to={"/preview/" + data.questionnaire_id + "/" + data.language_id}
+        />
+      );
     }
 
     if (this.state.edit === true) {

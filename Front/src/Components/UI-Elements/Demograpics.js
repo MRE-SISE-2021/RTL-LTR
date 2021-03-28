@@ -107,7 +107,7 @@ class Demographics extends React.Component {
     let theme = {
       dir: "ltr",
     };
-    if (this.props.lang === 1 || this.props.lang === 2) {
+    if (this.props.lang === 1 || this.props.lang === 3) {
       theme = {
         dir: "rtl",
       };
