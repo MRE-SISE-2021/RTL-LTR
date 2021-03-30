@@ -96,7 +96,7 @@ class Participant(models.Model):
 
     dominant_hand_writing = models.CharField(db_column='DominantHandWriting', max_length=50, null=True)
     dominant_hand_mobile = models.CharField(db_column='DominantHandMobile', max_length=50, null=True)
-    dominant_hand_web = models.CharField(db_column='DominantHandWeb', max_length=50, null=True)
+    dominant_hand_mouse = models.CharField(db_column='DominantHandMouse', max_length=50, null=True)
     dominant_hand_mode = models.TextField(db_column='DominantHandMode', null=True)
     is_rtl_speakers = models.BooleanField(db_column='IsRtlSpeakers', null=True)
     is_rtl_interface = models.BooleanField(db_column='IsRtlInterface', null=True)
@@ -106,7 +106,7 @@ class Participant(models.Model):
     is_ltr_paper_documents = models.BooleanField(db_column='IsLtrPaperDocuments', null=True)
     is_rtl_and_ltr_interface = models.BooleanField(db_column='IsRtlAndLtrInterface', null=True)
     other_prof_experience = models.CharField(db_column='OtherProfExperience', max_length=100, null=True)
-    hci_experience = models.BooleanField(db_column='HciExperience', null=True)
+    is_hci_experience = models.BooleanField(db_column='IsHciExperience', null=True)
     hci_background_id = models.ForeignKey(HciBackground, models.DO_NOTHING, db_column='HciBackgroundId', null=True)
     is_rtl_interfaces_experience = models.BooleanField(db_column='IsRtlInterfacesExperience', null=True)
     is_ltr_interfaces_experience = models.BooleanField(db_column='IsLtrInterfacesExperience', null=True)
@@ -149,6 +149,7 @@ class TaskParticipant(models.Model):
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     task_id = models.ForeignKey(Task, models.DO_NOTHING, db_column='TaskId')
     answer_id = models.ForeignKey(Answer, models.DO_NOTHING, db_column='AnswerId', null=True)
+    is_demographic = models.BooleanField(db_column='IsDemographic', default=False)
     task_direction = models.CharField(db_column='TaskDirection', max_length=10, null=True)
     task_time = models.TimeField(db_column='TaskTime', null=True)
     task_clicks = models.IntegerField(db_column='TaskClicks', null=True)
@@ -157,7 +158,7 @@ class TaskParticipant(models.Model):
 
     class Meta:
         db_table = 'TaskParticipant'
-        unique_together = (('participant_id', 'task_id', 'answer_id', 'submitted_free_answer'),)
+        unique_together = (('participant_id', 'task_id', 'answer_id'),)
 
 
 class Questionnaire(models.Model):
@@ -197,8 +198,8 @@ class QuestionnaireParticipant(models.Model):
     questionnaire_participant_id = models.AutoField(db_column='QuestionnaireParticipantId', primary_key=True)
     questionnaire_id = models.ForeignKey(Questionnaire, models.DO_NOTHING, db_column='QuestionnaireId')
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
-    questionnaire_start = models.TimeField(db_column='QuestionnaireStart')
-    questionnaire_finish = models.TimeField(db_column='QuestionnaireFinish', null=True)
+    questionnaire_start = models.DateTimeField(db_column='QuestionnaireStart')
+    questionnaire_finish = models.DateTimeField(db_column='QuestionnaireFinish', null=True)
     time_spent = models.TimeField(db_column='TimeSpent', null=True)
     satisfaction = models.TextField(db_column='Satisfaction', null=True)
 
