@@ -18,112 +18,112 @@ import ast
 
 ####### MODEL VIEWSETS #######
 # Component
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class ComponentTypeViewSet(viewsets.ModelViewSet):
     serializer_class = ComponentTypeSerializer
     queryset = ComponentType.objects.all()
 
 
 # HciBackground
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class HciBackgroundViewSet(viewsets.ModelViewSet):
     serializer_class = HciBackgroundSerializer
     queryset = HciBackground.objects.all()
 
 
 # Image
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class ImageViewSet(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
 
 
 # Language
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class LanguageViewSet(viewsets.ModelViewSet):
     serializer_class = LanguageSerializer
     queryset = Language.objects.all()
 
 
 # QuestionnaireType
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class QuestionnaireTypeViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireTypeSerializer
     queryset = QuestionnaireType.objects.all()
 
 
 # Task
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
 
 # Participant
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class ParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = ParticipantSerializer
     queryset = Participant.objects.all()
 
 
 # Proficiency
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class ProficiencyViewSet(viewsets.ModelViewSet):
     serializer_class = ProficiencySerializer
     queryset = Proficiency.objects.all()
 
 
 # Answer
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class AnswerViewSet(viewsets.ModelViewSet):
     serializer_class = AnswerSerializer
     queryset = Answer.objects.all()
 
 
 # TaskAnswer
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class TaskAnswerViewSet(viewsets.ModelViewSet):
     serializer_class = TaskAnswerSerializer
     queryset = TaskAnswer.objects.all()
 
 
 # ParticipantLanguageProficiency
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class ParticipantLanguageProficiencyViewSet(viewsets.ModelViewSet):
     serializer_class = ParticipantLanguageProficiencySerializer
     queryset = ParticipantLanguageProficiency.objects.all()
 
 
 # TaskParticipant
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class TaskParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = TaskParticipantSerializer
     queryset = TaskParticipant.objects.all()
 
 
 # Questionnaire
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class QuestionnaireViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireSerializer
     queryset = Questionnaire.objects.all()
 
 
 # QuestionnaireParticipant
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class QuestionnaireParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireParticipantSerializer
     queryset = QuestionnaireParticipant.objects.all()
 
 
 # QuestionnaireTask
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class QuestionnaireTaskViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireTaskSerializer
     queryset = QuestionnaireTask.objects.all()
 
 
 # TaskImage
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class TaskImageViewSet(viewsets.ModelViewSet):
     serializer_class = TaskImageSerializer
     queryset = TaskImage.objects.all()
@@ -133,7 +133,7 @@ class TaskImageViewSet(viewsets.ModelViewSet):
 
 # get list of questionnaire name for main page
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def get_questionnaire_name_list(request):
     if request.method == "GET":
         queryset = Questionnaire.objects.all()
@@ -148,7 +148,7 @@ def get_questionnaire_name_list(request):
 
 # get list of questionnaire name for main page
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def get_tasks_with_settings_from_questionnaire(request, id):
     if request.method == "GET":
         queryset = Questionnaire.objects.get(questionnaire_id=id)
@@ -176,7 +176,7 @@ def get_tasks_with_settings_from_questionnaire(request, id):
 
 # DELETE task from questionnaire
 @api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def delete_task_from_questionnaire(request, id):
     # check if the questionnaire was already participated
     if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
@@ -203,7 +203,7 @@ def delete_task_from_questionnaire(request, id):
 
 ####### CLASS BASED VIEWS #######
 
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class QuestionnairePreviewAPIView(APIView):
     # get preview data for home page of a questionnaire by questionnaire_id
     def get(self, request, id):
@@ -420,7 +420,6 @@ class QuestionnairePreviewAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@permission_classes([IsAuthenticated])
 class ParticipantAPIView(APIView):
     rtl_languages_list = ['Aramaic', 'Azeri', 'Dhivehi', 'Maldivian', 'Kurdish', 'Sorani', 'Persian', 'Farsi', 'Urdu']
 
@@ -442,6 +441,9 @@ class ParticipantAPIView(APIView):
     # Save new questionnaire to db (with tasks, answers, images)
     @transaction.atomic
     def post(self, request):
+        participant_id = 0
+        participant_fields_dict = {}
+
         rtl_counter = 0
         ltr_counter = 0
 
@@ -449,13 +451,57 @@ class ParticipantAPIView(APIView):
         ltr_proficiency_sum = 0
 
         language_id_proficiency_dict = {}
-        participant_data = request.data
 
-        language_proficiency = participant_data.pop('language_proficiency')
+        demo_answers = request.data['demo_answers']
+        answer_ids_by_order_dict = {}  # key = order_key, value = answer_id
+        free_answers_by_order_dict = {}  # key = order_key, value = answer_id
+
+        for demo_answer in demo_answers:
+            # save answers_id and free_answer for inserting to TaskParticipant
+            answer_ids_by_order_dict[demo_answer['order_key']] = demo_answer['answer_ids']
+            answer_ids_by_order_dict[demo_answer['order_key']] = [demo_answer['free_answer']] if 'free_answer' \
+                                                                                                 in demo_answer else []
+
+            if demo_answer['order_key'] == 1:  # How old are you?
+                participant_fields_dict['age'] = int(demo_answer['free_answer'])
+
+            elif demo_answer['order_key'] == 2:  # Your native language (select the correct answer):
+                answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
+                participant_fields_dict['native_language'] = int(answer['value'])
+
+            elif demo_answer['order_key'] == 3:  # "What other languages do you know (you can choose several options)?"
+                for id in demo_answer['answer_ids']:
+                    language_id_proficiency_dict[AnswerSerializer(Answer.objects.get(answer_id=id)).data['value']] = ''
+
+        quest_participant_serializer = QuestionnaireParticipantSerializer(data={
+            'questionnaire_id': request.data['questionnaire_id'],
+            'participant_id': participant_id,
+            'questionnaire_start': ['questionnaire_start']})
+        insert_data_into_table(quest_participant_serializer)
+
+        language_id = QuestionnaireSerializer(
+            Questionnaire.objects.get(questionnaire_id=request.data['questionnaire_id'])).data['language_id']
+
+        demo_tasks = TaskSerializer(Task.objects.filter(language_id=language_id)).data
+
+        for task in demo_tasks:
+            answer_ids = answer_ids_by_order_dict[task['order_key']]
+            for answer_id in answer_ids:
+                if len(free_answers_by_order_dict[task['order_key']]) > 0:
+                    free_answer = free_answers_by_order_dict[task['order_key']]
+                else:
+                    free_answer = None
+                quest_participant_serializer = TaskParticipantSerializer(data={'participant_id': participant_id,
+                                                                               'task_id': task['task_id'],
+                                                                               'answer_id': answer_id,
+                                                                               'is_demographic': True,
+                                                                               'submitted_free_answer': free_answer})
+
+        language_proficiency = request.data.pop('language_proficiency')
 
         # no hci background if hci experience is false
-        participant_data['hci_background_id'] = 1 if participant_data['hci_experience'] is False \
-            else participant_data['hci_background_id']
+        request.data['hci_background_id'] = 1 if request.data['hci_experience'] is False \
+            else request.data['hci_background_id']
 
         # from string to dict
         language_proficiency = ast.literal_eval(language_proficiency)
@@ -489,16 +535,16 @@ class ParticipantAPIView(APIView):
 
             language_id_proficiency_dict[language_id] = language_proficiency[language_name_key]
 
-        participant_data['rtl_proficiency'] = rtl_proficiency_sum / rtl_counter if rtl_counter > 0 else 0
-        participant_data['ltr_proficiency'] = ltr_proficiency_sum / ltr_counter if ltr_counter > 0 else 0
+        request.data['rtl_proficiency'] = rtl_proficiency_sum / rtl_counter if rtl_counter > 0 else 0
+        request.data['ltr_proficiency'] = ltr_proficiency_sum / ltr_counter if ltr_counter > 0 else 0
 
-        dominant_hand_list = [participant_data['dominant_hand_writing'], participant_data['dominant_hand_mobile'],
-                              participant_data['dominant_hand_web']]
+        dominant_hand_list = [request.data['dominant_hand_writing'], request.data['dominant_hand_mobile'],
+                              request.data['dominant_hand_web']]
 
         dominant_hand = 'right' if dominant_hand_list.count('right') > 1 else 'left'
-        participant_data['dominant_hand_mode'] = dominant_hand
+        request.data['dominant_hand_mode'] = dominant_hand
 
-        participant_id = insert_data_into_table(ParticipantSerializer(data=participant_data),
+        participant_id = insert_data_into_table(ParticipantSerializer(data=request.data),
                                                 'participant_id')
 
         for language in language_id_proficiency_dict:
@@ -519,6 +565,10 @@ class ParticipantAPIView(APIView):
 
 
 ####### INSTRUMENTAL FUNCTIONS #######
+def calculate_rtl_ltr_proficiency():
+    pass
+
+
 # POST QuestionnairePreviewAPIView
 # insert answer and image to db and associate them with a task
 def insert_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer):
