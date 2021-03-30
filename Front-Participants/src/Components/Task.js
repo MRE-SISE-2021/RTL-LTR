@@ -65,7 +65,7 @@ class Task extends React.Component {
                       <input
                         type="text"
                         // name={"ans" }
-                        // value={answer.answer_content}
+                        value={actual_index}
                         // id={`answer` + i}
                       />
                     </div>
