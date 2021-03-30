@@ -41,7 +41,7 @@ class Task extends React.Component {
     }
     let actual_index = this.state.task.order_key;
     let type = "radio";
-    if (actual_index === 10 || actual_index === 4 || actual_index === 2) {
+    if (actual_index === 11 || actual_index === 5 || actual_index === 3) {
       type = "checkbox";
     }
     return (
@@ -65,7 +65,7 @@ class Task extends React.Component {
                       <input
                         type="text"
                         // name={"ans" }
-                        value={actual_index}
+                        // value={actual_index}
                         // id={`answer` + i}
                       />
                     </div>

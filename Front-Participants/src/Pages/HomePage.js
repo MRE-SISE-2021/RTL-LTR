@@ -6,6 +6,8 @@ import API from "../Api/Api";
 import { Card, ListGroup, Form } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
+import { format } from "date-fns";
+
 //RTL
 import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
@@ -52,7 +54,7 @@ class HomePage extends Component {
     const response = {
       demo_answers: this.state.demo_answers,
       questionnaire_id: "1", //
-      questionnaire_start: new Date().toLocaleString(),
+      questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
     API.postRequest("participant-data", response).then((data) => {
@@ -72,8 +74,8 @@ class HomePage extends Component {
         if (ans.order_key === order_key) {
           arr = ans.answer_ids;
           answers[i] = {
-            answer_ids: arr.concat([answer_id]),
-            order_key: order_key,
+            answer_ids: arr.concat(parseInt([answer_id])),
+            order_key: parseInt(order_key),
           };
           this.setState({
             demo_answers: answers,
@@ -82,11 +84,11 @@ class HomePage extends Component {
         }
       }
     }
-    arr = arr.concat([answer_id]);
+    arr = arr.concat(parseInt([answer_id]));
     this.setState({
       demo_answers: this.state.demo_answers.concat({
         answer_ids: arr,
-        order_key: order_key,
+        order_key: parseInt(order_key),
       }),
     });
     console.log(this.state);
