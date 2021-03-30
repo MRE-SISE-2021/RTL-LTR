@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-
+import API from "../Api/Api";
 import { Card, ListGroup, Form } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
@@ -51,9 +51,14 @@ class HomePage extends Component {
     console.log("Post --- request --- create new user");
     const response = {
       demo_answers: this.state.demo_answers,
-      questionnaire_id: this.state.questionnaire_id, //
+      questionnaire_id: "1", //
       questionnaire_start: new Date().toLocaleString(),
     };
+    console.log(response);
+    API.postRequest("participant-data", response).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      // this.setState({ expId: data.questionnaire_id });
+    });
   }
   onUpdateDemoAnswer(answer) {
     // update state with new answer from Task component
