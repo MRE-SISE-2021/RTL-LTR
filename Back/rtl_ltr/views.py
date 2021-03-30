@@ -416,7 +416,6 @@ class QuestionnairePreviewAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@permission_classes([IsAuthenticated])
 class ParticipantAPIView(APIView):
     rtl_languages_list = ['Aramaic', 'Azeri', 'Dhivehi', 'Maldivian', 'Kurdish', 'Sorani', 'Persian', 'Farsi', 'Urdu']
 
@@ -564,12 +563,17 @@ class ParticipantAPIView(APIView):
         # participant_fields_dict['ltr_proficiency'] = ltr_proficiency_sum / ltr_counter if ltr_counter > 0 else 0
 
         # Calculate dominant_hand_mode
-        dominant_hand_list = [participant_fields_dict['dominant_hand_writing'],
-                              participant_fields_dict['dominant_hand_mobile'],
-                              participant_fields_dict['dominant_hand_mouse']]
+        dominant_hand_list = []
+        if 'dominant_hand_writing' in participant_fields_dict:
+            dominant_hand_list.append(participant_fields_dict['dominant_hand_writing'])
+        if 'dominant_hand_mobile' in participant_fields_dict:
+            dominant_hand_list.append(participant_fields_dict['dominant_hand_mobile'])
+        if 'dominant_hand_mouse' in participant_fields_dict:
+            dominant_hand_list.append(participant_fields_dict['dominant_hand_mouse'])
 
-        dominant_hand = 'right' if dominant_hand_list.count('right') > 1 else 'left'
-        participant_fields_dict['dominant_hand_mode'] = dominant_hand
+        if len(dominant_hand_list) > 0:
+            dominant_hand = 'right' if dominant_hand_list.count('right') > 1 else 'left'
+            participant_fields_dict['dominant_hand_mode'] = dominant_hand
 
         participant_id = insert_data_into_table(ParticipantSerializer(data=participant_fields_dict),
                                                 'participant_id')
