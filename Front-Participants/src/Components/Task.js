@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
-class Demographics extends React.Component {
+class Task extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,47 +13,12 @@ class Demographics extends React.Component {
     console.log(event.target.value); //orderkey = value
     let answer_id = event.target.id;
     let order_key = event.target.value;
-    // let answers = [...this.props.answers];
-    // let arr = [];
-
-    // arr = arr.concat([answer_id]);
-    // answers[order_key] =
-    // call change page function in parent component
     this.props.onChange({
       answer_id: answer_id,
       order_key: order_key,
     });
   }
-  callSet(id, value) {
-    // 1. Make a shallow copy of the answers
-    // let answers = [...this.state.answers];
-    // console.log(answers);
-    // //Check if checkbox --- to add answers else override answer for radio button
-    // let arr = [];
-    // if (
-    //   this.state.answers[value] !== undefined &&
-    //   (value === "2" || value === "4" || value === "10")
-    // ) {
-    //   arr = this.state.answers[value].answer_ids;
-    // }
-    // // 2. Make a shallow copy of the item you want to mutate
-    // let item = { ...answers[value] };
-    // // 3. Replace the property you're intested in
-    // item = {
-    //   ...answers[value],
-    //   answer_ids: arr.concat([id]),
-    //   order_key: value,
-    // };
-    // // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    // answers[value] = item;
-    // // 5. Set the state to our new copy
-    // this.setState({ answers });
-    // console.log(this.state);
-    // this.setState({
-    //   answers: this.state.answers.concat([newelement]),
-    // });
-    /////////////////
-  }
+
   render() {
     // console.log(this.state);
     const Div = styled.div`
@@ -107,4 +72,4 @@ class Demographics extends React.Component {
   }
 }
 
-export default Demographics;
+export default Task;

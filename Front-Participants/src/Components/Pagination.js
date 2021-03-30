@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "../styles/Pagination.css";
-import { ProgressBar, Button } from "react-bootstrap";
+import { ProgressBar, Button, Col } from "react-bootstrap";
 
 const propTypes = {
   items: PropTypes.array.isRequired,
@@ -175,71 +175,38 @@ class Pagination extends React.Component {
       return null;
     }
     const percentage = ((pager.currentPage - 1) / pager.totalPages) * 100;
-
     return (
-      <div>
-        <ul id="pagination">
-          {/* <li disabled={pager.currentPage === 1}>
-          <a className="item-page" onClick={() => this.setPage(1)}>
-            First
-          </a>
-        </li>
-        <li className={pager.currentPage === 1 ? "disabled" : ""}>
-          <a
-            className="item-page"
-            onClick={() => this.setPage(pager.currentPage - 1)}
+      <div id="pagination">
+        {pager.currentPage === 1 ? (
+          <Button
+            style={{ width: "50%" }}
+            onClick={() => this.setPage(pager.currentPage + 1)}
           >
-            Previous
-          </a>
-        </li> */}
-          {/* {pager.pages.map((page, index) => (
-          <li
-            key={index}
-            className={pager.currentPage === page ? "active" : ""}
+            {this.getLangStart()}
+          </Button>
+        ) : pager.currentPage < pager.totalPages ? (
+          // <li>
+          <Button
+            style={{ width: "50%" }}
+            // className="item-page"
+            onClick={() => this.setPage(pager.currentPage + 1)}
           >
-            <a className="item-page" onClick={() => this.setPage(page)}>
-              {page}
-            </a>
-          </li>
-        ))} */}
-
-          {pager.currentPage === 1 ? (
-            <Button
-              style={{ width: "50%" }}
-              onClick={() => this.setPage(pager.currentPage + 1)}
-            >
-              {this.getLangStart()}
-            </Button>
-          ) : pager.currentPage < pager.totalPages ? (
-            // <li>
-            <a
-              className="item-page"
-              onClick={() => this.setPage(pager.currentPage + 1)}
-            >
-              {this.getLangNext()}
-            </a>
-          ) : (
-            // </li>
-            // <li>
-            <a
-              className="item-page"
-              onClick={() => this.setPage(pager.currentPage + 1)}
-            >
-              {this.getLangFinish()}
-            </a>
-            // </li>
-          )}
-          {/* <li
-          className={pager.currentPage === pager.totalPages ? "disabled" : ""}
-        >
-          <a
-            className="item-page"
-            onClick={() => this.setPage(pager.totalPages)}
+            {this.getLangNext()}
+          </Button>
+        ) : (
+          // </li>
+          // <li>
+          <Button
+            style={{ width: "50%" }}
+            // className="item-page"
+            onClick={() => this.setPage(pager.currentPage + 1)}
           >
-            Last
-          </a>
-        </li> */}
-        </ul>
+            {this.getLangFinish()}
+          </Button>
+          // </li>
+        )}
+        <br />
+        <br />
         <ProgressBar
           now={percentage}
           label={`${Math.round(percentage)}%`}
