@@ -49,20 +49,43 @@ class Task extends React.Component {
         <Div key={"task"}>
           <h4>{this.state.task.label}</h4>
           <div onChange={this.setTaskAnswer.bind(this)}>
-            {this.state.task.answers.map(function (answer, index) {
-              return (
-                <div key={index}>
-                  <input
-                    type={type}
-                    key={index}
-                    id={answer.answer_id} //answer_id
-                    name={"ans" + actual_index}
-                    value={actual_index} //order_key
-                  />
-                  {answer.answer_content}
-                </div>
-              );
-            })}
+            {this.state.task.answers.length === 0 ? (
+              <input
+                type="text"
+                // name={"ans" }
+                // value={answer.answer_content}
+                // id={`answer` + i}
+              />
+            ) : (
+              this.state.task.answers.map(function (answer, index) {
+                if (answer.answer_content === "Other") {
+                  return (
+                    <div key={index}>
+                      {answer.answer_content}:
+                      <input
+                        type="text"
+                        // name={"ans" }
+                        // value={answer.answer_content}
+                        // id={`answer` + i}
+                      />
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={index}>
+                      <input
+                        type={type}
+                        key={index}
+                        id={answer.answer_id} //answer_id
+                        name={"ans" + actual_index}
+                        value={actual_index} //order_key
+                      />
+                      {answer.answer_content}
+                    </div>
+                  );
+                }
+              })
+            )}
           </div>
         </Div>
 
