@@ -11,6 +11,14 @@ class Task extends React.Component {
 
   setTaskAnswer(event) {
     console.log(event.target.value); //orderkey = value
+    if (event.target.id === "age") {
+      this.props.onChange({
+        answer_id: [],
+        order_key: 1,
+        free_answer: event.target.value,
+      });
+      return;
+    }
     let answer_id = event.target.id;
     let order_key = event.target.value;
     this.props.onChange({
@@ -54,7 +62,7 @@ class Task extends React.Component {
                 type="text"
                 // name={"ans" }
                 // value={answer.answer_content}
-                // id={`answer` + i}
+                id="age"
               />
             ) : (
               this.state.task.answers.map(function (answer, index) {

@@ -68,6 +68,20 @@ class HomePage extends Component {
     let answers = this.state.demo_answers;
     let answer_id = answer.answer_id;
     let arr = [];
+
+    //if free text?
+    if (answer.free_answer !== undefined) {
+      this.setState({
+        demo_answers: this.state.demo_answers.concat({
+          answer_ids: [],
+          order_key: parseInt(order_key),
+          free_answer: parseInt(answer.free_answer),
+        }),
+      });
+      console.log(this.state);
+      return;
+    }
+    ///else
     // to add answer to check box list
     if (order_key === "2" || order_key === "4" || order_key === "10") {
       for (let [i, ans] of answers.entries()) {
