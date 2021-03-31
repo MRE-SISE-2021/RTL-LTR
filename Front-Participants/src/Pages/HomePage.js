@@ -57,52 +57,99 @@ class HomePage extends Component {
       questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
-    API.postRequest("participant-data", response).then((data) => {
-      console.log(data); // JSON data parsed by `data.json()` call
-      // this.setState({ expId: data.questionnaire_id });
-    });
+    // API.postRequest("participant-data", response).then((data) => {
+    //   console.log(data); // JSON data parsed by `data.json()` call
+    //   // this.setState({ expId: data.questionnaire_id });
+    // });
   }
   onUpdateDemoAnswer(answer) {
     // update state with new answer from Task component
-    let order_key = answer.order_key;
+    let order_key = parseInt(answer.order_key);
     let answers = this.state.demo_answers;
-    let answer_id = answer.answer_id;
+    let answer_id = parseInt(answer.answer_id);
     let arr = [];
-
+    debugger;
     //if free text?
     if (answer.free_answer !== undefined) {
-      this.setState({
-        demo_answers: this.state.demo_answers.concat({
-          answer_ids: [],
-          order_key: parseInt(order_key),
-          free_answer: parseInt(answer.free_answer),
-        }),
-      });
-      console.log(this.state);
+      this.setDemoText(answer, answers, order_key);
       return;
     }
     ///else
     // to add answer to check box list
-    if (order_key === "2" || order_key === "4" || order_key === "10") {
-      for (let [i, ans] of answers.entries()) {
-        if (ans.order_key === order_key) {
-          arr = ans.answer_ids;
-          answers[i] = {
-            answer_ids: arr.concat(parseInt([answer_id])),
-            order_key: parseInt(order_key),
-          };
-          this.setState({
-            demo_answers: answers,
-          });
-          return;
-        }
+    if (order_key === 3 || order_key === 5 || order_key === 11) {
+      if (this.setDemoCheckbox(answers, order_key, arr, answer_id)) {
+        return;
       }
     }
-    arr = arr.concat(parseInt([answer_id]));
+
+    for (let [i, ans] of answers.entries()) {
+      //switch radio button selection
+      if (ans.order_key === order_key) {
+        answers[i] = {
+          answer_ids: arr.concat([answer_id]),
+          order_key: order_key,
+        };
+        this.setState({
+          demo_answers: answers,
+        });
+        return;
+      }
+    }
+    // add new answer (radio or checkBox)
     this.setState({
       demo_answers: this.state.demo_answers.concat({
-        answer_ids: arr,
-        order_key: parseInt(order_key),
+        answer_ids: arr.concat([answer_id]),
+        order_key: order_key,
+      }),
+    });
+    console.log(this.state);
+  }
+
+  setDemoCheckbox(answers, order_key, arr, answer_id) {
+    for (let [i, ans] of answers.entries()) {
+      if (ans.order_key === order_key) {
+        arr = ans.answer_ids;
+        if (arr.includes(answer_id)) {
+          answers[i] = {
+            answer_ids: arr.splice(arr.indexOf(answer_id), 1),
+            order_key: order_key,
+          };
+        } else {
+          answers[i] = {
+            answer_ids: arr.concat([answer_id]),
+            order_key: order_key,
+          };
+        }
+
+        this.setState({
+          demo_answers: answers,
+        });
+        return true;
+      }
+    }
+    return false;
+  }
+  setDemoText(answer, answers, order_key) {
+    for (let [i, ans] of answers.entries()) {
+      //update free answer accourding to order_key
+      if (ans.order_key === order_key) {
+        answers[i] = {
+          answer_ids: [],
+          order_key: order_key,
+          free_answer: parseInt(answer.free_answer),
+        };
+        this.setState({
+          demo_answers: answers,
+        });
+        return;
+      }
+    }
+    // first time ...
+    this.setState({
+      demo_answers: this.state.demo_answers.concat({
+        answer_ids: [],
+        order_key: order_key,
+        free_answer: parseInt(answer.free_answer),
       }),
     });
     console.log(this.state);
