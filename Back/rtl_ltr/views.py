@@ -214,10 +214,24 @@ class QuestionnairePreviewAPIView(APIView):
         # get demographic tasks by task_type_id
         try:
             demographic_task_queryset = Task.objects.filter(language_id=request.GET.get('language', ''))
-        except Questionnaire.DoesNotExist:
-            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+            demographic_tasks = TaskSerializer(demographic_task_queryset, many=True).data
 
-        data['demographic_task'] = TaskSerializer(demographic_task_queryset, many=True).data
+            for task in demographic_tasks:
+                is_other = False
+                answer = []
+                other = None
+                for raw_answer in task['answers']:
+                    if raw_answer['value'] == 'Other':
+                        other = raw_answer
+                        is_other = True
+                        continue
+                    answer.append(raw_answer)
+                if is_other:
+                    answer.append(other)
+                    task['answers'] = answer
+            data['demographic_task'] = demographic_tasks
+        except Questionnaire.DoesNotExist:
+            return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(data, status=status.HTTP_200_OK)
 
