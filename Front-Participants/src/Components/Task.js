@@ -19,6 +19,14 @@ class Task extends React.Component {
       });
       return;
     }
+    if (event.target.id === "other") {
+      this.props.onChange({
+        answer_id: [],
+        order_key: event.target.name,
+        free_answer: event.target.value,
+      });
+      return;
+    }
     let answer_id = event.target.id;
     let order_key = event.target.value;
     this.props.onChange({
@@ -72,9 +80,9 @@ class Task extends React.Component {
                       {answer.answer_content}:
                       <input
                         type="text"
-                        // name={"ans" }
+                        name={answer.answer_id}
                         // value={actual_index}
-                        // id={`answer` + i}
+                        id="other"
                       />
                     </div>
                   );

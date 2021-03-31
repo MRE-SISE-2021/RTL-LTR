@@ -108,13 +108,15 @@ class HomePage extends Component {
   setDemoCheckbox(answers, order_key, arr, answer_id) {
     for (let [i, ans] of answers.entries()) {
       if (ans.order_key === order_key) {
-        arr = ans.answer_ids;
+        arr = ans.answer_ids; // answers array
         if (arr.includes(answer_id)) {
+          // to delete a checkbox from array
           answers[i] = {
             answer_ids: arr.splice(arr.indexOf(answer_id), 1),
             order_key: order_key,
           };
         } else {
+          // add
           answers[i] = {
             answer_ids: arr.concat([answer_id]),
             order_key: order_key,
@@ -136,7 +138,7 @@ class HomePage extends Component {
         answers[i] = {
           answer_ids: [],
           order_key: order_key,
-          free_answer: parseInt(answer.free_answer),
+          free_answer: answer.free_answer,
         };
         this.setState({
           demo_answers: answers,
