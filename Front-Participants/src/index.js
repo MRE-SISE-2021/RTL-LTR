@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
 import "./assets/scss/style.scss";
 import "./index.css";
 import App from "./App";
@@ -12,7 +14,11 @@ const store = createStore(reducer);
 
 const app = (
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/survey/:hosted_link" component={App} />
+      </Switch>
+    </BrowserRouter>
   </Provider>
 );
 

@@ -20,7 +20,6 @@ class Task extends React.Component {
       return;
     }
     if (event.target.id === "other") {
-      debugger;
       this.props.onChange({
         answer_id: [],
         order_key: event.target.name,

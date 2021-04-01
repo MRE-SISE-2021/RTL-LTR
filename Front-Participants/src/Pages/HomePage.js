@@ -167,10 +167,11 @@ class HomePage extends Component {
   }
 
   async componentDidMount() {
+    console.log(this.props.hosted_link);
     await axiosInstance
-      .get("questionnaire-preview-data/" + "1", {
+      .get("/get-questionnaire-by-hosted-link", {
         params: {
-          language: "2",
+          hash: this.props.hosted_link,
         },
       })
       .then(
