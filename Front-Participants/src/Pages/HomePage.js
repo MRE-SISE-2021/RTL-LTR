@@ -53,7 +53,8 @@ class HomePage extends Component {
     console.log("Post --- request --- create new user");
     const response = {
       demo_answers: this.state.demo_answers,
-      questionnaire_id: "1", //
+      // questionnaire_id: "1", //
+      hash: this.props.hosted_link,
       questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
