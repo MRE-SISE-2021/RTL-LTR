@@ -463,6 +463,7 @@ class ParticipantAPIView(APIView):
     # Save new questionnaire to db (with tasks, answers, images)
     @transaction.atomic
     def post(self, request):
+        fernet = Fernet(CRYPTO_KEY)
         participant_fields_dict = {}
 
         rtl_counter = 0
@@ -477,8 +478,10 @@ class ParticipantAPIView(APIView):
         answer_ids_by_order = {}  # key = order_key, value = answer_id
         free_answers_by_order = {}  # key = order_key, value = answer_id
 
+        questionnaire_id = fernet.decrypt(request.data['hash'].encode()).decode().split("_")[0]
+
         questionnaire_data = QuestionnaireSerializer(
-            Questionnaire.objects.get(questionnaire_id=request.data['questionnaire_id'])).data
+            Questionnaire.objects.get(questionnaire_id=questionnaire_id)).data
 
         language_id = participant_fields_dict['questionnaire_language'] = questionnaire_data['language_id']
         participant_fields_dict['questionnaire_direction'] = questionnaire_data['direction']
