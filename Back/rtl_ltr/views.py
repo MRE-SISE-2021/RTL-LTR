@@ -627,7 +627,7 @@ class ParticipantAPIView(APIView):
 
         # Insert to QuestionnaireParticipant
         quest_participant_serializer = QuestionnaireParticipantSerializer(data={
-            'questionnaire_id': request.data['questionnaire_id'],
+            'questionnaire_id': questionnaire_id,
             'participant_id': participant_id,
             'questionnaire_start': request.data['questionnaire_start']})
         insert_data_into_table(quest_participant_serializer)
