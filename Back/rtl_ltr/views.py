@@ -1,6 +1,9 @@
 from django.core.handlers import exception
 from rest_framework.permissions import IsAuthenticated
 
+from Back.settings import CRYPTO_KEY
+from Back.settings import PROJECT_HOST
+
 from .serializers import *
 from rest_framework import viewsets
 
@@ -11,6 +14,7 @@ from rest_framework.views import APIView
 from django.http import HttpResponse
 from django.db import transaction
 import numpy as np
+from cryptography.fernet import Fernet
 
 
 ####### MODEL VIEWSETS #######
@@ -163,12 +167,21 @@ def get_tasks_with_settings_from_questionnaire(request, id):
 
 
 # get list of questionnaire name for main page
-# @api_view(['POST'])
-# def refresh_cookies(request, ):
-#     if request.method == "POST":
-#         x = request
-#         c = 0
-#         return Response(status=status.HTTP_200_OK)
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def get_questionnaire_by_hosted_link(request):
+    if request.method == "GET":
+        fernet = Fernet(CRYPTO_KEY)
+        decrypted_hash = fernet.decrypt(request.GET.get('hash', '').encode()).decode()
+        quest_language_ids = decrypted_hash.split("_")
+
+        if not request.GET._mutable:
+            request.GET._mutable = True
+
+        request.GET['language'] = quest_language_ids[1]
+        request.GET._mutable = False
+
+        return QuestionnairePreviewAPIView.get(APIView, request, quest_language_ids[0])
 
 
 # DELETE task from questionnaire
@@ -259,6 +272,16 @@ class QuestionnairePreviewAPIView(APIView):
         # create a new questionnaire in the table and get its id
         questionnaire_id = insert_data_into_table(QuestionnaireSerializer(data=questionnaire_table_data),
                                                   'questionnaire_id')
+
+        # Create hosted link
+        fernet = Fernet(CRYPTO_KEY)
+        raw_hosted_link = str(questionnaire_id) + "_" + str(questionnaire_table_data['language_id'])
+        hosted_link = fernet.encrypt(raw_hosted_link.encode())
+
+        index = len(Questionnaire.objects.select_for_update()) - 1
+        update_data_into_table(QuestionnaireSerializer(Questionnaire.objects.select_for_update()[index],
+                                                       data={'hosted_link': PROJECT_HOST + 'survey/' +
+                                                                            hosted_link.decode()}, partial=True))
 
         # create tasks and associate them with the new questionnaire
         # if task exists in db, only associate it

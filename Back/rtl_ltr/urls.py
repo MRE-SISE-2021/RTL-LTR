@@ -107,6 +107,8 @@ urlpatterns = [
     path('questionnaire-names/', get_questionnaire_name_list),
     # GET tasks with settings by questionnaire_id
     path('get-tasks-with-settings-from-questionnaire/<int:id>', get_tasks_with_settings_from_questionnaire),
+    # GET questionnaire by hosted link
+    path('get-questionnaire-by-hosted-link', get_questionnaire_by_hosted_link),
     # DELETE task from questionnaire by id. id: questionnaire_id, task_id in JSON
     path('delete-task-from-questionnaire/<int:id>', delete_task_from_questionnaire),
 
