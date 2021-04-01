@@ -135,11 +135,20 @@ class HomePage extends Component {
     for (let [i, ans] of answers.entries()) {
       //update free answer accourding to order_key
       if (ans.order_key === order_key) {
-        answers[i] = {
-          answer_ids: [],
-          order_key: order_key,
-          free_answer: answer.free_answer,
-        };
+        if (answer.other !== undefined) {
+          answers[i] = {
+            answer_ids: [7],
+            order_key: order_key,
+            free_answer: answer.free_answer,
+          };
+        } else {
+          answers[i] = {
+            answer_ids: [],
+            order_key: order_key,
+            free_answer: answer.free_answer,
+          };
+        }
+
         this.setState({
           demo_answers: answers,
         });
