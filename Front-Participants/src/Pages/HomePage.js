@@ -57,10 +57,10 @@ class HomePage extends Component {
       questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
-    // API.postRequest("participant-data", response).then((data) => {
-    //   console.log(data); // JSON data parsed by `data.json()` call
-    //   // this.setState({ expId: data.questionnaire_id });
-    // });
+    API.postRequest("participant-data", response).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      // this.setState({ expId: data.questionnaire_id });
+    });
   }
   onUpdateDemoAnswer(answer) {
     // update state with new answer from Task component

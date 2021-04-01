@@ -164,8 +164,8 @@ class TaskParticipant(models.Model):
 class Questionnaire(models.Model):
     questionnaire_id = models.AutoField(db_column='QuestionnaireId', primary_key=True)
     questionnaire_name = models.CharField(db_column='QuestionnaireName', max_length=100, null=True)
-    hosted_link = models.TextField(db_column='HostedLink', null=True)
-    is_active = models.BooleanField(db_column='IsActive')
+    hosted_link = models.TextField(db_column='HostedLink', null=True, blank=True)
+    is_active = models.BooleanField(db_column='IsActive', default=True)
     language_id = models.ForeignKey(Language, models.DO_NOTHING, db_column='LanguageId')
     creation_date = models.DateTimeField(db_column='CreationDate')
     direction = models.TextField(db_column='Direction')
