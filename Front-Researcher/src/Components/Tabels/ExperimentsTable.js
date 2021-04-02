@@ -152,7 +152,7 @@ class ExperimentTable extends Component {
           style={{
             marginLeft: "50%",
             marginTop: "8%",
-            width: "45%",
+            width: "60%",
             overflow: "auto",
             overflowX: "hidden",
           }}
@@ -162,6 +162,7 @@ class ExperimentTable extends Component {
 
         <div
           style={{
+            left: "1%",
             width: "40%",
             overflow: "auto",
             overflowX: "hidden",
