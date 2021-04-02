@@ -3,7 +3,7 @@ import { Cookies } from "react-cookie";
 import inMemoryToken from "./inMemoryToken";
 
 const baseURL = "http://127.0.0.1:8000/";
-
+// const baseURL = "http://35.224.167.159:8000/";
 const cookies = new Cookies();
 
 const axiosInstance = axios.create({
