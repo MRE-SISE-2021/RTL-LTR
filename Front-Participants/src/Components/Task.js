@@ -78,6 +78,13 @@ class Task extends React.Component {
                 if (answer.answer_content === "Other") {
                   return (
                     <div key={index}>
+                      <input
+                        type={type}
+                        key={index}
+                        id={answer.answer_id} //answer_id
+                        name={"ans" + actual_index}
+                        value={actual_index} //order_key
+                      />
                       {answer.answer_content}:
                       <input
                         type="text"
