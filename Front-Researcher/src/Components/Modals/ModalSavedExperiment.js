@@ -88,7 +88,7 @@ class SaveModal extends React.Component {
       return <Redirect to={"/home/"} />;
     }
     return (
-      <div className="mr-3">
+      <div>
         <Button
           variant="outline-*"
           onClick={() => this.setState({ isBasic: true })}
@@ -96,7 +96,8 @@ class SaveModal extends React.Component {
           <MDBIcon
             icon="save"
             //className="text-white"
-            size="1x"
+            className="mr-3"
+            size="2x"
           />
         </Button>
         <Modal

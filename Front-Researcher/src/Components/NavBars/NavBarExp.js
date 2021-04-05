@@ -11,7 +11,7 @@ import * as actionTypes from "../../store/actions";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 //import Navbar from "react-bootstrap/Navbar";
-import "../../styles/homePageStyle.css";
+// import "../../styles/homePageStyle.css";
 import API from "../../Api/Api";
 import { withCookies } from "react-cookie";
 
@@ -97,54 +97,34 @@ class NavBar extends Component {
       <Aux>
         <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <ul className="mb-1 text-primary">
-              <li>
-                <MDBIcon icon="home" size="1x" className="indigo-text pr-3" />{" "}
-              </li>
-            </ul>
+            <MDBIcon icon="home" size="2x" className="text-primary pr-3 mr-5" />
           </Link>
 
           <div className="collapse navbar-collapse">
-            <h5 className="mr-2">ExpName: </h5>
-            <Button
-              className="btn-primary btn-block mr-5"
-              // size="lg"
-              variant="light"
-              active
-            >
-              {this.props.name}
-            </Button>
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              ExpName:{" "}
+            </h5>
+            <h5 className="mr-5">{this.props.name}</h5>
 
-            <h5 className="mr-2"> Type: </h5>
-            <Button
-              className="btn-primary btn-block mr-5"
-              // size="lg"
-              variant="light"
-              active
-            >
-              {this.props.type}
-            </Button>
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              Type:{" "}
+            </h5>
+            <h5 className="mr-5">{this.props.type}</h5>
 
-            <h5 className="mr-2"> Language: </h5>
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              Language:{" "}
+            </h5>
+            <h5 className=" mr-5">{this.props.lang}</h5>
 
-            <Button
-              className="btn-primary tn-edit btn btn-default mr-5"
-              // size="lg"
-              variant="light"
-              active
-            >
-              {this.props.lang}
-            </Button>
-            <h5 className="mr-2"> Direction: </h5>
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              Direction:{" "}
+            </h5>
+            <h5 className="mr-5">{this.props.dir}</h5>
 
-            <Button
-              className="btn-primary tn-edit btn btn-default mr-5"
-              // size="lg"
-              variant="light"
-              active
-            >
-              {this.props.dir}
-            </Button>
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              Status:{" "}
+            </h5>
+            <h5 className="mr-5">Active</h5>
             {this.props.prev ? null : (
               <div className="d-flex justify-content-lg-end">
                 <Modal className="mr-4" data={this.props} />
@@ -154,20 +134,20 @@ class NavBar extends Component {
                   //style={{ color: "white" }}
                   onClick={this.submitPreview}
                 >
-                  <MDBIcon className="mr-1" far icon="eye" size="1x" />
+                  <MDBIcon className="mr-3" far icon="eye" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-1" icon="paperclip" size="1x" />
+                  <MDBIcon className="mr-3" icon="paperclip" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-1" far icon="clone" size="1x" />
+                  <MDBIcon className="mr-3" far icon="clone" size="2x" />
                 </Button>
                 <Button
                   variant="outline-*"
                   //style={{ color: "white" }}
                   onClick={this.submitDelete}
                 >
-                  <MDBIcon className="mr-1" far icon="trash-alt" size="1x" />
+                  <MDBIcon className="mr-3" far icon="trash-alt" size="2x" />
                 </Button>
               </div>
             )}
