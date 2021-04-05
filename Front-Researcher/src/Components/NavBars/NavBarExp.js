@@ -97,7 +97,7 @@ class NavBar extends Component {
       <Aux>
         <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <MDBIcon icon="home" size="2x" className="text-primary pr-3 mr-5" />
+            <MDBIcon icon="home" size="2x" className="text-primary mr-5" />
           </Link>
 
           <div className="collapse navbar-collapse">
