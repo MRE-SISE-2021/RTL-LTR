@@ -204,6 +204,12 @@ class ExperimentTable extends Component {
                 return (
                   <tr key={index}>
                     <td>
+                      {value.is_active ? (
+                        <MDBIcon icon="circle" style={{ color: "limegreen" }} />
+                      ) : (
+                        <MDBIcon icon="circle" style={{ color: "red" }} />
+                      )}
+
                       <Button
                         variant="flat-primary"
                         onClick={() => handleClick(value.questionnaire_id)}
