@@ -10,6 +10,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorker from "./serviceWorker";
 import reducer from "./store/reducer";
+import NotActivePage from "./Pages/NotActivePage";
+import FinishPage from "./Pages/FinishPage";
 const store = createStore(reducer);
 
 const app = (
@@ -17,6 +19,12 @@ const app = (
     <BrowserRouter>
       <Switch>
         <Route exact path="/survey/:hosted_link" component={App} />
+        <Route exact path="/not_active" component={NotActivePage} />
+        <Route
+          exact
+          path="/survey/:hosted_link/finish"
+          component={FinishPage}
+        />
       </Switch>
     </BrowserRouter>
   </Provider>

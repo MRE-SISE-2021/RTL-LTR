@@ -85,7 +85,7 @@ class Task extends React.Component {
                         name={"ans" + actual_index}
                         value={actual_index} //order_key
                       />
-                      {answer.answer_content}:
+                      {" " + answer.answer_content + ": "}
                       <input
                         type="text"
                         name={actual_index}
@@ -105,7 +105,7 @@ class Task extends React.Component {
                         name={"ans" + actual_index}
                         value={actual_index} //order_key
                       />
-                      {answer.answer_content}
+                      {" " + answer.answer_content}
                     </div>
                   );
                 }
