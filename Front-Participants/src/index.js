@@ -20,11 +20,7 @@ const app = (
       <Switch>
         <Route exact path="/survey/:hosted_link" component={App} />
         <Route exact path="/not_active" component={NotActivePage} />
-        <Route
-          exact
-          path="/survey/:hosted_link/finish"
-          component={FinishPage}
-        />
+        <Route exact path="/finished" component={FinishPage} />
       </Switch>
     </BrowserRouter>
   </Provider>

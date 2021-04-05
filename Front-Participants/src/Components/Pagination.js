@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "../styles/Pagination.css";
 import { ProgressBar, Button, Col } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 
 const propTypes = {
   items: PropTypes.array.isRequired,
@@ -18,7 +19,10 @@ const defaultProps = {
 class Pagination extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { pager: {} };
+    this.state = {
+      pager: {},
+      isFinal: false,
+    };
     this.getLangStart = this.getLangStart.bind(this);
     this.getLangNext = this.getLangNext.bind(this);
     this.getLangFinish = this.getLangFinish.bind(this);
@@ -167,7 +171,15 @@ class Pagination extends React.Component {
         return "2";
     }
   }
+
+  GetFinalPage(pager) {
+    this.setPage(pager.currentPage + 1);
+    this.setState({ isFinal: true });
+  }
   render() {
+    if (this.state.isFinal) {
+      return <Redirect to={"/finished"} />;
+    }
     var pager = this.state.pager;
     // console.log(pager);
     if (!pager.pages || pager.pages.length <= 1) {
@@ -199,7 +211,7 @@ class Pagination extends React.Component {
           <Button
             style={{ width: "50%" }}
             // className="item-page"
-            onClick={() => this.setPage(pager.currentPage + 1)}
+            onClick={() => this.GetFinalPage(pager)}
           >
             {this.getLangFinish()}
           </Button>
