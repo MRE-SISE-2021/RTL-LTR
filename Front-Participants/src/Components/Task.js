@@ -75,7 +75,7 @@ class Task extends React.Component {
               />
             ) : (
               this.state.task.answers.map(function (answer, index) {
-                if (answer.answer_content === "Other") {
+                if (answer.value === "Other") {
                   return (
                     <div key={index}>
                       <input
