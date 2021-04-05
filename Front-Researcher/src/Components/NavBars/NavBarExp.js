@@ -27,6 +27,22 @@ class NavBar extends Component {
     };
     this.submitPreview = this.submitPreview.bind(this);
     this.submitDelete = this.submitDelete.bind(this);
+    this.getLangName = this.getLangName.bind(this);
+  }
+
+  getLangName() {
+    switch (this.props.lang) {
+      case "1":
+        return "Arabic";
+      case "2":
+        return "English";
+      case "3":
+        return "Hebrew";
+      case "4":
+        return "Russian";
+      default:
+        return "2";
+    }
   }
 
   submitPreview(event) {
@@ -114,7 +130,7 @@ class NavBar extends Component {
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Language:{" "}
             </h5>
-            <h5 className=" mr-5">{this.props.lang}</h5>
+            <h5 className=" mr-5">{this.getLangName()}</h5>
 
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Direction:{" "}
