@@ -10,7 +10,7 @@ class NotActivePage extends Component {
   render() {
     return (
       <div>
-        <h3>Experiment Not Active! Thanks for your interst :)</h3>
+        <h3>Experiment Not Active! Thanks for your interest :)</h3>
       </div>
     );
   }
