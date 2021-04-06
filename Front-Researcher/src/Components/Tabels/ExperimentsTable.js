@@ -171,7 +171,14 @@ class ExperimentTable extends Component {
         >
           <Row className="mt-4 ml-1">
             <Col sm={8}>
-              <h5>MY EXPERIMENTS ({names.length})</h5>
+              <h5>
+                MY EXPERIMENTS ({names.length}){" "}
+                <MDBIcon
+                  type="button"
+                  onClick={() => handleReload()}
+                  icon="redo"
+                />
+              </h5>
             </Col>
 
             <Modal />
@@ -187,13 +194,6 @@ class ExperimentTable extends Component {
                 </th>
                 <th>
                   NEW <MDBIcon icon="user-friends" />
-                </th>
-                <th>
-                  <MDBIcon
-                    type="button"
-                    onClick={() => handleReload()}
-                    icon="redo"
-                  />
                 </th>
               </tr>
             </thead>
@@ -230,7 +230,6 @@ class ExperimentTable extends Component {
                     </td>
                     <td>sum</td>
                     <td>sum</td>
-                    <td>?</td>
                   </tr>
                 );
               })}
