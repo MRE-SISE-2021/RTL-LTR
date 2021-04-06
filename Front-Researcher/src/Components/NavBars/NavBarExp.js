@@ -176,14 +176,21 @@ class NavBar extends Component {
                 marginTop: "1%",
                 marginRight: "2%",
               }}
+              onChange={this.onIsActiveChange}
             >
               {this.state.is_active ? (
-                <Form.Control as="select" onChange={this.onIsActiveChange}>
+                <Form.Control
+                  as="select"
+                  value={this.state.is_active ? "Active" : "Not-Active"}
+                >
                   <option value={"Active"}>Active</option>
                   <option value={"Not-Active"}>Not-Active</option>
                 </Form.Control>
               ) : (
-                <Form.Control as="select" onChange={this.onIsActiveChange}>
+                <Form.Control
+                  as="select"
+                  value={this.state.is_active ? "Active" : "Not-Active"}
+                >
                   <option value={"Not-Active"}>Not-Active</option>
                   <option value={"Active"}>Active</option>
                 </Form.Control>

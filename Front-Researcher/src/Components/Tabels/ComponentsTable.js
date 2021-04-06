@@ -176,7 +176,7 @@ class ComponentsTable extends Component {
                 className=" list-group list-group-full"
               >
                 <div className=" list-group-item">
-                  <h5>Genral forms</h5>
+                  <h5>General forms</h5>
 
                   <Button
                     id="1"
