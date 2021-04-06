@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { MDBChip, MDBContainer } from "mdbreact";
 
@@ -120,6 +120,7 @@ class NavBar extends Component {
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               ExpName:{" "}
             </h5>
+
             <h5 className="mr-5">{this.props.name}</h5>
 
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
@@ -135,12 +136,34 @@ class NavBar extends Component {
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Direction:{" "}
             </h5>
-            <h5 className="mr-5">{this.props.dir}</h5>
+            <Form.Group
+              style={{
+                flexFlow: "inherit",
+                marginTop: "1%",
+                marginRight: "2%",
+              }}
+            >
+              <Form.Control as="select">
+                <option>{this.props.dir}</option>
+              </Form.Control>
+            </Form.Group>
 
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Status:{" "}
             </h5>
-            <h5 className="mr-5">Active</h5>
+            <Form.Group
+              style={{
+                flexFlow: "inherit",
+                marginTop: "1%",
+                marginRight: "2%",
+              }}
+            >
+              <Form.Control as="select">
+                <option>Active</option>
+                <option>Not-Active</option>
+              </Form.Control>
+            </Form.Group>
+            {/* <h5 className="mr-5">Active</h5> */}
             {this.props.prev ? null : (
               <div className="d-flex justify-content-lg-end">
                 <Modal className="mr-4" data={this.props} />
