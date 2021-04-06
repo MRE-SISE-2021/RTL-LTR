@@ -83,7 +83,7 @@ class Task extends React.Component {
                         key={index}
                         id={answer.answer_id} //answer_id
                         name={"ans" + actual_index}
-                        value={actual_index} //order_key
+                        value={actual_index} //order_key.
                       />
                       {" " + answer.answer_content + ": "}
                       <input
