@@ -55,6 +55,7 @@ class ExperimentPage extends Component {
         expId: this.props.match.params.id,
         tasks: this.props.location.state.tasks,
         demographic: this.props.location.state.demographic,
+        is_active: this.props.location.state.is_active,
       });
       return;
     }

@@ -39,7 +39,7 @@ class NavBar extends Component {
   }
   onIsActiveChange(event) {
     console.log(event.target.value);
-    if (event.target.value === "false") {
+    if (event.target.value === "Not-Active") {
       this.setState({
         is_active: false,
       });
@@ -177,14 +177,23 @@ class NavBar extends Component {
                 marginRight: "2%",
               }}
             >
-              <Form.Control as="select" onChange={this.onIsActiveChange}>
-                <option value={this.state.is_active}>
+              {this.state.is_active ? (
+                <Form.Control as="select" onChange={this.onIsActiveChange}>
+                  <option value={"Active"}>Active</option>
+                  <option value={"Not-Active"}>Not-Active</option>
+                </Form.Control>
+              ) : (
+                <Form.Control as="select" onChange={this.onIsActiveChange}>
+                  <option value={"Not-Active"}>Not-Active</option>
+                  <option value={"Active"}>Active</option>
+                </Form.Control>
+              )}
+              {/* <option value={this.state.is_active}>
                   {this.state.is_active ? "Active" : "Not-Active"}
                 </option>
                 <option value={!this.state.is_active}>
                   {!this.state.is_active ? "Active" : "Not-Active"}
-                </option>
-              </Form.Control>
+                </option> */}
             </Form.Group>
             {/* <h5 className="mr-5">Active</h5> */}
             {this.props.prev ? null : (
