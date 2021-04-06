@@ -13,6 +13,7 @@ class ExperimentPage extends Component {
     this.state = {
       expId: "",
       tasks: [],
+      is_active: true,
       demographic: {
         is_age_demo: true,
         is_native_demo: true,
@@ -67,7 +68,7 @@ class ExperimentPage extends Component {
       questionnaire_name: this.props.match.params.name,
       direction: this.props.match.params.dir,
       hosted_link: "", //
-      is_active: "true",
+      is_active: this.state.is_active,
       language_id: this.props.match.params.language,
       questionnaire_type_id: "1", //
       demographic: this.state.demographic,
@@ -94,6 +95,7 @@ class ExperimentPage extends Component {
           expId={this.state.expId}
           tasks={this.state.tasks}
           demographic={this.state.demographic}
+          is_active={this.state.is_active}
         />
       </Aux>
     );

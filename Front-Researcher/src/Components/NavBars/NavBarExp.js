@@ -19,17 +19,36 @@ import { Navbar } from "react-bootstrap";
 import "../../styles/homePageStyle.css";
 
 class NavBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       toPreview: false,
       toHome: false,
+      is_active: props.is_active,
     };
     this.submitPreview = this.submitPreview.bind(this);
     this.submitDelete = this.submitDelete.bind(this);
     this.getLangName = this.getLangName.bind(this);
+    this.onIsActiveChange = this.onIsActiveChange.bind(this);
   }
-
+  async componentWillReceiveProps(propsIncoming) {
+    console.log(propsIncoming);
+    await this.setState({
+      is_active: propsIncoming.is_active,
+    });
+  }
+  onIsActiveChange(event) {
+    console.log(event.target.value);
+    if (event.target.value === "false") {
+      this.setState({
+        is_active: false,
+      });
+    } else {
+      this.setState({
+        is_active: true,
+      });
+    }
+  }
   getLangName() {
     switch (this.props.lang) {
       case "1":
@@ -88,7 +107,7 @@ class NavBar extends Component {
     });
   }
   render() {
-    // console.log(this.props);
+    console.log(this.state);
     if (this.state.toPreview === true) {
       return (
         <Redirect to={"/preview/" + this.props.expId + "/" + this.props.lang} />
@@ -158,15 +177,23 @@ class NavBar extends Component {
                 marginRight: "2%",
               }}
             >
-              <Form.Control as="select">
-                <option>Active</option>
-                <option>Not-Active</option>
+              <Form.Control as="select" onChange={this.onIsActiveChange}>
+                <option value={this.state.is_active}>
+                  {this.state.is_active ? "Active" : "Not-Active"}
+                </option>
+                <option value={!this.state.is_active}>
+                  {!this.state.is_active ? "Active" : "Not-Active"}
+                </option>
               </Form.Control>
             </Form.Group>
             {/* <h5 className="mr-5">Active</h5> */}
             {this.props.prev ? null : (
               <div className="d-flex justify-content-lg-end">
-                <Modal className="mr-4" data={this.props} />
+                <Modal
+                  className="mr-4"
+                  data={this.props}
+                  is_active={this.state.is_active}
+                />
 
                 <Button
                   variant="outline-*"
