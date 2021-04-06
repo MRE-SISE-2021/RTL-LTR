@@ -75,7 +75,7 @@ class Task extends React.Component {
               />
             ) : (
               this.state.task.answers.map(function (answer, index) {
-                if (answer.answer_content === "Other") {
+                if (answer.value === "Other") {
                   return (
                     <div key={index}>
                       <input
@@ -83,9 +83,9 @@ class Task extends React.Component {
                         key={index}
                         id={answer.answer_id} //answer_id
                         name={"ans" + actual_index}
-                        value={actual_index} //order_key
+                        value={actual_index} //order_key.
                       />
-                      {answer.answer_content}:
+                      {" " + answer.answer_content + ": "}
                       <input
                         type="text"
                         name={actual_index}
@@ -105,7 +105,7 @@ class Task extends React.Component {
                         name={"ans" + actual_index}
                         value={actual_index} //order_key
                       />
-                      {answer.answer_content}
+                      {" " + answer.answer_content}
                     </div>
                   );
                 }
