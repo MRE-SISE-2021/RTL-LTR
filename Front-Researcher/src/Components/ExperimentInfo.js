@@ -120,7 +120,7 @@ class ExperimentInfo extends Component {
 
   render() {
     const data = this.props.chosen;
-    console.log(this.state);
+    console.log(data);
     if (this.state.toDashboard === true) {
       return (
         <Redirect
@@ -145,6 +145,7 @@ class ExperimentInfo extends Component {
             state: {
               tasks: data.tasks,
               demographic: this.state.demographic,
+              is_active: data.is_active,
             },
           }}
         />

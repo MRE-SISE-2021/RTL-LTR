@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { MDBChip, MDBContainer } from "mdbreact";
 
@@ -11,7 +11,7 @@ import * as actionTypes from "../../store/actions";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 //import Navbar from "react-bootstrap/Navbar";
-import "../../styles/homePageStyle.css";
+// import "../../styles/homePageStyle.css";
 import API from "../../Api/Api";
 import { withCookies } from "react-cookie";
 
@@ -19,14 +19,49 @@ import { Navbar } from "react-bootstrap";
 import "../../styles/homePageStyle.css";
 
 class NavBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       toPreview: false,
       toHome: false,
+      is_active: props.is_active,
     };
     this.submitPreview = this.submitPreview.bind(this);
     this.submitDelete = this.submitDelete.bind(this);
+    this.getLangName = this.getLangName.bind(this);
+    this.onIsActiveChange = this.onIsActiveChange.bind(this);
+  }
+  async componentWillReceiveProps(propsIncoming) {
+    console.log(propsIncoming);
+    await this.setState({
+      is_active: propsIncoming.is_active,
+    });
+  }
+  onIsActiveChange(event) {
+    console.log(event.target.value);
+    if (event.target.value === "Not-Active") {
+      this.setState({
+        is_active: false,
+      });
+    } else {
+      this.setState({
+        is_active: true,
+      });
+    }
+  }
+  getLangName() {
+    switch (this.props.lang) {
+      case "1":
+        return "Arabic";
+      case "2":
+        return "English";
+      case "3":
+        return "Hebrew";
+      case "4":
+        return "Russian";
+      default:
+        return "2";
+    }
   }
 
   submitPreview(event) {
@@ -72,7 +107,7 @@ class NavBar extends Component {
     });
   }
   render() {
-    // console.log(this.props);
+    console.log(this.state);
     if (this.state.toPreview === true) {
       return (
         <Redirect to={"/preview/" + this.props.expId + "/" + this.props.lang} />
@@ -97,77 +132,104 @@ class NavBar extends Component {
       <Aux>
         <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <ul className="mb-1 text-primary">
-              <li>
-                <MDBIcon icon="home" size="1x" className="indigo-text pr-3" />{" "}
-              </li>
-            </ul>
+            <MDBIcon icon="home" size="2x" className="text-primary mr-5" />
           </Link>
 
           <div className="collapse navbar-collapse">
-            <h5 className="mr-2">ExpName: </h5>
-            <Button
-              className="btn-primary btn-block mr-5"
-              // size="lg"
-              variant="light"
-              active
-            >
-              {this.props.name}
-            </Button>
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              ExpName:{" "}
+            </h5>
 
-            <h5 className="mr-2"> Type: </h5>
-            <Button
-              className="btn-primary btn-block mr-5"
-              // size="lg"
-              variant="light"
-              active
-            >
-              {this.props.type}
-            </Button>
+            <h5 className="mr-5">{this.props.name}</h5>
 
-            <h5 className="mr-2"> Language: </h5>
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              Type:{" "}
+            </h5>
+            <h5 className="mr-5">{this.props.type}</h5>
 
-            <Button
-              className="btn-primary tn-edit btn btn-default mr-5"
-              // size="lg"
-              variant="light"
-              active
-            >
-              {this.props.lang}
-            </Button>
-            <h5 className="mr-2"> Direction: </h5>
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              Language:{" "}
+            </h5>
+            <h5 className=" mr-5">{this.getLangName()}</h5>
 
-            <Button
-              className="btn-primary tn-edit btn btn-default mr-5"
-              // size="lg"
-              variant="light"
-              active
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              Direction:{" "}
+            </h5>
+            <Form.Group
+              style={{
+                flexFlow: "inherit",
+                marginTop: "1%",
+                marginRight: "2%",
+              }}
             >
-              {this.props.dir}
-            </Button>
+              <Form.Control as="select">
+                <option>{this.props.dir}</option>
+              </Form.Control>
+            </Form.Group>
+
+            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+              Status:{" "}
+            </h5>
+            <Form.Group
+              style={{
+                flexFlow: "inherit",
+                marginTop: "1%",
+                marginRight: "2%",
+              }}
+              onChange={this.onIsActiveChange}
+            >
+              {this.state.is_active ? (
+                <Form.Control
+                  as="select"
+                  value={this.state.is_active ? "Active" : "Not-Active"}
+                >
+                  <option value={"Active"}>Active</option>
+                  <option value={"Not-Active"}>Not-Active</option>
+                </Form.Control>
+              ) : (
+                <Form.Control
+                  as="select"
+                  value={this.state.is_active ? "Active" : "Not-Active"}
+                >
+                  <option value={"Not-Active"}>Not-Active</option>
+                  <option value={"Active"}>Active</option>
+                </Form.Control>
+              )}
+              {/* <option value={this.state.is_active}>
+                  {this.state.is_active ? "Active" : "Not-Active"}
+                </option>
+                <option value={!this.state.is_active}>
+                  {!this.state.is_active ? "Active" : "Not-Active"}
+                </option> */}
+            </Form.Group>
+            {/* <h5 className="mr-5">Active</h5> */}
             {this.props.prev ? null : (
               <div className="d-flex justify-content-lg-end">
-                <Modal className="mr-4" data={this.props} />
+                <Modal
+                  className="mr-4"
+                  data={this.props}
+                  is_active={this.state.is_active}
+                />
 
                 <Button
                   variant="outline-*"
                   //style={{ color: "white" }}
                   onClick={this.submitPreview}
                 >
-                  <MDBIcon className="mr-1" far icon="eye" size="1x" />
+                  <MDBIcon className="mr-3" far icon="eye" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-1" icon="paperclip" size="1x" />
+                  <MDBIcon className="mr-3" icon="paperclip" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-1" far icon="clone" size="1x" />
+                  <MDBIcon className="mr-3" far icon="clone" size="2x" />
                 </Button>
                 <Button
                   variant="outline-*"
                   //style={{ color: "white" }}
                   onClick={this.submitDelete}
                 >
-                  <MDBIcon className="mr-1" far icon="trash-alt" size="1x" />
+                  <MDBIcon className="mr-3" far icon="trash-alt" size="2x" />
                 </Button>
               </div>
             )}

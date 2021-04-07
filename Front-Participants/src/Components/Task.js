@@ -24,6 +24,7 @@ class Task extends React.Component {
         answer_id: [],
         order_key: event.target.name,
         free_answer: event.target.value,
+        other: "other",
       });
       return;
     }
@@ -74,14 +75,22 @@ class Task extends React.Component {
               />
             ) : (
               this.state.task.answers.map(function (answer, index) {
-                if (answer.answer_content === "Other") {
+                if (answer.value === "Other") {
                   return (
                     <div key={index}>
-                      {answer.answer_content}:
+                      <input
+                        type={type}
+                        key={index}
+                        id={answer.answer_id} //answer_id
+                        name={"ans" + actual_index}
+                        value={actual_index} //order_key.
+                      />
+                      {" " + answer.answer_content + ": "}
                       <input
                         type="text"
-                        name={answer.answer_id}
+                        name={actual_index}
                         // value={actual_index}
+
                         id="other"
                       />
                     </div>
@@ -96,7 +105,7 @@ class Task extends React.Component {
                         name={"ans" + actual_index}
                         value={actual_index} //order_key
                       />
-                      {answer.answer_content}
+                      {" " + answer.answer_content}
                     </div>
                   );
                 }

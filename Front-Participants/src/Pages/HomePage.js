@@ -24,24 +24,43 @@ const Range = createSliderWithTooltip(Slider.Range);
 //
 
 class HomePage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.log(props.data);
     this.state = {
-      tasks: [], //what we get from db
+      tasks: props.data.tasks, //what we get from db
       inputList: [], //what we show to the user
       pageOfComponents: [], // show on one page
-      name: "",
-      lang: "",
-      type: "",
-      direction: "LTR",
-      demographic_task: [],
-      demographic: {},
+      name: props.data.name,
+      lang: props.data.lang,
+      type: props.data.type,
+      direction: props.data.direction,
+      demographic_task: props.data.demographic_task,
+      demographic: props.data.demographic,
       demo_answers: [],
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onUpdateDemoAnswer = this.onUpdateDemoAnswer.bind(this);
     this.onCreateUser = this.onCreateUser.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
+  }
+
+  async componentWillReceiveProps(propsIncoming) {
+    //Edit EXP
+    debugger;
+    console.log(propsIncoming);
+    await this.setState({
+      tasks: propsIncoming.data.tasks, //what we get from db
+      name: propsIncoming.data.name,
+      lang: propsIncoming.data.lang,
+      type: propsIncoming.data.type,
+      direction: propsIncoming.data.direction,
+      demographic_task: propsIncoming.data.demographic_task,
+      demographic: propsIncoming.data.demographic,
+    });
+    console.log(this.state);
+
+    this.putInputList();
   }
   onChangePage(pageOfComponents) {
     // update state with new page of items
@@ -53,7 +72,8 @@ class HomePage extends Component {
     console.log("Post --- request --- create new user");
     const response = {
       demo_answers: this.state.demo_answers,
-      questionnaire_id: "1", //
+      // questionnaire_id: "1", //
+      hash: this.props.hosted_link,
       questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
@@ -135,11 +155,20 @@ class HomePage extends Component {
     for (let [i, ans] of answers.entries()) {
       //update free answer accourding to order_key
       if (ans.order_key === order_key) {
-        answers[i] = {
-          answer_ids: [],
-          order_key: order_key,
-          free_answer: answer.free_answer,
-        };
+        if (answer.other !== undefined) {
+          answers[i] = {
+            answer_ids: [7],
+            order_key: order_key,
+            free_answer: answer.free_answer,
+          };
+        } else {
+          answers[i] = {
+            answer_ids: [],
+            order_key: order_key,
+            free_answer: answer.free_answer,
+          };
+        }
+
         this.setState({
           demo_answers: answers,
         });
@@ -155,63 +184,6 @@ class HomePage extends Component {
       }),
     });
     console.log(this.state);
-  }
-
-  async componentDidMount() {
-    await axiosInstance
-      .get("questionnaire-preview-data/" + "1", {
-        params: {
-          language: "2",
-        },
-      })
-      .then(
-        (result) => {
-          result = result.data;
-          console.log(result);
-          this.setState(() => ({
-            tasks: result.tasks,
-            name: result.questionnaire_name,
-            type: result.questionnaire_type_id,
-            lang: result.language_id,
-            direction: result.direction,
-            demographic_task: result.demographic_task,
-            // demographic: {
-            //   is_age_demo: result.is_age_demo,
-            //   is_native_demo: result.is_native_demo,
-            //   is_other_demo: result.is_other_demo,
-            //   is_knowledge_demo: result.is_knowledge_demo,
-            //   is_daily_demo: result.is_daily_demo,
-            //   is_writing_demo: result.is_writing_demo,
-            //   is_mobile_demo: result.is_mobile_demo,
-            //   is_mouse_demo: result.is_mouse_demo,
-            //   is_design_demo: result.is_design_demo,
-            //   is_hci_demo: result.is_hci_demo,
-            //   is_develop_demo: result.is_develop_demo,
-            // },
-            demographic: [
-              result.is_age_demo,
-              result.is_native_demo,
-              result.is_other_demo,
-              result.is_knowledge_demo,
-              result.is_daily_demo,
-              result.is_writing_demo,
-              result.is_mobile_demo,
-              result.is_mouse_demo,
-              result.is_design_demo,
-              result.is_hci_demo,
-              result.is_develop_demo,
-            ],
-          }));
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        }
-      );
-
-    this.putInputList();
   }
 
   onInputchange(event) {

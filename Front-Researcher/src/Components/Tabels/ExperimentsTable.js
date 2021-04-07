@@ -152,7 +152,7 @@ class ExperimentTable extends Component {
           style={{
             marginLeft: "50%",
             marginTop: "8%",
-            width: "45%",
+            width: "60%",
             overflow: "auto",
             overflowX: "hidden",
           }}
@@ -162,6 +162,7 @@ class ExperimentTable extends Component {
 
         <div
           style={{
+            left: "1%",
             width: "40%",
             overflow: "auto",
             overflowX: "hidden",
@@ -170,7 +171,14 @@ class ExperimentTable extends Component {
         >
           <Row className="mt-4 ml-1">
             <Col sm={8}>
-              <h5>MY EXPERIMENTS ({names.length})</h5>
+              <h5>
+                MY EXPERIMENTS ({names.length}){" "}
+                <MDBIcon
+                  type="button"
+                  onClick={() => handleReload()}
+                  icon="redo"
+                />
+              </h5>
             </Col>
 
             <Modal />
@@ -187,13 +195,6 @@ class ExperimentTable extends Component {
                 <th>
                   NEW <MDBIcon icon="user-friends" />
                 </th>
-                <th>
-                  <MDBIcon
-                    type="button"
-                    onClick={() => handleReload()}
-                    icon="redo"
-                  />
-                </th>
               </tr>
             </thead>
 
@@ -203,6 +204,12 @@ class ExperimentTable extends Component {
                 return (
                   <tr key={index}>
                     <td>
+                      {value.is_active ? (
+                        <MDBIcon icon="circle" style={{ color: "limegreen" }} />
+                      ) : (
+                        <MDBIcon icon="circle" style={{ color: "red" }} />
+                      )}
+
                       <Button
                         variant="flat-primary"
                         onClick={() => handleClick(value.questionnaire_id)}
@@ -223,7 +230,6 @@ class ExperimentTable extends Component {
                     </td>
                     <td>sum</td>
                     <td>sum</td>
-                    <td>?</td>
                   </tr>
                 );
               })}

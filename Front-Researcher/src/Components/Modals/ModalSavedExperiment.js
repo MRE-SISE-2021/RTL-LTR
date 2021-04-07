@@ -20,6 +20,7 @@ class SaveModal extends React.Component {
       lang: props.data.lang,
       demographic: props.data.demo,
       id: props.data.expId,
+      is_active: props.is_active,
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
@@ -31,6 +32,7 @@ class SaveModal extends React.Component {
     this.setState({
       demographic: demo,
       id: expId,
+      is_active: propsIncoming.is_active,
     });
   }
 
@@ -64,10 +66,11 @@ class SaveModal extends React.Component {
 
   onAddBtnClick() {
     // const langId = this.getLangId();
-    console.log(this.state.demographic);
+    console.log(this.state.is_active);
     let response = {
       questionnaire_id: this.state.id, //
       demographic: this.state.demographic,
+      is_active: this.state.is_active,
     };
     console.log(response);
     API.putRequest(
@@ -88,7 +91,7 @@ class SaveModal extends React.Component {
       return <Redirect to={"/home/"} />;
     }
     return (
-      <div className="mr-3">
+      <div>
         <Button
           variant="outline-*"
           onClick={() => this.setState({ isBasic: true })}
@@ -96,7 +99,8 @@ class SaveModal extends React.Component {
           <MDBIcon
             icon="save"
             //className="text-white"
-            size="1x"
+            className="mr-3"
+            size="2x"
           />
         </Button>
         <Modal

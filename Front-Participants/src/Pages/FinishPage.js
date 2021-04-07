@@ -1,44 +1,32 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import ExperimentsTable from "../Components/Tabels/ExperimentsTable";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
+import API from "../Api/Api";
 
 class HomePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      chosen: {},
-    };
+  constructor() {
+    super();
   }
 
-  UNSAFE_componentWillMount() {
-    if (
-      this.props.windowWidth > 992 &&
-      this.props.windowWidth <= 1024 &&
-      this.props.layout !== "horizontal"
-    ) {
-      this.props.onComponentWillMount();
-    }
-  }
-
-  mobileOutClickHandler() {
-    if (this.props.windowWidth < 992 && this.props.collapseMenu) {
-      this.props.onComponentWillMount();
-    }
-  }
+  async componentDidMount() {}
 
   render() {
+    // console.log(this.state);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
     } else {
       mainClass = [...mainClass, "container"];
     }
+    // console.log(this.state);
     return (
       <Aux>
         <div className={mainClass.join(" ")}>
-          <ExperimentsTable />
+          <h3>
+            Congratulations you have finished the experiment!! thanks for you
+            time
+          </h3>
         </div>
       </Aux>
     );
