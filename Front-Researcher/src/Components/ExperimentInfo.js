@@ -154,8 +154,9 @@ class ExperimentInfo extends Component {
 
     // console.log(data);
     return (
-      <Aux>
-        <Row>
+      <Aux >
+        
+        <Row >
           <Col>
             <h5>Experiment Details: {data.questionnaire_name}</h5>
           </Col>

@@ -150,9 +150,12 @@ class ExperimentTable extends Component {
       <div>
         <div
           style={{
+            position: "absolute",
+            right: "0",
+            transform: "translatex(-1%)",
             marginLeft: "50%",
-            marginTop: "8%",
-            width: "60%",
+            marginTop: "6.5%",
+            width: "50%",
             overflow: "auto",
             overflowX: "hidden",
           }}
@@ -162,14 +165,16 @@ class ExperimentTable extends Component {
 
         <div
           style={{
+            position: "absolute",
+            transform: "translatex(+1%)",
             left: "1%",
-            width: "40%",
+            width: "45%",
             overflow: "auto",
             overflowX: "hidden",
           }}
           className={navClass.join(" ")}
         >
-          <Row className="mt-4 ml-1">
+          <Row className="mt-4">
             <Col sm={8}>
               <h5>
                 MY EXPERIMENTS ({names.length}){" "}
@@ -183,7 +188,7 @@ class ExperimentTable extends Component {
 
             <Modal />
           </Row>
-          <Table striped bordered hover>
+          <Table striped bordered hover className="mt-4">
             <thead>
               <tr>
                 <th>NAME</th>
