@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card , Form} from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
@@ -210,10 +210,17 @@ class ExperimentInfo extends Component {
                   </Col>
 
                   <Col>
-                    <b>Status: </b>
-                    {data.is_active !== undefined
+                   <p>Status: <Form.Check 
+                    type="switch"
+                    id="custom-switch"
+                    label="Status:"
+                    //onClick={this.setSettings}
+                    //= {}
+                    /></p>
+                   {data.is_active !== undefined
                       ? [data.is_active ? "True" : "False"]
                       : null}
+                   
                   </Col>
                 </Row>
                 <br />
