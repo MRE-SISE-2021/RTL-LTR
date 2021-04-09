@@ -131,11 +131,17 @@ class NavBar extends Component {
     let navBar = (
       <Aux>
         <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
+        
           <Link to="/home">
-            <MDBIcon icon="home" size="2x" className="text-primary mr-5" />
+            <ul className="mb-1 text-primary">
+              <li >
+                <MDBIcon  icon="home" size="2x" className="indigo-text pr-3"  />/Create Experiment{" "}
+              </li>
+             
+            </ul>
           </Link>
 
-          <div className="collapse navbar-collapse">
+          <div className="nav navbar-nav navbar-center " className="navbar-collapse" >
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               ExpName:{" "}
             </h5>
@@ -203,10 +209,13 @@ class NavBar extends Component {
                 </option> */}
             </Form.Group>
             {/* <h5 className="mr-5">Active</h5> */}
+            </div>
+
+            <div className="nav navbar-nav navbar-right" className="navbar-collapse2"  >
+
             {this.props.prev ? null : (
               <div className="d-flex justify-content-lg-end">
                 <Modal
-                  className="mr-4"
                   data={this.props}
                   is_active={this.state.is_active}
                 />
@@ -216,24 +225,25 @@ class NavBar extends Component {
                   //style={{ color: "white" }}
                   onClick={this.submitPreview}
                 >
-                  <MDBIcon className="mr-3" far icon="eye" size="2x" />
+                  <MDBIcon className="pr-3" far icon="eye" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-3" icon="paperclip" size="2x" />
+                  <MDBIcon className="pr-3" icon="paperclip" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="mr-3" far icon="clone" size="2x" />
+                  <MDBIcon className="pr-3" far icon="clone" size="2x" />
                 </Button>
                 <Button
                   variant="outline-*"
                   //style={{ color: "white" }}
                   onClick={this.submitDelete}
                 >
-                  <MDBIcon className="mr-3" far icon="trash-alt" size="2x" />
+                  <MDBIcon className="pr-3" far icon="trash-alt" size="2x" />
                 </Button>
               </div>
             )}
           </div>
+
         </Navbar>
       </Aux>
     );
