@@ -91,7 +91,7 @@ class PreviewPage extends Component {
     console.log(this.state);
     this.state.tasks.forEach((task, index) => {
       let inputList = this.state.inputList;
-      console.log(task.label);
+      console.log(task);
       ////Task Comp Direction
       let compdirection = "rtl";
       let CompDiv = styled.div`
@@ -187,55 +187,44 @@ class PreviewPage extends Component {
                       })}
                     </Form.Control>
                   </CompDiv>
+                ) : task.component_type_id === 2 ? (
+                  <Slider
+                    className="pc-range-slider"
+                    id="slider"
+                    direction={compdirection}
+                  />
+                ) : task.component_type_id === 5 ? (
+                  <Rating
+                    emptySymbol="far fa-star fa-2x"
+                    fullSymbol="fas fa-star fa-2x"
+                    id="stars"
+                    direction={compdirection}
+                  />
+                ) : task.component_type_id === 4 ? (
+                  <Range
+                    className="pc-range-slider"
+                    step={10}
+                    defaultValue={[20, 30]}
+                    id="double_slider"
+                    direction={compdirection}
+                  />
                 ) : (
-                  task.answers.map(function (answer, index) {
-                    return (
-                      <div key={index} dir={theme.dir}>
-                        {answer.answer_content}:
-                        {task.component_type_id === 2 ? (
-                          <Slider
-                            className="pc-range-slider"
-                            id="slider"
-                            direction={compdirection}
-                          />
-                        ) : task.component_type_id === 5 ? (
-                          <Rating
-                            emptySymbol="far fa-star fa-2x"
-                            fullSymbol="fas fa-star fa-2x"
-                            id="stars"
-                            direction={compdirection}
-                          />
-                        ) : task.component_type_id === 4 ? (
-                          <Range
-                            className="pc-range-slider"
-                            step={10}
-                            defaultValue={[20, 30]}
-                            id="double_slider"
-                            direction={compdirection}
-                          />
-                        ) : (
-                          <Rating
-                            // initialRating={this.state.squareRating}
-                            direction={compdirection}
-                            id="rating"
-                            emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span>{n}</span>
-                              </span>
-                            ))}
-                            fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span className="active">{n}</span>
-                              </span>
-                            ))}
-                            onChange={(rate) =>
-                              this.setState({ squareRating: rate })
-                            }
-                          />
-                        )}
-                      </div>
-                    );
-                  })
+                  <Rating
+                    // initialRating={this.state.squareRating}
+                    direction={compdirection}
+                    id="rating"
+                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                      <span className="theme-bar-square">
+                        <span>{n}</span>
+                      </span>
+                    ))}
+                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                      <span className="theme-bar-square">
+                        <span className="active">{n}</span>
+                      </span>
+                    ))}
+                    onChange={(rate) => this.setState({ squareRating: rate })}
+                  />
                 )}
               </Div>
             </ThemeProvider>

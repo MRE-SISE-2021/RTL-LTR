@@ -24,7 +24,6 @@ import rtl from "styled-components-rtl";
 ////---rtl
 import "./../../assets/scss/style.scss";
 
-
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
@@ -43,8 +42,6 @@ const handle = (props) => {
     </Tooltip>
   );
 };
-
-
 
 class FormsElements extends React.Component {
   constructor(props) {
@@ -66,7 +63,6 @@ class FormsElements extends React.Component {
         is_add_picture_setting: props.is_add_picture_setting || false,
       },
     };
-
 
     this.onInputchange = this.onInputchange.bind(this);
     this.onInputAdd = this.onInputAdd.bind(this);
@@ -136,6 +132,7 @@ class FormsElements extends React.Component {
       "questionnaire-preview-data/" + this.state.id,
       response
     ).then((data) => {
+      console.log(data);
       this.setState({ taskId: data.task_id[0] });
     });
 
@@ -394,7 +391,7 @@ class FormsElements extends React.Component {
                 <Button
                   variant="primary"
                   onClick={this.onInputAdd}
-                  
+
                   // disabled={this.state.deleteAll}
                 >
                   <MDBIcon icon="plus" />
@@ -427,7 +424,7 @@ class FormsElements extends React.Component {
       "Dropdown",
       "Multi Choice",
       "Counter",
-      "Timeline",
+      "Text",
     ];
     // console.log(compArray[this.props.compTypeId - 1]);
     return (
@@ -564,7 +561,12 @@ class FormsElements extends React.Component {
                 </Col>
               </Row>
               {/* ///// */}
-              {this.props.compTypeId === 9 || this.props.compTypeId === 10
+              {this.props.compTypeId === 9 ||
+              this.props.compTypeId === 10 ||
+              this.props.compTypeId === 4 ||
+              this.props.compTypeId === 5 ||
+              this.props.compTypeId === 6 ||
+              this.props.compTypeId === 2
                 ? null
                 : answers}
               {/* /////// */}
@@ -619,7 +621,7 @@ class FormsElements extends React.Component {
                 </Col>
                 <ColStyled>
                   <Button
-                   style={{ border:"#00897B" ,backgroundColor: "#00897B"}}
+                    style={{ border: "#00897B", backgroundColor: "#00897B" }}
                     variant="success"
                     onClick={this.sendData}
                     disabled={this.state.deleteAll}
