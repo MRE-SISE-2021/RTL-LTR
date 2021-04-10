@@ -99,7 +99,7 @@ class SaveModal extends React.Component {
           <MDBIcon
             icon="save"
             //className="text-white"
-            className="mr-3"
+            className="pr-3"
             size="2x"
           />
         </Button>

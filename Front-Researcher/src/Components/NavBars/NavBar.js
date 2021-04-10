@@ -63,7 +63,7 @@ class NavBar extends Component {
               </li>
             </ul>
           </Link>
-          <div style={{ marginLeft: "90%" }}>
+          <div className="navbar-collapse2">
             <Button variant="outline-*" onClick={() => handleClick()}>
               <ul className="mb-1 text-primary">
                 <li>

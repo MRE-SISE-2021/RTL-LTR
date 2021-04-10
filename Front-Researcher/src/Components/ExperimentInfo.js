@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card , Form} from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
@@ -154,37 +154,39 @@ class ExperimentInfo extends Component {
 
     // console.log(data);
     return (
-      <Aux>
-        <Row>
-          <Col>
+      <Aux >
+        
+        
+        <Row >
+          <Col >
             <h5>Experiment Details: {data.questionnaire_name}</h5>
           </Col>
+          
 
-          <Col className="d-flex justify-content-lg-end">
-            <Button variant="outline-*" disabled>
+          <Col className="d-flex justify-content-lg-end" sm={4}>
+            <Button size="sm" variant="outline-*" disabled>
               <MDBIcon icon="upload" />
             </Button>
-            <Button variant="outline-*" onClick={this.submitHandlerPreview}>
+            <Button size="sm" variant="outline-*" onClick={this.submitHandlerPreview}>
               <MDBIcon icon="eye" />
             </Button>
 
-            <Button variant="outline-*" disabled>
+            <Button size="sm" variant="outline-*" disabled>
               <MDBIcon icon="clone" />
             </Button>
-            <Button variant="outline-*" onClick={this.submitHandlerEdit}>
+            <Button size="sm" variant="outline-*" onClick={this.submitHandlerEdit}>
               <MDBIcon icon="edit" />
             </Button>
-            <Button variant="outline-*" onClick={this.submitHandlerDelete}>
+            <Button size="sm" variant="outline-*" onClick={this.submitHandlerDelete}>
               <MDBIcon icon="trash-alt" />
             </Button>
           </Col>
         </Row>
 
+<div className="mt-3">
+
         <Card
           className="bg-Light "
-          style={{
-            marginTop: "2%",
-          }}
         >
           <Card.Body>
             <div className="bg-Light text-dark  ">
@@ -209,10 +211,17 @@ class ExperimentInfo extends Component {
                   </Col>
 
                   <Col>
-                    <b>Status: </b>
-                    {data.is_active !== undefined
+                   <p>Status: <Form.Check 
+                    type="switch"
+                    id="custom-switch"
+                    label="Status:"
+                    //onClick={this.setSettings}
+                    //= {}
+                    /></p>
+                   {data.is_active !== undefined
                       ? [data.is_active ? "True" : "False"]
                       : null}
+                   
                   </Col>
                 </Row>
                 <br />
@@ -226,6 +235,8 @@ class ExperimentInfo extends Component {
             </div>
           </Card.Body>
         </Card>
+        </div>
+
       </Aux>
     );
   }

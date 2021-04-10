@@ -150,9 +150,12 @@ class ExperimentTable extends Component {
       <div>
         <div
           style={{
+            position: "absolute",
+            right: "0",
+            transform: "translatex(-1%)",
             marginLeft: "50%",
-            marginTop: "8%",
-            width: "60%",
+            marginTop: "6%",
+            width: "50%",
             overflow: "auto",
             overflowX: "hidden",
           }}
@@ -162,14 +165,16 @@ class ExperimentTable extends Component {
 
         <div
           style={{
+            position: "absolute",
             left: "1%",
-            width: "40%",
+            marginTop: "6%",
+            width: "45%",
             overflow: "auto",
             overflowX: "hidden",
           }}
           className={navClass.join(" ")}
         >
-          <Row className="mt-4 ml-1">
+          <Row>
             <Col sm={8}>
               <h5>
                 MY EXPERIMENTS ({names.length}){" "}
@@ -183,7 +188,9 @@ class ExperimentTable extends Component {
 
             <Modal />
           </Row>
-          <Table striped bordered hover>
+          <div className="mt-3">
+
+          <Table striped bordered hover >
             <thead>
               <tr>
                 <th>NAME</th>
@@ -198,28 +205,33 @@ class ExperimentTable extends Component {
               </tr>
             </thead>
 
-            <tbody>
+            <tbody >
               {/* {console.log(names)} */}
               {names.map((value, index) => {
+
                 return (
-                  <tr key={index}>
+                   
+
+                  
+                  <tr key={index}  onClick={()=>handleClick(value.questionnaire_id)}
+ >
                     <td>
                       {value.is_active ? (
                         <MDBIcon icon="circle" style={{ color: "limegreen" }} />
                       ) : (
                         <MDBIcon icon="circle" style={{ color: "red" }} />
                       )}
-
-                      <Button
-                        variant="flat-primary"
-                        onClick={() => handleClick(value.questionnaire_id)}
-                      >
+                      &nbsp;
                         {value.questionnaire_name}
-                      </Button>
                     </td>
-                    <td>{value.creation_date}</td>
                     <td>
-                      {
+                   
+                        {value.creation_date}
+                      
+                      </td>
+                    <td>
+                    
+                        {
                         {
                           1: "Arabic",
                           2: "English",
@@ -227,14 +239,26 @@ class ExperimentTable extends Component {
                           4: "Russian",
                         }[value.language_id]
                       }
+                     
                     </td>
-                    <td>sum</td>
-                    <td>sum</td>
+                    <td>
+                    sum
+                      </td>
+                    <td>
+                    
+                        sum
+                      </td>
                   </tr>
                 );
+
+               
+
               })}
+              
             </tbody>
           </Table>
+          </div>
+
         </div>
       </div>
     );
