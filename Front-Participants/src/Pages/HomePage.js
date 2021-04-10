@@ -384,14 +384,16 @@ class HomePage extends Component {
                 {task.answers.map(function (answer, index) {
                   return (
                     <CompDiv key={index}>
-                      <input
-                        // className="input_preview"
+                      <p>
+                        <input
+                          // className="input_preview"
 
-                        type={type}
-                        key={index}
-                        name="ans"
-                      />
-                      {answer.answer_content}
+                          type={type}
+                          key={index}
+                          name="ans"
+                        />
+                        {" " + answer.answer_content}
+                      </p>
                     </CompDiv>
                   );
                 })}
