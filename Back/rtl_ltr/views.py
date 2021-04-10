@@ -189,9 +189,9 @@ def get_questionnaire_by_hosted_link(request):
 # @permission_classes([IsAuthenticated])
 def delete_task_from_questionnaire(request, id):
     # check if the questionnaire was already participated
-    if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
-        return HttpResponse('Not permitted to delete: the questionnaire already was participated',
-                            status=status.HTTP_208_ALREADY_REPORTED)
+    # if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
+    #     return HttpResponse('Not permitted to delete: the questionnaire already was participated',
+    #                         status=status.HTTP_208_ALREADY_REPORTED)
 
     # validate request
     if 'task_id' not in request.data:
@@ -335,9 +335,9 @@ class QuestionnairePreviewAPIView(APIView):
     @transaction.atomic
     def put(self, request, id):
         # check if the questionnaire was already participated
-        if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
-            return HttpResponse('Not permitted to update: the questionnaire already was participated',
-                                status=status.HTTP_208_ALREADY_REPORTED)
+        # if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
+        #     return HttpResponse('Not permitted to update: the questionnaire already was participated',
+        #                         status=status.HTTP_208_ALREADY_REPORTED)
 
         # lists of key-value {task_id: data}
         task_ids = []
@@ -431,9 +431,9 @@ class QuestionnairePreviewAPIView(APIView):
         task_ids = []
 
         # check if the questionnaire was already participated
-        if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
-            return HttpResponse('Not permitted to delete: the questionnaire already was participated',
-                                status=status.HTTP_208_ALREADY_REPORTED)
+        # if QuestionnaireParticipant.objects.filter(questionnaire_id=id).exists():
+        #     return HttpResponse('Not permitted to delete: the questionnaire already was participated',
+        #                         status=status.HTTP_208_ALREADY_REPORTED)
 
         # get queryset of questionnaire_task table by questionnaire_id
         for qt in QuestionnaireTask.objects.filter(questionnaire_id=id):
