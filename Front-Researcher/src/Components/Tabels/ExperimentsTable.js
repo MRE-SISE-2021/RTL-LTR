@@ -12,6 +12,8 @@ import { withCookies } from "react-cookie";
 
 import axiosInstance from "../../axios";
 
+
+
 class ExperimentTable extends Component {
   constructor(props) {
     super(props);
@@ -20,6 +22,7 @@ class ExperimentTable extends Component {
       error: null,
       isLoaded: false,
       items: [],
+      isActive: null,
     };
   }
 
@@ -87,6 +90,7 @@ class ExperimentTable extends Component {
   sayHello() {
     alert("Hello!");
   }
+ 
 
   render() {
     let navClass = ["pcoded-navbar"];
@@ -121,7 +125,7 @@ class ExperimentTable extends Component {
       this.componentDidMount();
       this.forceUpdate();
     };
-    const handleClick = async (value) => {
+    const handleClick = async (value,index) => {
       await axiosInstance.get(`viewset/questionnaire/${value}`).then(
         (result) => {
           result = result.data;
@@ -138,6 +142,17 @@ class ExperimentTable extends Component {
           });
         }
       );
+
+      //Remove the if statement if you don't want to unselect an already selected item
+  if (index === this.state.isActive) {
+    this.setState({
+      isActive: null
+    });
+  } else {
+    this.setState({
+      isActive: index
+    });
+  }
     };
     const names = this.state.items;
     /*
@@ -146,6 +161,7 @@ class ExperimentTable extends Component {
         </div>
 
 */
+
     return (
       <div>
         <div
@@ -209,10 +225,17 @@ class ExperimentTable extends Component {
                 {names.map((value, index) => {
                   return (
                     <tr
-                      key={index}
-                      onClick={() => handleClick(value.questionnaire_id)}
-                    >
-                      <td>
+                    key={index}
+                    style={
+                      this.state.isActive === index
+                        ? {  background: '#BBDEFB' }
+                        : {  background: 'white' }
+                    }
+                    onClick={() => handleClick(value.questionnaire_id,index)                      }
+                  >
+                      
+              
+                      <td >
                         {value.is_active ? (
                           <MDBIcon
                             icon="circle"
@@ -247,7 +270,14 @@ class ExperimentTable extends Component {
       </div>
     );
   }
+  changeColor = selectedRow => e => {
+    if (selectedRow !== undefined) {
+      this.setState({ selectedRow  });
+    }
+  };
 }
+
+
 
 const mapStateToProps = (state) => {
   return {
