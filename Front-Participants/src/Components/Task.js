@@ -62,7 +62,7 @@ class Task extends React.Component {
     return (
       <ThemeProvider theme={theme}>
         <Div key={"task"}>
-          <h4>{this.state.task.label}</h4>
+          <h4>{this.state.task.order_key + ". " + this.state.task.label}</h4>
           <div onChange={this.setTaskAnswer.bind(this)}>
             {this.state.task.answers.length === 0 ? (
               <input

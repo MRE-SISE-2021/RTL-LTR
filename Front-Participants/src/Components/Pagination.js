@@ -223,6 +223,7 @@ class Pagination extends React.Component {
           now={percentage}
           label={`${Math.round(percentage)}%`}
           animated
+          striped
         />
       </div>
     );
