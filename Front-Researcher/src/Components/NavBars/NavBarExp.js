@@ -131,39 +131,40 @@ class NavBar extends Component {
     let navBar = (
       <Aux>
         <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
-        
           <Link to="/home">
             <ul className="mb-1 text-primary">
-              <li >
-                    <MDBIcon  icon="home" size="2x" className="indigo-text pr-3"   />                    
-                    /Create Experiment{" "}
+              <li className="mr-4">
+                <MDBIcon icon="home" size="2x" className="indigo-text" />
+                /Create Experiment{" "}
               </li>
-             
             </ul>
           </Link>
 
-          <div className="nav navbar-nav navbar-center " className="navbar-collapse" >
+          <div
+            className="nav navbar-nav navbar-center "
+            className="navbar-collapse"
+          >
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               ExpName:{" "}
             </h5>
 
-            <h5 className="mr-5">{this.props.name}</h5>
+            <h5 className="mr-4">{this.props.name}</h5>
 
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Type:{" "}
             </h5>
-            <h5 className="mr-5">{this.props.type}</h5>
+            <h5 className="mr-4">{this.props.type}</h5>
 
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Language:{" "}
             </h5>
-            <h5 className=" mr-5">{this.getLangName()}</h5>
+            <h5 className=" mr-4">{this.getLangName()}</h5>
 
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Direction:{" "}
             </h5>
             <Form.Group
-            className=" mr-5"
+              className=" mr-4"
               style={{
                 flexFlow: "inherit",
                 marginTop: "1%",
@@ -179,7 +180,7 @@ class NavBar extends Component {
               Status:{" "}
             </h5>
             <Form.Group
-            className=" mr-5"
+              className=" mr-4"
               style={{
                 flexFlow: "inherit",
                 marginTop: "1%",
@@ -212,16 +213,15 @@ class NavBar extends Component {
                 </option> */}
             </Form.Group>
             {/* <h5 className="mr-5">Active</h5> */}
-            </div>
+          </div>
 
-            <div className="nav navbar-nav navbar-right" className="navbar-collapse2"  >
-
+          <div
+            className="nav navbar-nav navbar-right"
+            className="navbar-collapse2"
+          >
             {this.props.prev ? null : (
               <div className="d-flex justify-content-lg-end">
-                <Modal
-                  data={this.props}
-                  is_active={this.state.is_active}
-                />
+                <Modal data={this.props} is_active={this.state.is_active} />
 
                 <Button
                   variant="outline-*"
@@ -246,7 +246,6 @@ class NavBar extends Component {
               </div>
             )}
           </div>
-
         </Navbar>
       </Aux>
     );
