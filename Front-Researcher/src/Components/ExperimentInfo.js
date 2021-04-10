@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Form } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
@@ -10,6 +10,7 @@ import API from "../Api/Api";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import { withCookies } from "react-cookie";
+import copy from "copy-text-to-clipboard";
 
 import "../styles/homePageStyle.css";
 
@@ -160,72 +161,102 @@ class ExperimentInfo extends Component {
             <h5>Experiment Details: {data.questionnaire_name}</h5>
           </Col>
 
-          <Col className="d-flex justify-content-lg-end">
-            <Button variant="outline-*" disabled>
+          <Col className="d-flex justify-content-lg-end" sm={4}>
+            <Button size="sm" variant="outline-*" disabled>
               <MDBIcon icon="upload" />
             </Button>
-            <Button variant="outline-*" onClick={this.submitHandlerPreview}>
+            <Button
+              size="sm"
+              variant="outline-*"
+              onClick={this.submitHandlerPreview}
+            >
               <MDBIcon icon="eye" />
             </Button>
 
-            <Button variant="outline-*" disabled>
+            <Button size="sm" variant="outline-*" disabled>
               <MDBIcon icon="clone" />
             </Button>
-            <Button variant="outline-*" onClick={this.submitHandlerEdit}>
+            <Button
+              size="sm"
+              variant="outline-*"
+              onClick={this.submitHandlerEdit}
+            >
               <MDBIcon icon="edit" />
             </Button>
-            <Button variant="outline-*" onClick={this.submitHandlerDelete}>
+            <Button
+              size="sm"
+              variant="outline-*"
+              onClick={this.submitHandlerDelete}
+            >
               <MDBIcon icon="trash-alt" />
             </Button>
           </Col>
         </Row>
 
-        <Card
-          className="bg-Light "
-          style={{
-            marginTop: "2%",
-          }}
-        >
-          <Card.Body>
-            <div className="bg-Light text-dark  ">
-              <ul className="p-3 mb-2">
-                <Row>
-                  <Col>
-                    <b>Created: </b> {data.creation_date} <b>by: Super USER</b>
-                  </Col>
-                </Row>
-                <br />
-                <Row>
-                  <Col>
-                    <b>Experiment Language: </b>
-                    {
+        <div className="mt-3">
+          <Card className="bg-Light ">
+            <Card.Body>
+              <div className="bg-Light text-dark  ">
+                <ul className="p-3 mb-2">
+                  <Row>
+                    <Col>
+                      <b>Created: </b> {data.creation_date}{" "}
+                      <b>by: Super USER</b>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row>
+                    <Col>
+                      <b>Experiment Language: </b>
                       {
-                        1: "Arabic",
-                        2: "English",
-                        3: "Hebrew",
-                        4: "Russian",
-                      }[data.language_id]
-                    }
-                  </Col>
+                        {
+                          1: "Arabic",
+                          2: "English",
+                          3: "Hebrew",
+                          4: "Russian",
+                        }[data.language_id]
+                      }
+                    </Col>
+
+                    <Col>
+                      <Row>
+                        <b>Status:</b>
+                        <Form.Check
+                          style={{ marginLeft: "1%" }}
+                          type="switch"
+                          id="custom-switch"
+                          label={data.is_active ? "Active" : "Not-Active"}
+                          //onClick={this.setSettings}
+                          checked={data.is_active}
+                          //= {}
+                        />
+                      </Row>
+                    </Col>
+                  </Row>
+                  <br />
 
                   <Col>
-                    <b>Status: </b>
-                    {data.is_active !== undefined
-                      ? [data.is_active ? "True" : "False"]
-                      : null}
+                    <Row>
+                      <b>Hosted Link: </b>
+                      <Form.Control
+                        type="text"
+                        defaultValue={data.hosted_link}
+                        readOnly
+                        style={{ width: "50%" }}
+                      />
+                      <Button
+                        variant="outline-info"
+                        onClick={() => copy(data.hosted_link)}
+                      >
+                        Copy link
+                      </Button>
+                    </Row>
                   </Col>
-                </Row>
-                <br />
-                <Row>
-                  <Col>
-                    <b>Hosted Link: </b>
-                    {data.hosted_link}
-                  </Col>
-                </Row>
-              </ul>
-            </div>
-          </Card.Body>
-        </Card>
+                </ul>
+              </div>
+            </Card.Body>
+          </Card>
+        </div>
       </Aux>
     );
   }

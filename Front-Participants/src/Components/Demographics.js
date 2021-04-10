@@ -50,8 +50,6 @@ class Demographics extends React.Component {
   render() {
     console.log(this.state);
     const Div = styled.div`
-      border: 2px solid BLACK;
-      background: gainsboro;
       padding: 10px;
       ${rtl`
    margin-right: 50px;

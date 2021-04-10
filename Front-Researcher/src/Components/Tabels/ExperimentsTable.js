@@ -12,6 +12,8 @@ import { withCookies } from "react-cookie";
 
 import axiosInstance from "../../axios";
 
+
+
 class ExperimentTable extends Component {
   constructor(props) {
     super(props);
@@ -20,6 +22,7 @@ class ExperimentTable extends Component {
       error: null,
       isLoaded: false,
       items: [],
+      isActive: null,
     };
   }
 
@@ -40,7 +43,7 @@ class ExperimentTable extends Component {
         if (result[0] !== undefined) {
           this.setState({
             isLoaded: true,
-            items: result,
+            items: result.reverse(),
             chosen: result[0],
           });
         } else {
@@ -87,6 +90,7 @@ class ExperimentTable extends Component {
   sayHello() {
     alert("Hello!");
   }
+ 
 
   render() {
     let navClass = ["pcoded-navbar"];
@@ -121,7 +125,7 @@ class ExperimentTable extends Component {
       this.componentDidMount();
       this.forceUpdate();
     };
-    const handleClick = async (value) => {
+    const handleClick = async (value,index) => {
       await axiosInstance.get(`viewset/questionnaire/${value}`).then(
         (result) => {
           result = result.data;
@@ -138,6 +142,17 @@ class ExperimentTable extends Component {
           });
         }
       );
+
+      //Remove the if statement if you don't want to unselect an already selected item
+  if (index === this.state.isActive) {
+    this.setState({
+      isActive: null
+    });
+  } else {
+    this.setState({
+      isActive: index
+    });
+  }
     };
     const names = this.state.items;
     /*
@@ -146,13 +161,17 @@ class ExperimentTable extends Component {
         </div>
 
 */
+
     return (
       <div>
         <div
           style={{
+            position: "absolute",
+            right: "0",
+            transform: "translatex(-1%)",
             marginLeft: "50%",
-            marginTop: "8%",
-            width: "60%",
+            marginTop: "6%",
+            width: "50%",
             overflow: "auto",
             overflowX: "hidden",
           }}
@@ -162,14 +181,16 @@ class ExperimentTable extends Component {
 
         <div
           style={{
+            position: "absolute",
             left: "1%",
-            width: "40%",
+            marginTop: "6%",
+            width: "45%",
             overflow: "auto",
             overflowX: "hidden",
           }}
           className={navClass.join(" ")}
         >
-          <Row className="mt-4 ml-1">
+          <Row>
             <Col sm={8}>
               <h5>
                 MY EXPERIMENTS ({names.length}){" "}
@@ -183,63 +204,80 @@ class ExperimentTable extends Component {
 
             <Modal />
           </Row>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>NAME</th>
-                <th>CREATED</th>
-                <th>LNG</th>
-                <th>
-                  # <MDBIcon icon="user-friends" />
-                </th>
-                <th>
-                  NEW <MDBIcon icon="user-friends" />
-                </th>
-              </tr>
-            </thead>
+          <div className="mt-3">
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>NAME</th>
+                  <th>CREATED</th>
+                  <th>LNG</th>
+                  <th>
+                    # <MDBIcon icon="user-friends" />
+                  </th>
+                  <th>
+                    NEW <MDBIcon icon="user-friends" />
+                  </th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {/* {console.log(names)} */}
-              {names.map((value, index) => {
-                return (
-                  <tr key={index}>
-                    <td>
-                      {value.is_active ? (
-                        <MDBIcon icon="circle" style={{ color: "limegreen" }} />
-                      ) : (
-                        <MDBIcon icon="circle" style={{ color: "red" }} />
-                      )}
-
-                      <Button
-                        variant="flat-primary"
-                        onClick={() => handleClick(value.questionnaire_id)}
-                      >
+              <tbody>
+                {/* {console.log(names)} */}
+                {names.map((value, index) => {
+                  return (
+                    <tr
+                    key={index}
+                    style={
+                      this.state.isActive === index
+                        ? {  background: '#BBDEFB' }
+                        : {  background: 'white' }
+                    }
+                    onClick={() => handleClick(value.questionnaire_id,index)                      }
+                  >
+                      
+              
+                      <td >
+                        {value.is_active ? (
+                          <MDBIcon
+                            icon="circle"
+                            style={{ color: "limegreen" }}
+                          />
+                        ) : (
+                          <MDBIcon icon="circle" style={{ color: "red" }} />
+                        )}
+                        &nbsp;
                         {value.questionnaire_name}
-                      </Button>
-                    </td>
-                    <td>{value.creation_date}</td>
-                    <td>
-                      {
+                      </td>
+                      <td>{value.creation_date}</td>
+                      <td>
                         {
-                          1: "Arabic",
-                          2: "English",
-                          3: "Hebrew",
-                          4: "Russian",
-                        }[value.language_id]
-                      }
-                    </td>
-                    <td>sum</td>
-                    <td>sum</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
+                          {
+                            1: "Arabic",
+                            2: "English",
+                            3: "Hebrew",
+                            4: "Russian",
+                          }[value.language_id]
+                        }
+                      </td>
+                      <td>sum</td>
+                      <td>sum</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </div>
         </div>
       </div>
     );
   }
+  changeColor = selectedRow => e => {
+    if (selectedRow !== undefined) {
+      this.setState({ selectedRow  });
+    }
+  };
 }
+
+
 
 const mapStateToProps = (state) => {
   return {

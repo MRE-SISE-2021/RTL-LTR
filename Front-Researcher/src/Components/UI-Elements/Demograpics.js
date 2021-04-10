@@ -38,8 +38,6 @@ class Demographics extends React.Component {
   }
   async componentDidMount() {
     const Div = styled.div`
-      border: 2px solid BLACK;
-      background: gainsboro;
       padding: 10px;
       ${rtl`
      margin-right: 50px;
@@ -95,8 +93,6 @@ class Demographics extends React.Component {
   render() {
     console.log(this.state);
     const Div = styled.div`
-      border: 2px solid BLACK;
-      background: gainsboro;
       padding: 10px;
       ${rtl`
    margin-right: 50px;
@@ -132,14 +128,16 @@ class Demographics extends React.Component {
                 {task.answers.map(function (answer, index) {
                   return (
                     <div key={index}>
-                      <input
-                        // className="input_preview"
+                      <p>
+                        <input
+                          // className="input_preview"
 
-                        type={type}
-                        key={index}
-                        name="ans"
-                      />
-                      {answer.answer_content}
+                          type={type}
+                          key={index}
+                          name="ans"
+                        />
+                        {" " + answer.answer_content}
+                      </p>
                     </div>
                   );
                 })}
