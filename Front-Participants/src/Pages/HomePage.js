@@ -222,8 +222,6 @@ class HomePage extends Component {
       ///////////////---RTL support --- ///////////////
 
       const Div = styled.div`
-        border: 2px solid BLACK;
-        background: gainsboro;
         padding: 10px;
         ${rtl`
         margin-right: 50px;
