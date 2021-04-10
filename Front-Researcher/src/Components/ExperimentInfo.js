@@ -234,25 +234,24 @@ class ExperimentInfo extends Component {
                     </Col>
                   </Row>
                   <br />
-                  <Row>
-                    <Col>
-                      <Row>
-                        <b>Hosted Link: </b>
-                        <Form.Control
-                          type="text"
-                          defaultValue={data.hosted_link}
-                          readOnly
-                          style={{ width: "50%" }}
-                        />
-                        <Button
-                          variant="outline-info"
-                          onClick={copy(data.hosted_link)}
-                        >
-                          Copy link
-                        </Button>
-                      </Row>
-                    </Col>
-                  </Row>
+
+                  <Col>
+                    <Row>
+                      <b>Hosted Link: </b>
+                      <Form.Control
+                        type="text"
+                        defaultValue={data.hosted_link}
+                        readOnly
+                        style={{ width: "50%" }}
+                      />
+                      <Button
+                        variant="outline-info"
+                        onClick={() => copy(data.hosted_link)}
+                      >
+                        Copy link
+                      </Button>
+                    </Row>
+                  </Col>
                 </ul>
               </div>
             </Card.Body>
