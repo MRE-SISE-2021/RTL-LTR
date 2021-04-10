@@ -156,36 +156,37 @@ class ExperimentInfo extends Component {
     return (
       <Aux >
         
+        
         <Row >
-          <Col>
+          <Col >
             <h5>Experiment Details: {data.questionnaire_name}</h5>
           </Col>
+          
 
-          <Col className="d-flex justify-content-lg-end">
-            <Button variant="outline-*" disabled>
+          <Col className="d-flex justify-content-lg-end" sm={4}>
+            <Button size="sm" variant="outline-*" disabled>
               <MDBIcon icon="upload" />
             </Button>
-            <Button variant="outline-*" onClick={this.submitHandlerPreview}>
+            <Button size="sm" variant="outline-*" onClick={this.submitHandlerPreview}>
               <MDBIcon icon="eye" />
             </Button>
 
-            <Button variant="outline-*" disabled>
+            <Button size="sm" variant="outline-*" disabled>
               <MDBIcon icon="clone" />
             </Button>
-            <Button variant="outline-*" onClick={this.submitHandlerEdit}>
+            <Button size="sm" variant="outline-*" onClick={this.submitHandlerEdit}>
               <MDBIcon icon="edit" />
             </Button>
-            <Button variant="outline-*" onClick={this.submitHandlerDelete}>
+            <Button size="sm" variant="outline-*" onClick={this.submitHandlerDelete}>
               <MDBIcon icon="trash-alt" />
             </Button>
           </Col>
         </Row>
 
+<div className="mt-3">
+
         <Card
           className="bg-Light "
-          style={{
-            marginTop: "2%",
-          }}
         >
           <Card.Body>
             <div className="bg-Light text-dark  ">
@@ -234,6 +235,8 @@ class ExperimentInfo extends Component {
             </div>
           </Card.Body>
         </Card>
+        </div>
+
       </Aux>
     );
   }
