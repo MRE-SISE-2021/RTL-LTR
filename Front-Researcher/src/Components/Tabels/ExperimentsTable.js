@@ -40,7 +40,7 @@ class ExperimentTable extends Component {
         if (result[0] !== undefined) {
           this.setState({
             isLoaded: true,
-            items: result,
+            items: result.reverse(),
             chosen: result[0],
           });
         } else {
@@ -189,76 +189,60 @@ class ExperimentTable extends Component {
             <Modal />
           </Row>
           <div className="mt-3">
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>NAME</th>
+                  <th>CREATED</th>
+                  <th>LNG</th>
+                  <th>
+                    # <MDBIcon icon="user-friends" />
+                  </th>
+                  <th>
+                    NEW <MDBIcon icon="user-friends" />
+                  </th>
+                </tr>
+              </thead>
 
-          <Table striped bordered hover >
-            <thead>
-              <tr>
-                <th>NAME</th>
-                <th>CREATED</th>
-                <th>LNG</th>
-                <th>
-                  # <MDBIcon icon="user-friends" />
-                </th>
-                <th>
-                  NEW <MDBIcon icon="user-friends" />
-                </th>
-              </tr>
-            </thead>
-
-            <tbody >
-              {/* {console.log(names)} */}
-              {names.map((value, index) => {
-
-                return (
-                   
-
-                  
-                  <tr key={index}  onClick={()=>handleClick(value.questionnaire_id)}
- >
-                    <td>
-                      {value.is_active ? (
-                        <MDBIcon icon="circle" style={{ color: "limegreen" }} />
-                      ) : (
-                        <MDBIcon icon="circle" style={{ color: "red" }} />
-                      )}
-                      &nbsp;
+              <tbody>
+                {/* {console.log(names)} */}
+                {names.map((value, index) => {
+                  return (
+                    <tr
+                      key={index}
+                      onClick={() => handleClick(value.questionnaire_id)}
+                    >
+                      <td>
+                        {value.is_active ? (
+                          <MDBIcon
+                            icon="circle"
+                            style={{ color: "limegreen" }}
+                          />
+                        ) : (
+                          <MDBIcon icon="circle" style={{ color: "red" }} />
+                        )}
+                        &nbsp;
                         {value.questionnaire_name}
-                    </td>
-                    <td>
-                   
-                        {value.creation_date}
-                      
                       </td>
-                    <td>
-                    
+                      <td>{value.creation_date}</td>
+                      <td>
                         {
-                        {
-                          1: "Arabic",
-                          2: "English",
-                          3: "Hebrew",
-                          4: "Russian",
-                        }[value.language_id]
-                      }
-                     
-                    </td>
-                    <td>
-                    sum
+                          {
+                            1: "Arabic",
+                            2: "English",
+                            3: "Hebrew",
+                            4: "Russian",
+                          }[value.language_id]
+                        }
                       </td>
-                    <td>
-                    
-                        sum
-                      </td>
-                  </tr>
-                );
-
-               
-
-              })}
-              
-            </tbody>
-          </Table>
+                      <td>sum</td>
+                      <td>sum</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
           </div>
-
         </div>
       </div>
     );

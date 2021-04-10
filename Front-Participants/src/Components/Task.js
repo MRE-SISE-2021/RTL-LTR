@@ -39,8 +39,6 @@ class Task extends React.Component {
   render() {
     // console.log(this.state);
     const Div = styled.div`
-      border: 2px solid BLACK;
-      background: gainsboro;
       padding: 10px;
       ${rtl`
    margin-right: 50px;
@@ -64,7 +62,7 @@ class Task extends React.Component {
     return (
       <ThemeProvider theme={theme}>
         <Div key={"task"}>
-          <h4>{this.state.task.label}</h4>
+          <h4>{this.state.task.order_key + ". " + this.state.task.label}</h4>
           <div onChange={this.setTaskAnswer.bind(this)}>
             {this.state.task.answers.length === 0 ? (
               <input
@@ -98,14 +96,17 @@ class Task extends React.Component {
                 } else {
                   return (
                     <div key={index}>
-                      <input
-                        type={type}
-                        key={index}
-                        id={answer.answer_id} //answer_id
-                        name={"ans" + actual_index}
-                        value={actual_index} //order_key
-                      />
-                      {" " + answer.answer_content}
+                      <p>
+                        {" "}
+                        <input
+                          type={type}
+                          key={index}
+                          id={answer.answer_id} //answer_id
+                          name={"ans" + actual_index}
+                          value={actual_index} //order_key
+                        />
+                        {" " + answer.answer_content}
+                      </p>
                     </div>
                   );
                 }
