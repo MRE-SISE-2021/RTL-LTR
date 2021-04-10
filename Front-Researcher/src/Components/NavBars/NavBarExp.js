@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { MDBChip, MDBContainer } from "mdbreact";
 
@@ -135,7 +135,8 @@ class NavBar extends Component {
           <Link to="/home">
             <ul className="mb-1 text-primary">
               <li >
-                <MDBIcon  icon="home" size="2x" className="indigo-text pr-3"  />/Create Experiment{" "}
+                    <MDBIcon  icon="home" size="2x" className="indigo-text pr-3"   />                    
+                    /Create Experiment{" "}
               </li>
              
             </ul>
@@ -162,6 +163,7 @@ class NavBar extends Component {
               Direction:{" "}
             </h5>
             <Form.Group
+            className=" mr-5"
               style={{
                 flexFlow: "inherit",
                 marginTop: "1%",
@@ -177,6 +179,7 @@ class NavBar extends Component {
               Status:{" "}
             </h5>
             <Form.Group
+            className=" mr-5"
               style={{
                 flexFlow: "inherit",
                 marginTop: "1%",
