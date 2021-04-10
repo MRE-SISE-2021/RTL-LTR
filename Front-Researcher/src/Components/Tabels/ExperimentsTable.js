@@ -205,28 +205,33 @@ class ExperimentTable extends Component {
               </tr>
             </thead>
 
-            <tbody>
+            <tbody >
               {/* {console.log(names)} */}
               {names.map((value, index) => {
+
                 return (
-                  <tr key={index}>
+                   
+
+                  
+                  <tr key={index}  onClick={()=>handleClick(value.questionnaire_id)}
+ >
                     <td>
                       {value.is_active ? (
                         <MDBIcon icon="circle" style={{ color: "limegreen" }} />
                       ) : (
                         <MDBIcon icon="circle" style={{ color: "red" }} />
                       )}
-
-                      <Button
-                        variant="flat-primary"
-                        onClick={() => handleClick(value.questionnaire_id)}
-                      >
+                      &nbsp;
                         {value.questionnaire_name}
-                      </Button>
                     </td>
-                    <td>{value.creation_date}</td>
                     <td>
-                      {
+                   
+                        {value.creation_date}
+                      
+                      </td>
+                    <td>
+                    
+                        {
                         {
                           1: "Arabic",
                           2: "English",
@@ -234,12 +239,22 @@ class ExperimentTable extends Component {
                           4: "Russian",
                         }[value.language_id]
                       }
+                     
                     </td>
-                    <td>sum</td>
-                    <td>sum</td>
+                    <td>
+                    sum
+                      </td>
+                    <td>
+                    
+                        sum
+                      </td>
                   </tr>
                 );
+
+               
+
               })}
+              
             </tbody>
           </Table>
           </div>
