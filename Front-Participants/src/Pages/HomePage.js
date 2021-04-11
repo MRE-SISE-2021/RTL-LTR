@@ -440,7 +440,7 @@ class HomePage extends Component {
     return (
       <Aux>
         <div className={mainClass.join(" ")}>
-          <Aux>
+          <Form>
             <Card
               border="primary"
               style={{
@@ -469,12 +469,16 @@ class HomePage extends Component {
                     onChangePage={this.onChangePage}
                     onCreateUser={this.onCreateUser}
                     pageSize={2}
+                    is_next={
+                      this.state.demo_answers.length ===
+                      this.state.demographic_task.length
+                    }
                     lang={this.state.lang}
                   />
                 </ListGroup.Item>
               </Card.Body>
             </Card>
-          </Aux>
+          </Form>
         </div>
       </Aux>
     );

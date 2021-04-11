@@ -201,6 +201,8 @@ class Pagination extends React.Component {
           <Button
             style={{ width: "50%" }}
             // className="item-page"
+            disabled={!this.props.is_next}
+            type="submit"
             onClick={() => this.setPage(pager.currentPage + 1)}
           >
             {this.getLangNext()}

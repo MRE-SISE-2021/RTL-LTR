@@ -66,7 +66,8 @@ class Task extends React.Component {
           <div onChange={this.setTaskAnswer.bind(this)}>
             {this.state.task.answers.length === 0 ? (
               <input
-                type="text"
+                type="number"
+                required
                 // name={"ans" }
                 // value={answer.answer_content}
                 id="age"
