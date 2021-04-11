@@ -42,6 +42,28 @@ class Task extends Component {
           ),
         });
         break;
+      case 11:
+        this.setState({
+          inputList: inputList.concat(
+            <Input
+              key={"info_page" + this.props.key}
+              expId={this.props.expId}
+              keyOrder={this.props.keyOrder}
+              label={this.props.label}
+              taskId={this.props.taskId}
+              title={this.props.title}
+              compTypeId={this.props.compTypeId}
+              answers={this.props.answers}
+              dir={this.props.dir}
+              is_add_picture_setting={this.props.is_add_picture_setting}
+              is_direction_setting={this.props.is_direction_setting}
+              is_new_page_setting={this.props.is_new_page_setting}
+              is_required_setting={this.props.is_required_setting}
+              lang={this.props.lang}
+            />
+          ),
+        });
+        break;
       default:
         this.setState({
           inputList: inputList.concat(

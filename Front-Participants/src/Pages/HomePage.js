@@ -213,7 +213,11 @@ class HomePage extends Component {
         `;
       }
       //////// ----- add in a new page ----- //////////
-      if (task.is_new_page_setting || task.component_type_id === 1) {
+      if (
+        task.is_new_page_setting ||
+        task.component_type_id === 1 ||
+        task.component_type_id === 11
+      ) {
         this.setState({
           inputList: inputList.concat(<div></div>),
         });
@@ -238,12 +242,24 @@ class HomePage extends Component {
         };
       }
       ///////////////---RTL support --- ///////////////
-      if (task.component_type_id === 1) {
+      if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div
-                key="1"
+                key={task.order_key}
+                dir={theme.dir}
+                dangerouslySetInnerHTML={{ __html: task.label }}
+              ></Div>
+            </ThemeProvider>
+          ),
+        });
+      } else if (task.component_type_id === 1) {
+        this.setState({
+          inputList: inputList.concat(
+            <ThemeProvider theme={theme}>
+              <Div
+                key={task.order_key}
                 dir={theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
               ></Div>
