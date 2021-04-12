@@ -77,11 +77,11 @@ class NewExperimentModal extends React.Component {
     }
     return (
       <Aux>
-        <Col className="d-flex justify-content-lg-end" sm={4}>
+        
+        <Col className="d-flex justify-content-lg-end " sm={4}>
           <Button
             size="sm"
             // width="10%"
-
             variant="primary"
             onClick={() => this.setState({ isBasic: true })}
           >
