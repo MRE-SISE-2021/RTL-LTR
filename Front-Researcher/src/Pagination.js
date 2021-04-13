@@ -162,9 +162,10 @@ class Pagination extends React.Component {
     const percentage = ((pager.currentPage - 1) / pager.totalPages) * 100;
 
     return (
-      <div id="pagination">
-        {/* <ul id="pagination"> */}
-        {/* <li disabled={pager.currentPage === 1}>
+      <div>
+        <div id="pagination">
+          {/* <ul id="pagination"> */}
+          {/* <li disabled={pager.currentPage === 1}>
           <a className="item-page" onClick={() => this.setPage(1)}>
             First
           </a>
@@ -177,7 +178,7 @@ class Pagination extends React.Component {
             Previous
           </a>
         </li> */}
-        {/* {pager.pages.map((page, index) => (
+          {/* {pager.pages.map((page, index) => (
           <li
             key={index}
             className={pager.currentPage === page ? "active" : ""}
@@ -188,35 +189,35 @@ class Pagination extends React.Component {
           </li>
         ))} */}
 
-        {pager.currentPage === 1 ? (
-          <Button
-            style={{ width: "50%" }}
-            onClick={() => this.setPage(pager.currentPage + 1)}
-          >
-            {this.getLangStart()}
-          </Button>
-        ) : pager.currentPage < pager.totalPages ? (
-          // <li>
-          <Button
-            style={{ width: "50%" }}
-            // className="item-page"
-            onClick={() => this.setPage(pager.currentPage + 1)}
-          >
-            {this.getLangNext()}
-          </Button>
-        ) : (
-          // </li>
-          // <li>
-          <Button
-            style={{ width: "50%" }}
-            // className="item-page"
-            onClick={() => this.setPage(pager.currentPage + 1)}
-          >
-            {this.getLangFinish()}
-          </Button>
-          // </li>
-        )}
-        {/* <li
+          {pager.currentPage === 1 ? (
+            <Button
+              style={{ width: "50%" }}
+              onClick={() => this.setPage(pager.currentPage + 1)}
+            >
+              {this.getLangStart()}
+            </Button>
+          ) : pager.currentPage < pager.totalPages ? (
+            // <li>
+            <Button
+              style={{ width: "50%" }}
+              // className="item-page"
+              onClick={() => this.setPage(pager.currentPage + 1)}
+            >
+              {this.getLangNext()}
+            </Button>
+          ) : (
+            // </li>
+            // <li>
+            <Button
+              style={{ width: "50%" }}
+              // className="item-page"
+              onClick={() => this.setPage(pager.currentPage + 1)}
+            >
+              {this.getLangFinish()}
+            </Button>
+            // </li>
+          )}
+          {/* <li
           className={pager.currentPage === pager.totalPages ? "disabled" : ""}
         >
           <a
@@ -226,10 +227,15 @@ class Pagination extends React.Component {
             Last
           </a>
         </li> */}
-        {/* </ul> */}
-        <br />
-        <br />
+          {/* </ul> */}
+          <br />
+          <br />
+          {/* <div > */}
+
+          {/* </div> */}
+        </div>
         <ProgressBar
+          className="progress"
           now={percentage}
           label={`${Math.round(percentage)}%`}
           animated
