@@ -47,7 +47,7 @@ class HomePage extends Component {
 
   async componentWillReceiveProps(propsIncoming) {
     //Edit EXP
-    debugger;
+    // debugger;
     console.log(propsIncoming);
     await this.setState({
       tasks: propsIncoming.data.tasks, //what we get from db
@@ -77,10 +77,10 @@ class HomePage extends Component {
       questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
-    API.postRequest("participant-data", response).then((data) => {
-      console.log(data); // JSON data parsed by `data.json()` call
-      // this.setState({ expId: data.questionnaire_id });
-    });
+    // API.postRequest("participant-data", response).then((data) => {
+    //   console.log(data); // JSON data parsed by `data.json()` call
+    //   // this.setState({ expId: data.questionnaire_id });
+    // });
   }
   onUpdateDemoAnswer(answer) {
     // update state with new answer from Task component
@@ -88,7 +88,7 @@ class HomePage extends Component {
     let answers = this.state.demo_answers;
     let answer_id = parseInt(answer.answer_id);
     let arr = [];
-    debugger;
+    // debugger;
     //if free text?
     if (answer.free_answer !== undefined) {
       this.setDemoText(answer, answers, order_key);

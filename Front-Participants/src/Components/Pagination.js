@@ -192,7 +192,10 @@ class Pagination extends React.Component {
         {pager.currentPage === 1 ? (
           <Button
             style={{ width: "50%" }}
-            onClick={() => this.setPage(pager.currentPage + 1)}
+            onClick={(e) => {
+              e.preventDefault();
+              this.setPage(pager.currentPage + 1);
+            }}
           >
             {this.getLangStart()}
           </Button>
@@ -203,7 +206,10 @@ class Pagination extends React.Component {
             // className="item-page"
             disabled={!this.props.is_next}
             type="submit"
-            onClick={() => this.setPage(pager.currentPage + 1)}
+            onClick={(e) => {
+              e.preventDefault();
+              this.setPage(pager.currentPage + 1);
+            }}
           >
             {this.getLangNext()}
           </Button>

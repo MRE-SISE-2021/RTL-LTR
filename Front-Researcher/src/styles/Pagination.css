@@ -3,7 +3,7 @@
   text-align: center;
 }
 .progress {
-  transform: rotate(-90deg);
+  /* transform: rotate(-90deg); */
   text-align: left;
   /* left: 0%; */
 }
