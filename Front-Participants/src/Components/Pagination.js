@@ -187,6 +187,8 @@ class Pagination extends React.Component {
       return null;
     }
     const percentage = ((pager.currentPage - 1) / pager.totalPages) * 100;
+    let current = pager.currentPage - 2;
+    let total = pager.totalPages - 2;
     return (
       <div id="pagination">
         {pager.currentPage === 1 ? (
@@ -227,12 +229,29 @@ class Pagination extends React.Component {
         )}
         <br />
         <br />
-        <ProgressBar
+        {/* <ProgressBar
           now={percentage}
           label={`${Math.round(percentage)}%`}
           animated
           striped
-        />
+        /> */}
+        {pager.currentPage > 2 && this.props.lang === 1 ? (
+          <p style={{ textAlign: "center" }}>
+            سؤال {current} من {total}
+          </p>
+        ) : pager.currentPage > 2 && this.props.lang === 2 ? (
+          <p style={{ textAlign: "center" }}>
+            Que {current} from {total}
+          </p>
+        ) : pager.currentPage > 2 && this.props.lang === 3 ? (
+          <p style={{ textAlign: "center" }}>
+            שאלה {current} מתוך {total}
+          </p>
+        ) : pager.currentPage > 2 && this.props.lang === 4 ? (
+          <p style={{ textAlign: "center" }}>
+            задача {current}посреднический {total}
+          </p>
+        ) : null}
       </div>
     );
   }
