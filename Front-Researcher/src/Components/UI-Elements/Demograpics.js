@@ -1,6 +1,8 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
+import { Form, Row } from "react-bootstrap";
+
 class Demographics extends React.Component {
   constructor(props) {
     super(props);
@@ -53,11 +55,14 @@ class Demographics extends React.Component {
         dir: "rtl",
       };
     }
+    let actual_index = 0;
 
     this.state.tasks.forEach((task, index) => {
       console.log(this.state.is_demographics[index]);
       let inputList = this.state.inputList;
       if (this.state.is_demographics[index] === true) {
+        actual_index = actual_index + 1;
+
         let type = "radio";
         if (index === 10 || index === 4 || index === 2) {
           type = "checkbox";
@@ -68,20 +73,47 @@ class Demographics extends React.Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
-                {task.answers.map(function (answer, index) {
-                  return (
-                    <div key={index}>
-                      <input
-                        // className="input_preview"
-
-                        type={type}
-                        key={index}
-                        name={"ans" + task.order_key}
+                <Form>
+                  {task.answers.length === 0 ? (
+                    <Form.Group>
+                      <Form.Control
+                        style={{ width: "88px" }}
+                        type="number"
+                        required
+                        id="age"
                       />
-                      {answer.answer_content}
-                    </div>
-                  );
-                })}
+                    </Form.Group>
+                  ) : (
+                    task.answers.map((answer, index) => (
+                      <Form.Group key={index}>
+                        <Row>
+                          <Form.Control
+                            style={{ width: "16px", hight: "16px" }}
+                            type={type}
+                            key={index}
+                            id={answer.answer_id} //answer_id
+                            name={"ans" + actual_index}
+                            value={actual_index} //order_ key.
+                          />
+                          <Form.Label
+                            style={{ position: "relative", padding: "6px" }}
+                          >
+                            {"  " + answer.answer_content + "  "}
+                          </Form.Label>
+                          {answer.value === "Other" ? (
+                            <Form.Control
+                              style={{ width: "200px" }}
+                              type="text"
+                              name={actual_index}
+                              // onFocus={this.handleClick.bind(this)}
+                              id="other"
+                            />
+                          ) : null}
+                        </Row>
+                      </Form.Group>
+                    ))
+                  )}
+                </Form>
               </Div>
             </ThemeProvider>
           ),
@@ -125,22 +157,47 @@ class Demographics extends React.Component {
                 <h4>
                   {actual_index}. {task.label}
                 </h4>
-                {task.answers.map(function (answer, index) {
-                  return (
-                    <div key={index}>
-                      <p>
-                        <input
-                          // className="input_preview"
-
-                          type={type}
-                          key={index}
-                          name={"ans" + task.order_key}
-                        />
-                        {" " + answer.answer_content}
-                      </p>
-                    </div>
-                  );
-                })}
+                <Form>
+                  {task.answers.length === 0 ? (
+                    <Form.Group>
+                      <Form.Control
+                        style={{ width: "88px" }}
+                        type="number"
+                        required
+                        id="age"
+                      />
+                    </Form.Group>
+                  ) : (
+                    task.answers.map((answer, index) => (
+                      <Form.Group key={index}>
+                        <Row>
+                          <Form.Control
+                            style={{ width: "16px", hight: "16px" }}
+                            type={type}
+                            key={index}
+                            id={answer.answer_id} //answer_id
+                            name={"ans" + actual_index}
+                            value={actual_index} //order_ key.
+                          />
+                          <Form.Label
+                            style={{ position: "relative", padding: "6px" }}
+                          >
+                            {"  " + answer.answer_content + "  "}
+                          </Form.Label>
+                          {answer.value === "Other" ? (
+                            <Form.Control
+                              style={{ width: "200px" }}
+                              type="text"
+                              name={actual_index}
+                              // onFocus={this.handleClick.bind(this)}
+                              id="other"
+                            />
+                          ) : null}
+                        </Row>
+                      </Form.Group>
+                    ))
+                  )}
+                </Form>
               </Div>
             );
           }

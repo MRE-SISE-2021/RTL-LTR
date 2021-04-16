@@ -6,7 +6,7 @@ import NavBar from "../Components/NavBars/NavBar";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
-import { Card, ListGroup, Form, Button } from "react-bootstrap";
+import { Card, ListGroup, Form, Row } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 //RTL
@@ -257,22 +257,27 @@ class PreviewPage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
-                {task.answers.map(function (answer, index) {
-                  return (
-                    <CompDiv key={index}>
-                      <p>
-                        <input
-                          // className="input_preview"
-
+                <Form>
+                  {task.answers.map((answer, index) => (
+                    <Form.Group key={index}>
+                      <Row>
+                        <Form.Control
+                          style={{ width: "16px", hight: "16px" }}
                           type={type}
                           key={index}
-                          name="ans"
+                          id={answer.answer_id} //answer_id
+                          name={"ans"}
+                          // value={actual_index} //order_ key.
                         />
-                        {" " + answer.answer_content}
-                      </p>
-                    </CompDiv>
-                  );
-                })}
+                        <Form.Label
+                          style={{ position: "relative", padding: "6px" }}
+                        >
+                          {"  " + answer.answer_content + "  "}
+                        </Form.Label>
+                      </Row>
+                    </Form.Group>
+                  ))}
+                </Form>
               </Div>
             </ThemeProvider>
           ),
