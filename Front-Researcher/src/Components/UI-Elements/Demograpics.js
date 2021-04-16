@@ -76,7 +76,7 @@ class Demographics extends React.Component {
 
                         type={type}
                         key={index}
-                        name="ans"
+                        name={"ans" + task.order_key}
                       />
                       {answer.answer_content}
                     </div>
@@ -134,7 +134,7 @@ class Demographics extends React.Component {
 
                           type={type}
                           key={index}
-                          name="ans"
+                          name={"ans" + task.order_key}
                         />
                         {" " + answer.answer_content}
                       </p>
