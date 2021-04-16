@@ -587,7 +587,7 @@ class FormsElements extends React.Component {
                     type="switch"
                     id={"is_direction " + this.props.keyOrder}
                     // id="is_direction"
-                    label="RTL/LTR customazation"
+                    label="RTL/LTR customization"
                     onClick={this.setSettings}
                     checked={this.state.settings.is_direction_setting}
                   />

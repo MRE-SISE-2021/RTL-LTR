@@ -26,6 +26,7 @@ class ExperimentInfo extends Component {
     this.submitHandlerPreview = this.submitHandlerPreview.bind(this);
     this.submitHandlerDelete = this.submitHandlerDelete.bind(this);
     this.submitHandlerEdit = this.submitHandlerEdit.bind(this);
+    this.submitHandlerStatus = this.submitHandlerStatus.bind(this);
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -100,6 +101,27 @@ class ExperimentInfo extends Component {
       } else {
         return MySwal.fire("", "Your file is safe!", "error");
       }
+    });
+  }
+
+  submitHandlerStatus(event) {
+    //DELETE request -- delete task
+    // const { cookies } = this.props;
+
+    if (this.props.chosen.questionnaire_id === undefined) {
+      return;
+    }
+    console.log(event.target.checked);
+    let response = {
+      questionnaire_id: this.props.chosen.questionnaire_id, //
+      is_active: event.target.checked,
+    };
+    console.log(response);
+    API.putRequest(
+      "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
+      response
+    ).then((data) => {
+      console.log(data);
     });
   }
 
@@ -226,7 +248,7 @@ class ExperimentInfo extends Component {
                           type="switch"
                           id="custom-switch"
                           label={data.is_active ? "Active" : "Not-Active"}
-                          //onClick={this.setSettings}
+                          onClick={this.submitHandlerStatus}
                           checked={data.is_active}
                           //= {}
                         />
