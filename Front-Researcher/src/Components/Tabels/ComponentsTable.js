@@ -184,6 +184,14 @@ class ComponentsTable extends Component {
                     variant="outline-primary"
                     block
                   >
+                    <i className="feather icon-file-text" /> Welcome Page
+                  </Button>
+                  <Button
+                    id="11"
+                    onClick={this.onAddBtnClick}
+                    variant="outline-primary"
+                    block
+                  >
                     <i className="feather icon-file-text" /> New Page
                   </Button>
                 </div>

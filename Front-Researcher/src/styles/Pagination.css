@@ -2,6 +2,11 @@
   /* display: flex; */
   text-align: center;
 }
+.progress {
+  /* transform: rotate(-90deg); */
+  text-align: left;
+  /* left: 0%; */
+}
 /* .item-page {
   border: 10px;
   box-sizing: border-box;

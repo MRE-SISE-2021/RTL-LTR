@@ -47,7 +47,7 @@ class HomePage extends Component {
 
   async componentWillReceiveProps(propsIncoming) {
     //Edit EXP
-    debugger;
+    // debugger;
     console.log(propsIncoming);
     await this.setState({
       tasks: propsIncoming.data.tasks, //what we get from db
@@ -77,10 +77,10 @@ class HomePage extends Component {
       questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
-    API.postRequest("participant-data", response).then((data) => {
-      console.log(data); // JSON data parsed by `data.json()` call
-      // this.setState({ expId: data.questionnaire_id });
-    });
+    // API.postRequest("participant-data", response).then((data) => {
+    //   console.log(data); // JSON data parsed by `data.json()` call
+    //   // this.setState({ expId: data.questionnaire_id });
+    // });
   }
   onUpdateDemoAnswer(answer) {
     // update state with new answer from Task component
@@ -88,7 +88,7 @@ class HomePage extends Component {
     let answers = this.state.demo_answers;
     let answer_id = parseInt(answer.answer_id);
     let arr = [];
-    debugger;
+    // debugger;
     //if free text?
     if (answer.free_answer !== undefined) {
       this.setDemoText(answer, answers, order_key);
@@ -197,7 +197,7 @@ class HomePage extends Component {
     console.log(this.state);
     this.state.tasks.forEach((task, index) => {
       let inputList = this.state.inputList;
-      console.log(task.label);
+      console.log(task);
       ////Task Comp Direction
       let compdirection = "rtl";
       let CompDiv = styled.div`
@@ -213,7 +213,11 @@ class HomePage extends Component {
         `;
       }
       //////// ----- add in a new page ----- //////////
-      if (task.is_new_page_setting || task.component_type_id === 1) {
+      if (
+        task.is_new_page_setting ||
+        task.component_type_id === 1 ||
+        task.component_type_id === 11
+      ) {
         this.setState({
           inputList: inputList.concat(<div></div>),
         });
@@ -238,12 +242,24 @@ class HomePage extends Component {
         };
       }
       ///////////////---RTL support --- ///////////////
-      if (task.component_type_id === 1) {
+      if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div
-                key="1"
+                key={task.order_key}
+                dir={theme.dir}
+                dangerouslySetInnerHTML={{ __html: task.label }}
+              ></Div>
+            </ThemeProvider>
+          ),
+        });
+      } else if (task.component_type_id === 1) {
+        this.setState({
+          inputList: inputList.concat(
+            <ThemeProvider theme={theme}>
+              <Div
+                key={task.order_key}
                 dir={theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
               ></Div>
@@ -294,8 +310,8 @@ class HomePage extends Component {
         task.component_type_id === 4 ||
         task.component_type_id === 7
       ) {
-        console.log(task.is_direction_setting);
-
+        // console.log(task.is_direction_setting);
+        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
@@ -311,60 +327,44 @@ class HomePage extends Component {
                       })}
                     </Form.Control>
                   </CompDiv>
+                ) : task.component_type_id === 2 ? (
+                  <Slider
+                    className="pc-range-slider"
+                    id="slider"
+                    direction={compdirection}
+                  />
+                ) : task.component_type_id === 5 ? (
+                  <Rating
+                    emptySymbol="far fa-star fa-2x"
+                    fullSymbol="fas fa-star fa-2x"
+                    id="stars"
+                    direction={compdirection}
+                  />
+                ) : task.component_type_id === 4 ? (
+                  <Range
+                    className="pc-range-slider"
+                    step={10}
+                    defaultValue={[20, 30]}
+                    id="double_slider"
+                    direction={compdirection}
+                  />
                 ) : (
-                  task.answers.map(function (answer, index) {
-                    return (
-                      <div key={index} dir={theme.dir}>
-                        {answer.answer_content}:
-                        {task.component_type_id === 2 ? (
-                          <CompDiv>
-                            <Slider
-                              // className="pc-range-slider"
-                              id="slider"
-                              style={{ flexDirection: "col-reverse" }}
-                            />
-                          </CompDiv>
-                        ) : task.component_type_id === 5 ? (
-                          <Rating
-                            emptySymbol="far fa-star fa-2x"
-                            fullSymbol="fas fa-star fa-2x"
-                            id="stars"
-                            direction={compdirection}
-                            onChange={() => this.onInputchange}
-                          />
-                        ) : task.component_type_id === 4 ? (
-                          <CompDiv>
-                            <Range
-                              className="pc-range-slider"
-                              step={10}
-                              defaultValue={[20, 30]}
-                              id="double_slider"
-                              direction={compdirection}
-                            />
-                          </CompDiv>
-                        ) : (
-                          <Rating
-                            // initialRating={this.state.squareRating}
-                            direction={compdirection}
-                            id="rating"
-                            emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span>{n}</span>
-                              </span>
-                            ))}
-                            fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span className="active">{n}</span>
-                              </span>
-                            ))}
-                            onChange={(rate) =>
-                              this.setState({ squareRating: rate })
-                            }
-                          />
-                        )}
-                      </div>
-                    );
-                  })
+                  <Rating
+                    // initialRating={this.state.squareRating}
+                    direction={compdirection}
+                    id="rating"
+                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                      <span className="theme-bar-square">
+                        <span>{n}</span>
+                      </span>
+                    ))}
+                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                      <span className="theme-bar-square">
+                        <span className="active">{n}</span>
+                      </span>
+                    ))}
+                    onChange={(rate) => this.setState({ squareRating: rate })}
+                  />
                 )}
               </Div>
             </ThemeProvider>
@@ -440,7 +440,7 @@ class HomePage extends Component {
     return (
       <Aux>
         <div className={mainClass.join(" ")}>
-          <Aux>
+          <Form>
             <Card
               border="primary"
               style={{
@@ -469,12 +469,16 @@ class HomePage extends Component {
                     onChangePage={this.onChangePage}
                     onCreateUser={this.onCreateUser}
                     pageSize={2}
+                    is_next={
+                      this.state.demo_answers.length ===
+                      this.state.demographic_task.length
+                    }
                     lang={this.state.lang}
                   />
                 </ListGroup.Item>
               </Card.Body>
             </Card>
-          </Aux>
+          </Form>
         </div>
       </Aux>
     );
