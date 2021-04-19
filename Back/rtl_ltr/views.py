@@ -653,6 +653,11 @@ class ParticipantAPIView(APIView):
 
     @transaction.atomic
     def put(self, request, id):
+        data = request.data
+        for datum in data:
+            datum['participant_id'] = id
+            insert_data_into_table(TaskParticipantSerializer(data=datum))
+
         return Response(status=status.HTTP_200_OK)
 
     @transaction.atomic
