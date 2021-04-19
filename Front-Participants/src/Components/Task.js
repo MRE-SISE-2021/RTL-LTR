@@ -9,14 +9,16 @@ class Task extends React.Component {
       task: props.demo_task,
       is_other: false,
     };
+    this.handleClick = this.handleClick.bind(this);
+    this.setTaskAnswer = this.setTaskAnswer.bind(this);
   }
   handleClick(event) {
     this.state = {
       is_other: true,
     };
   }
-  setTaskAnswer(event) {
-    console.log(event.target.value); //orderkey = value
+  setTaskAnswer(event, value) {
+    console.log(value); //orderkey = value
     if (event.target.id === "age") {
       this.props.onChange({
         answer_id: [],
@@ -39,6 +41,7 @@ class Task extends React.Component {
     this.props.onChange({
       answer_id: answer_id,
       order_key: order_key,
+      value: value,
     });
   }
 
@@ -71,7 +74,7 @@ class Task extends React.Component {
       <ThemeProvider theme={theme}>
         <Div key={"task"}>
           <h4>{this.state.task.order_key + ". " + this.state.task.label}</h4>
-          <Form onChange={this.setTaskAnswer.bind(this)}>
+          <Form>
             {this.state.task.answers.length === 0 ? (
               <Form.Group>
                 <Form.Control
@@ -79,6 +82,7 @@ class Task extends React.Component {
                   type="number"
                   required
                   id="age"
+                  onChange={this.setTaskAnswer}
                 />
               </Form.Group>
             ) : (
@@ -92,6 +96,9 @@ class Task extends React.Component {
                       id={answer.answer_id} //answer_id
                       name={"ans" + actual_index}
                       value={actual_index} //order_ key.
+                      onChange={(e) => {
+                        this.setTaskAnswer(e, answer.value);
+                      }}
                     />
                     <Form.Label
                       style={{ position: "relative", padding: "6px" }}
@@ -103,7 +110,7 @@ class Task extends React.Component {
                         style={{ width: "200px" }}
                         type="text"
                         name={actual_index}
-                        onFocus={this.handleClick.bind(this)}
+                        onFocus={this.handleClick}
                         id="other"
                       />
                     ) : null}

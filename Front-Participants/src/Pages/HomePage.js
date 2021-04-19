@@ -9,7 +9,7 @@ import Slider from "rc-slider";
 import { format } from "date-fns";
 
 //RTL
-import styled, { ThemeProvider } from "styled-components";
+import styled, { keyframes, ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 //new Page
 import Pagination from "../Components/Pagination";
@@ -38,11 +38,14 @@ class HomePage extends Component {
       demographic_task: props.data.demographic_task,
       demographic: props.data.demographic,
       demo_answers: [],
+      total_answer: props.data.demographic_task.length - 2,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onUpdateDemoAnswer = this.onUpdateDemoAnswer.bind(this);
     this.onCreateUser = this.onCreateUser.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
+    this.setDemoUI = this.setDemoUI.bind(this);
+    this.deleteFromArray = this.deleteFromArray.bind(this);
   }
 
   async componentWillReceiveProps(propsIncoming) {
@@ -57,6 +60,7 @@ class HomePage extends Component {
       direction: propsIncoming.data.direction,
       demographic_task: propsIncoming.data.demographic_task,
       demographic: propsIncoming.data.demographic,
+      total_answer: propsIncoming.data.demographic_task.length - 2,
     });
     console.log(this.state);
 
@@ -101,6 +105,11 @@ class HomePage extends Component {
         return;
       }
     }
+    if (order_key === 9) {
+      if (this.setDemoUI(answer.value)) {
+        return;
+      }
+    }
 
     for (let [i, ans] of answers.entries()) {
       //switch radio button selection
@@ -123,6 +132,85 @@ class HomePage extends Component {
       }),
     });
     console.log(this.state);
+  }
+
+  //help function -- delete from object array according to id(order_key/somthing else...)
+  deleteFromArray(array, key) {
+    // debugger;
+    for (let i = 0; i < array.length; i++) {
+      let answer = array[i];
+      if (answer.order_key === key) {
+        array.splice(key, 1);
+      }
+    }
+    return array;
+  }
+
+  //Question 10 + 11 according to question 9 answer
+  setDemoUI(value) {
+    if (value === "0") {
+      // debugger;
+      var array = [...this.state.pageOfComponents]; // make a separate copy of the array
+      var index = this.state.pageOfComponents.length;
+      if (index > 2) {
+        array.splice(index - 1, 1);
+        this.setState({
+          demo_answers: this.deleteFromArray(this.state.demo_answers, 10),
+        });
+        this.setState({
+          demo_answers: this.deleteFromArray(this.state.demo_answers, 9),
+        });
+        this.setState({
+          pageOfComponents: array,
+          total_answer: this.state.total_answer - 2,
+        });
+      }
+    } else {
+      // debugger;
+      //add questions 10 + 11 to input list
+      console.log("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      // 1. Make a shallow copy of the array
+      let inputList = [...this.state.pageOfComponents];
+      let new_inputList = [];
+      // 2. Make a shallow copy of the element you want to mutate
+      // let temp_element = { ...inputList[1] };
+
+      // 3. Update the property you're interested in
+      // temp_element = temp_element.concat(<div>meoo</div>);
+      for (let i = 0; i < inputList.length; i++) {
+        new_inputList = new_inputList.concat({ ...inputList[i] });
+        if (i === 1) {
+          new_inputList = new_inputList.concat(
+            <div>
+              <Task
+                key={9}
+                demo_task={this.state.demographic_task[9]}
+                lang={this.state.lang}
+                onChange={this.onUpdateDemoAnswer}
+                answers={this.state.demo_answers}
+              />
+              <Task
+                key={10}
+                demo_task={this.state.demographic_task[10]}
+                lang={this.state.lang}
+                onChange={this.onUpdateDemoAnswer}
+                answers={this.state.demo_answers}
+              />
+            </div>
+          );
+        }
+      }
+
+      // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+      // inputList[1] = temp_element;
+      // console.log(inputList);
+
+      // 5. Set the state to our new copy
+      this.setState({
+        pageOfComponents: new_inputList,
+        total_answer: this.state.total_answer + 2,
+      });
+    }
   }
 
   setDemoCheckbox(answers, order_key, arr, answer_id) {
@@ -280,7 +368,7 @@ class HomePage extends Component {
                   console.log("Entered");
                   console.log(this.state.demographic[i]);
                   // Return the element. Also pass key
-                  if (this.state.demographic[i]) {
+                  if (this.state.demographic[i] && i < 9) {
                     return (
                       <Task
                         key={i}
@@ -470,8 +558,7 @@ class HomePage extends Component {
                     onCreateUser={this.onCreateUser}
                     pageSize={2}
                     is_next={
-                      this.state.demo_answers.length ===
-                      this.state.demographic_task.length
+                      this.state.demo_answers.length === this.state.total_answer
                     }
                     lang={this.state.lang}
                   />
