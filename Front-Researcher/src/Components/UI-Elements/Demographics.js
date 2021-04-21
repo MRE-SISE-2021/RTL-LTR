@@ -2,7 +2,7 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 import { Form, Row } from "react-bootstrap";
-
+import "../../styles/Demographics.css";
 class Demographics extends React.Component {
   constructor(props) {
     super(props);

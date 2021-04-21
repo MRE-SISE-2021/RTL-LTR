@@ -17,7 +17,7 @@ import Pagination from "../Pagination";
 
 import axiosInstance from "../axios";
 import "../styles/PreviewPage.css";
-import Demographics from "../Components/UI-Elements/Demograpics";
+import Demographics from "../Components/UI-Elements/Demographics";
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
