@@ -246,25 +246,25 @@ class Pagination extends React.Component {
         this.props.lang === 1 &&
         pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            سؤال {current} من {total - 1}
+            صفحه {current} من {total - 1}
           </p>
         ) : pager.currentPage > 2 &&
           this.props.lang === 2 &&
           pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            Que {current} from {total - 1}
+            Page {current} from {total - 1}
           </p>
         ) : pager.currentPage > 2 &&
           this.props.lang === 3 &&
           pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            שאלה {current} מתוך {total - 1}
+            עמוד {current} מתוך {total - 1}
           </p>
         ) : pager.currentPage > 2 &&
           this.props.lang === 4 &&
           pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            задача {current}посреднический {total - 1}
+            страница {current}посреднический {total - 1}
           </p>
         ) : null}
       </div>
