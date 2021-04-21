@@ -174,7 +174,7 @@ class Pagination extends React.Component {
 
   GetFinalPage(pager) {
     this.setPage(pager.currentPage + 1);
-    this.setState({ isFinal: true });
+    // this.setState({ isFinal: true });
   }
   render() {
     if (this.state.isFinal) {
@@ -201,7 +201,7 @@ class Pagination extends React.Component {
           >
             {this.getLangStart()}
           </Button>
-        ) : pager.currentPage < pager.totalPages ? (
+        ) : pager.currentPage < pager.totalPages - 1 ? (
           // <li>
           <Button
             style={{ width: "50%" }}
@@ -215,7 +215,7 @@ class Pagination extends React.Component {
           >
             {this.getLangNext()}
           </Button>
-        ) : (
+        ) : pager.currentPage < pager.totalPages ? (
           // </li>
           // <li>
           <Button
@@ -225,8 +225,8 @@ class Pagination extends React.Component {
           >
             {this.getLangFinish()}
           </Button>
-          // </li>
-        )}
+        ) : // </li>
+        null}
         <br />
         <br />
         {/* <ProgressBar
@@ -235,21 +235,29 @@ class Pagination extends React.Component {
           animated
           striped
         /> */}
-        {pager.currentPage > 2 && this.props.lang === 1 ? (
+        {pager.currentPage > 2 &&
+        this.props.lang === 1 &&
+        pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            سؤال {current} من {total}
+            سؤال {current} من {total - 1}
           </p>
-        ) : pager.currentPage > 2 && this.props.lang === 2 ? (
+        ) : pager.currentPage > 2 &&
+          this.props.lang === 2 &&
+          pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            Que {current} from {total}
+            Que {current} from {total - 1}
           </p>
-        ) : pager.currentPage > 2 && this.props.lang === 3 ? (
+        ) : pager.currentPage > 2 &&
+          this.props.lang === 3 &&
+          pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            שאלה {current} מתוך {total}
+            שאלה {current} מתוך {total - 1}
           </p>
-        ) : pager.currentPage > 2 && this.props.lang === 4 ? (
+        ) : pager.currentPage > 2 &&
+          this.props.lang === 4 &&
+          pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            задача {current}посреднический {total}
+            задача {current}посреднический {total - 1}
           </p>
         ) : null}
       </div>
