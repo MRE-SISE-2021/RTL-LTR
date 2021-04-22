@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import API from "../Api/Api";
-import { Card, ListGroup, Form } from "react-bootstrap";
+import { Card, ListGroup, Form, Row } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 import { format } from "date-fns";
@@ -469,7 +469,30 @@ class HomePage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
-                {task.answers.map(function (answer, index) {
+                <Form>
+                  {task.answers.map((answer, index) => (
+                    <CompDiv key={index}>
+                      <Form.Group key={index}>
+                        <Row>
+                          <Form.Control
+                            style={{ width: "16px", hight: "16px" }}
+                            type={type}
+                            key={index}
+                            id={answer.answer_id} //answer_id
+                            name={"ans"}
+                            // value={actual_index} //order_ key.
+                          />
+                          <Form.Label
+                            style={{ position: "relative", padding: "6px" }}
+                          >
+                            {"  " + answer.answer_content + "  "}
+                          </Form.Label>
+                        </Row>
+                      </Form.Group>
+                    </CompDiv>
+                  ))}
+                </Form>
+                {/* {task.answers.map(function (answer, index) {
                   return (
                     <CompDiv key={index}>
                       <p>
@@ -484,7 +507,7 @@ class HomePage extends Component {
                       </p>
                     </CompDiv>
                   );
-                })}
+                })} */}
               </Div>
             </ThemeProvider>
           ),
