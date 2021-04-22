@@ -15,9 +15,15 @@ class Input extends React.Component {
       taskId: props.taskId,
       compTypeId: props.compTypeId,
     };
+    this.updateDelete = this.updateDelete.bind(this);
+
     console.log(this.state);
   }
 
+  //Call delete task from pareant component(Components Table)
+  updateDelete(value) {
+    this.props.updateDelete(value);
+  }
   render() {
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
@@ -55,6 +61,7 @@ class Input extends React.Component {
               is_direction_setting={this.props.is_direction_setting}
               is_new_page_setting={this.props.is_new_page_setting}
               is_required_setting={this.props.is_required_setting}
+              delete={this.updateDelete}
             />
           ) : (
             <AllCkEditor
@@ -69,6 +76,7 @@ class Input extends React.Component {
               is_new_page_setting={this.props.is_new_page_setting}
               is_required_setting={this.props.is_required_setting}
               dir={this.props.dir}
+              delete={this.updateDelete}
             />
           )}
         </Card>

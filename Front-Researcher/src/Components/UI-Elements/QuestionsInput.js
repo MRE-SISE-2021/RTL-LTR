@@ -52,6 +52,7 @@ class FormsElements extends React.Component {
       label: props.label || "",
       id: props.expId,
       delete: true,
+      keyOrder: props.keyOrder,
       deleteAll: false,
       taskId: props.taskId,
       answersNum: 2,
@@ -146,18 +147,22 @@ class FormsElements extends React.Component {
     //DELETE request -- delete task
     const { cookies } = this.props;
 
-    // console.log(this.props);
-    const response = {
-      task_id: this.state.taskId, //
-    };
+    //if the question was saved in DB -- > Delete from DB
+    if (this.state.taskId !== undefined && this.state.taskId !== "") {
+      const response = {
+        task_id: this.state.taskId, //
+      };
 
-    API.deleteRequest(
-      "delete-task-from-questionnaire/" + this.state.id,
-      response,
-      cookies.cookies.access_token
-    ).then((data) => {
-      console.log(data); // JSON data parsed by `data.json()` call
-    });
+      API.deleteRequest(
+        "delete-task-from-questionnaire/" + this.state.id,
+        response,
+        cookies.cookies.access_token
+      ).then((data) => {
+        console.log(data); // JSON data parsed by `data.json()` call
+      });
+    }
+    //Call delete task from pareant component(Task)
+    this.props.delete(this.state.keyOrder);
 
     ///show delete button
     this.setState({
@@ -258,6 +263,7 @@ class FormsElements extends React.Component {
 
   ///settings----
   setSettings(event) {
+    debugger;
     var id = event.target.id;
     var checked = event.target.checked;
     this.setState((prevState) => {
@@ -375,7 +381,7 @@ class FormsElements extends React.Component {
               type="text"
               placeholder={this.getLangAnswer() + " " + i}
               name="answer_content"
-              readOnly={this.state.deleteAll}
+              // readOnly={this.state.deleteAll}
               value={
                 this.state.answers[i] === undefined
                   ? ans
@@ -553,7 +559,7 @@ class FormsElements extends React.Component {
                       value={this.state.label}
                       onChange={this.onInputchange}
                       required
-                      readOnly={this.state.deleteAll}
+                      // readOnly={this.state.deleteAll}
                       style={{ width: "160%", border: "2px solid " }}
                       id={"ques " + this.state.taskId}
                     />
@@ -588,7 +594,7 @@ class FormsElements extends React.Component {
                     id={"is_direction " + this.props.keyOrder}
                     // id="is_direction"
                     label="RTL/LTR customization"
-                    onClick={this.setSettings}
+                    onChange={this.setSettings}
                     checked={this.state.settings.is_direction_setting}
                   />
                   <Form.Check
@@ -596,7 +602,7 @@ class FormsElements extends React.Component {
                     id={"is_required " + this.props.keyOrder}
                     label="is required"
                     // id="is_required"
-                    onClick={this.setSettings}
+                    onChange={this.setSettings}
                     checked={this.state.settings.is_required_setting}
                   />
                 </Col>
@@ -606,7 +612,7 @@ class FormsElements extends React.Component {
                     id={"is_new_page " + this.props.keyOrder}
                     // id="is_new_page"
                     label="Open on a new page"
-                    onClick={this.setSettings}
+                    onChange={this.setSettings}
                     checked={this.state.settings.is_new_page_setting}
                   />
 
@@ -615,7 +621,7 @@ class FormsElements extends React.Component {
                     id={"is_add_picture " + this.props.keyOrder}
                     // id="is_add_picture"
                     label="Add picture under the question"
-                    onClick={this.setSettings}
+                    onChange={this.setSettings}
                     checked={this.state.settings.is_add_picture_setting}
                   />
                 </Col>
@@ -624,7 +630,7 @@ class FormsElements extends React.Component {
                     style={{ border: "#00897B", backgroundColor: "#00897B" }}
                     variant="success"
                     onClick={this.sendData}
-                    disabled={this.state.deleteAll}
+                    // disabled={this.state.deleteAll}
                     type="submit"
                   >
                     <MDBIcon icon="save" />
@@ -632,7 +638,7 @@ class FormsElements extends React.Component {
                   &nbsp;
                   <Button
                     variant="danger"
-                    disabled={this.state.delete}
+                    // disabled={this.state.delete}
                     onClick={this.deleteData}
                   >
                     <MDBIcon icon="trash-alt" />
