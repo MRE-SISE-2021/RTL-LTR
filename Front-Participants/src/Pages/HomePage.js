@@ -354,6 +354,7 @@ class HomePage extends Component {
             </ThemeProvider>
           ),
         });
+        debugger;
         inputList = this.state.inputList;
         this.setState({
           inputList: inputList.concat(
@@ -364,6 +365,14 @@ class HomePage extends Component {
                   demoTasks={this.state.demographic_task}
                   lang={this.state.lang}
                 /> */}
+                <div
+                  style={{ textAlign: "center" }}
+                  key="11"
+                  dir={theme.dir}
+                  dangerouslySetInnerHTML={{
+                    __html: this.state.demographic_task[11].label,
+                  }}
+                ></div>
                 {this.state.demographic_task.map((demo, i) => {
                   console.log("Entered");
                   console.log(this.state.demographic[i]);
