@@ -2,7 +2,7 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 import { Form, Row } from "react-bootstrap";
-
+import "../../styles/Demographics.css";
 class Demographics extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +56,6 @@ class Demographics extends React.Component {
       };
     }
     let actual_index = 0;
-
     this.state.tasks.forEach((task, index) => {
       console.log(this.state.is_demographics[index]);
       let inputList = this.state.inputList;
@@ -140,9 +139,16 @@ class Demographics extends React.Component {
         dir: "rtl",
       };
     }
+
     let actual_index = 0;
     return (
       <ThemeProvider theme={theme}>
+        <div
+          style={{ textAlign: "center" }}
+          key="11"
+          dir={theme.dir}
+          dangerouslySetInnerHTML={{ __html: this.state.tasks[11].label }}
+        ></div>
         {this.state.tasks.map((task, index) => {
           console.log(index);
           if (this.state.is_demographics[index] === true) {

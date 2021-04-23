@@ -12,6 +12,11 @@ class Task extends Component {
     super(props);
     // console.log(props);
     this.state = { inputList: [] };
+    this.updateDelete = this.updateDelete.bind(this);
+  }
+  //Call delete task from pareant component(Components Table)
+  updateDelete(value) {
+    this.props.updateDelete(value);
   }
 
   //define task type according to compTypeId
@@ -38,6 +43,7 @@ class Task extends Component {
               is_new_page_setting={this.props.is_new_page_setting}
               is_required_setting={this.props.is_required_setting}
               lang={this.props.lang}
+              updateDelete={this.updateDelete}
             />
           ),
         });
@@ -60,6 +66,7 @@ class Task extends Component {
               is_new_page_setting={this.props.is_new_page_setting}
               is_required_setting={this.props.is_required_setting}
               lang={this.props.lang}
+              updateDelete={this.updateDelete}
             />
           ),
         });
@@ -82,6 +89,7 @@ class Task extends Component {
               is_new_page_setting={this.props.is_new_page_setting}
               is_required_setting={this.props.is_required_setting}
               lang={this.props.lang}
+              delete={this.updateDelete}
             />
           ),
         });
