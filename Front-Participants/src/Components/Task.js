@@ -9,6 +9,7 @@ class Task extends React.Component {
     this.state = {
       task: props.demo_task,
       is_other: false,
+      age: "",
     };
     this.handleClick = this.handleClick.bind(this);
     this.setTaskAnswer = this.setTaskAnswer.bind(this);
@@ -18,13 +19,30 @@ class Task extends React.Component {
       is_other: true,
     };
   }
-  setTaskAnswer(event, value) {
+  async setTaskAnswer(event, value) {
     console.log(value); //orderkey = value
+    debugger;
+    let isError = true;
     if (event.target.id === "age") {
+      if (event.target.value > 99 || event.target.value < 14) {
+        this.setState({
+          age: event.target.value,
+          isError: true,
+        });
+        isError = true;
+      } else {
+        this.setState({
+          age: event.target.value,
+          isError: false,
+        });
+        isError = false;
+      }
+
       this.props.onChange({
         answer_id: [],
         order_key: 1,
         free_answer: event.target.value,
+        isError: isError,
       });
       return;
     }
@@ -77,15 +95,25 @@ class Task extends React.Component {
           <h4>{this.state.task.order_key + ". " + this.state.task.label}</h4>
           <Form>
             {this.state.task.answers.length === 0 ? (
-              <Form.Group>
-                <Form.Control
-                  style={{ width: "88px" }}
-                  type="number"
-                  required
-                  id="age"
-                  onChange={this.setTaskAnswer}
-                />
-              </Form.Group>
+              <div key="age_1">
+                <Form.Group>
+                  <Form.Control
+                    style={{ width: "88px" }}
+                    type="number"
+                    required
+                    id="age"
+                    value={this.state.age}
+                    onChange={this.setTaskAnswer}
+                    autoFocus={true}
+                  />
+                  {this.state.isError ? (
+                    <p style={{ color: "red" }}>
+                      Could it be that you made a mistake in entering your age?
+                      If not - please contact us
+                    </p>
+                  ) : null}
+                </Form.Group>
+              </div>
             ) : (
               this.state.task.answers.map((answer, index) => (
                 <Form.Group key={index}>

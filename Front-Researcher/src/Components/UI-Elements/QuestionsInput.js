@@ -263,7 +263,6 @@ class FormsElements extends React.Component {
 
   ///settings----
   setSettings(event) {
-    debugger;
     var id = event.target.id;
     var checked = event.target.checked;
     this.setState((prevState) => {

@@ -38,7 +38,8 @@ class HomePage extends Component {
       demographic_task: props.data.demographic_task,
       demographic: props.data.demographic,
       demo_answers: [],
-      total_answer: props.data.demographic_task.length - 2,
+      total_answer: props.data.demographic_task.length - 3,
+      isError: true,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onUpdateDemoAnswer = this.onUpdateDemoAnswer.bind(this);
@@ -60,7 +61,7 @@ class HomePage extends Component {
       direction: propsIncoming.data.direction,
       demographic_task: propsIncoming.data.demographic_task,
       demographic: propsIncoming.data.demographic,
-      total_answer: propsIncoming.data.demographic_task.length - 2,
+      total_answer: propsIncoming.data.demographic_task.length - 3,
     });
     console.log(this.state);
 
@@ -87,6 +88,10 @@ class HomePage extends Component {
     // });
   }
   onUpdateDemoAnswer(answer) {
+    if (answer.isError !== undefined) {
+      this.setState({ isError: answer.isError });
+    }
+    debugger;
     // update state with new answer from Task component
     let order_key = parseInt(answer.order_key);
     let answers = this.state.demo_answers;
@@ -590,7 +595,8 @@ class HomePage extends Component {
                     onCreateUser={this.onCreateUser}
                     pageSize={2}
                     is_next={
-                      this.state.demo_answers.length === this.state.total_answer
+                      this.state.demo_answers.length ===
+                        this.state.total_answer && !this.state.isError
                     }
                     lang={this.state.lang}
                   />
