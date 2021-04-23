@@ -106,10 +106,23 @@ class Task extends React.Component {
                     onChange={this.setTaskAnswer}
                     autoFocus={true}
                   />
-                  {this.state.isError ? (
+                  {this.state.isError && this.props.lang === 1 ? (
+                    <p style={{ color: "red" }}>
+                      هل أخطأت في ادخال عمرك؟ إذا لم يكن كذلك، يرجى الاتصال بنا
+                    </p>
+                  ) : this.state.isError && this.props.lang === 2 ? (
                     <p style={{ color: "red" }}>
                       Could it be that you made a mistake in entering your age?
                       If not - please contact us
+                    </p>
+                  ) : this.state.isError && this.props.lang === 3 ? (
+                    <p style={{ color: "red" }}>
+                      יכול להיות שטעית בהזנת גילך? אם לא - מבקשים ליצור קשר
+                      איתנו
+                    </p>
+                  ) : this.state.isError && this.props.lang === 4 ? (
+                    <p style={{ color: "red" }}>
+                      У тебя есть аккаунт? Если у вас его нет, свяжитесь с нами.
                     </p>
                   ) : null}
                 </Form.Group>
