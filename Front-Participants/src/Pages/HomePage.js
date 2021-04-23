@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import API from "../Api/Api";
-import { Card, ListGroup, Form } from "react-bootstrap";
+import { Card, ListGroup, Form, Row } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 import { format } from "date-fns";
 
 //RTL
-import styled, { ThemeProvider } from "styled-components";
+import styled, { keyframes, ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 //new Page
 import Pagination from "../Components/Pagination";
@@ -38,11 +38,15 @@ class HomePage extends Component {
       demographic_task: props.data.demographic_task,
       demographic: props.data.demographic,
       demo_answers: [],
+      total_answer: props.data.demographic_task.length - 3,
+      isError: true,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onUpdateDemoAnswer = this.onUpdateDemoAnswer.bind(this);
     this.onCreateUser = this.onCreateUser.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
+    this.setDemoUI = this.setDemoUI.bind(this);
+    this.deleteFromArray = this.deleteFromArray.bind(this);
   }
 
   async componentWillReceiveProps(propsIncoming) {
@@ -57,6 +61,7 @@ class HomePage extends Component {
       direction: propsIncoming.data.direction,
       demographic_task: propsIncoming.data.demographic_task,
       demographic: propsIncoming.data.demographic,
+      total_answer: propsIncoming.data.demographic_task.length - 3,
     });
     console.log(this.state);
 
@@ -83,6 +88,10 @@ class HomePage extends Component {
     // });
   }
   onUpdateDemoAnswer(answer) {
+    if (answer.isError !== undefined) {
+      this.setState({ isError: answer.isError });
+    }
+    debugger;
     // update state with new answer from Task component
     let order_key = parseInt(answer.order_key);
     let answers = this.state.demo_answers;
@@ -98,6 +107,11 @@ class HomePage extends Component {
     // to add answer to check box list
     if (order_key === 3 || order_key === 5 || order_key === 11) {
       if (this.setDemoCheckbox(answers, order_key, arr, answer_id)) {
+        return;
+      }
+    }
+    if (order_key === 9) {
+      if (this.setDemoUI(answer.value)) {
         return;
       }
     }
@@ -123,6 +137,85 @@ class HomePage extends Component {
       }),
     });
     console.log(this.state);
+  }
+
+  //help function -- delete from object array according to id(order_key/somthing else...)
+  deleteFromArray(array, key) {
+    // debugger;
+    for (let i = 0; i < array.length; i++) {
+      let answer = array[i];
+      if (answer.order_key === key) {
+        array.splice(key, 1);
+      }
+    }
+    return array;
+  }
+
+  //Question 10 + 11 according to question 9 answer
+  setDemoUI(value) {
+    if (value === "0") {
+      // debugger;
+      var array = [...this.state.pageOfComponents]; // make a separate copy of the array
+      var index = this.state.pageOfComponents.length;
+      if (index > 2) {
+        array.splice(index - 1, 1);
+        this.setState({
+          demo_answers: this.deleteFromArray(this.state.demo_answers, 10),
+        });
+        this.setState({
+          demo_answers: this.deleteFromArray(this.state.demo_answers, 9),
+        });
+        this.setState({
+          pageOfComponents: array,
+          total_answer: this.state.total_answer - 2,
+        });
+      }
+    } else {
+      // debugger;
+      //add questions 10 + 11 to input list
+      console.log("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      // 1. Make a shallow copy of the array
+      let inputList = [...this.state.pageOfComponents];
+      let new_inputList = [];
+      // 2. Make a shallow copy of the element you want to mutate
+      // let temp_element = { ...inputList[1] };
+
+      // 3. Update the property you're interested in
+      // temp_element = temp_element.concat(<div>meoo</div>);
+      for (let i = 0; i < inputList.length; i++) {
+        new_inputList = new_inputList.concat({ ...inputList[i] });
+        if (i === 1) {
+          new_inputList = new_inputList.concat(
+            <div>
+              <Task
+                key={9}
+                demo_task={this.state.demographic_task[9]}
+                lang={this.state.lang}
+                onChange={this.onUpdateDemoAnswer}
+                answers={this.state.demo_answers}
+              />
+              <Task
+                key={10}
+                demo_task={this.state.demographic_task[10]}
+                lang={this.state.lang}
+                onChange={this.onUpdateDemoAnswer}
+                answers={this.state.demo_answers}
+              />
+            </div>
+          );
+        }
+      }
+
+      // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+      // inputList[1] = temp_element;
+      // console.log(inputList);
+
+      // 5. Set the state to our new copy
+      this.setState({
+        pageOfComponents: new_inputList,
+        total_answer: this.state.total_answer + 2,
+      });
+    }
   }
 
   setDemoCheckbox(answers, order_key, arr, answer_id) {
@@ -266,6 +359,7 @@ class HomePage extends Component {
             </ThemeProvider>
           ),
         });
+        debugger;
         inputList = this.state.inputList;
         this.setState({
           inputList: inputList.concat(
@@ -276,11 +370,19 @@ class HomePage extends Component {
                   demoTasks={this.state.demographic_task}
                   lang={this.state.lang}
                 /> */}
+                <div
+                  style={{ textAlign: "center" }}
+                  key="11"
+                  dir={theme.dir}
+                  dangerouslySetInnerHTML={{
+                    __html: this.state.demographic_task[11].label,
+                  }}
+                ></div>
                 {this.state.demographic_task.map((demo, i) => {
                   console.log("Entered");
                   console.log(this.state.demographic[i]);
                   // Return the element. Also pass key
-                  if (this.state.demographic[i]) {
+                  if (this.state.demographic[i] && i < 9) {
                     return (
                       <Task
                         key={i}
@@ -381,7 +483,30 @@ class HomePage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
-                {task.answers.map(function (answer, index) {
+                <Form>
+                  {task.answers.map((answer, index) => (
+                    <CompDiv key={index}>
+                      <Form.Group key={index}>
+                        <Row>
+                          <Form.Control
+                            style={{ width: "16px", hight: "16px" }}
+                            type={type}
+                            key={index}
+                            id={answer.answer_id} //answer_id
+                            name={"ans"}
+                            // value={actual_index} //order_ key.
+                          />
+                          <Form.Label
+                            style={{ position: "relative", padding: "6px" }}
+                          >
+                            {"  " + answer.answer_content + "  "}
+                          </Form.Label>
+                        </Row>
+                      </Form.Group>
+                    </CompDiv>
+                  ))}
+                </Form>
+                {/* {task.answers.map(function (answer, index) {
                   return (
                     <CompDiv key={index}>
                       <p>
@@ -396,7 +521,7 @@ class HomePage extends Component {
                       </p>
                     </CompDiv>
                   );
-                })}
+                })} */}
               </Div>
             </ThemeProvider>
           ),
@@ -471,7 +596,7 @@ class HomePage extends Component {
                     pageSize={2}
                     is_next={
                       this.state.demo_answers.length ===
-                      this.state.demographic_task.length
+                        this.state.total_answer && !this.state.isError
                     }
                     lang={this.state.lang}
                   />

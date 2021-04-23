@@ -17,7 +17,7 @@ import Pagination from "../Pagination";
 
 import axiosInstance from "../axios";
 import "../styles/PreviewPage.css";
-import Demographics from "../Components/UI-Elements/Demograpics";
+import Demographics from "../Components/UI-Elements/Demographics";
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
@@ -257,25 +257,28 @@ class PreviewPage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
+
                 <Form>
                   {task.answers.map((answer, index) => (
-                    <Form.Group key={index}>
-                      <Row>
-                        <Form.Control
-                          style={{ width: "16px", hight: "16px" }}
-                          type={type}
-                          key={index}
-                          id={answer.answer_id} //answer_id
-                          name={"ans"}
-                          // value={actual_index} //order_ key.
-                        />
-                        <Form.Label
-                          style={{ position: "relative", padding: "6px" }}
-                        >
-                          {"  " + answer.answer_content + "  "}
-                        </Form.Label>
-                      </Row>
-                    </Form.Group>
+                    <CompDiv key={index}>
+                      <Form.Group key={index}>
+                        <Row>
+                          <Form.Control
+                            style={{ width: "16px", hight: "16px" }}
+                            type={type}
+                            key={index}
+                            id={answer.answer_id} //answer_id
+                            name={"ans"}
+                            // value={actual_index} //order_ key.
+                          />
+                          <Form.Label
+                            style={{ position: "relative", padding: "6px" }}
+                          >
+                            {"  " + answer.answer_content + "  "}
+                          </Form.Label>
+                        </Row>
+                      </Form.Group>
+                    </CompDiv>
                   ))}
                 </Form>
               </Div>

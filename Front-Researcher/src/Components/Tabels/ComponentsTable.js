@@ -17,8 +17,15 @@ class ComponentsTable extends Component {
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.onDemoChanged = this.onDemoChanged.bind(this);
+    this.updateDelete = this.updateDelete.bind(this);
   }
 
+  //when task button was pressed --> delete task from inputlist
+  updateDelete(orderKey) {
+    let array = this.state.inputList;
+    array.splice(orderKey, 1);
+    this.setState({ inputList: array });
+  }
   componentWillReceiveProps(propsIncoming) {
     //Edit EXP
     console.log(propsIncoming);
@@ -54,6 +61,7 @@ class ComponentsTable extends Component {
             is_new_page_setting={task.is_new_page_setting}
             is_required_setting={task.is_required_setting}
             lang={this.props.lang}
+            updateDelete={this.updateDelete}
           />
         );
         // }
@@ -76,6 +84,7 @@ class ComponentsTable extends Component {
           keyOrder={inputList.length}
           dir={this.props.dir}
           lang={this.props.lang}
+          updateDelete={this.updateDelete}
         />
       ),
     });
