@@ -25,6 +25,7 @@ class SaveModal extends React.Component {
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
     this.getComponents = this.getComponents.bind(this);
+    this.changeStateToDashboard = this.changeStateToDashboard.bind(this);
   }
   componentWillReceiveProps(propsIncoming) {
     let demo = propsIncoming.data.demo;
@@ -79,8 +80,10 @@ class SaveModal extends React.Component {
     ).then((data) => {
       console.log(data);
     });
-
     this.setState({ isBasic: false });
+  }
+
+  changeStateToDashboard(){
     this.setState(() => ({
       toDashboard: true,
     }));
@@ -99,7 +102,7 @@ class SaveModal extends React.Component {
           <MDBIcon
             icon="save"
             //className="text-white"
-            className="pr-3"
+            className="pr-4"
             size="2x"
           />
         </Button>
@@ -116,7 +119,10 @@ class SaveModal extends React.Component {
           />
           <Modal.Footer>
             <Button variant="secondary" onClick={this.onAddBtnClick}>
-              Save!
+              Save and keep working!
+            </Button>
+            <Button variant="secondary"  onClick={this.onAddBtnClick , this.changeStateToDashboard}>
+              Save and go to HomePage!
             </Button>
           </Modal.Footer>
         </Modal>

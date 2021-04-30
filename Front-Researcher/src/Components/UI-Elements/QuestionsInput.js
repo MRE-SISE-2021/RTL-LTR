@@ -425,7 +425,7 @@ class FormsElements extends React.Component {
       "Single choice",
       "Double Slider",
       "Stars",
-      "Numiric",
+      "Numeric",
       "Dropdown",
       "Multi Choice",
       "Counter",
@@ -515,22 +515,24 @@ class FormsElements extends React.Component {
                         {console.log(this.props.compTypeId)}
                         {/* <Col md={6}> */}
                         <Form.Group controlId="exampleForm.RangeInput">
-                          <Rating
-                            initialRating={this.state.squareRating}
-                            emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span>{n}</span>
-                              </span>
-                            ))}
-                            fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span className="active">{n}</span>
-                              </span>
-                            ))}
-                            onChange={(rate) =>
-                              this.setState({ squareRating: rate })
-                            }
-                          />
+                         
+                           <Rating
+                         stop={10}
+                        initialRating={this.state.squareRating}
+                        emptySymbol={[1, 2, 3, 4, 5,6,7,8,9,10].map((n) => (
+                          <span className="theme-bar-square">
+                            <span>{n}</span>
+                          </span>
+                        ))}
+                        fullSymbol={[1, 2, 3, 4, 5,6,7,8,9,10].map((n) => (
+                          <span className="theme-bar-square">
+                            <span className="active">{n}</span>
+                          </span>
+                        ))}
+                        onChange={(rate) =>
+                          this.setState({ squareRating: rate })
+                        }
+                      />
                         </Form.Group>
                         {/* </Col> */}
                       </Row>

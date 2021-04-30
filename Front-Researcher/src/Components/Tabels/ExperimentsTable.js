@@ -162,8 +162,16 @@ class ExperimentTable extends Component {
 
 */
 
+const selectRow = {
+  mode: 'checkbox',
+  clickToSelect: true,
+  bgColor: '#00BFFF'
+};
+
+
     return (
       <div>
+      
         <div
           style={{
             position: "absolute",
@@ -222,11 +230,14 @@ class ExperimentTable extends Component {
 
               <tbody>
                 {/* {console.log(names)} */}
+                
                 {names.map((value, index) => {
                   return (
                     <tr
                     key={index}
+                   
                     style={
+                      this.state.items[0].isActive=false,
                       this.state.isActive === index
                         ? {  background: '#BBDEFB' }
                         : {  background: 'white' }

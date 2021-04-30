@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row ,Tooltip,OverlayTrigger} from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { MDBChip, MDBContainer } from "mdbreact";
 
@@ -17,6 +17,7 @@ import { withCookies } from "react-cookie";
 
 import { Navbar } from "react-bootstrap";
 import "../../styles/homePageStyle.css";
+
 
 class NavBar extends Component {
   constructor(props) {
@@ -106,6 +107,26 @@ class NavBar extends Component {
       }
     });
   }
+  submitHandlerStatus(event) {
+    //DELETE request -- delete task
+    // const { cookies } = this.props;
+
+    if (this.props.chosen.questionnaire_id === undefined) {
+      return;
+    }
+    console.log(event.target.checked);
+    let response = {
+      questionnaire_id: this.props.chosen.questionnaire_id, //
+      is_active: event.target.checked,
+    };
+    console.log(response);
+    API.putRequest(
+      "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
+      response
+    ).then((data) => {
+      console.log(data);
+    });
+  }
   render() {
     console.log(this.state);
     if (this.state.toPreview === true) {
@@ -127,15 +148,17 @@ class NavBar extends Component {
     if (this.props.headerFixedLayout) {
       headerClass = [...headerClass, "headerpos-fixed"];
     }
-
+   
     let navBar = (
       <Aux>
         <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <ul className="mb-1 text-primary">
+            <ul className="text-primary">
               <li className="mr-4">
+
+               
                 <MDBIcon icon="home" size="2x" className="indigo-text" />
-                /Create Experiment{" "}
+              
               </li>
             </ul>
           </Link>
@@ -179,6 +202,16 @@ class NavBar extends Component {
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Status:{" "}
             </h5>
+            <Form.Check
+                          style={{ marginLeft: "1%" }}
+                          type="switch"
+                          id="custom-switch"
+                          label={this.state.is_active ? "Active" : "Not-Active"}
+                          onClick={this.onIsActiveChange}
+                          checked={this.state.is_active}
+                          //= {}
+                        />
+                      
             <Form.Group
               className=" mr-4"
               style={{
@@ -228,20 +261,20 @@ class NavBar extends Component {
                   //style={{ color: "white" }}
                   onClick={this.submitPreview}
                 >
-                  <MDBIcon className="pr-3" far icon="eye" size="2x" />
+                  <MDBIcon className="pr-4" far icon="eye" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="pr-3" icon="paperclip" size="2x" />
+                  <MDBIcon className="pr-4" icon="paperclip" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="pr-3" far icon="clone" size="2x" />
+                  <MDBIcon className="pr-4" far icon="clone" size="2x" />
                 </Button>
                 <Button
                   variant="outline-*"
                   //style={{ color: "white" }}
                   onClick={this.submitDelete}
                 >
-                  <MDBIcon className="pr-3" far icon="trash-alt" size="2x" />
+                  <MDBIcon className="pr-4" far icon="trash-alt" size="2x" />
                 </Button>
               </div>
             )}

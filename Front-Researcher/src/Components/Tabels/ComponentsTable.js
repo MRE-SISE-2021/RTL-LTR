@@ -278,7 +278,7 @@ class ComponentsTable extends Component {
                   >
                     <i className="feather icon-file" /> Numeric
                   </Button>
-
+         
                   <Button
                     id="9"
                     onClick={this.onAddBtnClick}

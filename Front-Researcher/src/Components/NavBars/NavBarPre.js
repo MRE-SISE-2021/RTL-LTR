@@ -57,16 +57,7 @@ class NavBar extends Component {
     
 
     let navBar = (
-      /*
-      <Aux>
-       <ul class="p-3 mb-2 bg-info text-white">
-              <li>
-                <MDBIcon icon="home" size="3x" className="indigo-text pr-3" />
-              </li>
-            </ul>
-      </Aux>
-*/
-  
+     
       <Aux>
         <Navbar fixed="top" style={{ height: "10%" }}>
       
@@ -94,6 +85,18 @@ class NavBar extends Component {
                   overlay={renderTooltip}
                 >
           <div className="navbar-collapse2">
+          <Button variant="outline-*" onClick={() => handleClick()}>
+              <ul className="mb-1 text-primary">
+                <li>
+                  <MDBIcon
+                    icon="arrow-left"
+                    size="2x"
+                    className="indigo-text pr-3"
+                  />
+                </li>
+                
+              </ul>
+            </Button>
             <Button variant="outline-*" onClick={() => handleClick()}>
               <ul className="mb-1 text-primary">
                 <li>
@@ -105,6 +108,7 @@ class NavBar extends Component {
                 </li>
               </ul>
             </Button>
+            
           </div>
           </OverlayTrigger>
         </Navbar>

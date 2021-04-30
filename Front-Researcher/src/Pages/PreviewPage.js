@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import NavBar from "../Components/NavBars/NavBar";
+import NavBarPre from "../Components/NavBars/NavBarPre";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
@@ -227,14 +227,16 @@ class PreviewPage extends Component {
                 ) : (
                   <Rating
                     // initialRating={this.state.squareRating}
+                    
                     direction={compdirection}
                     id="rating"
-                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                    stop={10}
+                    emptySymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span>{n}</span>
                       </span>
                     ))}
-                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                    fullSymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span className="active">{n}</span>
                       </span>
@@ -323,7 +325,7 @@ class PreviewPage extends Component {
     // console.log(this.state);
     return (
       <Aux>
-        <NavBar
+        <NavBarPre
           name={this.state.name}
           type={this.state.type}
           lang={this.state.lang}
@@ -333,9 +335,9 @@ class PreviewPage extends Component {
         <div className={mainClass.join(" ")}>
           <Aux>
             <Card
-              border="primary"
+              //border="primary"
               style={{
-                border: "2px solid ",
+                //border: "2px solid ",
                 width: "90%",
                 marginTop: "8%",
                 marginLeft: "5%",

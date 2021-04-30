@@ -223,7 +223,8 @@ class ExperimentInfo extends Component {
                   <Row>
                     <Col>
                       <b>Created: </b> {data.creation_date}{" "}
-                      <b>by: Super USER</b>
+                      
+                      <b >by: Super USER</b>
                     </Col>
                   </Row>
                   <br />
@@ -256,24 +257,32 @@ class ExperimentInfo extends Component {
                     </Col>
                   </Row>
                   <br />
+                  <Form.Group as={Row} controlId="formPlaintextPassword">
+                    <Form.Label column sm="3" >
+                        <b>Hosted Link:</b>
+                    </Form.Label>
 
-                  <Col>
-                    <Row>
-                      <b>Hosted Link: </b>
-                      <Form.Control
+                    <Col sm="6">
+                    <Form.Control
                         type="text"
                         defaultValue={data.hosted_link}
                         readOnly
-                        style={{ width: "50%" }}
+                        style={{ width: "100%" }}
                       />
+                      </Col>
+
+                      <Col sm="3">
+                    
                       <Button
-                        variant="outline-info"
+                        variant="outline-primary"
+                        
                         onClick={() => copy(data.hosted_link)}
                       >
                         Copy link
                       </Button>
-                    </Row>
-                  </Col>
+                      </Col>
+                  </Form.Group>
+
                 </ul>
               </div>
             </Card.Body>
