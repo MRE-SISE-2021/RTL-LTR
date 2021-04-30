@@ -9,6 +9,8 @@ import QuestionnaireInfo from "../ExperimentInfo";
 import { MDBIcon, MDBBtn } from "mdbreact";
 import "../../styles/homePageStyle.css";
 import { withCookies } from "react-cookie";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
 
 import axiosInstance from "../../axios";
 
@@ -161,12 +163,13 @@ class ExperimentTable extends Component {
         </div>
 
 */
+const MyComp = (props) => {
+  return (
+    <div onMouseOut={props.onMouseOut} onMouseOver={props.onMouseOver}>
+    </div>
+  )
+}
 
-const selectRow = {
-  mode: 'checkbox',
-  clickToSelect: true,
-  bgColor: '#00BFFF'
-};
 
 
     return (
@@ -198,6 +201,7 @@ const selectRow = {
           }}
           className={navClass.join(" ")}
         >
+          
           <Row>
             <Col sm={8}>
               <h5>
@@ -236,11 +240,14 @@ const selectRow = {
                     <tr
                     key={index}
                    
-                    style={
-                      this.state.items[0].isActive=false,
-                      this.state.isActive === index
-                        ? {  background: '#BBDEFB' }
-                        : {  background: 'white' }
+                    style={ 
+                      this.state.items[0].isActive=true,
+                      index==0?{backgroundColor:'#BBDEFB'}:
+
+                        this.state.isActive === index
+                        ? {  backgroundColor: '#BBDEFB'}
+                        : {  backgroundColor: 'white' }
+                      
                     }
                     onClick={() => handleClick(value.questionnaire_id,index)                      }
                   >
@@ -277,6 +284,7 @@ const selectRow = {
               </tbody>
             </Table>
           </div>
+ 
         </div>
       </div>
     );

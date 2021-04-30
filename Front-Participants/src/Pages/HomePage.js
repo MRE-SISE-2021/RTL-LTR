@@ -455,12 +455,13 @@ class HomePage extends Component {
                     // initialRating={this.state.squareRating}
                     direction={compdirection}
                     id="rating"
-                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                    stop={10}
+                    emptySymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span>{n}</span>
                       </span>
                     ))}
-                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                    fullSymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span className="active">{n}</span>
                       </span>
@@ -567,9 +568,7 @@ class HomePage extends Component {
         <div className={mainClass.join(" ")}>
           <Form>
             <Card
-              border="primary"
               style={{
-                border: "2px solid ",
                 width: "90%",
                 marginTop: "8%",
                 marginLeft: "5%",

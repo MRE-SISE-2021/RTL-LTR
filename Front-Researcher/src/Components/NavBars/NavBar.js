@@ -69,11 +69,13 @@ class NavBar extends Component {
   
       <Aux>
         <Navbar fixed="top" style={{ height: "10%" }}>
-      
+ 
         <OverlayTrigger
-                  placement="bottom"
+                  //placement="bottom"
                   //delay={{ show: 250, hide: 400 }}
-                  overlay={renderTooltip}
+                  //overlay={renderTooltip}
+                overlay={(<Tooltip id="hi">Hello, world!</Tooltip>)} placement="right"
+
                 >
                 
           <Link to="/home">
