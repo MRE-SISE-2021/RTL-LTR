@@ -17,6 +17,7 @@ import { withCookies } from "react-cookie";
 
 import { Navbar } from "react-bootstrap";
 import "../../styles/homePageStyle.css";
+import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 
 
 class NavBar extends Component {
@@ -39,17 +40,19 @@ class NavBar extends Component {
     });
   }
   onIsActiveChange(event) {
+
     console.log(event.target.value);
-    if (event.target.value === "Not-Active") {
-      this.setState({
-        is_active: false,
-      });
-    } else {
+    if (event.target.value == "Active") {
       this.setState({
         is_active: true,
       });
+    } else {
+      this.setState({
+        is_active: false,
+      });
     }
   }
+
   getLangName() {
     switch (this.props.lang) {
       case "1":
@@ -127,6 +130,15 @@ class NavBar extends Component {
       console.log(data);
     });
   }
+
+  
+  handleSwitchChange = nr => () => {
+    let switchNumber = `switch${nr}`;
+    this.setState({
+      [switchNumber]: !this.state[switchNumber]
+    });
+  }
+
   render() {
     console.log(this.state);
     if (this.state.toPreview === true) {
@@ -186,33 +198,38 @@ class NavBar extends Component {
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Direction:{" "}
             </h5>
-           
             <Form.Check
                           style={{ marginLeft: "1%" }}
                           type="switch"
-                          id="custom-switch"
-                          label={this.state.is_active ? "rtl" : "lft"}
+                          id="dir-switch"
+                          label={this.props.dir ? "rtl" : "lft"}
                           //onClick={this.onIsActiveChange}
-                          //checked={this.state.is_active}
+                          //checked={this.props.dir}
                           //= {}
-                          className=" mr-4"
+                          className="mr-4 mb-2"
+                          disabled
                         />
 
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Status:{" "}
             </h5>
+            
             <Form.Check
                           style={{ marginLeft: "1%" }}
                           type="switch"
-                          id="custom-switch"
-                          label={this.state.is_active ? "Active" : "Not-Active"}
-                          onClick={this.onIsActiveChange}
-                          checked={this.state.is_active}
+                          id="Status-switch"
+                          checked={this.state.is_active} 
+                          onChange={this.onIsActiveChange}
                           //= {}
+                          className=" mr-4 mb-2"
+                          readOnly
+                          label={this.state.is_active ? "Active" : "Not-Active"}
+                         
                         />
-                      
+                     
+
             <Form.Group
-              className=" mr-4"
+              className=" mr-4 mb-4"
               style={{
                 flexFlow: "inherit",
                 marginTop: "1%",
@@ -260,20 +277,20 @@ class NavBar extends Component {
                   //style={{ color: "white" }}
                   onClick={this.submitPreview}
                 >
-                  <MDBIcon className="pr-4" far icon="eye" size="2x" />
+                  <MDBIcon className="pr-4 mb-2" far icon="eye" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="pr-4" icon="paperclip" size="2x" />
+                  <MDBIcon className="pr-4 mb-2" icon="paperclip" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="pr-4" far icon="clone" size="2x" />
+                  <MDBIcon className="pr-4 mb-2" far icon="clone" size="2x" />
                 </Button>
                 <Button
                   variant="outline-*"
                   //style={{ color: "white" }}
                   onClick={this.submitDelete}
                 >
-                  <MDBIcon className="pr-4" far icon="trash-alt" size="2x" />
+                  <MDBIcon className="pr-4 mb-2" far icon="trash-alt" size="2x" />
                 </Button>
               </div>
             )}

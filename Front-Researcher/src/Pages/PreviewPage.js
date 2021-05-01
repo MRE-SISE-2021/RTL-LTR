@@ -14,6 +14,7 @@ import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 //new Page
 import Pagination from "../Pagination";
+import CounterInput from 'react-bootstrap-counter';
 
 import axiosInstance from "../axios";
 import "../styles/PreviewPage.css";
@@ -297,11 +298,11 @@ class PreviewPage extends Component {
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                  <CompDiv class="number">
-                    <span class="minus">-</span>
-                    <input id="counter" type="text" value="1" />
-                    <span class="plus">+</span>
-                  </CompDiv>
+                  
+                    <CounterInput 
+                        value={2} min={1} 
+                        max={50} onChange={ (value) => { console.log(value) } } />
+                  
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
                 ) : null}

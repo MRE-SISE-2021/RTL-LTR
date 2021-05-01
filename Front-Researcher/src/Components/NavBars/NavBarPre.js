@@ -12,6 +12,9 @@ import { Button } from "react-bootstrap";
 
 import { Cookies } from "react-cookie";
 import inMemoryToken from "../../inMemoryToken";
+import { useHistory } from "react-router-dom";
+//import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router'
 
 class NavBar extends Component {
   constructor(props) {
@@ -19,17 +22,19 @@ class NavBar extends Component {
     this.state = {
       toLogin: false,
     };
+
   }
 
- 
-  
   render() {
     const cookies = new Cookies();
-    
+
     //console.log(cookies);
     if (this.state.toLogin === true) {
       return <Redirect to={"/"} />;
     }
+
+    
+
 
     const handleClick = () => {
       this.setState({ toLogin: true });
@@ -85,7 +90,7 @@ class NavBar extends Component {
                   overlay={renderTooltip}
                 >
           <div className="navbar-collapse2">
-          <Button variant="outline-*" onClick={() => handleClick()}>
+          <Button variant="outline-*" onClick={() => Contact()}>
               <ul className="mb-1 text-primary">
                 <li>
                   <MDBIcon
@@ -140,6 +145,14 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
+
+
 export default withCookies(
   connect(mapStateToProps, mapDispatchToProps)(NavBar)
 );
+function Contact( ) {
+  const history = useHistory();
+  return (
+     history.goBack()         
+  );
+}
