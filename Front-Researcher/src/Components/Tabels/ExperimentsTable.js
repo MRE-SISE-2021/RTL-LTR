@@ -163,12 +163,7 @@ class ExperimentTable extends Component {
         </div>
 
 */
-const MyComp = (props) => {
-  return (
-    <div onMouseOut={props.onMouseOut} onMouseOver={props.onMouseOver}>
-    </div>
-  )
-}
+
 
 
 
@@ -241,12 +236,15 @@ const MyComp = (props) => {
                     key={index}
                    
                     style={ 
-                      this.state.items[0].isActive=true,
-                      index==0?{backgroundColor:'#BBDEFB'}:
+                     
+                      //this.state.items[0].
+                      //index==0?this.state.items[0].isActive=true:{},
+                      //index==0?this.state.isLoaded=true:{},
+                      index==0 ?{  backgroundColor: '#BBDEFB'}:
 
-                        this.state.isActive === index
-                        ? {  backgroundColor: '#BBDEFB'}
-                        : {  backgroundColor: 'white' }
+                       this.state.isActive === index
+                         ?{  backgroundColor: '#BBDEFB'}
+                         : {  backgroundColor: 'white' }
                       
                     }
                     onClick={() => handleClick(value.questionnaire_id,index)                      }

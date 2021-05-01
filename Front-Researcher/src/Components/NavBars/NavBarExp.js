@@ -186,18 +186,17 @@ class NavBar extends Component {
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Direction:{" "}
             </h5>
-            <Form.Group
-              className=" mr-4"
-              style={{
-                flexFlow: "inherit",
-                marginTop: "1%",
-                marginRight: "2%",
-              }}
-            >
-              <Form.Control as="select">
-                <option>{this.props.dir}</option>
-              </Form.Control>
-            </Form.Group>
+           
+            <Form.Check
+                          style={{ marginLeft: "1%" }}
+                          type="switch"
+                          id="custom-switch"
+                          label={this.state.is_active ? "rtl" : "lft"}
+                          //onClick={this.onIsActiveChange}
+                          //checked={this.state.is_active}
+                          //= {}
+                          className=" mr-4"
+                        />
 
             <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
               Status:{" "}
