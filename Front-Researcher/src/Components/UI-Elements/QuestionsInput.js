@@ -265,6 +265,9 @@ class FormsElements extends React.Component {
   setSettings(event) {
     var id = event.target.id;
     var checked = event.target.checked;
+    console.log(checked)
+    console.log(event.target.value)
+
     this.setState((prevState) => {
       let settings = Object.assign({}, prevState.settings); // creating copy of state variable jasper
       switch (id) {
@@ -425,7 +428,7 @@ class FormsElements extends React.Component {
       "Single choice",
       "Double Slider",
       "Stars",
-      "Numeric",
+      "Numiric",
       "Dropdown",
       "Multi Choice",
       "Counter",
@@ -515,24 +518,22 @@ class FormsElements extends React.Component {
                         {console.log(this.props.compTypeId)}
                         {/* <Col md={6}> */}
                         <Form.Group controlId="exampleForm.RangeInput">
-                         
-                           <Rating
-                         stop={10}
-                        initialRating={this.state.squareRating}
-                        emptySymbol={[1, 2, 3, 4, 5,6,7,8,9,10].map((n) => (
-                          <span className="theme-bar-square">
-                            <span>{n}</span>
-                          </span>
-                        ))}
-                        fullSymbol={[1, 2, 3, 4, 5,6,7,8,9,10].map((n) => (
-                          <span className="theme-bar-square">
-                            <span className="active">{n}</span>
-                          </span>
-                        ))}
-                        onChange={(rate) =>
-                          this.setState({ squareRating: rate })
-                        }
-                      />
+                          <Rating
+                            initialRating={this.state.squareRating}
+                            emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                              <span className="theme-bar-square">
+                                <span>{n}</span>
+                              </span>
+                            ))}
+                            fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                              <span className="theme-bar-square">
+                                <span className="active">{n}</span>
+                              </span>
+                            ))}
+                            onChange={(rate) =>
+                              this.setState({ squareRating: rate })
+                            }
+                          />
                         </Form.Group>
                         {/* </Col> */}
                       </Row>

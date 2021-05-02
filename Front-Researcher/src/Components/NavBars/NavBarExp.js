@@ -32,6 +32,8 @@ class NavBar extends Component {
     this.submitDelete = this.submitDelete.bind(this);
     this.getLangName = this.getLangName.bind(this);
     this.onIsActiveChange = this.onIsActiveChange.bind(this);
+    this.onIsActiveChange2 = this.onIsActiveChange2.bind(this);
+
   }
   async componentWillReceiveProps(propsIncoming) {
     console.log(propsIncoming);
@@ -42,6 +44,8 @@ class NavBar extends Component {
   onIsActiveChange(event) {
 
     console.log(event.target.value);
+    console.log(event.target.checked);
+
     if (event.target.value == "Active") {
       this.setState({
         is_active: true,
@@ -51,6 +55,14 @@ class NavBar extends Component {
         is_active: false,
       });
     }
+  }
+
+  onIsActiveChange2(event) {
+    console.log(event.target.value);
+    console.log(event.target.checked);
+    this.setState({
+      is_active: event.target.checked,
+    });   
   }
 
   getLangName() {
@@ -218,49 +230,17 @@ class NavBar extends Component {
                           style={{ marginLeft: "1%" }}
                           type="switch"
                           id="Status-switch"
+                          //checked={this.state.is_active} 
+                          onChange={this.onIsActiveChange2}
                           checked={this.state.is_active} 
-                          onChange={this.onIsActiveChange}
+
                           //= {}
                           className=" mr-4 mb-2"
-                          readOnly
                           label={this.state.is_active ? "Active" : "Not-Active"}
                          
                         />
-                     
+                      
 
-            <Form.Group
-              className=" mr-4 mb-4"
-              style={{
-                flexFlow: "inherit",
-                marginTop: "1%",
-                marginRight: "2%",
-              }}
-              onChange={this.onIsActiveChange}
-            >
-              {this.state.is_active ? (
-                <Form.Control
-                  as="select"
-                  value={this.state.is_active ? "Active" : "Not-Active"}
-                >
-                  <option value={"Active"}>Active</option>
-                  <option value={"Not-Active"}>Not-Active</option>
-                </Form.Control>
-              ) : (
-                <Form.Control
-                  as="select"
-                  value={this.state.is_active ? "Active" : "Not-Active"}
-                >
-                  <option value={"Not-Active"}>Not-Active</option>
-                  <option value={"Active"}>Active</option>
-                </Form.Control>
-              )}
-              {/* <option value={this.state.is_active}>
-                  {this.state.is_active ? "Active" : "Not-Active"}
-                </option>
-                <option value={!this.state.is_active}>
-                  {!this.state.is_active ? "Active" : "Not-Active"}
-                </option> */}
-            </Form.Group>
             {/* <h5 className="mr-5">Active</h5> */}
           </div>
 

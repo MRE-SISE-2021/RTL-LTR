@@ -14,11 +14,13 @@ import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 //new Page
 import Pagination from "../Pagination";
-import CounterInput from 'react-bootstrap-counter';
+//import CounterInput from 'react-bootstrap-counter';
+import CounterInput from "react-counter-input";
 
 import axiosInstance from "../axios";
 import "../styles/PreviewPage.css";
 import Demographics from "../Components/UI-Elements/Demographics";
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
@@ -298,10 +300,10 @@ class PreviewPage extends Component {
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                  
-                    <CounterInput 
-                        value={2} min={1} 
-                        max={50} onChange={ (value) => { console.log(value) } } />
+                 <CounterInput className="number"
+              
+                 value={2} min={1} 
+                 max={50} onChange={ (value) => { console.log(value) } } />
                   
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>

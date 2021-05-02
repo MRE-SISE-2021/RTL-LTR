@@ -138,9 +138,9 @@ class Task extends React.Component {
                       id={answer.answer_id} //answer_id
                       name={"ans" + actual_index}
                       value={actual_index} //order_ key.
-                      onChange={(e) => {
-                        this.setTaskAnswer(e, answer.value);
-                      }}
+                      //onChange={(e) => {
+                      //  this.setTaskAnswer(e, answer.value);
+                      //}}
                     />
                     <Form.Label
                       style={{ position: "relative", padding: "6px" }}
