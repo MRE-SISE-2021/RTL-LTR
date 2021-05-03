@@ -21,6 +21,7 @@ class SaveModal extends React.Component {
       demographic: props.data.demo,
       id: props.data.expId,
       is_active: props.is_active,
+      direction: props.direction,
     };
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
@@ -33,6 +34,7 @@ class SaveModal extends React.Component {
       demographic: demo,
       id: expId,
       is_active: propsIncoming.is_active,
+      direction: propsIncoming.direction,
     });
   }
 
@@ -71,6 +73,7 @@ class SaveModal extends React.Component {
       questionnaire_id: this.state.id, //
       demographic: this.state.demographic,
       is_active: this.state.is_active,
+      direction: this.state.direction,
     };
     console.log(response);
     API.putRequest(

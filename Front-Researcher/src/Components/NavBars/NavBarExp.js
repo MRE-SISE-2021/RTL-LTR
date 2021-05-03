@@ -25,16 +25,19 @@ class NavBar extends Component {
       toPreview: false,
       toHome: false,
       is_active: props.is_active,
+      direction: props.dir,
     };
     this.submitPreview = this.submitPreview.bind(this);
     this.submitDelete = this.submitDelete.bind(this);
     this.getLangName = this.getLangName.bind(this);
     this.onIsActiveChange = this.onIsActiveChange.bind(this);
+    this.onDirectionChange = this.onDirectionChange.bind(this);
   }
   async componentWillReceiveProps(propsIncoming) {
     console.log(propsIncoming);
     await this.setState({
       is_active: propsIncoming.is_active,
+      direction: propsIncoming.dir,
     });
   }
   onIsActiveChange(event) {
@@ -48,6 +51,13 @@ class NavBar extends Component {
         is_active: true,
       });
     }
+  }
+  onDirectionChange(event) {
+    event.preventDefault();
+    console.log(event.target.value);
+    this.setState({
+      direction: event.target.value,
+    });
   }
   getLangName() {
     switch (this.props.lang) {
@@ -170,9 +180,13 @@ class NavBar extends Component {
                 marginTop: "1%",
                 marginRight: "2%",
               }}
+              onChange={this.onDirectionChange}
             >
-              <Form.Control as="select">
-                <option>{this.props.dir}</option>
+              <Form.Control as="select" value={this.state.direction}>
+                <option value="RTL">RTL</option>
+                <option value="LTR">LTR</option>
+                <option value="Cntr">Cntr</option>
+                <option value="RND">RND</option>
               </Form.Control>
             </Form.Group>
 
@@ -205,12 +219,6 @@ class NavBar extends Component {
                   <option value={"Active"}>Active</option>
                 </Form.Control>
               )}
-              {/* <option value={this.state.is_active}>
-                  {this.state.is_active ? "Active" : "Not-Active"}
-                </option>
-                <option value={!this.state.is_active}>
-                  {!this.state.is_active ? "Active" : "Not-Active"}
-                </option> */}
             </Form.Group>
             {/* <h5 className="mr-5">Active</h5> */}
           </div>
@@ -221,7 +229,11 @@ class NavBar extends Component {
           >
             {this.props.prev ? null : (
               <div className="d-flex justify-content-lg-end">
-                <Modal data={this.props} is_active={this.state.is_active} />
+                <Modal
+                  data={this.props}
+                  is_active={this.state.is_active}
+                  direction={this.state.direction}
+                />
 
                 <Button
                   variant="outline-*"
