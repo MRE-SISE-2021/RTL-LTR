@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import NavBarPre from "../Components/NavBars/NavBarPre";
+import NavBarPre from "../Components/NavBars/NavBar";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
@@ -273,16 +273,16 @@ class PreviewPage extends Component {
                 ) : (
                   <Rating
                     // initialRating={this.state.squareRating}
-                    
+
                     direction={compdirection}
                     id="rating"
                     stop={10}
-                    emptySymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
+                    emptySymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span>{n}</span>
                       </span>
                     ))}
-                    fullSymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
+                    fullSymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span className="active">{n}</span>
                       </span>
@@ -343,11 +343,15 @@ class PreviewPage extends Component {
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                 <CounterInput className="number"
-              
-                 value={2} min={1} 
-                 max={50} onChange={ (value) => { console.log(value) } } />
-                  
+                  <CounterInput
+                    className="number"
+                    value={2}
+                    min={1}
+                    max={50}
+                    onChange={(value) => {
+                      console.log(value);
+                    }}
+                  />
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
                 ) : null}
