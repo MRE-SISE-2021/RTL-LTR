@@ -128,6 +128,14 @@ class PreviewPage extends Component {
         direction: ltr;
         `};
       `;
+      const ConstDiv = styled.div`
+        padding: 10px;
+        ${rtl`
+        margin-right: 50px;
+        text-align: left;
+        direction: ltr;
+        `};
+      `;
       let theme = {
         dir: "ltr",
       };
@@ -136,9 +144,6 @@ class PreviewPage extends Component {
           dir: "rtl",
         };
       } else if (this.state.direction === "Cntr") {
-        theme = {
-          dir: "center",
-        };
         Div = styled.div`
           text-align: center;
         `;
@@ -148,11 +153,11 @@ class PreviewPage extends Component {
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
-              <Div
+              <ConstDiv
                 key="11"
                 dir={theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });
@@ -160,11 +165,11 @@ class PreviewPage extends Component {
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
-              <Div
+              <ConstDiv
                 key="1"
                 dir={theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });

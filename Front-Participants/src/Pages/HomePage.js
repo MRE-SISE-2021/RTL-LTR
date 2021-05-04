@@ -301,6 +301,10 @@ class HomePage extends Component {
         CompDiv = styled.div`
           direction: ltr;
         `;
+      } else if (task.is_direction_setting === "Cntr") {
+        CompDiv = styled.div`
+          margin-left: 50%;
+        `;
       }
       //////// ----- add in a new page ----- //////////
       if (
@@ -315,13 +319,21 @@ class HomePage extends Component {
       }
       ///////////////---RTL support --- ///////////////
 
-      const Div = styled.div`
+      let Div = styled.div`
         padding: 10px;
         ${rtl`
         margin-right: 50px;
         text-align: left;
         direction: ltr;
         `};
+      `;
+      const ConstDiv = styled.div`
+        padding: 10px;
+        ${rtl`
+      margin-right: 50px;
+      text-align: left;
+      direction: ltr;
+      `};
       `;
       let theme = {
         dir: "ltr",
@@ -330,17 +342,21 @@ class HomePage extends Component {
         theme = {
           dir: "rtl",
         };
+      } else if (this.state.direction === "Cntr") {
+        Div = styled.div`
+          text-align: center;
+        `;
       }
       ///////////////---RTL support --- ///////////////
       if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
-              <Div
+              <ConstDiv
                 key={task.order_key}
                 dir={theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });
@@ -348,11 +364,11 @@ class HomePage extends Component {
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
-              <Div
+              <ConstDiv
                 key={task.order_key}
                 dir={theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });
