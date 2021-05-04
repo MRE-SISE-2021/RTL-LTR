@@ -97,10 +97,7 @@ class PreviewPage extends Component {
       let CompDiv = styled.div`
         direction: rtl;
       `;
-      if (
-        (task.is_direction_setting && this.state.direction === "RTL") ||
-        (!task.is_direction_setting && this.state.direction === "LTR")
-      ) {
+      if (task.is_direction_setting === "LTR") {
         compdirection = "ltr";
         CompDiv = styled.div`
           direction: ltr;
