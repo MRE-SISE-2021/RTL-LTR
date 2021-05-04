@@ -7,6 +7,8 @@ import { Card, ListGroup, Form, Row } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 import { format } from "date-fns";
+//import CounterInput from 'react-bootstrap-counter';
+import CounterInput from "react-counter-input";
 
 //RTL
 import styled, { keyframes, ThemeProvider } from "styled-components";
@@ -18,10 +20,14 @@ import axiosInstance from "../axios";
 import "../styles/PreviewPage.css";
 import Demographics from "../Components/Demographics";
 import Task from "../Components/Task";
+
+import "../App.css"
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
 //
+
 
 class HomePage extends Component {
   constructor(props) {
@@ -498,12 +504,13 @@ class HomePage extends Component {
                     // initialRating={this.state.squareRating}
                     direction={compdirection}
                     id="rating"
-                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                    stop={10}
+                    emptySymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span>{n}</span>
                       </span>
                     ))}
-                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                    fullSymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span className="active">{n}</span>
                       </span>
@@ -579,11 +586,11 @@ class HomePage extends Component {
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                  <CompDiv class="number">
-                    <span class="minus">-</span>
-                    <input id="counter" type="text" value="1" />
-                    <span class="plus">+</span>
-                  </CompDiv>
+                   <CounterInput className="number"
+              
+                   value={2} min={1} 
+                   max={50} onChange={ (value) => { console.log(value) } } />
+                  
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
                 ) : null}
@@ -610,9 +617,7 @@ class HomePage extends Component {
         <div className={mainClass.join(" ")}>
           <Form>
             <Card
-              border="primary"
               style={{
-                border: "2px solid ",
                 width: "90%",
                 marginTop: "8%",
                 marginLeft: "5%",
