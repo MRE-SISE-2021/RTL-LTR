@@ -97,14 +97,19 @@ class PreviewPage extends Component {
       let CompDiv = styled.div`
         direction: rtl;
       `;
-      if (task.is_direction_setting === "LTR") {
+      //Random value
+      let rnd_value = "";
+      if (task.is_direction_setting === "RND") {
+        let rnd = Math.floor(Math.random() * 2);
+        if (rnd === 1) {
+          rnd_value = "LTR";
+        }
+      }
+      // if comp direction is LTR
+      if (task.is_direction_setting === "LTR" || rnd_value === "LTR") {
         compdirection = "ltr";
         CompDiv = styled.div`
           direction: ltr;
-        `;
-      } else if (task.is_direction_setting === "Cntr") {
-        CompDiv = styled.div`
-          margin-left: 50%;
         `;
       }
       //////// ----- add in a new page ----- //////////
@@ -139,11 +144,36 @@ class PreviewPage extends Component {
       let theme = {
         dir: "ltr",
       };
-      if (this.state.direction === "RTL") {
+      let const_theme = {
+        dir: "ltr",
+      };
+      debugger;
+      /// alighnment of pages -- not exp
+      if (this.state.lang === 1 || this.state.lang === 3) {
+        const_theme = {
+          dir: "rtl",
+        };
+      }
+
+      //Random value
+      let rnd_value_align = "RTL";
+      if (this.state.direction === "RND") {
+        let temp = Math.floor(Math.random() * 3);
+        if (temp === 1) {
+          rnd_value_align = "RTL";
+        } else if (temp === 2) {
+          rnd_value_align = "Cntr";
+        }
+      }
+      //Alignemt of all exp
+      if (this.state.direction === "RTL" || rnd_value_align === "RTL") {
         theme = {
           dir: "rtl",
         };
-      } else if (this.state.direction === "Cntr") {
+      } else if (
+        this.state.direction === "Cntr" ||
+        rnd_value_align === "Cntr"
+      ) {
         Div = styled.div`
           text-align: center;
         `;
@@ -152,10 +182,10 @@ class PreviewPage extends Component {
       if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={const_theme}>
               <ConstDiv
                 key="11"
-                dir={theme.dir}
+                dir={const_theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
               ></ConstDiv>
             </ThemeProvider>
@@ -164,10 +194,10 @@ class PreviewPage extends Component {
       } else if (task.component_type_id === 1) {
         this.setState({
           inputList: inputList.concat(
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={const_theme}>
               <ConstDiv
                 key="1"
-                dir={theme.dir}
+                dir={const_theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
               ></ConstDiv>
             </ThemeProvider>
