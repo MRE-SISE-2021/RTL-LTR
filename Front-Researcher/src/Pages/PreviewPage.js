@@ -105,6 +105,10 @@ class PreviewPage extends Component {
         CompDiv = styled.div`
           direction: ltr;
         `;
+      } else if (this.state.direction === "Cntr") {
+        CompDiv = styled.div`
+          text-align: center;
+        `;
       }
       //////// ----- add in a new page ----- //////////
       if (
@@ -119,7 +123,7 @@ class PreviewPage extends Component {
       }
       ///////////////---RTL support --- ///////////////
 
-      const Div = styled.div`
+      let Div = styled.div`
         padding: 10px;
         ${rtl`
         margin-right: 50px;
@@ -134,6 +138,13 @@ class PreviewPage extends Component {
         theme = {
           dir: "rtl",
         };
+      } else if (this.state.direction === "Cntr") {
+        theme = {
+          dir: "center",
+        };
+        Div = styled.div`
+          text-align: center;
+        `;
       }
       ///////////////---RTL support --- ///////////////
       if (task.component_type_id === 11) {
