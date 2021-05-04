@@ -102,9 +102,9 @@ class PreviewPage extends Component {
         CompDiv = styled.div`
           direction: ltr;
         `;
-      } else if (this.state.direction === "Cntr") {
+      } else if (task.is_direction_setting === "Cntr") {
         CompDiv = styled.div`
-          text-align: center;
+          margin-left: 50%;
         `;
       }
       //////// ----- add in a new page ----- //////////
@@ -268,7 +268,7 @@ class PreviewPage extends Component {
 
                 <Form>
                   {task.answers.map((answer, index) => (
-                    <CompDiv key={index}>
+                    <CompDiv key={task.order_key + " " + index}>
                       <Form.Group key={index}>
                         <Row>
                           <Form.Control
