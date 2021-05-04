@@ -58,7 +58,7 @@ class FormsElements extends React.Component {
       answersNum: 2,
       answers: props.answers || [],
       settings: {
-        is_direction_setting: props.is_direction_setting || false,
+        is_direction_setting: props.is_direction_setting || "RTL",
         is_required_setting: props.is_required_setting || false,
         is_new_page_setting: props.is_new_page_setting || false,
         is_add_picture_setting: props.is_add_picture_setting || false,
@@ -85,7 +85,7 @@ class FormsElements extends React.Component {
     //PUT request -- save task
     // console.log(this.state);
     const { cookies } = this.props;
-    console.log(this.props.compTypeId);
+    // console.log(this.props.compTypeId);
     let response = {};
     if (this.taskId !== "") {
       response = {
@@ -263,6 +263,7 @@ class FormsElements extends React.Component {
 
   ///settings----
   setSettings(event) {
+    debugger;
     var id = event.target.id;
     var checked = event.target.checked;
     this.setState((prevState) => {
@@ -278,7 +279,7 @@ class FormsElements extends React.Component {
           settings.is_required_setting = checked;
           break;
         case "is_direction " + this.props.keyOrder:
-          settings.is_direction_setting = checked;
+          settings.is_direction_setting = event.target.value;
           break;
       }
 
@@ -315,6 +316,7 @@ class FormsElements extends React.Component {
     }
   }
   render() {
+    console.log(this.state);
     const ColStyled = styled.div`
       ${rtl`
     direction: ltr;
@@ -342,7 +344,7 @@ class FormsElements extends React.Component {
     for (var i = 0; i < this.state.answersNum; i++) {
       // note: we are adding a key prop here to allow react to uniquely identify each
       // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-      console.log(this.props.answers);
+      // console.log(this.props.answers);
       let ans = undefined;
       let isCorrect = false;
       if (
@@ -351,7 +353,7 @@ class FormsElements extends React.Component {
       ) {
         ans = this.state.answers[i].answer_content;
         isCorrect = this.state.answers[i].is_correct;
-        console.log(isCorrect);
+        // console.log(isCorrect);
       }
       answers.push(
         <div key={i}>
@@ -588,14 +590,33 @@ class FormsElements extends React.Component {
                 }}
               >
                 <Col xs="auto">
-                  <Form.Check
+                  {/* <Form.Check
                     type="switch"
                     id={"is_direction " + this.props.keyOrder}
                     // id="is_direction"
                     label="RTL/LTR customization"
                     onChange={this.setSettings}
                     checked={this.state.settings.is_direction_setting}
-                  />
+                  /> */}
+                  <Form.Group
+                    // className=" mr-4"
+                    // style={{
+                    //   flexFlow: "inherit",
+                    //   marginTop: "1%",
+                    //   marginRight: "2%",
+                    // }}
+                    // onChange={this.onDirectionChange}
+                    id={"is_direction " + this.props.keyOrder}
+                    onChange={this.setSettings}
+                  >
+                    <Form.Control as="select" value={this.state.direction}>
+                      <option value="RTL">RTL</option>
+                      <option value="LTR">LTR</option>
+                      <option value="RND">RND</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col xs="auto">
                   <Form.Check
                     type="switch"
                     id={"is_required " + this.props.keyOrder}
@@ -603,6 +624,14 @@ class FormsElements extends React.Component {
                     // id="is_required"
                     onChange={this.setSettings}
                     checked={this.state.settings.is_required_setting}
+                  />
+                  <Form.Check
+                    type="switch"
+                    id={"is_add_picture " + this.props.keyOrder}
+                    // id="is_add_picture"
+                    label="Add picture under the question"
+                    onChange={this.setSettings}
+                    checked={this.state.settings.is_add_picture_setting}
                   />
                 </Col>
                 <Col xs="auto">
@@ -613,15 +642,6 @@ class FormsElements extends React.Component {
                     label="Open on a new page"
                     onChange={this.setSettings}
                     checked={this.state.settings.is_new_page_setting}
-                  />
-
-                  <Form.Check
-                    type="switch"
-                    id={"is_add_picture " + this.props.keyOrder}
-                    // id="is_add_picture"
-                    label="Add picture under the question"
-                    onChange={this.setSettings}
-                    checked={this.state.settings.is_add_picture_setting}
                   />
                 </Col>
                 <ColStyled>
