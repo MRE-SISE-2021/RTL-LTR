@@ -21,13 +21,12 @@ import "../styles/PreviewPage.css";
 import Demographics from "../Components/Demographics";
 import Task from "../Components/Task";
 
-import "../App.css"
+import "../App.css";
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
 //
-
 
 class HomePage extends Component {
   constructor(props) {
@@ -371,13 +370,16 @@ class HomePage extends Component {
         }
       }
       //Alignemt of all exp
-      if (this.state.direction === "RTL" || rnd_value_align === "RTL") {
+      if (
+        this.state.direction === "RTL" ||
+        (this.state.direction === "RND" && rnd_value_align === "RTL")
+      ) {
         theme = {
           dir: "rtl",
         };
       } else if (
         this.state.direction === "Cntr" ||
-        rnd_value_align === "Cntr"
+        (this.state.direction === "RND" && rnd_value_align === "Cntr")
       ) {
         Div = styled.div`
           text-align: center;
@@ -505,12 +507,12 @@ class HomePage extends Component {
                     direction={compdirection}
                     id="rating"
                     stop={10}
-                    emptySymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
+                    emptySymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span>{n}</span>
                       </span>
                     ))}
-                    fullSymbol={[1, 2, 3, 4, 5 , 6, 7, 8, 9, 10].map((n) => (
+                    fullSymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span className="active">{n}</span>
                       </span>
@@ -586,11 +588,15 @@ class HomePage extends Component {
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                   <CounterInput className="number"
-              
-                   value={2} min={1} 
-                   max={50} onChange={ (value) => { console.log(value) } } />
-                  
+                  <CounterInput
+                    className="number"
+                    value={2}
+                    min={1}
+                    max={50}
+                    onChange={(value) => {
+                      console.log(value);
+                    }}
+                  />
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
                 ) : null}

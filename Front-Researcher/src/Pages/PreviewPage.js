@@ -108,6 +108,7 @@ class PreviewPage extends Component {
           rnd_value = "LTR";
         }
       }
+      debugger;
       // if comp direction is LTR
       if (task.is_direction_setting === "LTR" || rnd_value === "LTR") {
         compdirection = "ltr";
@@ -115,6 +116,12 @@ class PreviewPage extends Component {
           direction: ltr;
         `;
       }
+      // else if (task.is_direction_setting === "Cntr") {
+      //   compdirection = "center";
+      //   CompDiv = styled.div`
+      //     margin-left: 50%;
+      //   `;
+      // }
       //////// ----- add in a new page ----- //////////
       if (
         task.is_new_page_setting ||
@@ -169,14 +176,20 @@ class PreviewPage extends Component {
         }
       }
       //Alignemt of all exp
-      if (this.state.direction === "RTL" || rnd_value_align === "RTL") {
+      if (
+        this.state.direction === "RTL" ||
+        (this.state.direction === "RND" && rnd_value_align === "RTL")
+      ) {
         theme = {
           dir: "rtl",
         };
       } else if (
         this.state.direction === "Cntr" ||
-        rnd_value_align === "Cntr"
+        (this.state.direction === "RND" && rnd_value_align === "Cntr")
       ) {
+        // theme = {
+        //   dir: "center",
+        // };
         Div = styled.div`
           text-align: center;
         `;
@@ -305,7 +318,6 @@ class PreviewPage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
-
                 <Form>
                   {task.answers.map((answer, index) => (
                     <CompDiv key={task.order_key + " " + index}>
