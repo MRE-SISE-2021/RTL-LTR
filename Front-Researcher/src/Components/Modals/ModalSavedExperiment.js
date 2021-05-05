@@ -26,7 +26,6 @@ class SaveModal extends React.Component {
     this.onAddBtnClick = this.onAddBtnClick.bind(this);
     this.getLangId = this.getLangId.bind(this);
     this.getComponents = this.getComponents.bind(this);
-    this.changeStateToDashboard = this.changeStateToDashboard.bind(this);
   }
   componentWillReceiveProps(propsIncoming) {
     let demo = propsIncoming.data.demo;
@@ -67,7 +66,7 @@ class SaveModal extends React.Component {
     return tasks;
   }
 
-  onAddBtnClick() {
+  onAddBtnClick(event) {
     // const langId = this.getLangId();
     console.log(this.state.is_active);
     let response = {
@@ -83,13 +82,13 @@ class SaveModal extends React.Component {
     ).then((data) => {
       console.log(data);
     });
+    if (event.target.id === "to_home") {
+      this.setState(() => ({
+        toDashboard: true,
+      }));
+      return;
+    }
     this.setState({ isBasic: false });
-  }
-
-  changeStateToDashboard(){
-    this.setState(() => ({
-      toDashboard: true,
-    }));
   }
 
   render() {
@@ -121,10 +120,18 @@ class SaveModal extends React.Component {
             src="https://icon-library.com/images/save-icon-image/save-icon-image-12.jpg"
           />
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.onAddBtnClick}>
+            <Button
+              id="to_here"
+              variant="secondary"
+              onClick={this.onAddBtnClick}
+            >
               Save and keep working!
             </Button>
-            <Button variant="secondary"  onClick={this.onAddBtnClick , this.changeStateToDashboard}>
+            <Button
+              id="to_home"
+              variant="secondary"
+              onClick={this.onAddBtnClick}
+            >
               Save and go to HomePage!
             </Button>
           </Modal.Footer>
