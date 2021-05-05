@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 from django.http import HttpResponse
 from django.db import transaction
 import numpy as np
+import random
 from cryptography.fernet import Fernet
 
 
@@ -162,6 +163,14 @@ def get_tasks_with_settings_from_questionnaire(request, id):
             for key, value in list(task.items()):
                 if "_setting" in key:
                     task['settings'][key] = task.pop(key)
+
+        # change order of tasks in the task_data list
+        open_task = tasks_data.pop(0)
+        final_task = tasks_data.pop(-1)
+
+        random.shuffle(tasks_data)
+        tasks_data.insert(0, open_task)
+        tasks_data.append(final_task)
 
         return Response(tasks_data, status=status.HTTP_200_OK)
 
