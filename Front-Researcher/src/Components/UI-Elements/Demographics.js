@@ -85,7 +85,7 @@ class Demographics extends React.Component {
                   ) : (
                     task.answers.map((answer, index) => (
                       <Form.Group key={index}>
-                        <Row>
+                        <Row className="rows">
                           <Form.Control
                             style={{ width: "16px", hight: "16px" }}
                             type={type}
@@ -172,13 +172,12 @@ class Demographics extends React.Component {
                         type="number"
                         required
                         id="age"
-
                       />
                     </Form.Group>
                   ) : (
                     task.answers.map((answer, index) => (
-                      <Form.Group  key={index} >
-                        <Row>
+                      <Form.Group key={index}>
+                        <Row className="rows">
                           <Form.Control
                             style={{ width: "16px", hight: "16px" }}
                             type={type}
@@ -187,7 +186,7 @@ class Demographics extends React.Component {
                             name={"ans" + actual_index}
                             value={actual_index} //order_ key.
                           />
-                          <Form.Label 
+                          <Form.Label
                             style={{ position: "relative", padding: "6px" }}
                           >
                             {"  " + answer.answer_content + "  "}

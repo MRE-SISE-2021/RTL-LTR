@@ -130,7 +130,7 @@ class Task extends React.Component {
             ) : (
               this.state.task.answers.map((answer, index) => (
                 <Form.Group key={index}>
-                  <Row>
+                  <Row className="rows">
                     <Form.Control
                       style={{ width: "16px", hight: "16px" }}
                       type={type}
@@ -145,7 +145,7 @@ class Task extends React.Component {
                     <Form.Label
                       style={{ position: "relative", padding: "6px" }}
                     >
-                      {"  " + answer.answer_content + "  "}
+                      {"  " + answer.answer_content}
                     </Form.Label>
                     {answer.value === "Other" ? (
                       <Form.Control
