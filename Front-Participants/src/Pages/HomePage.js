@@ -7,6 +7,8 @@ import { Card, ListGroup, Form, Row } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 import { format } from "date-fns";
+//import CounterInput from 'react-bootstrap-counter';
+import CounterInput from "react-counter-input";
 
 //RTL
 import styled, { keyframes, ThemeProvider } from "styled-components";
@@ -18,6 +20,9 @@ import axiosInstance from "../axios";
 import "../styles/PreviewPage.css";
 import Demographics from "../Components/Demographics";
 import Task from "../Components/Task";
+
+import "../App.css";
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
@@ -291,15 +296,21 @@ class HomePage extends Component {
     this.state.tasks.forEach((task, index) => {
       let inputList = this.state.inputList;
       console.log(task);
-      ////Task Comp Direction
+      ////Task Comp default Direction
       let compdirection = "rtl";
       let CompDiv = styled.div`
         direction: rtl;
       `;
-      if (
-        (task.is_direction_setting && this.state.direction === "RTL") ||
-        (!task.is_direction_setting && this.state.direction === "LTR")
-      ) {
+      //Random value
+      let rnd_value = "";
+      if (task.is_direction_setting === "RND") {
+        let rnd = Math.floor(Math.random() * 2);
+        if (rnd === 1) {
+          rnd_value = "LTR";
+        }
+      }
+      // if comp direction is LTR
+      if (task.is_direction_setting === "LTR" || rnd_value === "LTR") {
         compdirection = "ltr";
         CompDiv = styled.div`
           direction: ltr;
@@ -318,7 +329,7 @@ class HomePage extends Component {
       }
       ///////////////---RTL support --- ///////////////
 
-      const Div = styled.div`
+      let Div = styled.div`
         padding: 10px;
         ${rtl`
         margin-right: 50px;
@@ -326,36 +337,76 @@ class HomePage extends Component {
         direction: ltr;
         `};
       `;
+      const ConstDiv = styled.div`
+        padding: 10px;
+        ${rtl`
+      margin-right: 50px;
+      text-align: left;
+      direction: ltr;
+      `};
+      `;
       let theme = {
         dir: "ltr",
       };
-      if (this.state.direction === "RTL") {
+      let const_theme = {
+        dir: "ltr",
+      };
+
+      /// alighnment of pages -- not exp
+      if (this.state.lang === 1 || this.state.lang === 3) {
+        const_theme = {
+          dir: "rtl",
+        };
+      }
+
+      //Random value
+      let rnd_value_align = "";
+      if (this.state.direction === "RND") {
+        let temp = Math.floor(Math.random() * 3);
+        if (temp === 1) {
+          rnd_value_align = "RTL";
+        } else if (temp === 2) {
+          rnd_value_align = "Cntr";
+        }
+      }
+      //Alignemt of all exp
+      if (
+        this.state.direction === "RTL" ||
+        (this.state.direction === "RND" && rnd_value_align === "RTL")
+      ) {
         theme = {
           dir: "rtl",
         };
+      } else if (
+        this.state.direction === "Cntr" ||
+        (this.state.direction === "RND" && rnd_value_align === "Cntr")
+      ) {
+        Div = styled.div`
+          text-align: center;
+        `;
       }
       ///////////////---RTL support --- ///////////////
       if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
-            <ThemeProvider theme={theme}>
-              <Div
+            <ThemeProvider theme={const_theme}>
+              <ConstDiv
                 key={task.order_key}
-                dir={theme.dir}
+                dir={const_theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });
       } else if (task.component_type_id === 1) {
         this.setState({
           inputList: inputList.concat(
-            <ThemeProvider theme={theme}>
-              <Div
+            <ThemeProvider theme={const_theme}>
+              <ConstDiv
                 key={task.order_key}
-                dir={theme.dir}
+                dir={const_theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });
@@ -455,12 +506,13 @@ class HomePage extends Component {
                     // initialRating={this.state.squareRating}
                     direction={compdirection}
                     id="rating"
-                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                    stop={10}
+                    emptySymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span>{n}</span>
                       </span>
                     ))}
-                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                    fullSymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span className="active">{n}</span>
                       </span>
@@ -536,11 +588,15 @@ class HomePage extends Component {
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                  <CompDiv class="number">
-                    <span class="minus">-</span>
-                    <input id="counter" type="text" value="1" />
-                    <span class="plus">+</span>
-                  </CompDiv>
+                  <CounterInput
+                    className="number"
+                    value={2}
+                    min={1}
+                    max={50}
+                    onChange={(value) => {
+                      console.log(value);
+                    }}
+                  />
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
                 ) : null}
@@ -567,9 +623,7 @@ class HomePage extends Component {
         <div className={mainClass.join(" ")}>
           <Form>
             <Card
-              border="primary"
               style={{
-                border: "2px solid ",
                 width: "90%",
                 marginTop: "8%",
                 marginLeft: "5%",

@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
-import { Form, Row } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 import "../../styles/Demographics.css";
 class Demographics extends React.Component {
   constructor(props) {
@@ -167,15 +167,17 @@ class Demographics extends React.Component {
                   {task.answers.length === 0 ? (
                     <Form.Group>
                       <Form.Control
+                        className="ml-2"
                         style={{ width: "88px" }}
                         type="number"
                         required
                         id="age"
+
                       />
                     </Form.Group>
                   ) : (
                     task.answers.map((answer, index) => (
-                      <Form.Group key={index}>
+                      <Form.Group  key={index} >
                         <Row>
                           <Form.Control
                             style={{ width: "16px", hight: "16px" }}
@@ -185,7 +187,7 @@ class Demographics extends React.Component {
                             name={"ans" + actual_index}
                             value={actual_index} //order_ key.
                           />
-                          <Form.Label
+                          <Form.Label 
                             style={{ position: "relative", padding: "6px" }}
                           >
                             {"  " + answer.answer_content + "  "}

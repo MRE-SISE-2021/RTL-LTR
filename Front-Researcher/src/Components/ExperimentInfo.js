@@ -27,6 +27,16 @@ class ExperimentInfo extends Component {
     this.submitHandlerDelete = this.submitHandlerDelete.bind(this);
     this.submitHandlerEdit = this.submitHandlerEdit.bind(this);
     this.submitHandlerStatus = this.submitHandlerStatus.bind(this);
+    this.onIsActiveChange2 = this.onIsActiveChange2.bind(this);
+
+  }
+
+  onIsActiveChange2(event) {
+    console.log(event.target.value);
+    console.log(event.target.checked);
+    this.setState({
+      is_active: event.target.checked,
+    });   
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -79,6 +89,7 @@ class ExperimentInfo extends Component {
       return;
     }
     const MySwal = withReactContent(Swal);
+
     MySwal.fire({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this file!",
@@ -90,11 +101,11 @@ class ExperimentInfo extends Component {
         const response = {
           questionnaire_id: this.props.chosen.questionnaire_id, //
         };
-
         API.deleteRequest(
           "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
           response
         ).then((data) => {
+          window.location.reload(false);
           console.log(data); // JSON data parsed by `data.json()` call
         });
         return MySwal.fire("", "Your file has been deleted!", "success");
@@ -108,6 +119,7 @@ class ExperimentInfo extends Component {
     //DELETE request -- delete task
     // const { cookies } = this.props;
 
+    
     if (this.props.chosen.questionnaire_id === undefined) {
       return;
     }
@@ -123,6 +135,8 @@ class ExperimentInfo extends Component {
     ).then((data) => {
       console.log(data);
     });
+    window.location.reload(false);
+
   }
 
   UNSAFE_componentWillMount() {
@@ -209,6 +223,7 @@ class ExperimentInfo extends Component {
               size="sm"
               variant="outline-*"
               onClick={this.submitHandlerDelete}
+              
             >
               <MDBIcon icon="trash-alt" />
             </Button>
@@ -223,7 +238,8 @@ class ExperimentInfo extends Component {
                   <Row>
                     <Col>
                       <b>Created: </b> {data.creation_date}{" "}
-                      <b>by: Super USER</b>
+                      
+                      <b >by: Super USER</b>
                     </Col>
                   </Row>
                   <br />
@@ -243,6 +259,7 @@ class ExperimentInfo extends Component {
                     <Col>
                       <Row>
                         <b>Status:</b>
+                       
                         <Form.Check
                           style={{ marginLeft: "1%" }}
                           type="switch"
@@ -256,24 +273,32 @@ class ExperimentInfo extends Component {
                     </Col>
                   </Row>
                   <br />
+                  <Form.Group as={Row} controlId="formPlaintextPassword">
+                    <Form.Label column sm="3" >
+                        <b>Hosted Link:</b>
+                    </Form.Label>
 
-                  <Col>
-                    <Row>
-                      <b>Hosted Link: </b>
-                      <Form.Control
+                    <Col sm="6">
+                    <Form.Control
                         type="text"
                         defaultValue={data.hosted_link}
                         readOnly
-                        style={{ width: "50%" }}
+                        style={{ width: "100%" }}
                       />
+                      </Col>
+
+                      <Col sm="3">
+                    
                       <Button
-                        variant="outline-info"
+                        variant="outline-primary"
+                        
                         onClick={() => copy(data.hosted_link)}
                       >
                         Copy link
                       </Button>
-                    </Row>
-                  </Col>
+                      </Col>
+                  </Form.Group>
+
                 </ul>
               </div>
             </Card.Body>

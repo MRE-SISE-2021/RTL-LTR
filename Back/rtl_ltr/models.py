@@ -73,7 +73,7 @@ class Task(models.Model):
     label = models.TextField(db_column='Label', null=True, blank=True)
     order_key = models.IntegerField(db_column='OrderKey')
 
-    is_direction_setting = models.BooleanField(db_column='IsDirectionSetting')
+    is_direction_setting = models.TextField(db_column='IsDirectionSetting')
     is_required_setting = models.BooleanField(db_column='IsRequiredSetting')
     is_new_page_setting = models.BooleanField(db_column='IsNewPageSetting')
     is_add_picture_setting = models.BooleanField(db_column='IsAddPictureSetting')

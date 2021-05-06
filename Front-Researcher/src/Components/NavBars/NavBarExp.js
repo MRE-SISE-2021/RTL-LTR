@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+  Tooltip,
+  OverlayTrigger,
+} from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { MDBChip, MDBContainer } from "mdbreact";
 
@@ -17,6 +24,7 @@ import { withCookies } from "react-cookie";
 
 import { Navbar } from "react-bootstrap";
 import "../../styles/homePageStyle.css";
+// import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
 class NavBar extends Component {
   constructor(props) {
@@ -25,29 +33,41 @@ class NavBar extends Component {
       toPreview: false,
       toHome: false,
       is_active: props.is_active,
+      direction: props.dir,
     };
     this.submitPreview = this.submitPreview.bind(this);
     this.submitDelete = this.submitDelete.bind(this);
     this.getLangName = this.getLangName.bind(this);
     this.onIsActiveChange = this.onIsActiveChange.bind(this);
+    this.onDirectionChange = this.onDirectionChange.bind(this);
   }
   async componentWillReceiveProps(propsIncoming) {
     console.log(propsIncoming);
     await this.setState({
       is_active: propsIncoming.is_active,
+      direction: propsIncoming.dir,
     });
   }
   onIsActiveChange(event) {
     console.log(event.target.value);
-    if (event.target.value === "Not-Active") {
-      this.setState({
-        is_active: false,
-      });
-    } else {
+    console.log(event.target.checked);
+
+    if (event.target.value == "Active") {
       this.setState({
         is_active: true,
       });
+    } else {
+      this.setState({
+        is_active: false,
+      });
     }
+  }
+  onDirectionChange(event) {
+    event.preventDefault();
+    console.log(event.target.value);
+    this.setState({
+      direction: event.target.value,
+    });
   }
   getLangName() {
     switch (this.props.lang) {
@@ -106,6 +126,34 @@ class NavBar extends Component {
       }
     });
   }
+  submitHandlerStatus(event) {
+    //DELETE request -- delete task
+    // const { cookies } = this.props;
+
+    if (this.props.chosen.questionnaire_id === undefined) {
+      return;
+    }
+    console.log(event.target.checked);
+    let response = {
+      questionnaire_id: this.props.chosen.questionnaire_id, //
+      is_active: event.target.checked,
+    };
+    console.log(response);
+    API.putRequest(
+      "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
+      response
+    ).then((data) => {
+      console.log(data);
+    });
+  }
+
+  handleSwitchChange = (nr) => () => {
+    let switchNumber = `switch${nr}`;
+    this.setState({
+      [switchNumber]: !this.state[switchNumber],
+    });
+  };
+
   render() {
     console.log(this.state);
     if (this.state.toPreview === true) {
@@ -132,10 +180,9 @@ class NavBar extends Component {
       <Aux>
         <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
           <Link to="/home">
-            <ul className="mb-1 text-primary">
+            <ul className="text-primary">
               <li className="mr-4">
                 <MDBIcon icon="home" size="2x" className="indigo-text" />
-                /Create Experiment{" "}
               </li>
             </ul>
           </Link>
@@ -170,9 +217,13 @@ class NavBar extends Component {
                 marginTop: "1%",
                 marginRight: "2%",
               }}
+              onChange={this.onDirectionChange}
             >
-              <Form.Control as="select">
-                <option>{this.props.dir}</option>
+              <Form.Control as="select" value={this.state.direction}>
+                <option value="RTL">RTL</option>
+                <option value="LTR">LTR</option>
+                <option value="Cntr">Cntr</option>
+                <option value="RND">RND</option>
               </Form.Control>
             </Form.Group>
 
@@ -205,12 +256,6 @@ class NavBar extends Component {
                   <option value={"Active"}>Active</option>
                 </Form.Control>
               )}
-              {/* <option value={this.state.is_active}>
-                  {this.state.is_active ? "Active" : "Not-Active"}
-                </option>
-                <option value={!this.state.is_active}>
-                  {!this.state.is_active ? "Active" : "Not-Active"}
-                </option> */}
             </Form.Group>
             {/* <h5 className="mr-5">Active</h5> */}
           </div>
@@ -221,27 +266,36 @@ class NavBar extends Component {
           >
             {this.props.prev ? null : (
               <div className="d-flex justify-content-lg-end">
-                <Modal data={this.props} is_active={this.state.is_active} />
+                <Modal
+                  data={this.props}
+                  is_active={this.state.is_active}
+                  direction={this.state.direction}
+                />
 
                 <Button
                   variant="outline-*"
                   //style={{ color: "white" }}
                   onClick={this.submitPreview}
                 >
-                  <MDBIcon className="pr-3" far icon="eye" size="2x" />
+                  <MDBIcon className="pr-4 mb-2" far icon="eye" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="pr-3" icon="paperclip" size="2x" />
+                  <MDBIcon className="pr-4 mb-2" icon="paperclip" size="2x" />
                 </Button>
                 <Button variant="outline-*" disabled>
-                  <MDBIcon className="pr-3" far icon="clone" size="2x" />
+                  <MDBIcon className="pr-4 mb-2" far icon="clone" size="2x" />
                 </Button>
                 <Button
                   variant="outline-*"
                   //style={{ color: "white" }}
                   onClick={this.submitDelete}
                 >
-                  <MDBIcon className="pr-3" far icon="trash-alt" size="2x" />
+                  <MDBIcon
+                    className="pr-4 mb-2"
+                    far
+                    icon="trash-alt"
+                    size="2x"
+                  />
                 </Button>
               </div>
             )}
