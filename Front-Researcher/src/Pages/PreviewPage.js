@@ -391,7 +391,6 @@ class PreviewPage extends Component {
         });
       }
     });
-    // });
   }
 
   render() {
