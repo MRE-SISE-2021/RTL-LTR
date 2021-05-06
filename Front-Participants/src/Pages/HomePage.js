@@ -384,6 +384,18 @@ class HomePage extends Component {
         Div = styled.div`
           text-align: center;
         `;
+        Div = styled.div`
+          text-align: center;
+        `;
+        if (this.state.lang === 1 || this.state.lang === 3) {
+          CompDiv = styled.div`
+            margin-right: 35%;
+          `;
+        } else {
+          CompDiv = styled.div`
+            margin-left: 35%;
+          `;
+        }
       }
       ///////////////---RTL support --- ///////////////
       if (task.component_type_id === 11) {
@@ -471,7 +483,7 @@ class HomePage extends Component {
               <Div key={"range" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 7 ? (
-                  <CompDiv>
+                  <CompDiv style={{ width: "35%" }}>
                     <Form.Control as="select">
                       {task.answers.map(function (answer, index) {
                         return (
@@ -481,11 +493,13 @@ class HomePage extends Component {
                     </Form.Control>
                   </CompDiv>
                 ) : task.component_type_id === 2 ? (
-                  <Slider
-                    className="pc-range-slider"
-                    id="slider"
-                    direction={compdirection}
-                  />
+                  <CompDiv style={{ width: "35%" }}>
+                    <Slider
+                      className="pc-range-slider"
+                      id="slider"
+                      direction={compdirection}
+                    />
+                  </CompDiv>
                 ) : task.component_type_id === 5 ? (
                   <Rating
                     emptySymbol="far fa-star fa-2x"
@@ -494,13 +508,15 @@ class HomePage extends Component {
                     direction={compdirection}
                   />
                 ) : task.component_type_id === 4 ? (
-                  <Range
-                    className="pc-range-slider"
-                    step={10}
-                    defaultValue={[20, 30]}
-                    id="double_slider"
-                    direction={compdirection}
-                  />
+                  <CompDiv style={{ width: "35%" }}>
+                    <Range
+                      className="pc-range-slider"
+                      step={10}
+                      defaultValue={[20, 30]}
+                      id="double_slider"
+                      direction={compdirection}
+                    />
+                  </CompDiv>
                 ) : (
                   <Rating
                     // initialRating={this.state.squareRating}
@@ -537,7 +553,10 @@ class HomePage extends Component {
                 <h4>{task.label}</h4>
                 <Form>
                   {task.answers.map((answer, index) => (
-                    <CompDiv key={index}>
+                    <CompDiv
+                      key={task.order_key + " " + index}
+                      style={{ width: "35%" }}
+                    >
                       <Form.Group key={index}>
                         <Row>
                           <Form.Control
@@ -588,15 +607,17 @@ class HomePage extends Component {
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                  <CounterInput
-                    className="number"
-                    value={2}
-                    min={1}
-                    max={50}
-                    onChange={(value) => {
-                      console.log(value);
-                    }}
-                  />
+                  <CompDiv style={{ width: "35%" }}>
+                    <CounterInput
+                      className="number"
+                      value={2}
+                      min={1}
+                      max={50}
+                      onChange={(value) => {
+                        console.log(value);
+                      }}
+                    />
+                  </CompDiv>
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
                 ) : null}
