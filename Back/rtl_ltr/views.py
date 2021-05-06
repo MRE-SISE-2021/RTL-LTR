@@ -163,15 +163,7 @@ def get_tasks_with_settings_from_questionnaire(request, id):
             for key, value in list(task.items()):
                 if "_setting" in key:
                     task['settings'][key] = task.pop(key)
-
-        # change order of tasks in the task_data list
-        open_task = tasks_data.pop(0)
-        final_task = tasks_data.pop(-1)
-
-        random.shuffle(tasks_data)
-        tasks_data.insert(0, open_task)
-        tasks_data.append(final_task)
-
+        tasks_data = shuffle_tasks(tasks_data)
         return Response(tasks_data, status=status.HTTP_200_OK)
 
 
@@ -255,6 +247,7 @@ class QuestionnairePreviewAPIView(APIView):
         except Questionnaire.DoesNotExist:
             return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        data['tasks'] = shuffle_tasks(data['tasks'])
         return Response(data, status=status.HTTP_200_OK)
 
     # Save new questionnaire to db (with tasks, answers, images)
@@ -812,6 +805,18 @@ def delete_tasks(task_ids):
     for image_id in image_ids:
         for image_queryset in Image.objects.filter(image_id=image_id):
             image_queryset.delete()
+
+
+def shuffle_tasks(tasks):
+    if len(tasks) > 2:
+        open_task = tasks.pop(0)
+        final_task = tasks.pop(-1)
+
+        random.shuffle(tasks)
+        tasks.insert(0, open_task)
+        tasks.append(final_task)
+
+    return tasks
 
 
 ########################################################################################################################
