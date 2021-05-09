@@ -21,7 +21,7 @@ class Task extends React.Component {
   }
   async setTaskAnswer(event, value) {
     console.log(value); //orderkey = value
-    debugger;
+    // debugger;
     let isError = true;
     if (event.target.id === "age") {
       if (event.target.value > 99 || event.target.value < 14) {
