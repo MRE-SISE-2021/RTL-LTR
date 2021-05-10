@@ -374,6 +374,9 @@ class HomePage extends Component {
       return;
     }
     if (type === 3 || type === 7) {
+      if (type === 7) {
+        value = value.id;
+      }
       this.setState({
         answers: {
           ...this.state.answers,
