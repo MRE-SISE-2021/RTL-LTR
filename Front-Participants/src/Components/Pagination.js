@@ -26,7 +26,6 @@ class Pagination extends React.Component {
     this.getLangStart = this.getLangStart.bind(this);
     this.getLangNext = this.getLangNext.bind(this);
     this.getLangFinish = this.getLangFinish.bind(this);
-    this.createUser = this.createUser.bind(this);
   }
 
   componentWillMount() {
@@ -44,10 +43,6 @@ class Pagination extends React.Component {
   }
 
   setPage(page) {
-    //create user
-    if (page === 2) {
-      this.createUser();
-    }
     // ----- Update Page Number -----
     var { items, pageSize } = this.props;
     var pager = this.state.pager;
@@ -120,9 +115,6 @@ class Pagination extends React.Component {
       pages: pages,
     };
   }
-
-  //// -----
-  createUser() {}
   getLangStart() {
     switch (this.props.lang) {
       case 1:

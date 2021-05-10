@@ -59,22 +59,22 @@ class HomePage extends Component {
 
   componentDidMount() {
     //call get stats!!!!!!
-    let info = Stats.getGeoInfo();
-    let browser = Stats.getBrowser(window);
-    Stats.getOperatingSystem(window).then((result) => {
+    Stats.getGeoInfo().then((result) => {
       this.setState({
         statsInfo: {
           ...this.state.statsInfo,
-          operating_system: result,
+          country: result.country_name,
+          city: result.city,
         },
       });
     });
+    let browser = Stats.getBrowser(window);
+    let opt = Stats.getOperatingSystem(window);
     this.setState({
       statsInfo: {
         ...this.state.statsInfo,
         browser: browser,
-        country: info.country_name,
-        city: info.city,
+        operating_system: opt,
       },
     });
   }

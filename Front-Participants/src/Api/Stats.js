@@ -1,6 +1,6 @@
 import axios from "../axios";
 
-async function getOperatingSystem(window) {
+function getOperatingSystem(window) {
   let operatingSystem = "Not known";
   if (window.navigator.appVersion.indexOf("Win") !== -1) {
     operatingSystem = "Windows OS";
@@ -42,7 +42,7 @@ function getBrowser(window) {
 }
 
 /// --- get country name and city ------
-function getGeoInfo() {
+async function getGeoInfo() {
   const response = axios
     .get("https://ipapi.co/json/")
     .then((response) => {
