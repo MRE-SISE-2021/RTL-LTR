@@ -116,7 +116,7 @@ class HomePage extends Component {
     console.log(response);
     API.postRequest("participant-data", response).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
-      // this.setState({ expId: data.questionnaire_id });
+      this.setState({ participant_id: data.participant_id });
     });
   }
 
@@ -133,7 +133,10 @@ class HomePage extends Component {
     }
     this.setState({ answers: {} });
     console.log(response);
-    API.putRequest("participant-data", response).then((data) => {
+    API.putRequest(
+      "participant-data/" + this.state.participant_id,
+      response
+    ).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
       // this.setState({ expId: data.questionnaire_id });
     });
