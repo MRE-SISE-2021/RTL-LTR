@@ -90,7 +90,7 @@ class Participant(models.Model):
     sex = models.CharField(db_column='Sex', max_length=50, null=True)
     age = models.IntegerField(db_column='Age', null=True)
     native_language = models.ForeignKey(Language, models.DO_NOTHING, db_column='NativeLanguage',
-                                        related_name='native_language')
+                                        related_name='native_language', null=True)
     ltr_proficiency = models.FloatField(db_column='LtrProficiency', null=True)
     rtl_proficiency = models.FloatField(db_column='RtlProficiency', null=True)
 
@@ -114,8 +114,8 @@ class Participant(models.Model):
                                                               null=True)
 
     questionnaire_language = models.ForeignKey(Language, models.DO_NOTHING, db_column='QuestionnaireLanguage',
-                                               related_name='questionnaire_language')
-    questionnaire_direction = models.TextField(db_column='QuestionnaireDirection')
+                                               related_name='questionnaire_language', null=True)
+    questionnaire_direction = models.TextField(db_column='QuestionnaireDirection', null=True)
 
     country = models.CharField(db_column='Country', max_length=50, null=True)
     operating_system = models.CharField(db_column='OperatingSystem', max_length=50, null=True)
@@ -154,6 +154,8 @@ class TaskParticipant(models.Model):
     task_time = models.TimeField(db_column='TaskTime', null=True)
     task_clicks = models.IntegerField(db_column='TaskClicks', null=True)
     task_errors = models.IntegerField(db_column='TaskErrors', null=True)
+
+    # component_type_id = models.ForeignKey(ComponentType, models.DO_NOTHING, db_column='ComponentTypeId')
     submitted_free_answer = models.TextField(db_column='SubmittedFreeAnswer', null=True)
 
     class Meta:
@@ -198,7 +200,7 @@ class QuestionnaireParticipant(models.Model):
     questionnaire_participant_id = models.AutoField(db_column='QuestionnaireParticipantId', primary_key=True)
     questionnaire_id = models.ForeignKey(Questionnaire, models.DO_NOTHING, db_column='QuestionnaireId')
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
-    questionnaire_start = models.DateTimeField(db_column='QuestionnaireStart')
+    test_started = models.DateTimeField(db_column='TestStarted')
     questionnaire_finish = models.DateTimeField(db_column='QuestionnaireFinish', null=True)
     time_spent = models.TimeField(db_column='TimeSpent', null=True)
     satisfaction = models.TextField(db_column='Satisfaction', null=True)
