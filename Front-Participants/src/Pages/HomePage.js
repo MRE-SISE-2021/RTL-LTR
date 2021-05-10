@@ -114,16 +114,17 @@ class HomePage extends Component {
       test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
-    API.postRequest("participant-data", response).then((data) => {
-      console.log(data); // JSON data parsed by `data.json()` call
-      this.setState({ participant_id: data.participant_id });
-    });
+    // API.postRequest("participant-data", response).then((data) => {
+    //   console.log(data); // JSON data parsed by `data.json()` call
+    //   this.setState({ participant_id: data.participant_id });
+    // });
   }
 
   onUpdateUser(final) {
     // put Request!
     console.log("Put --- request --- update user answers");
     let response = {
+      participant_id: this.state.participant_id,
       answers: this.state.answers,
       hash: this.props.hosted_link,
       // test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
@@ -133,13 +134,13 @@ class HomePage extends Component {
     }
     this.setState({ answers: {} });
     console.log(response);
-    API.putRequest(
-      "participant-data/" + this.state.participant_id,
-      response
-    ).then((data) => {
-      console.log(data); // JSON data parsed by `data.json()` call
-      // this.setState({ expId: data.questionnaire_id });
-    });
+    // API.putRequest(
+    //   "participant-data/" + this.state.participant_id,
+    //   response
+    // ).then((data) => {
+    //   console.log(data); // JSON data parsed by `data.json()` call
+    //   // this.setState({ expId: data.questionnaire_id });
+    // });
   }
   onUpdateDemoAnswer(answer) {
     // debugger;
@@ -342,7 +343,8 @@ class HomePage extends Component {
   }
 
   //save answer per component
-  onInputchange(value, id, type, task_id, checked) {
+  //value -- is answer id for (comp_type = checkbox/select/radio)
+  onInputchange(id, type, value, direction, checked) {
     debugger;
     //checkbox?
     if (type === 8) {
@@ -354,7 +356,7 @@ class HomePage extends Component {
             [id]: {
               comp_type: type,
               [value]: checked,
-              task_id: task_id,
+              task_direction: direction,
             },
           },
         });
@@ -362,7 +364,7 @@ class HomePage extends Component {
         //update checkbox values
         let answers = this.state.answers;
         answers[id].comp_type = type;
-        answers[id].task_id = task_id;
+        answers[id].task_direction = direction;
         answers[id][value] = checked;
         this.setState({
           answers: answers,
@@ -371,14 +373,27 @@ class HomePage extends Component {
 
       return;
     }
+    if (type === 3 || type === 7) {
+      this.setState({
+        answers: {
+          ...this.state.answers,
+          [id]: {
+            comp_type: type,
+            answer_id: value,
+            task_direction: direction,
+          },
+        },
+      });
+      return;
+    }
     //update regular questions
     this.setState({
       answers: {
         ...this.state.answers,
         [id]: {
           comp_type: type,
-          value: value,
-          task_id: task_id,
+          submitted_free_answer: value,
+          task_direction: direction,
         },
       },
     });
@@ -579,18 +594,21 @@ class HomePage extends Component {
                   <CompDiv style={{ width: "35%" }}>
                     <Form.Control
                       as="select"
-                      onChange={(event) =>
+                      onChange={(event) => {
+                        debugger;
                         this.onInputchange(
-                          event.target.value,
                           task.task_id,
                           task.component_type_id,
-                          task.task_id
-                        )
-                      } //value, task_id, task_comp
+                          event.target.selectedOptions[0], // answer_id
+                          task.is_direction_setting
+                        );
+                      }} //value, task_id, task_comp
                     >
                       {task.answers.map(function (answer, index) {
                         return (
-                          <option key={index}>{answer.answer_content}</option>
+                          <option key={index} id={answer.answer_id}>
+                            {answer.answer_content}
+                          </option>
                         );
                       })}
                     </Form.Control>
@@ -603,10 +621,10 @@ class HomePage extends Component {
                       direction={compdirection}
                       onChange={(event) =>
                         this.onInputchange(
-                          event,
                           task.task_id,
                           task.component_type_id,
-                          task.task_id
+                          event, // value -- not answer_id
+                          task.is_direction_setting
                         )
                       } //value, task_id, task_comp
                     />
@@ -619,10 +637,10 @@ class HomePage extends Component {
                     direction={compdirection}
                     onChange={(event) =>
                       this.onInputchange(
-                        event,
                         task.task_id,
                         task.component_type_id,
-                        task.task_id
+                        event, // value -- not answer_id
+                        task.is_direction_setting
                       )
                     } //value, task_id, task_comp
                   />
@@ -636,10 +654,10 @@ class HomePage extends Component {
                       direction={compdirection}
                       onChange={(event) =>
                         this.onInputchange(
-                          event,
                           task.task_id,
                           task.component_type_id,
-                          task.task_id
+                          event, // value -- not answer_id
+                          task.is_direction_setting
                         )
                       } //value, task_id, task_comp
                     />
@@ -663,10 +681,10 @@ class HomePage extends Component {
                     //onChange={(rate) => this.setState({ squareRating: rate })}
                     onChange={(event) =>
                       this.onInputchange(
-                        event,
                         task.task_id,
                         task.component_type_id,
-                        task.task_id
+                        event, // value -- not answer_id
+                        task.is_direction_setting
                       )
                     } //value, task_id, task_comp
                   />
@@ -703,10 +721,10 @@ class HomePage extends Component {
                             value={answer.answer_content} //order_ key.
                             onChange={(event) =>
                               this.onInputchange(
-                                event.target.value,
                                 task.task_id,
                                 task.component_type_id,
-                                task.task_id,
+                                event.target.id, // value -- not answer_id
+                                task.is_direction_setting,
                                 event.target.checked
                               )
                             } //value, task_id, task_comp
@@ -759,10 +777,10 @@ class HomePage extends Component {
                       max={50}
                       onCountChange={(event) =>
                         this.onInputchange(
-                          event,
                           task.task_id,
                           task.component_type_id,
-                          task.task_id
+                          event, // value -- not answer_id
+                          task.is_direction_setting
                         )
                       } //value, task_id, task_comp
                     />
