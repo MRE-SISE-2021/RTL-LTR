@@ -20,7 +20,7 @@ class Task extends React.Component {
     };
   }
   async setTaskAnswer(event, value) {
-    console.log(value); //orderkey = value
+    //console.log(value); //orderkey = value
     // debugger;
     let isError = true;
     if (event.target.id === "age") {
@@ -43,6 +43,7 @@ class Task extends React.Component {
         order_key: 1,
         free_answer: event.target.value,
         isError: isError,
+        task_id: this.state.task.task_id,
       });
       return;
     }
@@ -52,6 +53,7 @@ class Task extends React.Component {
         order_key: event.target.name,
         free_answer: event.target.value,
         other: "other",
+        task_id: this.state.task.task_id,
       });
       return;
     }
@@ -61,6 +63,7 @@ class Task extends React.Component {
       answer_id: answer_id,
       order_key: order_key,
       value: value,
+      task_id: this.state.task.task_id,
     });
   }
 

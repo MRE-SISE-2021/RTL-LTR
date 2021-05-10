@@ -142,6 +142,7 @@ class HomePage extends Component {
     });
   }
   onUpdateDemoAnswer(answer) {
+    // debugger;
     if (answer.isError !== undefined) {
       this.setState({ isError: answer.isError });
     }
@@ -160,7 +161,7 @@ class HomePage extends Component {
     ///else
     // to add answer to check box list
     if (order_key === 3 || order_key === 5 || order_key === 11) {
-      if (this.setDemoCheckbox(answers, order_key, arr, answer_id)) {
+      if (this.setDemoCheckbox(answers, order_key, arr, answer_id, answer)) {
         return;
       }
     }
@@ -176,6 +177,7 @@ class HomePage extends Component {
         answers[i] = {
           answer_ids: arr.concat([answer_id]),
           order_key: order_key,
+          task_id: answer.task_id,
         };
         this.setState({
           demo_answers: answers,
@@ -188,6 +190,7 @@ class HomePage extends Component {
       demo_answers: this.state.demo_answers.concat({
         answer_ids: arr.concat([answer_id]),
         order_key: order_key,
+        task_id: answer.task_id,
       }),
     });
     console.log(this.state);
@@ -272,7 +275,7 @@ class HomePage extends Component {
     }
   }
 
-  setDemoCheckbox(answers, order_key, arr, answer_id) {
+  setDemoCheckbox(answers, order_key, arr, answer_id, answer) {
     for (let [i, ans] of answers.entries()) {
       if (ans.order_key === order_key) {
         arr = ans.answer_ids; // answers array
@@ -281,12 +284,14 @@ class HomePage extends Component {
           answers[i] = {
             answer_ids: arr.splice(arr.indexOf(answer_id), 1),
             order_key: order_key,
+            task_id: answer.task_id,
           };
         } else {
           // add
           answers[i] = {
             answer_ids: arr.concat([answer_id]),
             order_key: order_key,
+            task_id: answer.task_id,
           };
         }
 
@@ -307,12 +312,14 @@ class HomePage extends Component {
             answer_ids: [7],
             order_key: order_key,
             free_answer: answer.free_answer,
+            task_id: answer.task_id,
           };
         } else {
           answers[i] = {
             answer_ids: [],
             order_key: order_key,
             free_answer: answer.free_answer,
+            task_id: answer.task_id,
           };
         }
 
@@ -328,6 +335,7 @@ class HomePage extends Component {
         answer_ids: [],
         order_key: order_key,
         free_answer: parseInt(answer.free_answer),
+        task_id: answer.task_id,
       }),
     });
     console.log(this.state);
