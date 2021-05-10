@@ -606,10 +606,14 @@ class FormsElements extends React.Component {
                     //   marginRight: "2%",
                     // }}
                     // onChange={this.onDirectionChange}
-                    id={"is_direction " + this.props.keyOrder}
+
                     onChange={this.setSettings}
                   >
-                    <Form.Control as="select" value={this.state.direction}>
+                    <Form.Control
+                      as="select"
+                      value={this.state.settings.is_direction_setting}
+                      id={"is_direction " + this.props.keyOrder}
+                    >
                       <option value="RTL">RTL</option>
                       <option value="LTR">LTR</option>
                       <option value="RND">RND</option>

@@ -66,7 +66,7 @@ class SaveModal extends React.Component {
     return tasks;
   }
 
-  onAddBtnClick() {
+  onAddBtnClick(event) {
     // const langId = this.getLangId();
     console.log(this.state.is_active);
     let response = {
@@ -82,11 +82,13 @@ class SaveModal extends React.Component {
     ).then((data) => {
       console.log(data);
     });
-
+    if (event.target.id === "to_home") {
+      this.setState(() => ({
+        toDashboard: true,
+      }));
+      return;
+    }
     this.setState({ isBasic: false });
-    this.setState(() => ({
-      toDashboard: true,
-    }));
   }
 
   render() {
@@ -102,7 +104,7 @@ class SaveModal extends React.Component {
           <MDBIcon
             icon="save"
             //className="text-white"
-            className="pr-3"
+            className="pr-4"
             size="2x"
           />
         </Button>
@@ -118,8 +120,19 @@ class SaveModal extends React.Component {
             src="https://icon-library.com/images/save-icon-image/save-icon-image-12.jpg"
           />
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.onAddBtnClick}>
-              Save!
+            <Button
+              id="to_here"
+              variant="secondary"
+              onClick={this.onAddBtnClick}
+            >
+              Save and keep working!
+            </Button>
+            <Button
+              id="to_home"
+              variant="secondary"
+              onClick={this.onAddBtnClick}
+            >
+              Save and go to HomePage!
             </Button>
           </Modal.Footer>
         </Modal>

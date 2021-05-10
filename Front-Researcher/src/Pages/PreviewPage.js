@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
-import NavBar from "../Components/NavBars/NavBar";
+import NavBarPre from "../Components/NavBars/NavBar";
 // import PreviewResponse from "../Api/mocks/PreviewResponse";
 // cookies
 import { withCookies } from "react-cookie";
@@ -14,10 +14,13 @@ import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 //new Page
 import Pagination from "../Pagination";
+//import CounterInput from 'react-bootstrap-counter';
+import CounterInput from "react-counter-input";
 
 import axiosInstance from "../axios";
 import "../styles/PreviewPage.css";
 import Demographics from "../Components/UI-Elements/Demographics";
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
@@ -97,19 +100,28 @@ class PreviewPage extends Component {
       let CompDiv = styled.div`
         direction: rtl;
       `;
-      if (
-        (task.is_direction_setting && this.state.direction === "RTL") ||
-        (!task.is_direction_setting && this.state.direction === "LTR")
-      ) {
+      //Random value
+      let rnd_value = "";
+      if (task.is_direction_setting === "RND") {
+        let rnd = Math.floor(Math.random() * 2);
+        if (rnd === 1) {
+          rnd_value = "LTR";
+        }
+      }
+      debugger;
+      // if comp direction is LTR
+      if (task.is_direction_setting === "LTR" || rnd_value === "LTR") {
         compdirection = "ltr";
         CompDiv = styled.div`
           direction: ltr;
         `;
-      } else if (this.state.direction === "Cntr") {
-        CompDiv = styled.div`
-          text-align: center;
-        `;
       }
+      // else if (task.is_direction_setting === "Cntr") {
+      //   compdirection = "center";
+      //   CompDiv = styled.div`
+      //     margin-left: 50%;
+      //   `;
+      // }
       //////// ----- add in a new page ----- //////////
       if (
         task.is_new_page_setting ||
@@ -131,43 +143,88 @@ class PreviewPage extends Component {
         direction: ltr;
         `};
       `;
+      const ConstDiv = styled.div`
+        padding: 10px;
+        ${rtl`
+        margin-right: 50px;
+        text-align: left;
+        direction: ltr;
+        `};
+      `;
       let theme = {
         dir: "ltr",
       };
-      if (this.state.direction === "RTL") {
+      let const_theme = {
+        dir: "ltr",
+      };
+      debugger;
+      /// alighnment of pages -- not exp
+      if (this.state.lang === 1 || this.state.lang === 3) {
+        const_theme = {
+          dir: "rtl",
+        };
+      }
+
+      //Random value
+      let rnd_value_align = "RTL";
+      if (this.state.direction === "RND") {
+        let temp = Math.floor(Math.random() * 3);
+        if (temp === 1) {
+          rnd_value_align = "RTL";
+        } else if (temp === 2) {
+          rnd_value_align = "Cntr";
+        }
+      }
+      //Alignemt of all exp
+      if (
+        this.state.direction === "RTL" ||
+        (this.state.direction === "RND" && rnd_value_align === "RTL")
+      ) {
         theme = {
           dir: "rtl",
         };
-      } else if (this.state.direction === "Cntr") {
-        theme = {
-          dir: "center",
-        };
+      } else if (
+        this.state.direction === "Cntr" ||
+        (this.state.direction === "RND" && rnd_value_align === "Cntr")
+      ) {
+        // theme = {
+        //   dir: "center",
+        // };
         Div = styled.div`
           text-align: center;
         `;
+        if (this.state.lang === 1 || this.state.lang === 3) {
+          CompDiv = styled.div`
+            margin-right: 35%;
+          `;
+        } else {
+          CompDiv = styled.div`
+            margin-left: 35%;
+          `;
+        }
       }
       ///////////////---RTL support --- ///////////////
       if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
-            <ThemeProvider theme={theme}>
-              <Div
+            <ThemeProvider theme={const_theme}>
+              <ConstDiv
                 key="11"
-                dir={theme.dir}
+                dir={const_theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });
       } else if (task.component_type_id === 1) {
         this.setState({
           inputList: inputList.concat(
-            <ThemeProvider theme={theme}>
-              <Div
+            <ThemeProvider theme={const_theme}>
+              <ConstDiv
                 key="1"
-                dir={theme.dir}
+                dir={const_theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });
@@ -205,7 +262,7 @@ class PreviewPage extends Component {
               <Div key={"range" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 7 ? (
-                  <CompDiv>
+                  <CompDiv style={{ width: "35%" }}>
                     <Form.Control as="select">
                       {task.answers.map(function (answer, index) {
                         return (
@@ -215,11 +272,13 @@ class PreviewPage extends Component {
                     </Form.Control>
                   </CompDiv>
                 ) : task.component_type_id === 2 ? (
-                  <Slider
-                    className="pc-range-slider"
-                    id="slider"
-                    direction={compdirection}
-                  />
+                  <CompDiv style={{ width: "35%" }}>
+                    <Slider
+                      className="pc-range-slider"
+                      id="slider"
+                      direction={compdirection}
+                    />
+                  </CompDiv>
                 ) : task.component_type_id === 5 ? (
                   <Rating
                     emptySymbol="far fa-star fa-2x"
@@ -228,24 +287,28 @@ class PreviewPage extends Component {
                     direction={compdirection}
                   />
                 ) : task.component_type_id === 4 ? (
-                  <Range
-                    className="pc-range-slider"
-                    step={10}
-                    defaultValue={[20, 30]}
-                    id="double_slider"
-                    direction={compdirection}
-                  />
+                  <CompDiv style={{ width: "35%" }}>
+                    <Range
+                      className="pc-range-slider"
+                      step={10}
+                      defaultValue={[20, 30]}
+                      id="double_slider"
+                      direction={compdirection}
+                    />
+                  </CompDiv>
                 ) : (
                   <Rating
                     // initialRating={this.state.squareRating}
+
                     direction={compdirection}
                     id="rating"
-                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                    stop={10}
+                    emptySymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span>{n}</span>
                       </span>
                     ))}
-                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                    fullSymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span className="active">{n}</span>
                       </span>
@@ -268,10 +331,12 @@ class PreviewPage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
-
                 <Form>
                   {task.answers.map((answer, index) => (
-                    <CompDiv key={index}>
+                    <CompDiv
+                      key={task.order_key + " " + index}
+                      style={{ width: "35%" }}
+                    >
                       <Form.Group key={index}>
                         <Row>
                           <Form.Control
@@ -306,10 +371,16 @@ class PreviewPage extends Component {
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                  <CompDiv class="number">
-                    <span class="minus">-</span>
-                    <input id="counter" type="text" value="1" />
-                    <span class="plus">+</span>
+                  <CompDiv style={{ width: "35%" }}>
+                    <CounterInput
+                      className="number"
+                      value={2}
+                      min={1}
+                      max={50}
+                      onChange={(value) => {
+                        console.log(value);
+                      }}
+                    />
                   </CompDiv>
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
@@ -320,7 +391,6 @@ class PreviewPage extends Component {
         });
       }
     });
-    // });
   }
 
   render() {
@@ -334,7 +404,7 @@ class PreviewPage extends Component {
     // console.log(this.state);
     return (
       <Aux>
-        <NavBar
+        <NavBarPre
           name={this.state.name}
           type={this.state.type}
           lang={this.state.lang}
@@ -344,9 +414,9 @@ class PreviewPage extends Component {
         <div className={mainClass.join(" ")}>
           <Aux>
             <Card
-              border="primary"
+              //border="primary"
               style={{
-                border: "2px solid ",
+                //border: "2px solid ",
                 width: "90%",
                 marginTop: "8%",
                 marginLeft: "5%",

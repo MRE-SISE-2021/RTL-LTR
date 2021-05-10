@@ -3,10 +3,13 @@ import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import API from "../Api/Api";
+import Stats from "../Api/Stats";
 import { Card, ListGroup, Form, Row } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
 import { format } from "date-fns";
+//import CounterInput from 'react-bootstrap-counter';
+import CounterInput from "react-counter-input";
 
 //RTL
 import styled, { keyframes, ThemeProvider } from "styled-components";
@@ -14,10 +17,13 @@ import rtl from "styled-components-rtl";
 //new Page
 import Pagination from "../Components/Pagination";
 
-import axiosInstance from "../axios";
+import axios from "../axios";
 import "../styles/PreviewPage.css";
 import Demographics from "../Components/Demographics";
 import Task from "../Components/Task";
+
+import "../App.css";
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
 const Range = createSliderWithTooltip(Slider.Range);
@@ -38,15 +44,40 @@ class HomePage extends Component {
       demographic_task: props.data.demographic_task,
       demographic: props.data.demographic,
       demo_answers: [],
+      answers: {},
       total_answer: props.data.demographic_task.length - 3,
       isError: true,
+      statsInfo: {},
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onUpdateDemoAnswer = this.onUpdateDemoAnswer.bind(this);
     this.onCreateUser = this.onCreateUser.bind(this);
+    this.onUpdateUser = this.onUpdateUser.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.setDemoUI = this.setDemoUI.bind(this);
     this.deleteFromArray = this.deleteFromArray.bind(this);
+  }
+
+  componentDidMount() {
+    //call get stats!!!!!!
+    Stats.getGeoInfo().then((result) => {
+      this.setState({
+        statsInfo: {
+          ...this.state.statsInfo,
+          country: result.country_name,
+          city: result.city,
+        },
+      });
+    });
+    let browser = Stats.getBrowser(window);
+    let opt = Stats.getOperatingSystem(window);
+    this.setState({
+      statsInfo: {
+        ...this.state.statsInfo,
+        browser: browser,
+        operating_system: opt,
+      },
+    });
   }
 
   async componentWillReceiveProps(propsIncoming) {
@@ -78,9 +109,29 @@ class HomePage extends Component {
     const response = {
       demo_answers: this.state.demo_answers,
       // questionnaire_id: "1", //
+      statsInfo: this.state.statsInfo,
       hash: this.props.hosted_link,
-      questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
+      test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
+    console.log(response);
+    // API.postRequest("participant-data", response).then((data) => {
+    //   console.log(data); // JSON data parsed by `data.json()` call
+    //   // this.setState({ expId: data.questionnaire_id });
+    // });
+  }
+
+  onUpdateUser(final) {
+    // put Request!
+    console.log("Put --- request --- update user answers");
+    let response = {
+      answers: this.state.answers,
+      hash: this.props.hosted_link,
+      // test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
+    };
+    if (final !== undefined) {
+      response.test_completed = format(new Date(), "yyyy-MM-dd kk:mm:ss");
+    }
+    this.setState({ answers: {} });
     console.log(response);
     // API.postRequest("participant-data", response).then((data) => {
     //   console.log(data); // JSON data parsed by `data.json()` call
@@ -91,7 +142,7 @@ class HomePage extends Component {
     if (answer.isError !== undefined) {
       this.setState({ isError: answer.isError });
     }
-    debugger;
+    // debugger;
     // update state with new answer from Task component
     let order_key = parseInt(answer.order_key);
     let answers = this.state.demo_answers;
@@ -279,10 +330,43 @@ class HomePage extends Component {
     console.log(this.state);
   }
 
-  onInputchange(event) {
-    // event.preventDefault();
+  //save answer per component
+  onInputchange(value, id, type, checked) {
+    debugger;
+    //checkbox?
+    if (type === 8) {
+      //insert a question first vlaue
+      if (this.state.answers[id] === undefined) {
+        this.setState({
+          answers: {
+            ...this.state.answers,
+            [id]: {
+              comp_type: type,
+              [value]: checked,
+            },
+          },
+        });
+      } else {
+        //update checkbox values
+        let answers = this.state.answers;
+        answers[id].comp_type = type;
+        answers[id][value] = checked;
+        this.setState({
+          answers: answers,
+        });
+      }
+
+      return;
+    }
+    //update regular questions
     this.setState({
-      [event.target.name]: event.target.value,
+      answers: {
+        ...this.state.answers,
+        [id]: {
+          comp_type: type,
+          value: value,
+        },
+      },
     });
   }
 
@@ -291,15 +375,21 @@ class HomePage extends Component {
     this.state.tasks.forEach((task, index) => {
       let inputList = this.state.inputList;
       console.log(task);
-      ////Task Comp Direction
+      ////Task Comp default Direction
       let compdirection = "rtl";
       let CompDiv = styled.div`
         direction: rtl;
       `;
-      if (
-        (task.is_direction_setting && this.state.direction === "RTL") ||
-        (!task.is_direction_setting && this.state.direction === "LTR")
-      ) {
+      //Random value
+      let rnd_value = "";
+      if (task.is_direction_setting === "RND") {
+        let rnd = Math.floor(Math.random() * 2);
+        if (rnd === 1) {
+          rnd_value = "LTR";
+        }
+      }
+      // if comp direction is LTR
+      if (task.is_direction_setting === "LTR" || rnd_value === "LTR") {
         compdirection = "ltr";
         CompDiv = styled.div`
           direction: ltr;
@@ -318,7 +408,7 @@ class HomePage extends Component {
       }
       ///////////////---RTL support --- ///////////////
 
-      const Div = styled.div`
+      let Div = styled.div`
         padding: 10px;
         ${rtl`
         margin-right: 50px;
@@ -326,40 +416,92 @@ class HomePage extends Component {
         direction: ltr;
         `};
       `;
+      const ConstDiv = styled.div`
+        padding: 10px;
+        ${rtl`
+      margin-right: 50px;
+      text-align: left;
+      direction: ltr;
+      `};
+      `;
       let theme = {
         dir: "ltr",
       };
-      if (this.state.direction === "RTL") {
+      let const_theme = {
+        dir: "ltr",
+      };
+
+      /// alighnment of pages -- not exp
+      if (this.state.lang === 1 || this.state.lang === 3) {
+        const_theme = {
+          dir: "rtl",
+        };
+      }
+
+      //Random value
+      let rnd_value_align = "";
+      if (this.state.direction === "RND") {
+        let temp = Math.floor(Math.random() * 3);
+        if (temp === 1) {
+          rnd_value_align = "RTL";
+        } else if (temp === 2) {
+          rnd_value_align = "Cntr";
+        }
+      }
+      //Alignemt of all exp
+      if (
+        this.state.direction === "RTL" ||
+        (this.state.direction === "RND" && rnd_value_align === "RTL")
+      ) {
         theme = {
           dir: "rtl",
         };
+      } else if (
+        this.state.direction === "Cntr" ||
+        (this.state.direction === "RND" && rnd_value_align === "Cntr")
+      ) {
+        Div = styled.div`
+          text-align: center;
+        `;
+        Div = styled.div`
+          text-align: center;
+        `;
+        if (this.state.lang === 1 || this.state.lang === 3) {
+          CompDiv = styled.div`
+            margin-right: 35%;
+          `;
+        } else {
+          CompDiv = styled.div`
+            margin-left: 35%;
+          `;
+        }
       }
       ///////////////---RTL support --- ///////////////
       if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
-            <ThemeProvider theme={theme}>
-              <Div
+            <ThemeProvider theme={const_theme}>
+              <ConstDiv
                 key={task.order_key}
-                dir={theme.dir}
+                dir={const_theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });
       } else if (task.component_type_id === 1) {
         this.setState({
           inputList: inputList.concat(
-            <ThemeProvider theme={theme}>
-              <Div
+            <ThemeProvider theme={const_theme}>
+              <ConstDiv
                 key={task.order_key}
-                dir={theme.dir}
+                dir={const_theme.dir}
                 dangerouslySetInnerHTML={{ __html: task.label }}
-              ></Div>
+              ></ConstDiv>
             </ThemeProvider>
           ),
         });
-        debugger;
+        // debugger;
         inputList = this.state.inputList;
         this.setState({
           inputList: inputList.concat(
@@ -412,7 +554,7 @@ class HomePage extends Component {
         task.component_type_id === 4 ||
         task.component_type_id === 7
       ) {
-        // console.log(task.is_direction_setting);
+        // console.log(task);
         console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         this.setState({
           inputList: inputList.concat(
@@ -420,8 +562,17 @@ class HomePage extends Component {
               <Div key={"range" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 7 ? (
-                  <CompDiv>
-                    <Form.Control as="select">
+                  <CompDiv style={{ width: "35%" }}>
+                    <Form.Control
+                      as="select"
+                      onChange={(event) =>
+                        this.onInputchange(
+                          event.target.value,
+                          task.task_id,
+                          task.component_type_id
+                        )
+                      } //value, task_id, task_comp
+                    >
                       {task.answers.map(function (answer, index) {
                         return (
                           <option key={index}>{answer.answer_content}</option>
@@ -430,42 +581,75 @@ class HomePage extends Component {
                     </Form.Control>
                   </CompDiv>
                 ) : task.component_type_id === 2 ? (
-                  <Slider
-                    className="pc-range-slider"
-                    id="slider"
-                    direction={compdirection}
-                  />
+                  <CompDiv style={{ width: "35%" }}>
+                    <Slider
+                      className="pc-range-slider"
+                      id="slider"
+                      direction={compdirection}
+                      onChange={(event) =>
+                        this.onInputchange(
+                          event,
+                          task.task_id,
+                          task.component_type_id
+                        )
+                      } //value, task_id, task_comp
+                    />
+                  </CompDiv>
                 ) : task.component_type_id === 5 ? (
                   <Rating
                     emptySymbol="far fa-star fa-2x"
                     fullSymbol="fas fa-star fa-2x"
                     id="stars"
                     direction={compdirection}
+                    onChange={(event) =>
+                      this.onInputchange(
+                        event,
+                        task.task_id,
+                        task.component_type_id
+                      )
+                    } //value, task_id, task_comp
                   />
                 ) : task.component_type_id === 4 ? (
-                  <Range
-                    className="pc-range-slider"
-                    step={10}
-                    defaultValue={[20, 30]}
-                    id="double_slider"
-                    direction={compdirection}
-                  />
+                  <CompDiv style={{ width: "35%" }}>
+                    <Range
+                      className="pc-range-slider"
+                      step={10}
+                      defaultValue={[20, 30]}
+                      id="double_slider"
+                      direction={compdirection}
+                      onChange={(event) =>
+                        this.onInputchange(
+                          event,
+                          task.task_id,
+                          task.component_type_id
+                        )
+                      } //value, task_id, task_comp
+                    />
+                  </CompDiv>
                 ) : (
                   <Rating
                     // initialRating={this.state.squareRating}
                     direction={compdirection}
                     id="rating"
-                    emptySymbol={[1, 2, 3, 4, 5].map((n) => (
+                    stop={10}
+                    emptySymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span>{n}</span>
                       </span>
                     ))}
-                    fullSymbol={[1, 2, 3, 4, 5].map((n) => (
+                    fullSymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                       <span className="theme-bar-square">
                         <span className="active">{n}</span>
                       </span>
                     ))}
-                    onChange={(rate) => this.setState({ squareRating: rate })}
+                    //onChange={(rate) => this.setState({ squareRating: rate })}
+                    onChange={(event) =>
+                      this.onInputchange(
+                        event,
+                        task.task_id,
+                        task.component_type_id
+                      )
+                    } //value, task_id, task_comp
                   />
                 )}
               </Div>
@@ -485,7 +669,10 @@ class HomePage extends Component {
                 <h4>{task.label}</h4>
                 <Form>
                   {task.answers.map((answer, index) => (
-                    <CompDiv key={index}>
+                    <CompDiv
+                      key={task.order_key + " " + index}
+                      style={{ width: "35%" }}
+                    >
                       <Form.Group key={index}>
                         <Row>
                           <Form.Control
@@ -494,7 +681,15 @@ class HomePage extends Component {
                             key={index}
                             id={answer.answer_id} //answer_id
                             name={"ans"}
-                            // value={actual_index} //order_ key.
+                            value={answer.answer_content} //order_ key.
+                            onChange={(event) =>
+                              this.onInputchange(
+                                event.target.value,
+                                task.task_id,
+                                task.component_type_id,
+                                event.target.checked
+                              )
+                            } //value, task_id, task_comp
                           />
                           <Form.Label
                             style={{ position: "relative", padding: "6px" }}
@@ -536,10 +731,20 @@ class HomePage extends Component {
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
                 {task.component_type_id === 9 ? (
-                  <CompDiv class="number">
-                    <span class="minus">-</span>
-                    <input id="counter" type="text" value="1" />
-                    <span class="plus">+</span>
+                  <CompDiv style={{ width: "35%" }}>
+                    <CounterInput
+                      className="number"
+                      value={2}
+                      min={1}
+                      max={50}
+                      onCountChange={(event) =>
+                        this.onInputchange(
+                          event,
+                          task.task_id,
+                          task.component_type_id
+                        )
+                      } //value, task_id, task_comp
+                    />
                   </CompDiv>
                 ) : task.component_type_id === 10 ? (
                   <h1>Timeline</h1>
@@ -554,7 +759,7 @@ class HomePage extends Component {
   }
 
   render() {
-    // console.log(this.state);
+    console.log(this.state);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
@@ -567,9 +772,7 @@ class HomePage extends Component {
         <div className={mainClass.join(" ")}>
           <Form>
             <Card
-              border="primary"
               style={{
-                border: "2px solid ",
                 width: "90%",
                 marginTop: "8%",
                 marginLeft: "5%",
@@ -593,6 +796,7 @@ class HomePage extends Component {
                     items={this.state.inputList}
                     onChangePage={this.onChangePage}
                     onCreateUser={this.onCreateUser}
+                    onUpdateUser={this.onUpdateUser}
                     pageSize={2}
                     is_next={
                       this.state.demo_answers.length ===
