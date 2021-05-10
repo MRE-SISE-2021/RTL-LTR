@@ -477,15 +477,18 @@ class ParticipantAPIView(APIView):
     def put(self, request, id):
         data = request.data
         for task_id in data['answers']:
+            answer_id = data['answers'][task_id]['answer_id'] if 'answer_id' in data['answers'][task_id] else None
+            submitted_free_answer = ",".join(data['answers'][task_id]['submitted_free_answer']) \
+                if 'submitted_free_answer' in data['answers'][task_id] else None
+
             task_participant_data = {'participant_id': id,
                                      'task_id': task_id,
-                                     'answer_id': 1,
-                                     'task_direction': None,
+                                     'answer_id': answer_id,
+                                     'task_direction': data['answers'][task_id]['task_direction'],
                                      'task_time': None,
                                      'task_clicks': None,
                                      'task_errors': None,
-                                     'component_type_id': 1,
-                                     'submitted_free_answer': None}
+                                     'submitted_free_answer': submitted_free_answer}
 
             insert_data_into_table(TaskParticipantSerializer(data=task_participant_data))
 
