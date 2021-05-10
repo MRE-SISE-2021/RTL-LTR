@@ -52,6 +52,7 @@ class HomePage extends Component {
     this.onInputchange = this.onInputchange.bind(this);
     this.onUpdateDemoAnswer = this.onUpdateDemoAnswer.bind(this);
     this.onCreateUser = this.onCreateUser.bind(this);
+    this.onUpdateUser = this.onUpdateUser.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.setDemoUI = this.setDemoUI.bind(this);
     this.deleteFromArray = this.deleteFromArray.bind(this);
@@ -112,6 +113,25 @@ class HomePage extends Component {
       hash: this.props.hosted_link,
       test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
+    console.log(response);
+    // API.postRequest("participant-data", response).then((data) => {
+    //   console.log(data); // JSON data parsed by `data.json()` call
+    //   // this.setState({ expId: data.questionnaire_id });
+    // });
+  }
+
+  onUpdateUser(final) {
+    // put Request!
+    console.log("Put --- request --- update user answers");
+    let response = {
+      answers: this.state.answers,
+      hash: this.props.hosted_link,
+      // test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
+    };
+    if (final !== undefined) {
+      response.test_completed = format(new Date(), "yyyy-MM-dd kk:mm:ss");
+    }
+    this.setState({ answers: {} });
     console.log(response);
     // API.postRequest("participant-data", response).then((data) => {
     //   console.log(data); // JSON data parsed by `data.json()` call
@@ -776,6 +796,7 @@ class HomePage extends Component {
                     items={this.state.inputList}
                     onChangePage={this.onChangePage}
                     onCreateUser={this.onCreateUser}
+                    onUpdateUser={this.onUpdateUser}
                     pageSize={2}
                     is_next={
                       this.state.demo_answers.length ===
