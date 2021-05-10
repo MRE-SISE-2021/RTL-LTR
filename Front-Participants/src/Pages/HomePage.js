@@ -114,10 +114,10 @@ class HomePage extends Component {
       test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
-    // API.postRequest("participant-data", response).then((data) => {
-    //   console.log(data); // JSON data parsed by `data.json()` call
-    //   // this.setState({ expId: data.questionnaire_id });
-    // });
+    API.postRequest("participant-data", response).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      // this.setState({ expId: data.questionnaire_id });
+    });
   }
 
   onUpdateUser(final) {
@@ -133,10 +133,10 @@ class HomePage extends Component {
     }
     this.setState({ answers: {} });
     console.log(response);
-    // API.postRequest("participant-data", response).then((data) => {
-    //   console.log(data); // JSON data parsed by `data.json()` call
-    //   // this.setState({ expId: data.questionnaire_id });
-    // });
+    API.putRequest("participant-data", response).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      // this.setState({ expId: data.questionnaire_id });
+    });
   }
   onUpdateDemoAnswer(answer) {
     if (answer.isError !== undefined) {
