@@ -342,7 +342,7 @@ class HomePage extends Component {
   }
 
   //save answer per component
-  onInputchange(value, id, type, checked) {
+  onInputchange(value, id, type, task_id, checked) {
     debugger;
     //checkbox?
     if (type === 8) {
@@ -354,6 +354,7 @@ class HomePage extends Component {
             [id]: {
               comp_type: type,
               [value]: checked,
+              task_id: task_id,
             },
           },
         });
@@ -361,6 +362,7 @@ class HomePage extends Component {
         //update checkbox values
         let answers = this.state.answers;
         answers[id].comp_type = type;
+        answers[id].task_id = task_id;
         answers[id][value] = checked;
         this.setState({
           answers: answers,
@@ -376,6 +378,7 @@ class HomePage extends Component {
         [id]: {
           comp_type: type,
           value: value,
+          task_id: task_id,
         },
       },
     });
@@ -580,7 +583,8 @@ class HomePage extends Component {
                         this.onInputchange(
                           event.target.value,
                           task.task_id,
-                          task.component_type_id
+                          task.component_type_id,
+                          task.task_id
                         )
                       } //value, task_id, task_comp
                     >
@@ -601,7 +605,8 @@ class HomePage extends Component {
                         this.onInputchange(
                           event,
                           task.task_id,
-                          task.component_type_id
+                          task.component_type_id,
+                          task.task_id
                         )
                       } //value, task_id, task_comp
                     />
@@ -616,7 +621,8 @@ class HomePage extends Component {
                       this.onInputchange(
                         event,
                         task.task_id,
-                        task.component_type_id
+                        task.component_type_id,
+                        task.task_id
                       )
                     } //value, task_id, task_comp
                   />
@@ -632,7 +638,8 @@ class HomePage extends Component {
                         this.onInputchange(
                           event,
                           task.task_id,
-                          task.component_type_id
+                          task.component_type_id,
+                          task.task_id
                         )
                       } //value, task_id, task_comp
                     />
@@ -658,7 +665,8 @@ class HomePage extends Component {
                       this.onInputchange(
                         event,
                         task.task_id,
-                        task.component_type_id
+                        task.component_type_id,
+                        task.task_id
                       )
                     } //value, task_id, task_comp
                   />
@@ -698,6 +706,7 @@ class HomePage extends Component {
                                 event.target.value,
                                 task.task_id,
                                 task.component_type_id,
+                                task.task_id,
                                 event.target.checked
                               )
                             } //value, task_id, task_comp
@@ -752,7 +761,8 @@ class HomePage extends Component {
                         this.onInputchange(
                           event,
                           task.task_id,
-                          task.component_type_id
+                          task.component_type_id,
+                          task.task_id
                         )
                       } //value, task_id, task_comp
                     />
