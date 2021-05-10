@@ -651,7 +651,7 @@ class ParticipantAPIView(APIView):
                                                                                'submitted_free_answer': free_answer})
                 insert_data_into_table(quest_participant_serializer)
 
-        return Response(status=status.HTTP_201_CREATED)
+        return Response({'participant_id': participant_id}, status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def put(self, request, id):
