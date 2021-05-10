@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import API from "../Api/Api";
+import Stats from "../Api/Stats";
 import { Card, ListGroup, Form, Row } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
@@ -16,7 +17,7 @@ import rtl from "styled-components-rtl";
 //new Page
 import Pagination from "../Components/Pagination";
 
-import axiosInstance from "../axios";
+import axios from "../axios";
 import "../styles/PreviewPage.css";
 import Demographics from "../Components/Demographics";
 import Task from "../Components/Task";
@@ -46,6 +47,7 @@ class HomePage extends Component {
       answers: {},
       total_answer: props.data.demographic_task.length - 3,
       isError: true,
+      statsInfo: {},
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onUpdateDemoAnswer = this.onUpdateDemoAnswer.bind(this);
@@ -53,6 +55,28 @@ class HomePage extends Component {
     this.onChangePage = this.onChangePage.bind(this);
     this.setDemoUI = this.setDemoUI.bind(this);
     this.deleteFromArray = this.deleteFromArray.bind(this);
+  }
+
+  componentDidMount() {
+    //call get stats!!!!!!
+    let info = Stats.getGeoInfo();
+    let browser = Stats.getBrowser(window);
+    Stats.getOperatingSystem(window).then((result) => {
+      this.setState({
+        statsInfo: {
+          ...this.state.statsInfo,
+          operating_system: result,
+        },
+      });
+    });
+    this.setState({
+      statsInfo: {
+        ...this.state.statsInfo,
+        browser: browser,
+        country: info.country_name,
+        city: info.city,
+      },
+    });
   }
 
   async componentWillReceiveProps(propsIncoming) {
@@ -84,8 +108,9 @@ class HomePage extends Component {
     const response = {
       demo_answers: this.state.demo_answers,
       // questionnaire_id: "1", //
+      statsInfo: this.state.statsInfo,
       hash: this.props.hosted_link,
-      questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
+      test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
     // API.postRequest("participant-data", response).then((data) => {
