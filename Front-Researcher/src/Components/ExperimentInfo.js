@@ -313,7 +313,24 @@ class ExperimentInfo extends Component {
                     </Col>
                   </Row>
                   <br />
-                  <ComboChart />
+                  <ComboChart
+                    title="Paticipants Age"
+                    xAxis={[5, 15, 20, 25, 40]}
+                    yAxis={[20, 40, 50, 35, 15]}
+                  />
+                  <br />
+                  <ComboChart
+                    title="Paticipants Mother Language"
+                    xAxis={[
+                      "Hebrew",
+                      "Amharic",
+                      "Arabic",
+                      "English",
+                      "Russian",
+                    ]}
+                    yAxis={[120, 0, 50, 35, 15]}
+                  />
+                  <br />
                 </ul>
               </div>
             </Card.Body>
