@@ -201,8 +201,8 @@ class QuestionnaireParticipant(models.Model):
     questionnaire_id = models.ForeignKey(Questionnaire, models.DO_NOTHING, db_column='QuestionnaireId')
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     test_started = models.DateTimeField(db_column='TestStarted')
-    questionnaire_finish = models.DateTimeField(db_column='QuestionnaireFinish', null=True)
-    time_spent = models.TimeField(db_column='TimeSpent', null=True)
+    test_completed = models.DateTimeField(db_column='TestCompleted', null=True)
+    time_spent_seconds = models.IntegerField(db_column='TimeSpentSeconds', null=True)
     satisfaction = models.TextField(db_column='Satisfaction', null=True)
 
     class Meta:

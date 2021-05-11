@@ -120,8 +120,8 @@ class QuestionnaireParticipantSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = QuestionnaireParticipant
         fields = '__all__'
-        # fields = ['questionnaire_id', 'participant_id', 'questionnaire_start', 'questionnaire_finish',
-        #           'time_spent', 'satisfaction']
+        # fields = ['questionnaire_id', 'participant_id', 'test_started', 'test_completed',
+        #           'time_spent_seconds', 'satisfaction']
 
 
 class QuestionnaireTaskSerializer(DynamicFieldsModelSerializer):

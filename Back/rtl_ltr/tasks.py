@@ -199,6 +199,68 @@ def insert_participant_data(participant_id, data):
 
 
 @shared_task
+def insert_participant_task_data(request_data, id):
+    from cryptography.fernet import Fernet
+    from Back.settings import CRYPTO_KEY
+    from rtl_ltr.models import QuestionnaireParticipant
+    from rtl_ltr.serializers import QuestionnaireParticipantSerializer, TaskParticipantSerializer
+    import datetime as dt
+
+    task_participant_data = []
+
+    for task_id in request_data['answers']:
+        task = request_data['answers'][task_id]
+
+        submitted_free_answer = request_data['answers'][task_id]['submitted_free_answer'] \
+            if 'submitted_free_answer' in request_data['answers'][task_id] else None
+        if isinstance(submitted_free_answer, list):
+            submitted_free_answer = ','.join(map(str, submitted_free_answer))
+
+        answer_ids = []
+        if task['comp_type'] == 8:
+            for key in task:
+                if isinstance(key, int) and task[key] is True:
+                    answer_ids.append(key)
+        else:
+            answer_ids.append(task['answer_id'] if 'answer_id' in request_data['answers'][task_id] else None)
+
+        for answer_id in answer_ids:
+            task_participant_data.append({'participant_id': id,
+                                          'task_id': task_id,
+                                          'answer_id': answer_id,
+                                          'task_direction': task['task_direction'],
+                                          'task_time': None,
+                                          'task_clicks': task['task_clicks'],
+                                          'task_errors': None,
+                                          'submitted_free_answer': submitted_free_answer
+                                          })
+
+    for data in task_participant_data:
+        insert_data_into_table(TaskParticipantSerializer(data=data))
+
+    if 'test_completed' in request_data:
+        fernet = Fernet(CRYPTO_KEY)
+        decrypted_hash = fernet.decrypt(request_data['hash'].encode()).decode()
+        quest_language_ids = decrypted_hash.split("_")
+
+        query_set = QuestionnaireParticipant.objects.get(questionnaire_id=quest_language_ids[0],
+                                                         participant_id=id)
+
+        test_started = dt.datetime.strptime(QuestionnaireParticipantSerializer(query_set).data['test_started'][:-1],
+                                            '%Y-%m-%dT%H:%M:%S')
+        test_completed = dt.datetime.strptime(request_data['test_completed'], '%Y-%m-%d %H:%M:%S')
+
+        time_spent_seconds = (test_completed - test_started).total_seconds()
+
+        update_data_into_table(QuestionnaireParticipantSerializer(query_set,
+                                                                  data={'test_completed':
+                                                                            request_data['test_completed'],
+                                                                        'time_spent_seconds': time_spent_seconds},
+                                                                  partial=True))
+    return {"status": True}
+
+
+@shared_task
 def insert_data_into_table(serializer, id_name=None):
     if serializer.is_valid():
         serializer.save()
