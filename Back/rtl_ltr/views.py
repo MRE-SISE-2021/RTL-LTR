@@ -475,22 +475,38 @@ class ParticipantAPIView(APIView):
 
     @transaction.atomic
     def put(self, request, id):
-        data = request.data
-        for task_id in data['answers']:
-            answer_id = data['answers'][task_id]['answer_id'] if 'answer_id' in data['answers'][task_id] else None
-            submitted_free_answer = ",".join(data['answers'][task_id]['submitted_free_answer']) \
-                if 'submitted_free_answer' in data['answers'][task_id] else None
+        request_data = request.data
+        task_participant_data = []
 
-            task_participant_data = {'participant_id': id,
-                                     'task_id': task_id,
-                                     'answer_id': answer_id,
-                                     'task_direction': data['answers'][task_id]['task_direction'],
-                                     'task_time': None,
-                                     'task_clicks': None,
-                                     'task_errors': None,
-                                     'submitted_free_answer': submitted_free_answer}
+        for task_id in request_data['answers']:
+            task = request_data['answers'][task_id]
 
-            insert_data_into_table(TaskParticipantSerializer(data=task_participant_data))
+            submitted_free_answer = request_data['answers'][task_id]['submitted_free_answer'] \
+                if 'submitted_free_answer' in request_data['answers'][task_id] else None
+            if isinstance(submitted_free_answer, list):
+                submitted_free_answer = ','.join(map(str, submitted_free_answer))
+
+            answer_ids = []
+            if task['comp_type'] == 8:
+                for key in task:
+                    if isinstance(key, int) and task[key] is True:
+                        answer_ids.append(key)
+            else:
+                answer_ids.append(task['answer_id'] if 'answer_id' in request_data['answers'][task_id] else None)
+
+            for answer_id in answer_ids:
+                task_participant_data.append({'participant_id': id,
+                                              'task_id': task_id,
+                                              'answer_id': answer_id,
+                                              'task_direction': task['task_direction'],
+                                              'task_time': None,
+                                              'task_clicks': task['task_clicks'],
+                                              'task_errors': None,
+                                              'submitted_free_answer': submitted_free_answer
+                                              })
+
+        for data in task_participant_data:
+            insert_data_into_table(TaskParticipantSerializer(data=data))
 
         return Response(status=status.HTTP_200_OK)
 
