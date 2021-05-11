@@ -345,11 +345,27 @@ class HomePage extends Component {
   //save answer per component
   //value -- is answer id for (comp_type = checkbox/select/radio)
   onInputchange(id, type, value, direction, checked) {
-    debugger;
-    //checkbox?
-    if (type === 8) {
-      //insert a question first vlaue
-      if (this.state.answers[id] === undefined) {
+    // debugger;
+    //insert a question first vlaue
+    if (this.state.answers[id] === undefined) {
+      //answer_id -- radio + dropdown
+      if (type === 3 || type === 7) {
+        this.setState({
+          answers: {
+            ...this.state.answers,
+            [id]: {
+              comp_type: type,
+              answer_id: value,
+              task_direction: direction,
+              task_clicks: 1,
+            },
+          },
+        });
+        return;
+      }
+
+      //checkbox?
+      if (type === 8) {
         this.setState({
           answers: {
             ...this.state.answers,
@@ -357,49 +373,42 @@ class HomePage extends Component {
               comp_type: type,
               [value]: checked,
               task_direction: direction,
+              task_clicks: 1,
             },
           },
         });
-      } else {
-        //update checkbox values
-        let answers = this.state.answers;
-        answers[id].comp_type = type;
-        answers[id].task_direction = direction;
-        answers[id][value] = checked;
-        this.setState({
-          answers: answers,
-        });
+        return;
       }
 
-      return;
-    }
-    if (type === 3 || type === 7) {
-      if (type === 7) {
-        value = value.id;
-      }
+      //update regular questions
       this.setState({
         answers: {
           ...this.state.answers,
           [id]: {
             comp_type: type,
-            answer_id: value,
+            submitted_free_answer: value,
             task_direction: direction,
+            task_clicks: 1,
           },
         },
       });
-      return;
+    } else {
+      // update values
+      let answers = this.state.answers;
+      answers[id].comp_type = type;
+      answers[id].task_direction = direction;
+      answers[id].task_clicks = answers[id].task_clicks + 1;
+      if (type === 8) {
+        answers[id][value] = checked;
+      } else if (type === 3 || type === 7) {
+        answers[id].answer_id = value;
+      } else {
+        answers[id].submitted_free_answer = value;
+      }
+      this.setState({
+        answers: answers,
+      });
     }
-    //update regular questions
-    this.setState({
-      answers: {
-        ...this.state.answers,
-        [id]: {
-          comp_type: type,
-          submitted_free_answer: value,
-          task_direction: direction,
-        },
-      },
-    });
   }
 
   putInputList() {
@@ -602,7 +611,7 @@ class HomePage extends Component {
                         this.onInputchange(
                           task.task_id,
                           task.component_type_id,
-                          event.target.selectedOptions[0], // answer_id
+                          event.target.selectedOptions[0].id, // answer_id
                           task.is_direction_setting
                         );
                       }} //value, task_id, task_comp
