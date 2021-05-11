@@ -246,14 +246,25 @@ def get_questionnaire_metrics(request):
             else:
                 native_languages[participant['native_language']] = 1
 
-        languages = LanguageSerializer(Language.objects.get()).data
+        languages = LanguageSerializer(Language.objects.filter(), many=True).data
 
+        language_name_count_dict = {}
         for key in native_languages:
-            language_name = languages
+            language_name = languages[key-1]['language_name']
+            language_name_count_dict[language_name] = native_languages[key]
+
+        ages_x = ages.keys()
+        ages_y = ages.values()
+
+        native_languages_x = language_name_count_dict.keys()
+        native_languages_y = language_name_count_dict.values()
 
         return Response({'last_date': last_date,
-                         'ages': ages,
-                         'native_languages': native_languages}, status=status.HTTP_200_OK)
+                         'ages_x': ages_x,
+                         'ages_y': ages_y,
+                         'native_languages_x': native_languages_x,
+                         'native_languages_y': native_languages_y
+                         }, status=status.HTTP_200_OK)
 
 
 # DELETE task from questionnaire
