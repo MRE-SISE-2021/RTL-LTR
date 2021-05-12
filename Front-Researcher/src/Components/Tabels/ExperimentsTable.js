@@ -257,7 +257,7 @@ class ExperimentTable extends Component {
                           }[value.language_id]
                         }
                       </td>
-                      <td>sum</td>
+                      <td>{value.num_dropped + value.num_finished}</td>
                       <td>sum</td>
                     </tr>
                   );

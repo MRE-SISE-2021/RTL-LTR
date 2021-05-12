@@ -305,8 +305,9 @@ class ExperimentInfo extends Component {
                     </Col>
 
                     <Col>
-                      <b># of Participants:</b>
-                      359 all, 339 Finished
+                      <b># of Participants: </b>
+                      {data.num_dropped + data.num_finished + " "}
+                      all, {data.num_finished} Finished
                     </Col>
                   </Row>
                   <br />
