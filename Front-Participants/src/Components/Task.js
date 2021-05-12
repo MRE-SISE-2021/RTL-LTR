@@ -10,9 +10,15 @@ class Task extends React.Component {
       task: props.demo_task,
       is_other: false,
       age: "",
+      task_id: props.demo_task.task_id,
     };
     this.handleClick = this.handleClick.bind(this);
     this.setTaskAnswer = this.setTaskAnswer.bind(this);
+  }
+  componentWillReceiveProps(propsIncoming) {
+    this.setState({
+      task_id: propsIncoming.demo_task.task_id,
+    });
   }
   handleClick(event) {
     this.state = {
@@ -21,7 +27,7 @@ class Task extends React.Component {
   }
   async setTaskAnswer(event, value) {
     //console.log(value); //orderkey = value
-    // debugger;
+    debugger;
     let isError = true;
     if (event.target.id === "age") {
       if (event.target.value > 99 || event.target.value < 14) {
@@ -43,7 +49,7 @@ class Task extends React.Component {
         order_key: 1,
         free_answer: event.target.value,
         isError: isError,
-        task_id: this.state.task.task_id,
+        task_id: this.state.task_id,
       });
       return;
     }
@@ -53,7 +59,7 @@ class Task extends React.Component {
         order_key: event.target.name,
         free_answer: event.target.value,
         other: "other",
-        task_id: this.state.task.task_id,
+        task_id: this.state.task_id,
       });
       return;
     }
@@ -63,7 +69,7 @@ class Task extends React.Component {
       answer_id: answer_id,
       order_key: order_key,
       value: value,
-      task_id: this.state.task.task_id,
+      task_id: this.state.task_id,
     });
   }
 
