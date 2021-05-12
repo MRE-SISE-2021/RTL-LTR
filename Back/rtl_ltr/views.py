@@ -138,34 +138,31 @@ class TaskImageViewSet(viewsets.ModelViewSet):
 # get list of questionnaire name for main page
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
-def get_questionnaire_name_list(request):
+def get_questionnaires_table(request):
     if request.method == "GET":
         queryset = Questionnaire.objects.all()
-        data = QuestionnaireSerializer(queryset, many=True).data
+        quest_data = list(QuestionnaireSerializer(queryset, many=True).data)
 
         quest_ids_list = []
-        id_names_dict = {}
-        ids_counts_dict = {}
-
-        for value in data:
-            quest_ids_list.append(value['questionnaire_id'])
-            id_names_dict[value['questionnaire_id']] = value['questionnaire_name']
-            ids_counts_dict[value['questionnaire_id']] = [0, 0]
+        quest_ids_counts_dict = {}
+        for quest in quest_data:
+            quest_ids_list.append(quest['questionnaire_id'])
+            quest_ids_counts_dict[quest['questionnaire_id']] = [0, 0]
 
         query_set = QuestionnaireParticipant.objects.filter(questionnaire_id__in=quest_ids_list)
         data = QuestionnaireParticipantSerializer(query_set, many=True).data
 
         for quest_participant in data:
             if quest_participant['test_completed'] is None:
-                ids_counts_dict[quest_participant['questionnaire_id']][0] += 1
+                quest_ids_counts_dict[quest_participant['questionnaire_id']][1] += 1
             else:
-                ids_counts_dict[quest_participant['questionnaire_id']][1] += 1
+                quest_ids_counts_dict[quest_participant['questionnaire_id']][0] += 1
 
-        names_counts_dict = {}
-        for q_id in id_names_dict:
-            names_counts_dict[id_names_dict[q_id]] = ids_counts_dict[q_id]
+        for quest in quest_data:
+            quest['num_finished'] = quest_ids_counts_dict[quest['questionnaire_id']][0]
+            quest['num_dropped'] = quest_ids_counts_dict[quest['questionnaire_id']][1]
 
-        return Response(names_counts_dict, status=status.HTTP_200_OK)
+        return Response(quest_data, status=status.HTTP_200_OK)
 
 
 # get list of questionnaire name for main page
