@@ -1,3 +1,5 @@
+import collections
+
 from django.core.handlers import exception
 from rest_framework.permissions import IsAuthenticated
 
@@ -249,11 +251,13 @@ def get_questionnaire(request, id):
             language_name = languages[key-1]['language_name']
             language_name_count_dict[language_name] = native_languages[key]
 
-        ages_x = ages.keys()
-        ages_y = ages.values()
+        ages = collections.OrderedDict(sorted(ages.items()))
+        ages_x = list(ages.keys())
+        ages_y = list(ages.values())
 
-        native_languages_x = language_name_count_dict.keys()
-        native_languages_y = language_name_count_dict.values()
+        native_languages = collections.OrderedDict(sorted(native_languages.items()))
+        native_languages_x = list(language_name_count_dict.keys())
+        native_languages_y = list(language_name_count_dict.values())
 
         query_set = Questionnaire.objects.get(questionnaire_id=questionnaire_id)
         questionnaire_data = QuestionnaireSerializer(query_set).data
