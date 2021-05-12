@@ -44,6 +44,7 @@ class ExperimentTable extends Component {
             items: result.reverse(),
             chosen: result[0],
           });
+          this.inputElement.click(this.state.chosen.questionnaire_id, 0);
         } else {
           this.setState({
             isLoaded: true,
@@ -62,6 +63,7 @@ class ExperimentTable extends Component {
     );
     this.resize();
     window.addEventListener("resize", this.resize);
+    // this.handleClick();
   }
 
   componentWillUnmount() {
@@ -233,6 +235,7 @@ class ExperimentTable extends Component {
                           : { background: "white" }
                       }
                       onClick={() => handleClick(value.questionnaire_id, index)}
+                      ref={(input) => (this.inputElement = input)}
                     >
                       <td>
                         {value.is_active ? (
