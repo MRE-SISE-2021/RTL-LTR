@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import API from "../Api/Api";
+import Stats from "../Api/Stats";
 import { Card, ListGroup, Form, Row } from "react-bootstrap";
 import Rating from "react-rating";
 import Slider from "rc-slider";
@@ -16,7 +17,7 @@ import rtl from "styled-components-rtl";
 //new Page
 import Pagination from "../Components/Pagination";
 
-import axiosInstance from "../axios";
+import axios from "../axios";
 import "../styles/PreviewPage.css";
 import Demographics from "../Components/Demographics";
 import Task from "../Components/Task";
@@ -43,15 +44,40 @@ class HomePage extends Component {
       demographic_task: props.data.demographic_task,
       demographic: props.data.demographic,
       demo_answers: [],
+      answers: {},
       total_answer: props.data.demographic_task.length - 3,
       isError: true,
+      statsInfo: {},
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onUpdateDemoAnswer = this.onUpdateDemoAnswer.bind(this);
     this.onCreateUser = this.onCreateUser.bind(this);
+    this.onUpdateUser = this.onUpdateUser.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
     this.setDemoUI = this.setDemoUI.bind(this);
     this.deleteFromArray = this.deleteFromArray.bind(this);
+  }
+
+  componentDidMount() {
+    //call get stats!!!!!!
+    Stats.getGeoInfo().then((result) => {
+      this.setState({
+        statsInfo: {
+          ...this.state.statsInfo,
+          country: result.country_name,
+          city: result.city,
+        },
+      });
+    });
+    let browser = Stats.getBrowser(window);
+    let opt = Stats.getOperatingSystem(window);
+    this.setState({
+      statsInfo: {
+        ...this.state.statsInfo,
+        browser: browser,
+        operating_system: opt,
+      },
+    });
   }
 
   async componentWillReceiveProps(propsIncoming) {
@@ -83,20 +109,45 @@ class HomePage extends Component {
     const response = {
       demo_answers: this.state.demo_answers,
       // questionnaire_id: "1", //
+      statsInfo: this.state.statsInfo,
       hash: this.props.hosted_link,
-      questionnaire_start: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
+      test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     console.log(response);
-    // API.postRequest("participant-data", response).then((data) => {
-    //   console.log(data); // JSON data parsed by `data.json()` call
-    //   // this.setState({ expId: data.questionnaire_id });
-    // });
+    API.postRequest("participant-data", response).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      this.setState({ participant_id: data.participant_id });
+    });
+  }
+
+  onUpdateUser(final) {
+    // put Request!
+    console.log("Put --- request --- update user answers");
+    let response = {
+      participant_id: this.state.participant_id,
+      answers: this.state.answers,
+      hash: this.props.hosted_link,
+      // test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
+    };
+    if (final !== undefined) {
+      response.test_completed = format(new Date(), "yyyy-MM-dd kk:mm:ss");
+    }
+    this.setState({ answers: {} });
+    console.log(response);
+    API.putRequest(
+      "participant-data/" + this.state.participant_id,
+      response
+    ).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      // this.setState({ expId: data.questionnaire_id });
+    });
   }
   onUpdateDemoAnswer(answer) {
+    // debugger;
     if (answer.isError !== undefined) {
       this.setState({ isError: answer.isError });
     }
-    debugger;
+    // debugger;
     // update state with new answer from Task component
     let order_key = parseInt(answer.order_key);
     let answers = this.state.demo_answers;
@@ -111,7 +162,7 @@ class HomePage extends Component {
     ///else
     // to add answer to check box list
     if (order_key === 3 || order_key === 5 || order_key === 11) {
-      if (this.setDemoCheckbox(answers, order_key, arr, answer_id)) {
+      if (this.setDemoCheckbox(answers, order_key, arr, answer_id, answer)) {
         return;
       }
     }
@@ -127,6 +178,7 @@ class HomePage extends Component {
         answers[i] = {
           answer_ids: arr.concat([answer_id]),
           order_key: order_key,
+          task_id: answer.task_id,
         };
         this.setState({
           demo_answers: answers,
@@ -139,6 +191,7 @@ class HomePage extends Component {
       demo_answers: this.state.demo_answers.concat({
         answer_ids: arr.concat([answer_id]),
         order_key: order_key,
+        task_id: answer.task_id,
       }),
     });
     console.log(this.state);
@@ -223,7 +276,7 @@ class HomePage extends Component {
     }
   }
 
-  setDemoCheckbox(answers, order_key, arr, answer_id) {
+  setDemoCheckbox(answers, order_key, arr, answer_id, answer) {
     for (let [i, ans] of answers.entries()) {
       if (ans.order_key === order_key) {
         arr = ans.answer_ids; // answers array
@@ -232,12 +285,14 @@ class HomePage extends Component {
           answers[i] = {
             answer_ids: arr.splice(arr.indexOf(answer_id), 1),
             order_key: order_key,
+            task_id: answer.task_id,
           };
         } else {
           // add
           answers[i] = {
             answer_ids: arr.concat([answer_id]),
             order_key: order_key,
+            task_id: answer.task_id,
           };
         }
 
@@ -258,12 +313,14 @@ class HomePage extends Component {
             answer_ids: [7],
             order_key: order_key,
             free_answer: answer.free_answer,
+            task_id: answer.task_id,
           };
         } else {
           answers[i] = {
             answer_ids: [],
             order_key: order_key,
             free_answer: answer.free_answer,
+            task_id: answer.task_id,
           };
         }
 
@@ -279,16 +336,79 @@ class HomePage extends Component {
         answer_ids: [],
         order_key: order_key,
         free_answer: parseInt(answer.free_answer),
+        task_id: answer.task_id,
       }),
     });
     console.log(this.state);
   }
 
-  onInputchange(event) {
-    // event.preventDefault();
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+  //save answer per component
+  //value -- is answer id for (comp_type = checkbox/select/radio)
+  onInputchange(id, type, value, direction, checked) {
+    // debugger;
+    //insert a question first vlaue
+    if (this.state.answers[id] === undefined) {
+      //answer_id -- radio + dropdown
+      if (type === 3 || type === 7) {
+        this.setState({
+          answers: {
+            ...this.state.answers,
+            [id]: {
+              comp_type: type,
+              answer_id: value,
+              task_direction: direction,
+              task_clicks: 1,
+            },
+          },
+        });
+        return;
+      }
+
+      //checkbox?
+      if (type === 8) {
+        this.setState({
+          answers: {
+            ...this.state.answers,
+            [id]: {
+              comp_type: type,
+              [value]: checked,
+              task_direction: direction,
+              task_clicks: 1,
+            },
+          },
+        });
+        return;
+      }
+
+      //update regular questions
+      this.setState({
+        answers: {
+          ...this.state.answers,
+          [id]: {
+            comp_type: type,
+            submitted_free_answer: value,
+            task_direction: direction,
+            task_clicks: 1,
+          },
+        },
+      });
+    } else {
+      // update values
+      let answers = this.state.answers;
+      answers[id].comp_type = type;
+      answers[id].task_direction = direction;
+      answers[id].task_clicks = answers[id].task_clicks + 1;
+      if (type === 8) {
+        answers[id][value] = checked;
+      } else if (type === 3 || type === 7) {
+        answers[id].answer_id = value;
+      } else {
+        answers[id].submitted_free_answer = value;
+      }
+      this.setState({
+        answers: answers,
+      });
+    }
   }
 
   putInputList() {
@@ -422,7 +542,7 @@ class HomePage extends Component {
             </ThemeProvider>
           ),
         });
-        debugger;
+        // debugger;
         inputList = this.state.inputList;
         this.setState({
           inputList: inputList.concat(
@@ -475,7 +595,7 @@ class HomePage extends Component {
         task.component_type_id === 4 ||
         task.component_type_id === 7
       ) {
-        // console.log(task.is_direction_setting);
+        // console.log(task);
         console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         this.setState({
           inputList: inputList.concat(
@@ -484,10 +604,23 @@ class HomePage extends Component {
                 <h4>{task.label}</h4>
                 {task.component_type_id === 7 ? (
                   <CompDiv style={{ width: "35%" }}>
-                    <Form.Control as="select">
+                    <Form.Control
+                      as="select"
+                      onChange={(event) => {
+                        debugger;
+                        this.onInputchange(
+                          task.task_id,
+                          task.component_type_id,
+                          event.target.selectedOptions[0].id, // answer_id
+                          task.is_direction_setting
+                        );
+                      }} //value, task_id, task_comp
+                    >
                       {task.answers.map(function (answer, index) {
                         return (
-                          <option key={index}>{answer.answer_content}</option>
+                          <option key={index} id={answer.answer_id}>
+                            {answer.answer_content}
+                          </option>
                         );
                       })}
                     </Form.Control>
@@ -498,6 +631,14 @@ class HomePage extends Component {
                       className="pc-range-slider"
                       id="slider"
                       direction={compdirection}
+                      onChange={(event) =>
+                        this.onInputchange(
+                          task.task_id,
+                          task.component_type_id,
+                          event, // value -- not answer_id
+                          task.is_direction_setting
+                        )
+                      } //value, task_id, task_comp
                     />
                   </CompDiv>
                 ) : task.component_type_id === 5 ? (
@@ -506,6 +647,14 @@ class HomePage extends Component {
                     fullSymbol="fas fa-star fa-2x"
                     id="stars"
                     direction={compdirection}
+                    onChange={(event) =>
+                      this.onInputchange(
+                        task.task_id,
+                        task.component_type_id,
+                        event, // value -- not answer_id
+                        task.is_direction_setting
+                      )
+                    } //value, task_id, task_comp
                   />
                 ) : task.component_type_id === 4 ? (
                   <CompDiv style={{ width: "35%" }}>
@@ -515,6 +664,14 @@ class HomePage extends Component {
                       defaultValue={[20, 30]}
                       id="double_slider"
                       direction={compdirection}
+                      onChange={(event) =>
+                        this.onInputchange(
+                          task.task_id,
+                          task.component_type_id,
+                          event, // value -- not answer_id
+                          task.is_direction_setting
+                        )
+                      } //value, task_id, task_comp
                     />
                   </CompDiv>
                 ) : (
@@ -533,7 +690,15 @@ class HomePage extends Component {
                         <span className="active">{n}</span>
                       </span>
                     ))}
-                    onChange={(rate) => this.setState({ squareRating: rate })}
+                    //onChange={(rate) => this.setState({ squareRating: rate })}
+                    onChange={(event) =>
+                      this.onInputchange(
+                        task.task_id,
+                        task.component_type_id,
+                        event, // value -- not answer_id
+                        task.is_direction_setting
+                      )
+                    } //value, task_id, task_comp
                   />
                 )}
               </Div>
@@ -565,7 +730,16 @@ class HomePage extends Component {
                             key={index}
                             id={answer.answer_id} //answer_id
                             name={"ans"}
-                            // value={actual_index} //order_ key.
+                            value={answer.answer_content} //order_ key.
+                            onChange={(event) =>
+                              this.onInputchange(
+                                task.task_id,
+                                task.component_type_id,
+                                event.target.id, // value -- not answer_id
+                                task.is_direction_setting,
+                                event.target.checked
+                              )
+                            } //value, task_id, task_comp
                           />
                           <Form.Label
                             style={{ position: "relative", padding: "6px" }}
@@ -613,9 +787,14 @@ class HomePage extends Component {
                       value={2}
                       min={1}
                       max={50}
-                      onChange={(value) => {
-                        console.log(value);
-                      }}
+                      onCountChange={(event) =>
+                        this.onInputchange(
+                          task.task_id,
+                          task.component_type_id,
+                          event, // value -- not answer_id
+                          task.is_direction_setting
+                        )
+                      } //value, task_id, task_comp
                     />
                   </CompDiv>
                 ) : task.component_type_id === 10 ? (
@@ -631,7 +810,7 @@ class HomePage extends Component {
   }
 
   render() {
-    // console.log(this.state);
+    console.log(this.state);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];
@@ -668,6 +847,7 @@ class HomePage extends Component {
                     items={this.state.inputList}
                     onChangePage={this.onChangePage}
                     onCreateUser={this.onCreateUser}
+                    onUpdateUser={this.onUpdateUser}
                     pageSize={2}
                     is_next={
                       this.state.demo_answers.length ===

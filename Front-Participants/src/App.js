@@ -68,7 +68,10 @@ class App extends React.Component {
     return (
       <div className="App">
         {/* <HomePage hosted_link={this.props.match.params.hosted_link} /> */}
-        <HomePage data={this.state} />
+        <HomePage
+          data={this.state}
+          hosted_link={this.props.match.params.hosted_link}
+        />
       </div>
     );
   }

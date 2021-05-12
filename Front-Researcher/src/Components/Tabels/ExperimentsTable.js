@@ -12,8 +12,6 @@ import { withCookies } from "react-cookie";
 
 import axiosInstance from "../../axios";
 
-
-
 class ExperimentTable extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +34,7 @@ class ExperimentTable extends Component {
 
   async componentDidMount() {
     //////
-    await axiosInstance.get("viewset/questionnaire/").then(
+    await axiosInstance.get("get-questionnaires-table/").then(
       (result) => {
         result = result.data;
         console.log(result);
@@ -46,6 +44,7 @@ class ExperimentTable extends Component {
             items: result.reverse(),
             chosen: result[0],
           });
+          this.inputElement.click(this.state.chosen.questionnaire_id, 0);
         } else {
           this.setState({
             isLoaded: true,
@@ -64,6 +63,7 @@ class ExperimentTable extends Component {
     );
     this.resize();
     window.addEventListener("resize", this.resize);
+    // this.handleClick();
   }
 
   componentWillUnmount() {
@@ -90,7 +90,6 @@ class ExperimentTable extends Component {
   sayHello() {
     alert("Hello!");
   }
- 
 
   render() {
     let navClass = ["pcoded-navbar"];
@@ -125,8 +124,8 @@ class ExperimentTable extends Component {
       this.componentDidMount();
       this.forceUpdate();
     };
-    const handleClick = async (value,index) => {
-      await axiosInstance.get(`viewset/questionnaire/${value}`).then(
+    const handleClick = async (value, index) => {
+      await axiosInstance.get(`/get-questionnaire/${value}`).then(
         (result) => {
           result = result.data;
           console.log(result);
@@ -144,15 +143,15 @@ class ExperimentTable extends Component {
       );
 
       //Remove the if statement if you don't want to unselect an already selected item
-  if (index === this.state.isActive) {
-    this.setState({
-      isActive: null
-    });
-  } else {
-    this.setState({
-      isActive: index
-    });
-  }
+      if (index === this.state.isActive) {
+        this.setState({
+          isActive: null,
+        });
+      } else {
+        this.setState({
+          isActive: index,
+        });
+      }
     };
     const names = this.state.items;
     /*
@@ -172,7 +171,6 @@ class ExperimentTable extends Component {
             marginLeft: "50%",
             marginTop: "6%",
             width: "50%",
-            overflow: "auto",
             overflowX: "hidden",
           }}
         >
@@ -181,11 +179,10 @@ class ExperimentTable extends Component {
 
         <div
           style={{
-            position: "absolute",
+            // position: "absolute",
             left: "1%",
             marginTop: "6%",
             width: "45%",
-            overflow: "auto",
             overflowX: "hidden",
           }}
           className={navClass.join(" ")}
@@ -204,7 +201,13 @@ class ExperimentTable extends Component {
 
             <Modal />
           </Row>
-          <div className="mt-3">
+          <div
+            className="mt-3"
+            style={{
+              overflowY: "auto",
+              maxHeight: "490px",
+            }}
+          >
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -225,17 +228,16 @@ class ExperimentTable extends Component {
                 {names.map((value, index) => {
                   return (
                     <tr
-                    key={index}
-                    style={
-                      this.state.isActive === index
-                        ? {  background: '#BBDEFB' }
-                        : {  background: 'white' }
-                    }
-                    onClick={() => handleClick(value.questionnaire_id,index)                      }
-                  >
-                      
-              
-                      <td >
+                      key={index}
+                      style={
+                        this.state.isActive === index
+                          ? { background: "#BBDEFB" }
+                          : { background: "white" }
+                      }
+                      onClick={() => handleClick(value.questionnaire_id, index)}
+                      ref={(input) => (this.inputElement = input)}
+                    >
+                      <td>
                         {value.is_active ? (
                           <MDBIcon
                             icon="circle"
@@ -258,8 +260,8 @@ class ExperimentTable extends Component {
                           }[value.language_id]
                         }
                       </td>
-                      <td>sum</td>
-                      <td>sum</td>
+                      <td>{value.num_participated}</td>
+                      <td>{value.num_from_last_login}</td>
                     </tr>
                   );
                 })}
@@ -270,14 +272,12 @@ class ExperimentTable extends Component {
       </div>
     );
   }
-  changeColor = selectedRow => e => {
+  changeColor = (selectedRow) => (e) => {
     if (selectedRow !== undefined) {
-      this.setState({ selectedRow  });
+      this.setState({ selectedRow });
     }
   };
 }
-
-
 
 const mapStateToProps = (state) => {
   return {

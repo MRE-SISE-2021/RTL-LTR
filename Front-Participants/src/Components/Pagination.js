@@ -26,7 +26,7 @@ class Pagination extends React.Component {
     this.getLangStart = this.getLangStart.bind(this);
     this.getLangNext = this.getLangNext.bind(this);
     this.getLangFinish = this.getLangFinish.bind(this);
-    this.createUser = this.createUser.bind(this);
+    this.GetNextPage = this.GetNextPage.bind(this);
   }
 
   componentWillMount() {
@@ -44,10 +44,6 @@ class Pagination extends React.Component {
   }
 
   setPage(page) {
-    //create user
-    if (page === 2) {
-      this.createUser();
-    }
     // ----- Update Page Number -----
     var { items, pageSize } = this.props;
     var pager = this.state.pager;
@@ -120,9 +116,6 @@ class Pagination extends React.Component {
       pages: pages,
     };
   }
-
-  //// -----
-  createUser() {}
   getLangStart() {
     switch (this.props.lang) {
       case 1:
@@ -138,9 +131,6 @@ class Pagination extends React.Component {
     }
   }
   getLangNext() {
-    if (this.state.pager.currentPage === 3) {
-      this.props.onCreateUser();
-    }
     switch (this.props.lang) {
       case 1:
         return "اكمل";
@@ -155,9 +145,6 @@ class Pagination extends React.Component {
     }
   }
   getLangFinish() {
-    if (this.state.pager.currentPage === 3) {
-      this.props.onCreateUser();
-    }
     switch (this.props.lang) {
       case 1:
         return "انهاء";
@@ -173,8 +160,24 @@ class Pagination extends React.Component {
   }
 
   GetFinalPage(pager) {
+    if (this.state.pager.currentPage > 2) {
+      this.props.onUpdateUser(true);
+    } else if (this.state.pager.currentPage === 2) {
+      this.props.onCreateUser();
+    }
     this.setPage(pager.currentPage + 1);
     // this.setState({ isFinal: true });
+  }
+
+  GetNextPage(event, pager) {
+    if (this.state.pager.currentPage > 2) {
+      this.props.onUpdateUser();
+    } else if (this.state.pager.currentPage === 2) {
+      this.props.onCreateUser();
+    }
+
+    event.preventDefault();
+    this.setPage(pager.currentPage + 1);
   }
   render() {
     if (this.state.isFinal) {
@@ -208,10 +211,7 @@ class Pagination extends React.Component {
             // className="item-page"
             disabled={!this.props.is_next}
             type="submit"
-            onClick={(e) => {
-              e.preventDefault();
-              this.setPage(pager.currentPage + 1);
-            }}
+            onClick={(e) => this.GetNextPage(e, pager)}
           >
             {this.getLangNext()}
           </Button>

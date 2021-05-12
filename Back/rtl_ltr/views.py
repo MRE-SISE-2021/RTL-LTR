@@ -1,3 +1,5 @@
+import collections
+
 from django.core.handlers import exception
 from rest_framework.permissions import IsAuthenticated
 
@@ -15,7 +17,9 @@ from django.http import HttpResponse
 from django.db import transaction
 import numpy as np
 import random
+import datetime as dt
 from cryptography.fernet import Fernet
+from .tasks import *
 
 
 ####### MODEL VIEWSETS #######
@@ -136,16 +140,30 @@ class TaskImageViewSet(viewsets.ModelViewSet):
 # get list of questionnaire name for main page
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
-def get_questionnaire_name_list(request):
+def get_questionnaires_table(request):
     if request.method == "GET":
         queryset = Questionnaire.objects.all()
-        data = QuestionnaireSerializer(queryset, many=True).data
+        quest_data = list(QuestionnaireSerializer(queryset, many=True).data)
 
-        names_list = []
-        for value in data:
-            names_list.append(value['questionnaire_name'])
+        quest_ids_list = []
+        quest_ids_counts_dict = {}
+        for quest in quest_data:
+            quest_ids_list.append(quest['questionnaire_id'])
+            quest_ids_counts_dict[quest['questionnaire_id']] = [0, 0]
 
-        return Response(names_list, status=status.HTTP_200_OK)
+        query_set = QuestionnaireParticipant.objects.filter(questionnaire_id__in=quest_ids_list)
+        data = QuestionnaireParticipantSerializer(query_set, many=True).data
+
+        for quest_participant in data:
+            quest_ids_counts_dict[quest_participant['questionnaire_id']][0] += 1
+            # if quest_participant['test_started'] > last_login:
+            #     quest_ids_counts_dict[quest_participant['questionnaire_id']][0] += 1
+
+        for quest in quest_data:
+            quest['num_participated'] = quest_ids_counts_dict[quest['questionnaire_id']][0]
+            quest['num_from_last_login'] = quest_ids_counts_dict[quest['questionnaire_id']][1]
+
+        return Response(quest_data, status=status.HTTP_200_OK)
 
 
 # get list of questionnaire name for main page
@@ -183,6 +201,76 @@ def get_questionnaire_by_hosted_link(request):
         request.GET._mutable = False
 
         return QuestionnairePreviewAPIView.get(APIView, request, quest_language_ids[0])
+
+
+# get list of questionnaire name for main page
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def get_questionnaire(request, id):
+    if request.method == "GET":
+        questionnaire_id = id
+
+        participant_ids_list = []
+
+        nums_participated = 0
+        nums_dropped = 0
+        ages = {}
+        native_languages = {}
+        last_date = dt.datetime(1970, 1, 1)
+
+        query_set = QuestionnaireParticipant.objects.filter(questionnaire_id=questionnaire_id)
+        data = QuestionnaireParticipantSerializer(query_set, many=True).data
+
+        for quest_participant in data:
+            participant_ids_list.append(quest_participant['participant_id'])
+
+            nums_participated += 1
+            if quest_participant['test_completed'] is None:
+                nums_dropped += 1
+            else:
+                test_completed = dt.datetime.strptime(quest_participant['test_completed'][:-1], '%Y-%m-%dT%H:%M:%S')
+                last_date = test_completed if test_completed > last_date else last_date
+
+        query_set = Participant.objects.filter(participant_id__in=participant_ids_list)
+        data = ParticipantSerializer(query_set, many=True).data
+
+        for participant in data:
+            if participant['age'] in ages:
+                ages[participant['age']] += 1
+            else:
+                ages[participant['age']] = 1
+            if participant['native_language'] in native_languages:
+                native_languages[participant['native_language']] += 1
+            else:
+                native_languages[participant['native_language']] = 1
+
+        languages = LanguageSerializer(Language.objects.filter(), many=True).data
+
+        language_name_count_dict = {}
+        for key in native_languages:
+            language_name = languages[key-1]['language_name']
+            language_name_count_dict[language_name] = native_languages[key]
+
+        ages = collections.OrderedDict(sorted(ages.items()))
+        ages_x = list(ages.keys())
+        ages_y = list(ages.values())
+
+        native_languages = collections.OrderedDict(sorted(language_name_count_dict.items()))
+        native_languages_x = list(native_languages.keys())
+        native_languages_y = list(native_languages.values())
+
+        query_set = Questionnaire.objects.get(questionnaire_id=questionnaire_id)
+        questionnaire_data = QuestionnaireSerializer(query_set).data
+
+        questionnaire_data['nums_participated'] = nums_participated
+        questionnaire_data['nums_dropped'] = nums_dropped
+        questionnaire_data['last_date'] = last_date
+        questionnaire_data['ages_x'] = ages_x
+        questionnaire_data['ages_y'] = ages_y
+        questionnaire_data['native_languages_x'] = native_languages_x
+        questionnaire_data['native_languages_y'] = native_languages_y
+
+        return Response(questionnaire_data, status=status.HTTP_200_OK)
 
 
 # DELETE task from questionnaire
@@ -465,202 +553,17 @@ class ParticipantAPIView(APIView):
     # Save new questionnaire to db (with tasks, answers, images)
     @transaction.atomic
     def post(self, request):
-        fernet = Fernet(CRYPTO_KEY)
-        participant_fields_dict = {}
-
-        rtl_counter = 0
-        ltr_counter = 0
-
-        rtl_proficiency_sum = 0
-        ltr_proficiency_sum = 0
-
-        language_id_proficiency_dict = {}
-
-        demo_answers = request.data['demo_answers']
-        answer_ids_by_order = {}  # key = order_key, value = answer_id
-        free_answers_by_order = {}  # key = order_key, value = answer_id
-
-        questionnaire_id = fernet.decrypt(request.data['hash'].encode()).decode().split("_")[0]
-
-        questionnaire_data = QuestionnaireSerializer(
-            Questionnaire.objects.get(questionnaire_id=questionnaire_id)).data
-
-        language_id = participant_fields_dict['questionnaire_language'] = questionnaire_data['language_id']
-        participant_fields_dict['questionnaire_direction'] = questionnaire_data['direction']
-
-        for demo_answer in demo_answers:
-            # save answers_id and free_answer for inserting to TaskParticipant
-            answer_ids_by_order[demo_answer['order_key']] = demo_answer['answer_ids'] \
-                if len(demo_answer['answer_ids']) > 0 else [None]
-            free_answers_by_order[demo_answer['order_key']] = demo_answer['free_answer'] if 'free_answer' \
-                                                                                            in demo_answer else None
-
-            if demo_answer['order_key'] == 1:  # How old are you?
-                participant_fields_dict['age'] = int(demo_answer['free_answer'])
-
-            elif demo_answer['order_key'] == 2:  # Your native language (select the correct answer):
-                answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
-                participant_fields_dict['native_language'] = int(answer['value'])
-                language_id_proficiency_dict[answer['value']] = ProficiencySerializer(
-                    Proficiency.objects.get(proficiency_description='Native language')).data['proficiency_id']
-
-            # TODO: to finish this
-            elif demo_answer['order_key'] == 3:  # "What other languages do you know (you can choose several options)?"
-                for id in demo_answer['answer_ids']:
-                    language_id_proficiency_dict[AnswerSerializer(Answer.objects.get(answer_id=id)).data['value']] = ''
-
-            elif demo_answer['order_key'] == 4:  # <Language> knowledge:
-                pass
-
-            elif demo_answer['order_key'] == 5:  # What characterizes your core daily work (several options)?
-                # If the question is not chosen by researcher save null to the table, if chosen: save True/False
-                # Here the question chosen so need to fill the options with False and change it to True if submitted
-                participant_fields_dict['is_rtl_speakers'] = False
-                participant_fields_dict['is_rtl_interface'] = False
-                participant_fields_dict['is_rtl_paper_documents'] = False
-                participant_fields_dict['is_ltr_speakers'] = False
-                participant_fields_dict['is_ltr_interface'] = False
-                participant_fields_dict['is_ltr_paper_documents'] = False
-                for id in demo_answer['answer_ids']:
-                    answer = AnswerSerializer(Answer.objects.get(answer_id=id)).data
-                    if answer['value'] == '1':
-                        participant_fields_dict['is_rtl_speakers'] = True
-                    elif answer['value'] == '2':
-                        participant_fields_dict['is_ltr_speakers'] = True
-                    elif answer['value'] == '3':
-                        participant_fields_dict['is_rtl_interface'] = True
-                    elif answer['value'] == '4':
-                        participant_fields_dict['is_ltr_interface'] = True
-                    elif answer['value'] == '5':
-                        participant_fields_dict['is_rtl_paper_documents'] = True
-                    elif answer['value'] == '6':
-                        participant_fields_dict['is_ltr_paper_documents'] = True
-
-            elif demo_answer['order_key'] == 6:  # Which hand do you prefer to use when writing?
-                answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
-                participant_fields_dict['dominant_hand_writing'] = answer['answer_content']
-
-            elif demo_answer['order_key'] == 7:  # Which hand do you prefer to use when scrolling on the mobile phone?
-                answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
-                participant_fields_dict['dominant_hand_mobile'] = answer['answer_content']
-
-            elif demo_answer['order_key'] == 8:  # Which hand do you prefer to use when holding a computer mouse?
-                answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
-                participant_fields_dict['dominant_hand_mouse'] = answer['answer_content']
-
-            elif demo_answer['order_key'] == 9:  # Do you have professional experience in UX, UI design or development?
-                answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
-                participant_fields_dict['is_hci_experience'] = int(answer['value'])
-
-            elif demo_answer['order_key'] == 10:  # Your professional HCI experience is mainly in:
-                answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
-                participant_fields_dict['hci_background_id'] = int(answer['value'])
-
-            elif demo_answer['order_key'] == 11:  # In what languages were the interfaces that you developed?
-                # If the question is not chosen by researcher save null to the table, if chosen: save True/False
-                # Here the question chosen so need to fill the options with False and change it to True if submitted
-                participant_fields_dict['is_rtl_interfaces_experience'] = False
-                participant_fields_dict['is_ltr_interfaces_experience'] = False
-                for id in demo_answer['answer_ids']:
-                    answer_value = AnswerSerializer(Answer.objects.get(answer_id=id)).data['value']
-                    if answer_value == '1':
-                        participant_fields_dict['is_rtl_interfaces_experience'] = True
-                    if answer_value == '2':
-                        participant_fields_dict['is_ltr_interfaces_experience'] = True
-
-        # language_proficiency = request.data.pop('language_proficiency')
-        #
-        # # from string to dict
-        # language_proficiency = ast.literal_eval(language_proficiency)
-        #
-        # for language_name_key in language_proficiency:
-        #     if Language.objects.filter(language_name=language_name_key).exists():
-        #         language_data = LanguageSerializer(Language.objects.get(language_name=language_name_key)).data
-        #
-        #         language_id = language_data['language_id']
-        #         language_direction = language_data['language_direction']
-        #     else:
-        #         language_direction = 'RTL' if language_name_key in self.rtl_languages_list else 'LTR'
-        #
-        #         # check alternative names of some languages
-        #         language_name_key = 'Persian' if language_name_key == 'Farsi' else language_name_key
-        #         language_name_key = 'Kurdish' if language_name_key == 'Sorani' else language_name_key
-        #         language_name_key = 'Maldivian' if language_name_key == 'Dhivehi' else language_name_key
-        #
-        #         language_serializer = LanguageSerializer(data={'language_name': language_name_key,
-        #                                                        'language_direction': language_direction})
-        #
-        #         language_id = insert_data_into_table(language_serializer, 'language_id')
-        #
-        #     # rtl and ltr proficiency
-        #     if language_direction == 'RTL':
-        #         rtl_counter += 1
-        #         rtl_proficiency_sum += language_proficiency[language_name_key]
-        #     elif language_direction == 'LTR':
-        #         ltr_counter += 1
-        #         ltr_proficiency_sum += language_proficiency[language_name_key]
-        #
-        #     language_id_proficiency_dict[language_id] = language_proficiency[language_name_key]
-        #
-        # participant_fields_dict['rtl_proficiency'] = rtl_proficiency_sum / rtl_counter if rtl_counter > 0 else 0
-        # participant_fields_dict['ltr_proficiency'] = ltr_proficiency_sum / ltr_counter if ltr_counter > 0 else 0
-
-        # Calculate dominant_hand_mode
-        dominant_hand_list = []
-        if 'dominant_hand_writing' in participant_fields_dict:
-            dominant_hand_list.append(participant_fields_dict['dominant_hand_writing'])
-        if 'dominant_hand_mobile' in participant_fields_dict:
-            dominant_hand_list.append(participant_fields_dict['dominant_hand_mobile'])
-        if 'dominant_hand_mouse' in participant_fields_dict:
-            dominant_hand_list.append(participant_fields_dict['dominant_hand_mouse'])
-
-        if len(dominant_hand_list) > 0:
-            dominant_hand = 'right' if dominant_hand_list.count('right') > 1 else 'left'
-            participant_fields_dict['dominant_hand_mode'] = dominant_hand
-
-        participant_id = insert_data_into_table(ParticipantSerializer(data=participant_fields_dict),
+        participant_id = insert_data_into_table(ParticipantSerializer(data={}),
                                                 'participant_id')
 
-        # for language in language_id_proficiency_dict:
-        #     proficiency_id = language_id_proficiency_dict[language]
-        #     insert_data_into_table(ParticipantLanguageProficiencySerializer(data={'participant_id': participant_id,
-        #                                                                           "language_id": language,
-        #                                                                           'proficiency_id': proficiency_id}))
+        insert_participant_data.apply_async((participant_id, request.data))
 
-        # Insert to QuestionnaireParticipant
-        quest_participant_serializer = QuestionnaireParticipantSerializer(data={
-            'questionnaire_id': questionnaire_id,
-            'participant_id': participant_id,
-            'questionnaire_start': request.data['questionnaire_start']})
-        insert_data_into_table(quest_participant_serializer)
-
-        # Insert to TaskParticipant
-        demo_tasks = TaskSerializer(Task.objects.filter(language_id=language_id), many=True).data
-        for task in demo_tasks:
-            answer_ids = answer_ids_by_order[task['order_key']]
-
-            for answer_id in answer_ids:
-                if free_answers_by_order[task['order_key']] is not None:
-                    free_answer = free_answers_by_order[task['order_key']]
-                else:
-                    free_answer = None
-                quest_participant_serializer = TaskParticipantSerializer(data={'participant_id': participant_id,
-                                                                               'task_id': task['task_id'],
-                                                                               'answer_id': answer_id,
-                                                                               'is_demographic': True,
-                                                                               'submitted_free_answer': free_answer})
-                insert_data_into_table(quest_participant_serializer)
-
-        return Response(status=status.HTTP_201_CREATED)
+        return Response({'participant_id': participant_id}, status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def put(self, request, id):
-        data = request.data
-        for datum in data:
-            datum['participant_id'] = id
-            insert_data_into_table(TaskParticipantSerializer(data=datum))
-
-        return Response(status=status.HTTP_200_OK)
+        insert_participant_task_data.apply_async((request.data, id))
+        return Response(status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def delete(self, request, id):
