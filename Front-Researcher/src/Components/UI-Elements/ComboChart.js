@@ -42,7 +42,7 @@ class ComboChart extends React.Component {
       series: [
         {
           type: "column",
-          name: this.state.label,
+          name: this.state.label + " count",
           data: this.state.yAxis,
         },
         // {
