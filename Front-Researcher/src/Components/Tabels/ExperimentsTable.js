@@ -34,7 +34,7 @@ class ExperimentTable extends Component {
 
   async componentDidMount() {
     //////
-    await axiosInstance.get("viewset/questionnaire/").then(
+    await axiosInstance.get("get-questionnaires-table/").then(
       (result) => {
         result = result.data;
         console.log(result);
@@ -123,7 +123,7 @@ class ExperimentTable extends Component {
       this.forceUpdate();
     };
     const handleClick = async (value, index) => {
-      await axiosInstance.get(`viewset/questionnaire/${value}`).then(
+      await axiosInstance.get(`/get-questionnaire/${value}`).then(
         (result) => {
           result = result.data;
           console.log(result);

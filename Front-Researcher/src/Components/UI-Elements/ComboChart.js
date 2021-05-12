@@ -9,7 +9,14 @@ class ComboChart extends React.Component {
       xAxis: props.xAxis,
       yAxis: props.yAxis,
       title: props.title,
+      label: props.label,
     };
+  }
+  componentWillReceiveProps(propsIncoming) {
+    this.setState({
+      xAxis: propsIncoming.xAxis,
+      yAxis: propsIncoming.yAxis,
+    });
   }
   render() {
     const options = {
@@ -35,7 +42,7 @@ class ComboChart extends React.Component {
       series: [
         {
           type: "column",
-          name: "Age",
+          name: this.state.label,
           data: this.state.yAxis,
         },
         // {

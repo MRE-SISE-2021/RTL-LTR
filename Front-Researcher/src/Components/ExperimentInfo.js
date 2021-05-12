@@ -296,7 +296,12 @@ class ExperimentInfo extends Component {
                   <Row>
                     <Col>
                       <b>Last participation: </b>
-                      Today at 12:00 JRM
+                      {/* Today at 12:00 JRM */}
+                      {new Date(data.last_date).toLocaleDateString([], {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
                     </Col>
 
                     <Col>
@@ -306,29 +311,25 @@ class ExperimentInfo extends Component {
                   </Row>
                   <br />
                   <br />
-                  <Row>
+                  {/* <Row>
                     <Col>
                       <b>Participants Age: </b>
                       from 15 to 67, AVG 35, SD = 7.6
                     </Col>
-                  </Row>
+                  </Row> */}
                   <br />
                   <ComboChart
                     title="Paticipants Age"
-                    xAxis={[5, 15, 20, 25, 40]}
-                    yAxis={[20, 40, 50, 35, 15]}
+                    xAxis={data.ages_x}
+                    yAxis={data.ages_y}
+                    label="Age"
                   />
                   <br />
                   <ComboChart
                     title="Paticipants Mother Language"
-                    xAxis={[
-                      "Hebrew",
-                      "Amharic",
-                      "Arabic",
-                      "English",
-                      "Russian",
-                    ]}
-                    yAxis={[120, 0, 50, 35, 15]}
+                    xAxis={data.native_languages_x}
+                    yAxis={data.native_languages_y}
+                    label="Mother Language"
                   />
                   <br />
                 </ul>
