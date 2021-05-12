@@ -255,7 +255,7 @@ def get_questionnaire(request, id):
         ages_x = list(ages.keys())
         ages_y = list(ages.values())
 
-        native_languages = collections.OrderedDict(sorted(native_languages.items()))
+        native_languages = collections.OrderedDict(sorted(language_name_count_dict.items()))
         native_languages_x = list(native_languages.keys())
         native_languages_y = list(native_languages.values())
 
