@@ -17,7 +17,7 @@ class ViewTests(TestCase):
     ##### GET TESTS #####
     def test_component_get(self):
         client = Client()
-        response = client.get('/viewset/component/')
+        response = client.get('/viewset/component_type/')
         assert response.status_code == 200
 
     def test_hci_background_get(self):

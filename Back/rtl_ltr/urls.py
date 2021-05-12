@@ -104,7 +104,7 @@ urlpatterns = [
 
     ### DECORATORS ###
     # GET list of questionnaire names
-    path('questionnaire-names/', get_questionnaire_name_list),
+    path('get-questionnaires-table/', get_questionnaires_table),
     # GET tasks with settings by questionnaire_id
     path('get-tasks-with-settings-from-questionnaire/<int:id>', get_tasks_with_settings_from_questionnaire),
     # GET questionnaire by hosted link
