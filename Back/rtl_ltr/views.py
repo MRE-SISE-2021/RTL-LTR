@@ -15,6 +15,7 @@ from django.http import HttpResponse
 from django.db import transaction
 import numpy as np
 import random
+import datetime as dt
 from cryptography.fernet import Fernet
 from .tasks import *
 
@@ -142,11 +143,29 @@ def get_questionnaire_name_list(request):
         queryset = Questionnaire.objects.all()
         data = QuestionnaireSerializer(queryset, many=True).data
 
-        names_list = []
-        for value in data:
-            names_list.append(value['questionnaire_name'])
+        quest_ids_list = []
+        id_names_dict = {}
+        ids_counts_dict = {}
 
-        return Response(names_list, status=status.HTTP_200_OK)
+        for value in data:
+            quest_ids_list.append(value['questionnaire_id'])
+            id_names_dict[value['questionnaire_id']] = value['questionnaire_name']
+            ids_counts_dict[value['questionnaire_id']] = [0, 0]
+
+        query_set = QuestionnaireParticipant.objects.filter(questionnaire_id__in=quest_ids_list)
+        data = QuestionnaireParticipantSerializer(query_set, many=True).data
+
+        for quest_participant in data:
+            if quest_participant['test_completed'] is None:
+                ids_counts_dict[quest_participant['questionnaire_id']][0] += 1
+            else:
+                ids_counts_dict[quest_participant['questionnaire_id']][1] += 1
+
+        names_counts_dict = {}
+        for q_id in id_names_dict:
+            names_counts_dict[id_names_dict[q_id]] = ids_counts_dict[q_id]
+
+        return Response(names_counts_dict, status=status.HTTP_200_OK)
 
 
 # get list of questionnaire name for main page
@@ -184,6 +203,68 @@ def get_questionnaire_by_hosted_link(request):
         request.GET._mutable = False
 
         return QuestionnairePreviewAPIView.get(APIView, request, quest_language_ids[0])
+
+
+# get list of questionnaire name for main page
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def get_questionnaire_metrics(request):
+    if request.method == "GET":
+        questionnaire_id = request.GET.get('questionnaire_id', '')
+
+        # participant_ids_list = list(QuestionnaireParticipant.objects.filter(questionnaire_id=questionnaire_id)
+        #                             .values_list('participant_id', flat=True))
+        # participant_ids_list = list(QuestionnaireParticipant.objects.filter(time_spent_seconds=None)
+        #                             .values_list('participant_id', flat=True))
+
+        participant_ids_list = []
+
+        ages = {}
+        native_languages = {}
+        last_date = dt.datetime(1970, 1, 1)
+
+        query_set = QuestionnaireParticipant.objects.filter(questionnaire_id=questionnaire_id)
+        data = QuestionnaireParticipantSerializer(query_set, many=True).data
+
+        for quest_participant in data:
+            participant_ids_list.append(quest_participant['participant_id'])
+
+            if quest_participant['test_completed'] is not None:
+                test_completed = dt.datetime.strptime(quest_participant['test_completed'][:-1], '%Y-%m-%dT%H:%M:%S')
+                last_date = test_completed if test_completed > last_date else last_date
+
+        query_set = Participant.objects.filter(participant_id__in=participant_ids_list)
+        data = ParticipantSerializer(query_set, many=True).data
+
+        for participant in data:
+            if participant['age'] in ages:
+                ages[participant['age']] += 1
+            else:
+                ages[participant['age']] = 1
+            if participant['native_language'] in native_languages:
+                native_languages[participant['native_language']] += 1
+            else:
+                native_languages[participant['native_language']] = 1
+
+        languages = LanguageSerializer(Language.objects.filter(), many=True).data
+
+        language_name_count_dict = {}
+        for key in native_languages:
+            language_name = languages[key-1]['language_name']
+            language_name_count_dict[language_name] = native_languages[key]
+
+        ages_x = ages.keys()
+        ages_y = ages.values()
+
+        native_languages_x = language_name_count_dict.keys()
+        native_languages_y = language_name_count_dict.values()
+
+        return Response({'last_date': last_date,
+                         'ages_x': ages_x,
+                         'ages_y': ages_y,
+                         'native_languages_x': native_languages_x,
+                         'native_languages_y': native_languages_y
+                         }, status=status.HTTP_200_OK)
 
 
 # DELETE task from questionnaire
@@ -475,40 +556,8 @@ class ParticipantAPIView(APIView):
 
     @transaction.atomic
     def put(self, request, id):
-        request_data = request.data
-        task_participant_data = []
-
-        for task_id in request_data['answers']:
-            task = request_data['answers'][task_id]
-
-            submitted_free_answer = request_data['answers'][task_id]['submitted_free_answer'] \
-                if 'submitted_free_answer' in request_data['answers'][task_id] else None
-            if isinstance(submitted_free_answer, list):
-                submitted_free_answer = ','.join(map(str, submitted_free_answer))
-
-            answer_ids = []
-            if task['comp_type'] == 8:
-                for key in task:
-                    if isinstance(key, int) and task[key] is True:
-                        answer_ids.append(key)
-            else:
-                answer_ids.append(task['answer_id'] if 'answer_id' in request_data['answers'][task_id] else None)
-
-            for answer_id in answer_ids:
-                task_participant_data.append({'participant_id': id,
-                                              'task_id': task_id,
-                                              'answer_id': answer_id,
-                                              'task_direction': task['task_direction'],
-                                              'task_time': None,
-                                              'task_clicks': task['task_clicks'],
-                                              'task_errors': None,
-                                              'submitted_free_answer': submitted_free_answer
-                                              })
-
-        for data in task_participant_data:
-            insert_data_into_table(TaskParticipantSerializer(data=data))
-
-        return Response(status=status.HTTP_200_OK)
+        insert_participant_task_data.apply_async((request.data, id))
+        return Response(status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def delete(self, request, id):
