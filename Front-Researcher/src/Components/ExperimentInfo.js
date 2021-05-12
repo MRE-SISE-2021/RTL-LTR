@@ -13,6 +13,7 @@ import { withCookies } from "react-cookie";
 import copy from "copy-text-to-clipboard";
 
 import "../styles/homePageStyle.css";
+import ComboChart from "./UI-Elements/ComboChart";
 
 class ExperimentInfo extends Component {
   constructor(props) {
@@ -28,7 +29,6 @@ class ExperimentInfo extends Component {
     this.submitHandlerEdit = this.submitHandlerEdit.bind(this);
     this.submitHandlerStatus = this.submitHandlerStatus.bind(this);
     this.onIsActiveChange2 = this.onIsActiveChange2.bind(this);
-
   }
 
   onIsActiveChange2(event) {
@@ -36,7 +36,7 @@ class ExperimentInfo extends Component {
     console.log(event.target.checked);
     this.setState({
       is_active: event.target.checked,
-    });   
+    });
   }
 
   componentWillReceiveProps(propsIncoming) {
@@ -119,7 +119,6 @@ class ExperimentInfo extends Component {
     //DELETE request -- delete task
     // const { cookies } = this.props;
 
-    
     if (this.props.chosen.questionnaire_id === undefined) {
       return;
     }
@@ -136,7 +135,6 @@ class ExperimentInfo extends Component {
       console.log(data);
     });
     window.location.reload(false);
-
   }
 
   UNSAFE_componentWillMount() {
@@ -223,7 +221,6 @@ class ExperimentInfo extends Component {
               size="sm"
               variant="outline-*"
               onClick={this.submitHandlerDelete}
-              
             >
               <MDBIcon icon="trash-alt" />
             </Button>
@@ -232,14 +229,13 @@ class ExperimentInfo extends Component {
 
         <div className="mt-3">
           <Card className="bg-Light ">
-            <Card.Body>
+            <Card.Body style={{ overflowY: "scroll", height: "490px" }}>
               <div className="bg-Light text-dark  ">
                 <ul className="p-3 mb-2">
                   <Row>
                     <Col>
                       <b>Created: </b> {data.creation_date}{" "}
-                      
-                      <b >by: Super USER</b>
+                      <b>by: Super USER</b>
                     </Col>
                   </Row>
                   <br />
@@ -259,7 +255,7 @@ class ExperimentInfo extends Component {
                     <Col>
                       <Row>
                         <b>Status:</b>
-                       
+
                         <Form.Check
                           style={{ marginLeft: "1%" }}
                           type="switch"
@@ -274,31 +270,69 @@ class ExperimentInfo extends Component {
                   </Row>
                   <br />
                   <Form.Group as={Row} controlId="formPlaintextPassword">
-                    <Form.Label column sm="3" >
-                        <b>Hosted Link:</b>
+                    <Form.Label column sm="3">
+                      <b>Hosted Link:</b>
                     </Form.Label>
 
                     <Col sm="6">
-                    <Form.Control
+                      <Form.Control
                         type="text"
                         defaultValue={data.hosted_link}
                         readOnly
                         style={{ width: "100%" }}
                       />
-                      </Col>
+                    </Col>
 
-                      <Col sm="3">
-                    
+                    <Col sm="3">
                       <Button
                         variant="outline-primary"
-                        
                         onClick={() => copy(data.hosted_link)}
                       >
                         Copy link
                       </Button>
-                      </Col>
+                    </Col>
                   </Form.Group>
 
+                  <Row>
+                    <Col>
+                      <b>Last participation: </b>
+                      {/* Today at 12:00 JRM */}
+                      {new Date(data.last_date).toLocaleDateString([], {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </Col>
+
+                    <Col>
+                      <b># of Participants: </b>
+                      {data.nums_participated + " "}
+                      all, {data.nums_participated - data.nums_dropped} Finished
+                    </Col>
+                  </Row>
+                  <br />
+                  <br />
+                  {/* <Row>
+                    <Col>
+                      <b>Participants Age: </b>
+                      from 15 to 67, AVG 35, SD = 7.6
+                    </Col>
+                  </Row> */}
+                  <br />
+                  <ComboChart
+                    title="Paticipants Age"
+                    xAxis={data.ages_x}
+                    yAxis={data.ages_y}
+                    label="Age"
+                  />
+                  <br />
+                  <ComboChart
+                    title="Paticipants Mother Language"
+                    xAxis={data.native_languages_x}
+                    yAxis={data.native_languages_y}
+                    label="Mother Language"
+                  />
+                  <br />
                 </ul>
               </div>
             </Card.Body>
