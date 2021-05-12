@@ -153,14 +153,13 @@ def get_questionnaires_table(request):
         data = QuestionnaireParticipantSerializer(query_set, many=True).data
 
         for quest_participant in data:
-            if quest_participant['test_completed'] is None:
-                quest_ids_counts_dict[quest_participant['questionnaire_id']][1] += 1
-            else:
-                quest_ids_counts_dict[quest_participant['questionnaire_id']][0] += 1
+            quest_ids_counts_dict[quest_participant['questionnaire_id']][0] += 1
+            # if quest_participant['test_started'] > last_login:
+            #     quest_ids_counts_dict[quest_participant['questionnaire_id']][0] += 1
 
         for quest in quest_data:
-            quest['num_finished'] = quest_ids_counts_dict[quest['questionnaire_id']][0]
-            quest['num_dropped'] = quest_ids_counts_dict[quest['questionnaire_id']][1]
+            quest['num_participated'] = quest_ids_counts_dict[quest['questionnaire_id']][0]
+            quest['num_from_last_login'] = quest_ids_counts_dict[quest['questionnaire_id']][1]
 
         return Response(quest_data, status=status.HTTP_200_OK)
 
@@ -211,6 +210,8 @@ def get_questionnaire(request, id):
 
         participant_ids_list = []
 
+        nums_participated = 0
+        nums_dropped = 0
         ages = {}
         native_languages = {}
         last_date = dt.datetime(1970, 1, 1)
@@ -221,7 +222,10 @@ def get_questionnaire(request, id):
         for quest_participant in data:
             participant_ids_list.append(quest_participant['participant_id'])
 
-            if quest_participant['test_completed'] is not None:
+            nums_participated += 1
+            if quest_participant['test_completed'] is None:
+                nums_dropped += 1
+            else:
                 test_completed = dt.datetime.strptime(quest_participant['test_completed'][:-1], '%Y-%m-%dT%H:%M:%S')
                 last_date = test_completed if test_completed > last_date else last_date
 
@@ -254,6 +258,8 @@ def get_questionnaire(request, id):
         query_set = Questionnaire.objects.get(questionnaire_id=questionnaire_id)
         questionnaire_data = QuestionnaireSerializer(query_set).data
 
+        questionnaire_data['nums_participated'] = nums_participated
+        questionnaire_data['nums_dropped'] = nums_dropped
         questionnaire_data['last_date'] = last_date
         questionnaire_data['ages_x'] = ages_x
         questionnaire_data['ages_y'] = ages_y
