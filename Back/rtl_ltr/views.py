@@ -208,14 +208,9 @@ def get_questionnaire_by_hosted_link(request):
 # get list of questionnaire name for main page
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
-def get_questionnaire_metrics(request):
+def get_questionnaire(request, id):
     if request.method == "GET":
-        questionnaire_id = request.GET.get('questionnaire_id', '')
-
-        # participant_ids_list = list(QuestionnaireParticipant.objects.filter(questionnaire_id=questionnaire_id)
-        #                             .values_list('participant_id', flat=True))
-        # participant_ids_list = list(QuestionnaireParticipant.objects.filter(time_spent_seconds=None)
-        #                             .values_list('participant_id', flat=True))
+        questionnaire_id = id
 
         participant_ids_list = []
 
@@ -259,12 +254,16 @@ def get_questionnaire_metrics(request):
         native_languages_x = language_name_count_dict.keys()
         native_languages_y = language_name_count_dict.values()
 
-        return Response({'last_date': last_date,
-                         'ages_x': ages_x,
-                         'ages_y': ages_y,
-                         'native_languages_x': native_languages_x,
-                         'native_languages_y': native_languages_y
-                         }, status=status.HTTP_200_OK)
+        query_set = Questionnaire.objects.get(questionnaire_id=questionnaire_id)
+        questionnaire_data = QuestionnaireSerializer(query_set).data
+
+        questionnaire_data['last_date'] = last_date
+        questionnaire_data['ages_x'] = ages_x
+        questionnaire_data['ages_y'] = ages_y
+        questionnaire_data['native_languages_x'] = native_languages_x
+        questionnaire_data['native_languages_y'] = native_languages_y
+
+        return Response(questionnaire_data, status=status.HTTP_200_OK)
 
 
 # DELETE task from questionnaire
