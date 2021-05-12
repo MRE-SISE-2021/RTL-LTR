@@ -110,7 +110,7 @@ urlpatterns = [
     # GET questionnaire by hosted link
     path('get-questionnaire-by-hosted-link', get_questionnaire_by_hosted_link),
     # GET questionnaire metrics
-    path('get-questionnaire-metrics', get_questionnaire_metrics),
+    path('get-questionnaire/<int:id>', get_questionnaire),
     # DELETE task from questionnaire by id. id: questionnaire_id, task_id in JSON
     path('delete-task-from-questionnaire/<int:id>', delete_task_from_questionnaire),
 
