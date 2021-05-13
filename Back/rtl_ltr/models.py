@@ -119,7 +119,8 @@ class Participant(models.Model):
 
     country = models.CharField(db_column='Country', max_length=50, null=True)
     operating_system = models.CharField(db_column='OperatingSystem', max_length=50, null=True)
-    browser_type = models.CharField(db_column='BrowserType', max_length=50, null=True)
+    browser = models.CharField(db_column='Browser', max_length=50, null=True)
+    city = models.CharField(db_column='City', max_length=50, null=True)
 
     class Meta:
         db_table = 'Participant'
