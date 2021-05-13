@@ -423,31 +423,58 @@ def insert_participant_data_task(participant_id, data):
     participant_fields_dict['questionnaire_language'] = questionnaire_data['language_id']
     participant_fields_dict['questionnaire_direction'] = questionnaire_data['direction']
 
-    for demo_answer in demo_answers:
-        # save answers_id and free_answer for inserting to TaskParticipant
-        answer_ids_by_order[demo_answer['order_key']] = demo_answer['answer_ids'] \
-            if len(demo_answer['answer_ids']) > 0 else [None]
-        free_answers_by_order[demo_answer['order_key']] = demo_answer['free_answer'] if 'free_answer' \
-                                                                                        in demo_answer else None
+    all_demo_answers = {}
+    all_demo_answers_raw = AnswerSerializer(Answer.objects.filter(is_demographic=True), many=True).data
+    for all_demo_answer in all_demo_answers_raw:
+        all_demo_answers[all_demo_answer['answer_id']] = all_demo_answer
 
-        if demo_answer['order_key'] == 1:  # How old are you?
-            participant_fields_dict['age'] = int(demo_answer['free_answer'])
+    for task_id in demo_answers:
+        demo_answer = demo_answers[task_id]
+        order_key = demo_answer['order_key']
 
-        elif demo_answer['order_key'] == 2:  # Your native language (select the correct answer):
-            answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
+        if order_key == 1:  # How old are you?
+            answer_ids_by_order[order_key] = [None]
+            free_answers_by_order[order_key] = demo_answer['submitted_free_answer']
+            participant_fields_dict['age'] = int(demo_answer['submitted_free_answer'])
+
+        elif order_key == 2:  # Your native language (select the correct answer):
+            answer_ids_by_order[order_key] = [demo_answer['answer_id']]
+            if 'submitted_free_answer' in demo_answer:
+                free_answers_by_order[order_key] = demo_answer['submitted_free_answer']
+
+            answer = all_demo_answers[demo_answer['answer_id']]
             participant_fields_dict['native_language'] = int(answer['value'])
             language_id_proficiency_dict[answer['value']] = ProficiencySerializer(
                 Proficiency.objects.get(proficiency_description='Native language')).data['proficiency_id']
 
         # TODO: to finish this
-        elif demo_answer['order_key'] == 3:  # "What other languages do you know (you can choose several options)?"
-            for id in demo_answer['answer_ids']:
-                language_id_proficiency_dict[AnswerSerializer(Answer.objects.get(answer_id=id)).data['value']] = ''
+        elif order_key == 3:  # "What other languages do you know (you can choose several options)?"
+            answer_ids_by_order[order_key] = []
+            for key in demo_answer:
+                try:
+                    answer_ids_by_order[order_key].append(int(key))
+                except ValueError:
+                    continue
 
-        elif demo_answer['order_key'] == 4:  # <Language> knowledge:
+            if 'submitted_free_answer' in demo_answer:
+                free_answers_by_order[order_key] = demo_answer['submitted_free_answer']
+
+            for id in answer_ids_by_order[order_key]:
+                language_id_proficiency_dict[all_demo_answers[id]['value']] = ''
+
+        elif order_key == 4:  # <Language> knowledge:
             pass
 
-        elif demo_answer['order_key'] == 5:  # What characterizes your core daily work (several options)?
+        elif order_key == 5:  # What characterizes your core daily work (several options)?
+            answer_ids_by_order[order_key] = []
+            for key in demo_answer:
+                try:
+                    answer_ids_by_order[order_key].append(int(key))
+                except ValueError:
+                    continue
+            if 'submitted_free_answer' in demo_answer:
+                free_answers_by_order[order_key] = demo_answer['submitted_free_answer']
+
             # If the question is not chosen by researcher save null to the table, if chosen: save True/False
             # Here the question chosen so need to fill the options with False and change it to True if submitted
             participant_fields_dict['is_rtl_speakers'] = False
@@ -456,8 +483,8 @@ def insert_participant_data_task(participant_id, data):
             participant_fields_dict['is_ltr_speakers'] = False
             participant_fields_dict['is_ltr_interface'] = False
             participant_fields_dict['is_ltr_paper_documents'] = False
-            for id in demo_answer['answer_ids']:
-                answer = AnswerSerializer(Answer.objects.get(answer_id=id)).data
+            for id in answer_ids_by_order[order_key]:
+                answer = all_demo_answers[id]
                 if answer['value'] == '1':
                     participant_fields_dict['is_rtl_speakers'] = True
                 elif answer['value'] == '2':
@@ -471,33 +498,47 @@ def insert_participant_data_task(participant_id, data):
                 elif answer['value'] == '6':
                     participant_fields_dict['is_ltr_paper_documents'] = True
 
-        elif demo_answer['order_key'] == 6:  # Which hand do you prefer to use when writing?
-            answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
-            participant_fields_dict['dominant_hand_writing'] = answer['answer_content']
+        elif order_key == 6:  # Which hand do you prefer to use when writing?
+            answer_ids_by_order[order_key] = [demo_answer['answer_id']]
+            answer = all_demo_answers[demo_answer['answer_id']]
+            participant_fields_dict['dominant_hand_writing'] = answer['answer_content'].replace('.', '').lower()
 
-        elif demo_answer['order_key'] == 7:  # Which hand do you prefer to use when scrolling on the mobile phone?
-            answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
-            participant_fields_dict['dominant_hand_mobile'] = answer['answer_content']
+        elif order_key == 7:  # Which hand do you prefer to use when scrolling on the mobile phone?
+            answer_ids_by_order[order_key] = [demo_answer['answer_id']]
+            answer = all_demo_answers[demo_answer['answer_id']]
+            participant_fields_dict['dominant_hand_mobile'] = answer['answer_content'].replace('.', '').lower()
 
-        elif demo_answer['order_key'] == 8:  # Which hand do you prefer to use when holding a computer mouse?
-            answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
-            participant_fields_dict['dominant_hand_mouse'] = answer['answer_content']
+        elif order_key == 8:  # Which hand do you prefer to use when holding a computer mouse?
+            answer_ids_by_order[order_key] = [demo_answer['answer_id']]
+            answer = all_demo_answers[demo_answer['answer_id']]
+            participant_fields_dict['dominant_hand_mouse'] = answer['answer_content'].replace('.', '').lower()
 
-        elif demo_answer['order_key'] == 9:  # Do you have professional experience in UX, UI design or development?
-            answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
+        elif order_key == 9:  # Do you have professional experience in UX, UI design or development?
+            answer_ids_by_order[order_key] = [demo_answer['answer_id']]
+            answer = all_demo_answers[demo_answer['answer_id']]
             participant_fields_dict['is_hci_experience'] = int(answer['value'])
 
-        elif demo_answer['order_key'] == 10:  # Your professional HCI experience is mainly in:
-            answer = AnswerSerializer(Answer.objects.get(answer_id=demo_answer['answer_ids'][0])).data
+        elif order_key == 10:  # Your professional HCI experience is mainly in:
+            answer_ids_by_order[order_key] = [demo_answer['answer_id']]
+            answer = all_demo_answers[demo_answer['answer_id']]
             participant_fields_dict['hci_background_id'] = int(answer['value'])
 
-        elif demo_answer['order_key'] == 11:  # In what languages were the interfaces that you developed?
+        elif order_key == 11:  # In what languages were the interfaces that you developed?
+            answer_ids_by_order[order_key] = []
+            for key in demo_answer:
+                try:
+                    answer_ids_by_order[order_key].append(int(key))
+                except ValueError:
+                    continue
+            if 'submitted_free_answer' in demo_answer:
+                free_answers_by_order[order_key] = demo_answer['submitted_free_answer']
+
             # If the question is not chosen by researcher save null to the table, if chosen: save True/False
             # Here the question chosen so need to fill the options with False and change it to True if submitted
             participant_fields_dict['is_rtl_interfaces_experience'] = False
             participant_fields_dict['is_ltr_interfaces_experience'] = False
-            for id in demo_answer['answer_ids']:
-                answer_value = AnswerSerializer(Answer.objects.get(answer_id=id)).data['value']
+            for id in answer_ids_by_order[order_key]:
+                answer_value = all_demo_answers[id]['value']
                 if answer_value == '1':
                     participant_fields_dict['is_rtl_interfaces_experience'] = True
                 if answer_value == '2':
@@ -573,23 +614,25 @@ def insert_participant_data_task(participant_id, data):
     insert_data_into_table(quest_participant_serializer)
 
     # Insert to TaskParticipant
-    for task in demo_answers:
+    for task_id in answer_ids_by_order:
+        task = demo_answers[str(task_id)]
         try:
             answer_ids = answer_ids_by_order[task['order_key']]
 
             for answer_id in answer_ids:
-                if free_answers_by_order[task['order_key']] is not None:
+                if task['order_key'] in free_answers_by_order:
                     free_answer = free_answers_by_order[task['order_key']]
                 else:
                     free_answer = None
                 quest_participant_serializer = TaskParticipantSerializer(data={'participant_id': participant_id,
-                                                                               'task_id': task['task_id'],
+                                                                               'task_id': task_id,
                                                                                'answer_id': answer_id,
                                                                                'is_demographic': True,
                                                                                'submitted_free_answer': free_answer})
                 insert_data_into_table(quest_participant_serializer)
         except Exception as e:
             return e
+
 
     return {"status": True}
 

@@ -235,6 +235,7 @@ class ParticipantAPIView(APIView):
         try:
             participant_id = insert_data_into_table(ParticipantSerializer(data={}), 'participant_id')
             insert_participant_data_task.apply_async((participant_id, request.data))
+            # insert_participant_data_task(participant_id, request.data)
         except Exception as e:
             Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
