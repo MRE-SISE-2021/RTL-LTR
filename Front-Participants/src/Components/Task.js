@@ -13,7 +13,9 @@ class Task extends React.Component {
       task_id: props.demo_task.task_id,
     };
     this.handleClick = this.handleClick.bind(this);
-    this.setTaskAnswer = this.setTaskAnswer.bind(this);
+    this.setCheckboxTaskAnswer = this.setCheckboxTaskAnswer.bind(this);
+    this.setRadioTaskAnswer = this.setRadioTaskAnswer.bind(this);
+    this.setAgeTaskAnswer = this.setAgeTaskAnswer.bind(this);
   }
   componentWillReceiveProps(propsIncoming) {
     this.setState({
@@ -25,53 +27,115 @@ class Task extends React.Component {
       is_other: true,
     };
   }
-  async setTaskAnswer(event, value) {
-    //console.log(value); //orderkey = value
-    debugger;
+  setAgeTaskAnswer(event) {
     let isError = true;
-    if (event.target.id === "age") {
-      if (event.target.value > 99 || event.target.value < 14) {
-        this.setState({
-          age: event.target.value,
-          isError: true,
-        });
-        isError = true;
-      } else {
-        this.setState({
-          age: event.target.value,
-          isError: false,
-        });
-        isError = false;
-      }
-
-      this.props.onChange({
-        answer_id: [],
-        order_key: 1,
-        free_answer: event.target.value,
-        isError: isError,
-        task_id: this.state.task_id,
+    if (event.target.value > 99 || event.target.value < 14) {
+      this.setState({
+        age: event.target.value,
+        isError: true,
       });
-      return;
+      isError = true;
+    } else {
+      this.setState({
+        age: event.target.value,
+        isError: false,
+      });
+      isError = false;
     }
+
+    this.props.onChange({
+      order_key: 1,
+      free_answer: event.target.value,
+      isError: isError,
+      task_id: this.state.task_id,
+    });
+  }
+
+  setCheckboxTaskAnswer(event) {
+    debugger;
     if (event.target.id === "other") {
       this.props.onChange({
-        answer_id: [],
         order_key: event.target.name,
         free_answer: event.target.value,
-        other: "other",
         task_id: this.state.task_id,
       });
       return;
     }
     let answer_id = event.target.id;
     let order_key = event.target.value;
+    let check = event.target.checked;
     this.props.onChange({
       answer_id: answer_id,
       order_key: order_key,
-      value: value,
+      checked: check,
       task_id: this.state.task_id,
     });
   }
+
+  setRadioTaskAnswer(event, index) {
+    if (event.target.id === "other") {
+      this.props.onChange({
+        order_key: event.target.name,
+        free_answer: event.target.value,
+        task_id: this.state.task_id,
+      });
+      return;
+    }
+    debugger;
+    let answer_id = event.target.id;
+    let order_key = event.target.value;
+    this.props.onChange({
+      answer_id: answer_id,
+      order_key: order_key,
+      task_id: this.state.task_id,
+      index: index,
+    });
+  }
+
+  // async setTaskAnswer(event, value) {
+  //   //console.log(value); //orderkey = value
+  //   debugger;
+  //   let isError = true;
+  //   if (event.target.id === "age") {
+  //     if (event.target.value > 99 || event.target.value < 14) {
+  //       this.setState({
+  //         age: event.target.value,
+  //         isError: true,
+  //       });
+  //       isError = true;
+  //     } else {
+  //       this.setState({
+  //         age: event.target.value,
+  //         isError: false,
+  //       });
+  //       isError = false;
+  //     }
+
+  //     this.props.onChange({
+  //       order_key: 1,
+  //       free_answer: event.target.value,
+  //       isError: isError,
+  //       task_id: this.state.task_id,
+  //     });
+  //     return;
+  //   }
+  //   if (event.target.id === "other") {
+  //     this.props.onChange({
+  //       order_key: event.target.name,
+  //       free_answer: event.target.value,
+  //       task_id: this.state.task_id,
+  //     });
+  //     return;
+  //   }
+  //   let answer_id = event.target.id;
+  //   let order_key = event.target.value;
+  //   this.props.onChange({
+  //     answer_id: answer_id,
+  //     order_key: order_key,
+  //     value: value,
+  //     task_id: this.state.task_id,
+  //   });
+  // }
 
   render() {
     console.log(this.state);
@@ -93,10 +157,10 @@ class Task extends React.Component {
       };
     }
     let actual_index = this.state.task.order_key;
-    let type = "radio";
-    if (actual_index === 11 || actual_index === 5 || actual_index === 3) {
-      type = "checkbox";
-    }
+    // let type = "radio";
+    // if (actual_index === 11 || actual_index === 5 || actual_index === 3) {
+    //   type = "checkbox";
+    // }
 
     return (
       <ThemeProvider theme={theme}>
@@ -112,7 +176,7 @@ class Task extends React.Component {
                     required
                     id="age"
                     value={this.state.age}
-                    onChange={this.setTaskAnswer}
+                    onChange={this.setAgeTaskAnswer}
                     autoFocus={true}
                   />
                   {this.state.isError && this.props.lang === 1 ? (
@@ -136,19 +200,21 @@ class Task extends React.Component {
                   ) : null}
                 </Form.Group>
               </div>
-            ) : (
+            ) : actual_index === 11 ||
+              actual_index === 5 ||
+              actual_index === 3 ? (
               this.state.task.answers.map((answer, index) => (
                 <Form.Group key={index}>
                   <Row className="rows">
                     <Form.Control
                       style={{ width: "16px", hight: "16px" }}
-                      type={type}
+                      type="checkbox"
                       key={index}
                       id={answer.answer_id} //answer_id
                       name={"ans" + actual_index}
                       value={actual_index} //order_ key.
                       onChange={(e) => {
-                        this.setTaskAnswer(e, answer.value);
+                        this.setCheckboxTaskAnswer(e);
                       }}
                     />
                     <Form.Label
@@ -161,7 +227,39 @@ class Task extends React.Component {
                         style={{ width: "200px" }}
                         type="text"
                         name={actual_index}
-                        onFocus={this.handleClick}
+                        onChange={this.setCheckboxTaskAnswer}
+                        id="other"
+                      />
+                    ) : null}
+                  </Row>
+                </Form.Group>
+              ))
+            ) : (
+              this.state.task.answers.map((answer, index) => (
+                <Form.Group key={index}>
+                  <Row className="rows">
+                    <Form.Control
+                      style={{ width: "16px", hight: "16px" }}
+                      type="radio"
+                      key={index}
+                      id={answer.answer_id} //answer_id
+                      name={"ans" + actual_index}
+                      value={actual_index} //order_ key.
+                      onChange={(e) => {
+                        this.setRadioTaskAnswer(e, index);
+                      }}
+                    />
+                    <Form.Label
+                      style={{ position: "relative", padding: "6px" }}
+                    >
+                      {"  " + answer.answer_content}
+                    </Form.Label>
+                    {answer.value === "Other" ? (
+                      <Form.Control
+                        style={{ width: "200px" }}
+                        type="text"
+                        name={actual_index}
+                        onChange={this.setRadioTaskAnswer}
                         id="other"
                       />
                     ) : null}
