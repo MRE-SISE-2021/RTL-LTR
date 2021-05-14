@@ -128,12 +128,7 @@ class TaskImageViewSet(viewsets.ModelViewSet):
 # @permission_classes([IsAuthenticated])
 def get_questionnaires_table(request):
     if request.method == "GET":
-        quest_data = {}
-        try:
-            quest_data = get_questionnaires_table_task()
-        except quest_data as e:
-            Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        quest_data = get_questionnaires_table_task()
         return Response(quest_data, status=status.HTTP_200_OK)
 
 
@@ -142,12 +137,7 @@ def get_questionnaires_table(request):
 # @permission_classes([IsAuthenticated])
 def get_questionnaire_by_hosted_link(request):
     if request.method == "GET":
-        request_language_tuple = ()
-        try:
-            request_language_tuple = get_questionnaire_by_hosted_link_task(request)
-        except request_language_tuple as e:
-            Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        request_language_tuple = get_questionnaire_by_hosted_link_task(request)
         return QuestionnairePreviewAPIView.get(request_language_tuple[0], request_language_tuple[1])
 
 
@@ -157,11 +147,7 @@ def get_questionnaire_by_hosted_link(request):
 def get_questionnaire(request, id):
     questionnaire_data = {}
     if request.method == "GET":
-        try:
-            questionnaire_data = get_questionnaire_task(id)
-        except questionnaire_data as e:
-            Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        questionnaire_data = get_questionnaire_task(id)
         return Response(questionnaire_data, status=status.HTTP_200_OK)
 
 
@@ -170,12 +156,7 @@ def get_questionnaire(request, id):
 @api_view(['DELETE'])
 # @permission_classes([IsAuthenticated])
 def delete_task_from_questionnaire(request, id):
-    e = 'error'
-    try:
-        e = delete_task_from_questionnaire_task(request.data, id)
-    except e:
-        Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+    delete_task_from_questionnaire_task(request.data, id)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -187,66 +168,38 @@ class QuestionnairePreviewAPIView(APIView):
     @staticmethod
     def get(request, id):
         # get queryset of questionnaire table by questionnaire_id
-        preview_data = {}
-        try:
-            preview_data = get_preview_data_task(request.GET.get('language', ''), id)
-        except preview_data as e:
-            Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        preview_data = get_preview_data_task(request.GET.get('language', ''), id)
         return Response(preview_data, status=status.HTTP_200_OK)
 
     # Save new questionnaire to db (with tasks, answers, images)
     @transaction.atomic
     def post(self, request):
-        questionnaire_id = -1
-        try:
-            questionnaire_id = insert_questionnaire_tasks_task(request.data)
-        except questionnaire_id as e:
-            Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        questionnaire_id = insert_questionnaire_tasks_task(request.data)
         return Response({'questionnaire_id': questionnaire_id}, status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def put(self, request, id):
-        ids_questionnaire_tasks_tuple = ()
-        try:
-            ids_questionnaire_tasks_tuple = update_questionnaire_tasks_task(request.data, id)
-        except ids_questionnaire_tasks_tuple as e:
-            Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        ids_questionnaire_tasks_tuple = update_questionnaire_tasks_task(request.data, id)
         return Response({'questionnaire_id': ids_questionnaire_tasks_tuple[0],
                          'task_id': ids_questionnaire_tasks_tuple[1]}, status=status.HTTP_200_OK)
 
     @transaction.atomic
     def delete(self, request, id):
-        e = 'error'
-        try:
-            e = delete_questionnaire_tasks_task(id)
-        except e:
-            Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        delete_questionnaire_tasks_task(id)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ParticipantAPIView(APIView):
     @transaction.atomic
     def post(self, request):
-        participant_id = -1
-        try:
-            participant_id = insert_data_into_table(ParticipantSerializer(data={}), 'participant_id')
-            insert_participant_data_task.apply_async((participant_id, request.data))
-        except Exception as e:
-            Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        participant_id = insert_data_into_table(ParticipantSerializer(data={}), 'participant_id')
+        insert_participant_data_task.apply_async((participant_id, request.data))
 
         return Response({'participant_id': participant_id}, status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def put(self, request, id):
-        try:
-            insert_participant_task_data_task.apply_async((request.data, id))
-        except Exception as e:
-            Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        insert_participant_task_data_task.apply_async((request.data, id))
         return Response(status=status.HTTP_201_CREATED)
 
 
