@@ -12,14 +12,11 @@ import { format } from "date-fns";
 import CounterInput from "react-counter-input";
 
 //RTL
-import styled, { keyframes, ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import rtl from "styled-components-rtl";
 //new Page
 import Pagination from "../Components/Pagination";
-
-import axios from "../axios";
 import "../styles/PreviewPage.css";
-import Demographics from "../Components/Demographics";
 import Task from "../Components/Task";
 
 import "../App.css";
@@ -43,13 +40,14 @@ class HomePage extends Component {
       direction: props.data.direction,
       demographic_task: props.data.demographic_task,
       demographic: props.data.demographic,
-      demo_answers: [],
+      demo_answers: {},
       answers: {},
       total_answer: props.data.demographic_task.length - 3,
       isError: true,
       statsInfo: {},
     };
     this.onInputchange = this.onInputchange.bind(this);
+    this.onDemochange = this.onDemochange.bind(this);
     this.onUpdateDemoAnswer = this.onUpdateDemoAnswer.bind(this);
     this.onCreateUser = this.onCreateUser.bind(this);
     this.onUpdateUser = this.onUpdateUser.bind(this);
@@ -143,60 +141,122 @@ class HomePage extends Component {
     });
   }
   onUpdateDemoAnswer(answer) {
-    // debugger;
+    //input isnt correct?
     if (answer.isError !== undefined) {
       this.setState({ isError: answer.isError });
     }
-    // debugger;
+
     // update state with new answer from Task component
     let order_key = parseInt(answer.order_key);
-    let answers = this.state.demo_answers;
     let answer_id = parseInt(answer.answer_id);
-    let arr = [];
-    // debugger;
-    //if free text?
-    if (answer.free_answer !== undefined) {
-      this.setDemoText(answer, answers, order_key);
+    let task_id = parseInt(answer.task_id);
+    let free_answer = answer.free_answer;
+    let checked = answer.checked;
+    debugger;
+    //value -- is answer id
+    if (order_key === 9) {
+      if (this.setDemoUI(answer.index)) {
+        return;
+      }
+    }
+    //checkbox answer
+    if (checked !== undefined) {
+      //other - checkbox answer
+      if (free_answer !== undefined) {
+        this.onDemochange(
+          task_id,
+          order_key,
+          free_answer,
+          "other-check",
+          checked
+        );
+        return;
+      }
+      //regular checkbox answer
+      this.onDemochange(task_id, order_key, answer_id, "check", checked);
       return;
     }
-    ///else
-    // to add answer to check box list
-    if (order_key === 3 || order_key === 5 || order_key === 11) {
-      if (this.setDemoCheckbox(answers, order_key, arr, answer_id, answer)) {
-        return;
-      }
-    }
-    if (order_key === 9) {
-      if (this.setDemoUI(answer.value)) {
-        return;
-      }
+    //free answer
+    if (free_answer !== undefined) {
+      this.onDemochange(task_id, order_key, free_answer, "other");
+      return;
     }
 
-    for (let [i, ans] of answers.entries()) {
-      //switch radio button selection
-      if (ans.order_key === order_key) {
-        answers[i] = {
-          answer_ids: arr.concat([answer_id]),
-          order_key: order_key,
-          task_id: answer.task_id,
-        };
+    this.onDemochange(task_id, order_key, answer_id, "radio");
+  }
+
+  //change vlaue of demographics questions
+  onDemochange(id, order_key, value, type, checked) {
+    //insert a question first vlaue
+    if (this.state.demo_answers[id] === undefined) {
+      //answer_id -- radio + dropdown
+      if (type === "radio") {
         this.setState({
-          demo_answers: answers,
+          demo_answers: {
+            ...this.state.demo_answers,
+            [id]: {
+              order_key: order_key,
+              answer_id: value,
+            },
+          },
         });
         return;
       }
-    }
-    // add new answer (radio or checkBox)
-    this.setState({
-      demo_answers: this.state.demo_answers.concat({
-        answer_ids: arr.concat([answer_id]),
-        order_key: order_key,
-        task_id: answer.task_id,
-      }),
-    });
-    console.log(this.state);
-  }
 
+      //checkbox?
+      if (type === "other-check") {
+        if (checked) {
+          this.setState({
+            demo_answers: {
+              ...this.state.demo_answers,
+              [id]: {
+                order_key: order_key,
+                submitted_free_answer: value,
+              },
+            },
+          });
+          return;
+        }
+      }
+      if (type === "check") {
+        this.setState({
+          demo_answers: {
+            ...this.state.demo_answers,
+            [id]: {
+              order_key: order_key,
+              [value]: checked,
+            },
+          },
+        });
+        return;
+      }
+
+      //update regular questions
+      this.setState({
+        demo_answers: {
+          ...this.state.demo_answers,
+          [id]: {
+            order_key: order_key,
+            submitted_free_answer: value,
+          },
+        },
+      });
+    } else {
+      // update values
+      let answers = this.state.demo_answers;
+      answers[id].order_key = order_key;
+      if (type === "check") {
+        answers[id][value] = checked;
+      } else if (type === "radio") {
+        answers[id].answer_id = value;
+      } else {
+        answers[id].submitted_free_answer = value;
+      }
+      this.setState({
+        demo_answers: answers,
+      });
+    }
+  }
   //help function -- delete from object array according to id(order_key/somthing else...)
   deleteFromArray(array, key) {
     // debugger;
@@ -211,7 +271,7 @@ class HomePage extends Component {
 
   //Question 10 + 11 according to question 9 answer
   setDemoUI(value) {
-    if (value === "0") {
+    if (value === 0) {
       // debugger;
       var array = [...this.state.pageOfComponents]; // make a separate copy of the array
       var index = this.state.pageOfComponents.length;
@@ -274,72 +334,6 @@ class HomePage extends Component {
         total_answer: this.state.total_answer + 2,
       });
     }
-  }
-
-  setDemoCheckbox(answers, order_key, arr, answer_id, answer) {
-    for (let [i, ans] of answers.entries()) {
-      if (ans.order_key === order_key) {
-        arr = ans.answer_ids; // answers array
-        if (arr.includes(answer_id)) {
-          // to delete a checkbox from array
-          answers[i] = {
-            answer_ids: arr.splice(arr.indexOf(answer_id), 1),
-            order_key: order_key,
-            task_id: answer.task_id,
-          };
-        } else {
-          // add
-          answers[i] = {
-            answer_ids: arr.concat([answer_id]),
-            order_key: order_key,
-            task_id: answer.task_id,
-          };
-        }
-
-        this.setState({
-          demo_answers: answers,
-        });
-        return true;
-      }
-    }
-    return false;
-  }
-  setDemoText(answer, answers, order_key) {
-    for (let [i, ans] of answers.entries()) {
-      //update free answer accourding to order_key
-      if (ans.order_key === order_key) {
-        if (answer.other !== undefined) {
-          answers[i] = {
-            answer_ids: [7],
-            order_key: order_key,
-            free_answer: answer.free_answer,
-            task_id: answer.task_id,
-          };
-        } else {
-          answers[i] = {
-            answer_ids: [],
-            order_key: order_key,
-            free_answer: answer.free_answer,
-            task_id: answer.task_id,
-          };
-        }
-
-        this.setState({
-          demo_answers: answers,
-        });
-        return;
-      }
-    }
-    // first time ...
-    this.setState({
-      demo_answers: this.state.demo_answers.concat({
-        answer_ids: [],
-        order_key: order_key,
-        free_answer: parseInt(answer.free_answer),
-        task_id: answer.task_id,
-      }),
-    });
-    console.log(this.state);
   }
 
   //save answer per component
@@ -751,22 +745,6 @@ class HomePage extends Component {
                     </CompDiv>
                   ))}
                 </Form>
-                {/* {task.answers.map(function (answer, index) {
-                  return (
-                    <CompDiv key={index}>
-                      <p>
-                        <input
-                          // className="input_preview"
-
-                          type={type}
-                          key={index}
-                          name="ans"
-                        />
-                        {" " + answer.answer_content}
-                      </p>
-                    </CompDiv>
-                  );
-                })} */}
               </Div>
             </ThemeProvider>
           ),
@@ -850,7 +828,7 @@ class HomePage extends Component {
                     onUpdateUser={this.onUpdateUser}
                     pageSize={2}
                     is_next={
-                      this.state.demo_answers.length ===
+                      Object.keys(this.state.demo_answers).length ===
                         this.state.total_answer && !this.state.isError
                     }
                     lang={this.state.lang}

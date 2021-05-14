@@ -18,6 +18,7 @@ class Answer(models.Model):
     answer_content = models.TextField(db_column='AnswerContent')
     is_correct = models.BooleanField(db_column='IsCorrect', null=True)
     value = models.TextField(db_column='Value')
+    is_demographic = models.BooleanField(db_column='IsDemographic', default=False)
 
     class Meta:
         db_table = 'Answer'
@@ -87,7 +88,6 @@ class Task(models.Model):
 
 class Participant(models.Model):
     participant_id = models.AutoField(db_column='ParticipantId', primary_key=True)
-    sex = models.CharField(db_column='Sex', max_length=50, null=True)
     age = models.IntegerField(db_column='Age', null=True)
     native_language = models.ForeignKey(Language, models.DO_NOTHING, db_column='NativeLanguage',
                                         related_name='native_language', null=True)
@@ -119,7 +119,8 @@ class Participant(models.Model):
 
     country = models.CharField(db_column='Country', max_length=50, null=True)
     operating_system = models.CharField(db_column='OperatingSystem', max_length=50, null=True)
-    browser_type = models.CharField(db_column='BrowserType', max_length=50, null=True)
+    browser = models.CharField(db_column='Browser', max_length=50, null=True)
+    city = models.CharField(db_column='City', max_length=50, null=True)
 
     class Meta:
         db_table = 'Participant'
