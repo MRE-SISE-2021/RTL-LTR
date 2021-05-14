@@ -117,11 +117,10 @@ def get_questionnaire_task(questionnaire_id):
         ages_x = list(ages.keys())
         ages_y = list(ages.values())
 
-        native_languages = dict(collections.OrderedDict(sorted(language_name_count_dict.items()))) | other_lang
+        native_languages = {**dict(collections.OrderedDict(sorted(language_name_count_dict.items()))), **other_lang}
 
         native_languages_x = list(native_languages.keys())
         native_languages_y = list(native_languages.values())
-
 
         query_set = Questionnaire.objects.get(questionnaire_id=questionnaire_id)
         questionnaire_data = QuestionnaireSerializer(query_set).data
