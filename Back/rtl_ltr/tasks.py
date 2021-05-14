@@ -614,13 +614,16 @@ def insert_participant_data_task(participant_id, data):
         insert_data_into_table(quest_participant_serializer)
 
         # Insert to TaskParticipant
-        for task_id in answer_ids_by_order:
-            task = demo_answers[str(task_id)]
-            answer_ids = answer_ids_by_order[task['order_key']]
+        for task_id in demo_answers:
+            order_key = demo_answers[task_id]['order_key']
+            if order_key in answer_ids_by_order:
+                answer_ids = answer_ids_by_order[order_key]
+            else:
+                continue
 
             for answer_id in answer_ids:
-                if task['order_key'] in free_answers_by_order and free_answers_by_order[task['order_key']]:
-                    free_answer = free_answers_by_order[task['order_key']]
+                if order_key in free_answers_by_order and free_answers_by_order[order_key]:
+                    free_answer = free_answers_by_order[order_key]
                 else:
                     free_answer = None
                 quest_participant_serializer = TaskParticipantSerializer(data={'participant_id': participant_id,
