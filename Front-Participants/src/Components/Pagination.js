@@ -257,7 +257,7 @@ class Pagination extends React.Component {
           this.props.lang === 4 &&
           pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            страница {current}посреднический {total - 1}
+            Страница {current} из {total - 1}
           </p>
         ) : null}
       </div>

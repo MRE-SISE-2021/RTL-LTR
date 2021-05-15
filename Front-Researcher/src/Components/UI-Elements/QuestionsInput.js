@@ -296,7 +296,7 @@ class FormsElements extends React.Component {
       case "3":
         return "תשובה";
       case "4":
-        return "Отвечать";
+        return "Ответ";
       default:
         return "2";
     }
@@ -427,7 +427,7 @@ class FormsElements extends React.Component {
       "Single choice",
       "Double Slider",
       "Stars",
-      "Numiric",
+      "Numeric",
       "Dropdown",
       "Multi Choice",
       "Counter",
