@@ -753,8 +753,7 @@ def delete_tasks(task_ids):
                 ti.delete()
 
             task_queryset = Task.objects.get(task_id=task_id)
-
-        task_queryset.delete()
+            task_queryset.delete()
 
         # delete answer
         for answer_id in answer_ids:
