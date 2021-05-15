@@ -190,17 +190,37 @@ class PreviewPage extends Component {
         // theme = {
         //   dir: "center",
         // };
-        Div = styled.div`
-          text-align: center;
-        `;
+
         if (this.state.lang === 1 || this.state.lang === 3) {
-          CompDiv = styled.div`
-            margin-right: 35%;
+          Div = styled.div`
+            text-align: center;
+            direction: rtl;
           `;
+          if (task.is_direction_setting === "LTR") {
+            CompDiv = styled.div`
+              margin-right: 35%;
+              direction: ltr;
+            `;
+          } else {
+            CompDiv = styled.div`
+              margin-right: 35%;
+            `;
+          }
         } else {
-          CompDiv = styled.div`
-            margin-left: 35%;
+          Div = styled.div`
+            text-align: center;
+            direction: ltr;
           `;
+          if (task.is_direction_setting === "RTL") {
+            CompDiv = styled.div`
+              margin-left: 35%;
+              direction: rtlr;
+            `;
+          } else {
+            CompDiv = styled.div`
+              margin-left: 35%;
+            `;
+          }
         }
       }
       ///////////////---RTL support --- ///////////////
