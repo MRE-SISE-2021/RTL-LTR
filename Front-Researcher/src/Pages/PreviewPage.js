@@ -368,7 +368,7 @@ class PreviewPage extends Component {
                             // value={actual_index} //order_ key.
                           />
                           <Form.Label
-                          // style={{ position: "relative", padding: "6px" }}
+                            style={{ position: "relative", padding: "6px" }}
                           >
                             {"  " + answer.answer_content + "  "}
                           </Form.Label>
