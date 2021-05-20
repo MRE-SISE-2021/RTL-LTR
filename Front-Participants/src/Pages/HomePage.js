@@ -692,7 +692,7 @@ class HomePage extends Component {
                   </CompDiv>
                 ) : (
                   <Rating
-                    // initialRating={this.state.squareRating}
+                    initialRating={4}
                     direction={compdirection}
                     id="rating"
                     stop={10}

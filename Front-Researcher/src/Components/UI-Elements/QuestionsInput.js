@@ -518,17 +518,22 @@ class FormsElements extends React.Component {
                         {/* <Col md={6}> */}
                         <Form.Group controlId="exampleForm.RangeInput">
                           <Rating
-                            initialRating={this.state.squareRating}
-                            emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span>{n}</span>
-                              </span>
-                            ))}
-                            fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span className="active">{n}</span>
-                              </span>
-                            ))}
+                            initialRating={4}
+                            stop={10}
+                            emptySymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+                              (n) => (
+                                <span className="theme-bar-square">
+                                  <span>{n}</span>
+                                </span>
+                              )
+                            )}
+                            fullSymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+                              (n) => (
+                                <span className="theme-bar-square">
+                                  <span className="active">{n}</span>
+                                </span>
+                              )
+                            )}
                             onChange={(rate) =>
                               this.setState({ squareRating: rate })
                             }
