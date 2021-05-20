@@ -8,7 +8,7 @@ import { MDBIcon } from "mdbreact";
 import { Navbar } from "react-bootstrap";
 import { withCookies } from "react-cookie";
 import { Redirect } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import { Cookies } from "react-cookie";
 import inMemoryToken from "../../inMemoryToken";
@@ -55,7 +55,18 @@ class NavBar extends Component {
       </Aux>
 */
       <Aux>
-        <Navbar fixed="top" bg="Light" variant="dark" style={{ height: "10%" }}>
+        {/* <Navbar fixed="top" bg="Light" variant="dark"> */}
+        <OverlayTrigger
+          key={1}
+          placement="bottom"
+          overlay={
+            <Tooltip>
+              <span style={{ boxShadow: "-1px 2px 5px rgba(0,0,0,0.1)" }}>
+                Home
+              </span>
+            </Tooltip>
+          }
+        >
           <Link to="/home">
             <ul className="mb-1 text-primary">
               <li>
@@ -63,8 +74,14 @@ class NavBar extends Component {
               </li>
             </ul>
           </Link>
-          
-          <div className="navbar-collapse2">
+        </OverlayTrigger>
+
+        <div className="navbar-collapse2">
+          <OverlayTrigger
+            key={1}
+            placement="bottom"
+            overlay={<Tooltip>Log out</Tooltip>}
+          >
             <Button variant="outline-*" onClick={() => handleClick()}>
               <ul className="mb-1 text-primary">
                 <li>
@@ -76,8 +93,9 @@ class NavBar extends Component {
                 </li>
               </ul>
             </Button>
-          </div>
-        </Navbar>
+          </OverlayTrigger>
+        </div>
+        {/* </Navbar> */}
       </Aux>
     );
 
