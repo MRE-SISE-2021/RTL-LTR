@@ -207,7 +207,11 @@ class Task extends React.Component {
                 <Form.Group key={index}>
                   <Row className="rows">
                     <Form.Control
-                      style={{ width: "16px", hight: "16px" }}
+                      style={{
+                        width: "16px",
+                        hight: "16px",
+                        position: "absolute",
+                      }}
                       type="checkbox"
                       key={index}
                       id={answer.answer_id} //answer_id
@@ -217,10 +221,16 @@ class Task extends React.Component {
                         this.setCheckboxTaskAnswer(e);
                       }}
                     />
+
                     <Form.Label
-                      style={{ position: "relative", padding: "6px" }}
+                      style={{
+                        position: "relative",
+                        padding: "6px",
+                        marginLeft: "15px",
+                        marginRight: "15px",
+                      }}
                     >
-                      {"  " + answer.answer_content}
+                      {"          " + answer.answer_content}
                     </Form.Label>
                     {answer.value === "Other" ? (
                       <Form.Control
@@ -239,7 +249,11 @@ class Task extends React.Component {
                 <Form.Group key={index}>
                   <Row className="rows">
                     <Form.Control
-                      style={{ width: "16px", hight: "16px" }}
+                      style={{
+                        width: "16px",
+                        hight: "16px",
+                        position: "absolute",
+                      }}
                       type="radio"
                       key={index}
                       id={answer.answer_id} //answer_id
@@ -250,7 +264,12 @@ class Task extends React.Component {
                       }}
                     />
                     <Form.Label
-                      style={{ position: "relative", padding: "6px" }}
+                      style={{
+                        position: "relative",
+                        padding: "6px",
+                        marginLeft: "15px",
+                        marginRight: "15px",
+                      }}
                     >
                       {"  " + answer.answer_content}
                     </Form.Label>
