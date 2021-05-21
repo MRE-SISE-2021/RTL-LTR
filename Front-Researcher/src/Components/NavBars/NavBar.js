@@ -8,7 +8,8 @@ import { MDBIcon } from "mdbreact";
 import { Navbar } from "react-bootstrap";
 import { withCookies } from "react-cookie";
 import { Redirect } from "react-router-dom";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button, OverlayTrigger } from "react-bootstrap";
+import Tooltip from "rc-tooltip";
 
 import { Cookies } from "react-cookie";
 import inMemoryToken from "../../inMemoryToken";
@@ -56,16 +57,13 @@ class NavBar extends Component {
 */
       <Aux>
         {/* <Navbar fixed="top" bg="Light" variant="dark"> */}
-        <OverlayTrigger
+        <Tooltip
+          prefixCls="rc-slider-tooltip"
+          overlay={<span>Home</span>}
+          overlayStyle={{ backgroundColor: "white", color: "black" }}
+          //  visible={dragging}
+          placement="top"
           key={1}
-          placement="bottom"
-          overlay={
-            <Tooltip>
-              <span style={{ boxShadow: "-1px 2px 5px rgba(0,0,0,0.1)" }}>
-                Home
-              </span>
-            </Tooltip>
-          }
         >
           <Link to="/home">
             <ul className="mb-1 text-primary">
@@ -74,13 +72,19 @@ class NavBar extends Component {
               </li>
             </ul>
           </Link>
-        </OverlayTrigger>
+        </Tooltip>
 
         <div className="navbar-collapse2">
-          <OverlayTrigger
+          <Tooltip
+            prefixCls="rc-slider-tooltip"
+            overlay={
+              <span style={{ backgroundColor: "white", color: "black" }}>
+                Log out
+              </span>
+            }
+            //  visible={dragging}
+            placement="top"
             key={1}
-            placement="bottom"
-            overlay={<Tooltip>Log out</Tooltip>}
           >
             <Button variant="outline-*" onClick={() => handleClick()}>
               <ul className="mb-1 text-primary">
@@ -93,7 +97,7 @@ class NavBar extends Component {
                 </li>
               </ul>
             </Button>
-          </OverlayTrigger>
+          </Tooltip>
         </div>
         {/* </Navbar> */}
       </Aux>

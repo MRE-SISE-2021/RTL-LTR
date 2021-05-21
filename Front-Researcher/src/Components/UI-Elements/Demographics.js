@@ -104,6 +104,7 @@ class Demographics extends React.Component {
                               padding: "6px",
                               marginLeft: "15px",
                               marginRight: "15px",
+                              marginTop: "2px",
                             }}
                           >
                             {"  " + answer.answer_content + "  "}
@@ -205,6 +206,7 @@ class Demographics extends React.Component {
                               padding: "6px",
                               marginLeft: "15px",
                               marginRight: "15px",
+                              marginTop: "2px",
                             }}
                           >
                             {"  " + answer.answer_content + "  "}
