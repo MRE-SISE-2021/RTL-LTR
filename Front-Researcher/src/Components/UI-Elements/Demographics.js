@@ -136,7 +136,6 @@ class Demographics extends React.Component {
     const Div = styled.div`
       padding: 10px;
       ${rtl`
-   margin-right: 50px;
    text-align: left;
    direction: ltr;
    `};
@@ -206,7 +205,7 @@ class Demographics extends React.Component {
                               padding: "6px",
                               marginLeft: "15px",
                               marginRight: "15px",
-                              marginTop: "2px",
+                              marginTop: "1px",
                             }}
                           >
                             {"  " + answer.answer_content + "  "}
