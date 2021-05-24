@@ -10,6 +10,7 @@ import Slider from "rc-slider";
 import { format } from "date-fns";
 //import CounterInput from 'react-bootstrap-counter';
 import CounterInput from "react-counter-input";
+import axiosInstance from "../axios";
 
 //RTL
 import styled, { ThemeProvider } from "styled-components";
@@ -42,11 +43,12 @@ class HomePage extends Component {
       demographic: props.data.demographic,
       demo_answers: {},
       answers: {},
-      total_answer: props.data.demographic_task.length - 3,
+      total_answer: props.data.demographic_task.length - 4,
       isError: true,
       statsInfo: {},
       Div: "",
       const_theme: "",
+      total_q4: 0,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onDemochange = this.onDemochange.bind(this);
@@ -92,7 +94,7 @@ class HomePage extends Component {
       direction: propsIncoming.data.direction,
       demographic_task: propsIncoming.data.demographic_task,
       demographic: propsIncoming.data.demographic,
-      total_answer: propsIncoming.data.demographic_task.length - 3,
+      total_answer: propsIncoming.data.demographic_task.length - 4,
     });
     console.log(this.state);
 
@@ -160,6 +162,13 @@ class HomePage extends Component {
       if (this.setDemoUI(answer.index)) {
         return;
       }
+    }
+    if (order_key === 3) {
+      this.setDemoLangUI(checked, answer_id);
+    }
+    if (order_key === 4) {
+      this.onDemochange(task_id, order_key, answer_id, "check", true);
+      return;
     }
     //checkbox answer
     if (checked !== undefined) {
@@ -271,13 +280,107 @@ class HomePage extends Component {
     return array;
   }
 
+  //Question 4 according to question 3 answer
+  async setDemoLangUI(checked, answer_id) {
+    let value = "other";
+    await axiosInstance.get("/viewset/answer/" + answer_id).then(
+      (result) => {
+        console.log(result);
+        result = result.data;
+        value = result.answer_content;
+      },
+      (error) => {
+        console.log(error);
+        this.setState({
+          isLoaded: true,
+          error,
+        });
+      }
+    );
+    if (!checked) {
+      // debugger;
+      var array = [...this.state.pageOfComponents]; // make a separate copy of the array
+      var index = this.state.pageOfComponents.length;
+      if (index > 2) {
+        array.splice(index - 2, 1);
+        this.setState({
+          demo_answers: this.deleteFromArray(this.state.demo_answers, 4),
+        });
+        if (this.state.total_q4 == 1) {
+          this.setState({
+            pageOfComponents: array,
+            total_answer: this.state.total_answer - 1,
+            total_q4: this.state.total_q4 + 1,
+          });
+          return;
+        }
+        this.setState({
+          pageOfComponents: array,
+          // total_answer: this.state.total_answer - 1,
+          total_q4: this.state.total_q4 - 1,
+        });
+      }
+    } else {
+      // debugger;
+      //add questions 3 to input list
+      console.log("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      // 1. Make a shallow copy of the array
+      let inputList = [...this.state.pageOfComponents];
+      let new_inputList = [];
+      // 2. Make a shallow copy of the element you want to mutate
+      // let temp_element = { ...inputList[1] };
+
+      // 3. Update the property you're interested in
+      // temp_element = temp_element.concat(<div>meoo</div>);
+      debugger;
+      let Div = this.state.Div;
+      for (let i = 0; i < inputList.length; i++) {
+        new_inputList = new_inputList.concat({ ...inputList[i] });
+        if (i === inputList.length - 2) {
+          new_inputList = new_inputList.concat(
+            <ThemeProvider theme={this.state.const_theme}>
+              <Div>
+                <Task
+                  key={4}
+                  demo_task={this.state.demographic_task[3]}
+                  lang={this.state.lang}
+                  onChange={this.onUpdateDemoAnswer}
+                  answers={this.state.demo_answers}
+                  title={value}
+                />
+              </Div>
+            </ThemeProvider>
+          );
+        }
+      }
+
+      // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+      // inputList[1] = temp_element;
+      // console.log(inputList);
+
+      // 5. Set the state to our new copy
+      if (this.state.total_q4 > 0) {
+        this.setState({
+          pageOfComponents: new_inputList,
+          // total_answer: this.state.total_answer + 1,
+          total_q4: this.state.total_q4 + 1,
+        });
+        return;
+      }
+      this.setState({
+        pageOfComponents: new_inputList,
+        total_answer: this.state.total_answer + 1,
+        total_q4: this.state.total_q4 + 1,
+      });
+    }
+  }
   //Question 10 + 11 according to question 9 answer
   setDemoUI(value) {
     if (value === 0) {
       // debugger;
       var array = [...this.state.pageOfComponents]; // make a separate copy of the array
       var index = this.state.pageOfComponents.length;
-      if (index > 2) {
+      if (index > 2 + this.state.total_q4) {
         array.splice(index - 1, 1);
         this.setState({
           demo_answers: this.deleteFromArray(this.state.demo_answers, 10),
@@ -306,7 +409,7 @@ class HomePage extends Component {
       let Div = this.state.Div;
       for (let i = 0; i < inputList.length; i++) {
         new_inputList = new_inputList.concat({ ...inputList[i] });
-        if (i === 1) {
+        if (i === 1 + this.state.total_q4) {
           new_inputList = new_inputList.concat(
             <ThemeProvider theme={this.state.const_theme}>
               <Div>
@@ -566,7 +669,7 @@ class HomePage extends Component {
             </ThemeProvider>
           ),
         });
-        // debugger;
+        // Demographics -- question 1-3
         inputList = this.state.inputList;
         this.setState({
           inputList: inputList.concat(
@@ -586,10 +689,10 @@ class HomePage extends Component {
                   }}
                 ></div>
                 {this.state.demographic_task.map((demo, i) => {
-                  console.log("Entered");
-                  console.log(this.state.demographic[i]);
+                  // console.log("Entered");
+                  // console.log(this.state.demographic[i]);
                   // Return the element. Also pass key
-                  if (this.state.demographic[i] && i < 9) {
+                  if (this.state.demographic[i] && i < 3) {
                     return (
                       <Task
                         key={i}
@@ -607,9 +710,30 @@ class HomePage extends Component {
             </ThemeProvider>
           ),
         });
+        // Questions 5-9
         inputList = this.state.inputList;
         this.setState({
-          inputList: inputList.concat(<div></div>),
+          inputList: inputList.concat(
+            <ThemeProvider theme={theme}>
+              <Div>
+                {this.state.demographic_task.map((demo, i) => {
+                  if (this.state.demographic[i] && i > 3 && i < 9) {
+                    return (
+                      <Task
+                        key={i}
+                        demo_task={demo}
+                        lang={this.state.lang}
+                        onChange={this.onUpdateDemoAnswer}
+                        answers={this.state.demo_answers}
+                      />
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
+              </Div>
+            </ThemeProvider>
+          ),
         });
         inputList = this.state.inputList;
       } else if (
