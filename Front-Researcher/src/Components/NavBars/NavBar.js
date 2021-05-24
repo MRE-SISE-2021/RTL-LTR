@@ -57,14 +57,7 @@ class NavBar extends Component {
 */
       <Aux>
         {/* <Navbar fixed="top" bg="Light" variant="dark"> */}
-        <Tooltip
-          prefixCls="rc-slider-tooltip"
-          overlay={<span>Home</span>}
-          overlayStyle={{ backgroundColor: "white", color: "black" }}
-          //  visible={dragging}
-          placement="top"
-          key={1}
-        >
+        <Tooltip overlay={<span>Home</span>} placement="top" key={1}>
           <Link to="/home">
             <ul className="mb-1 text-primary">
               <li>
@@ -75,17 +68,7 @@ class NavBar extends Component {
         </Tooltip>
 
         <div className="navbar-collapse2">
-          <Tooltip
-            prefixCls="rc-slider-tooltip"
-            overlay={
-              <span style={{ backgroundColor: "white", color: "black" }}>
-                Log out
-              </span>
-            }
-            //  visible={dragging}
-            placement="top"
-            key={1}
-          >
+          <Tooltip overlay={<span>Log out</span>} placement="top" key={1}>
             <Button variant="outline-*" onClick={() => handleClick()}>
               <ul className="mb-1 text-primary">
                 <li>
