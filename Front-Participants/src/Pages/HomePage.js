@@ -43,11 +43,12 @@ class HomePage extends Component {
       demographic: props.data.demographic,
       demo_answers: {},
       answers: {},
-      total_answer: props.data.demographic_task.length - 3,
+      total_answer: props.data.demographic_task.length - 4,
       isError: true,
       statsInfo: {},
       Div: "",
       const_theme: "",
+      total_q4: 0,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onDemochange = this.onDemochange.bind(this);
@@ -93,7 +94,7 @@ class HomePage extends Component {
       direction: propsIncoming.data.direction,
       demographic_task: propsIncoming.data.demographic_task,
       demographic: propsIncoming.data.demographic,
-      total_answer: propsIncoming.data.demographic_task.length - 3,
+      total_answer: propsIncoming.data.demographic_task.length - 4,
     });
     console.log(this.state);
 
@@ -303,7 +304,8 @@ class HomePage extends Component {
         });
         this.setState({
           pageOfComponents: array,
-          total_answer: this.state.total_answer - 2,
+          total_answer: this.state.total_answer - 1,
+          total_q4: this.state.total_q4 - 1,
         });
       }
     } else {
@@ -347,7 +349,8 @@ class HomePage extends Component {
       // 5. Set the state to our new copy
       this.setState({
         pageOfComponents: new_inputList,
-        total_answer: this.state.total_answer + 2,
+        total_answer: this.state.total_answer + 1,
+        total_q4: this.state.total_q4 + 1,
       });
     }
   }
@@ -357,7 +360,7 @@ class HomePage extends Component {
       // debugger;
       var array = [...this.state.pageOfComponents]; // make a separate copy of the array
       var index = this.state.pageOfComponents.length;
-      if (index > 2) {
+      if (index > 2 + this.state.total_q4) {
         array.splice(index - 1, 1);
         this.setState({
           demo_answers: this.deleteFromArray(this.state.demo_answers, 10),
@@ -386,7 +389,7 @@ class HomePage extends Component {
       let Div = this.state.Div;
       for (let i = 0; i < inputList.length; i++) {
         new_inputList = new_inputList.concat({ ...inputList[i] });
-        if (i === 1) {
+        if (i === 1 + this.state.total_q4) {
           new_inputList = new_inputList.concat(
             <ThemeProvider theme={this.state.const_theme}>
               <Div>
@@ -919,7 +922,7 @@ class HomePage extends Component {
   }
 
   render() {
-    // console.log(this.state);
+    console.log(this.state);
     let mainClass = ["content-main"];
     if (this.props.fullWidthLayout) {
       mainClass = [...mainClass, "container-fluid"];

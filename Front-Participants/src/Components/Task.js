@@ -138,7 +138,7 @@ class Task extends React.Component {
   // }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     let is_other = this.state.is_other;
     const Div = styled.div`
       padding: 10px;
