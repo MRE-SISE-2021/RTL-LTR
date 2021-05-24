@@ -166,6 +166,10 @@ class HomePage extends Component {
     if (order_key === 3) {
       this.setDemoLangUI(checked, answer_id);
     }
+    if (order_key === 4) {
+      this.onDemochange(task_id, order_key, answer_id, "check", true);
+      return;
+    }
     //checkbox answer
     if (checked !== undefined) {
       //other - checkbox answer
@@ -302,9 +306,17 @@ class HomePage extends Component {
         this.setState({
           demo_answers: this.deleteFromArray(this.state.demo_answers, 4),
         });
+        if (this.state.total_q4 == 1) {
+          this.setState({
+            pageOfComponents: array,
+            total_answer: this.state.total_answer - 1,
+            total_q4: this.state.total_q4 + 1,
+          });
+          return;
+        }
         this.setState({
           pageOfComponents: array,
-          total_answer: this.state.total_answer - 1,
+          // total_answer: this.state.total_answer - 1,
           total_q4: this.state.total_q4 - 1,
         });
       }
@@ -347,6 +359,14 @@ class HomePage extends Component {
       // console.log(inputList);
 
       // 5. Set the state to our new copy
+      if (this.state.total_q4 > 0) {
+        this.setState({
+          pageOfComponents: new_inputList,
+          // total_answer: this.state.total_answer + 1,
+          total_q4: this.state.total_q4 + 1,
+        });
+        return;
+      }
       this.setState({
         pageOfComponents: new_inputList,
         total_answer: this.state.total_answer + 1,
