@@ -45,6 +45,8 @@ class HomePage extends Component {
       total_answer: props.data.demographic_task.length - 3,
       isError: true,
       statsInfo: {},
+      Div: "",
+      const_theme: "",
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onDemochange = this.onDemochange.bind(this);
@@ -300,26 +302,30 @@ class HomePage extends Component {
 
       // 3. Update the property you're interested in
       // temp_element = temp_element.concat(<div>meoo</div>);
+      debugger;
+      let Div = this.state.Div;
       for (let i = 0; i < inputList.length; i++) {
         new_inputList = new_inputList.concat({ ...inputList[i] });
         if (i === 1) {
           new_inputList = new_inputList.concat(
-            <div>
-              <Task
-                key={9}
-                demo_task={this.state.demographic_task[9]}
-                lang={this.state.lang}
-                onChange={this.onUpdateDemoAnswer}
-                answers={this.state.demo_answers}
-              />
-              <Task
-                key={10}
-                demo_task={this.state.demographic_task[10]}
-                lang={this.state.lang}
-                onChange={this.onUpdateDemoAnswer}
-                answers={this.state.demo_answers}
-              />
-            </div>
+            <ThemeProvider theme={this.state.const_theme}>
+              <Div>
+                <Task
+                  key={9}
+                  demo_task={this.state.demographic_task[9]}
+                  lang={this.state.lang}
+                  onChange={this.onUpdateDemoAnswer}
+                  answers={this.state.demo_answers}
+                />
+                <Task
+                  key={10}
+                  demo_task={this.state.demographic_task[10]}
+                  lang={this.state.lang}
+                  onChange={this.onUpdateDemoAnswer}
+                  answers={this.state.demo_answers}
+                />
+              </Div>
+            </ThemeProvider>
           );
         }
       }
@@ -446,7 +452,6 @@ class HomePage extends Component {
       let Div = styled.div`
         padding: 10px;
         ${rtl`
-        margin-right: 50px;
         text-align: left;
         direction: ltr;
         `};
@@ -454,7 +459,6 @@ class HomePage extends Component {
       const ConstDiv = styled.div`
         padding: 10px;
         ${rtl`
-      margin-right: 50px;
       text-align: left;
       direction: ltr;
       `};
@@ -533,6 +537,10 @@ class HomePage extends Component {
           }
         }
       }
+      this.setState({
+        Div: Div,
+        const_theme: const_theme,
+      });
       ///////////////---RTL support --- ///////////////
       if (task.component_type_id === 11) {
         this.setState({
@@ -692,7 +700,7 @@ class HomePage extends Component {
                   </CompDiv>
                 ) : (
                   <Rating
-                    // initialRating={this.state.squareRating}
+                    initialRating={4}
                     direction={compdirection}
                     id="rating"
                     stop={10}

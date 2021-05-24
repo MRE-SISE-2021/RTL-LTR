@@ -9,6 +9,6 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 .rows {
-  margin: auto;
+  margin: 0 auto;
   width: 110%;
 }

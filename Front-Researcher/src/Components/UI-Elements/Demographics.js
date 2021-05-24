@@ -87,7 +87,11 @@ class Demographics extends React.Component {
                       <Form.Group key={index}>
                         <Row className="rows">
                           <Form.Control
-                            style={{ width: "16px", hight: "16px" }}
+                            style={{
+                              width: "16px",
+                              hight: "16px",
+                              position: "absolute",
+                            }}
                             type={type}
                             key={index}
                             id={answer.answer_id} //answer_id
@@ -95,7 +99,13 @@ class Demographics extends React.Component {
                             value={actual_index} //order_ key.
                           />
                           <Form.Label
-                            style={{ position: "relative", padding: "6px" }}
+                            style={{
+                              position: "relative",
+                              padding: "6px",
+                              marginLeft: "15px",
+                              marginRight: "15px",
+                              marginTop: "2px",
+                            }}
                           >
                             {"  " + answer.answer_content + "  "}
                           </Form.Label>
@@ -126,7 +136,6 @@ class Demographics extends React.Component {
     const Div = styled.div`
       padding: 10px;
       ${rtl`
-   margin-right: 50px;
    text-align: left;
    direction: ltr;
    `};
@@ -179,7 +188,11 @@ class Demographics extends React.Component {
                       <Form.Group key={index}>
                         <Row className="rows">
                           <Form.Control
-                            style={{ width: "16px", hight: "16px" }}
+                            style={{
+                              width: "16px",
+                              hight: "16px",
+                              position: "absolute",
+                            }}
                             type={type}
                             key={index}
                             id={answer.answer_id} //answer_id
@@ -187,7 +200,13 @@ class Demographics extends React.Component {
                             value={actual_index} //order_ key.
                           />
                           <Form.Label
-                            style={{ position: "relative", padding: "6px" }}
+                            style={{
+                              position: "relative",
+                              padding: "6px",
+                              marginLeft: "15px",
+                              marginRight: "15px",
+                              marginTop: "1px",
+                            }}
                           >
                             {"  " + answer.answer_content + "  "}
                           </Form.Label>
