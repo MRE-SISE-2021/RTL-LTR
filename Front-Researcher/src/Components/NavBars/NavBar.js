@@ -57,7 +57,7 @@ class NavBar extends Component {
 */
       <Aux>
         {/* <Navbar fixed="top" bg="Light" variant="dark"> */}
-        <Tooltip overlay={<span>Home</span>} placement="top" key={1}>
+        <Tooltip overlay={<span>Home</span>} placement="bottom" key={1}>
           <Link to="/home">
             <ul className="mb-1 text-primary">
               <li>
@@ -68,7 +68,7 @@ class NavBar extends Component {
         </Tooltip>
 
         <div className="navbar-collapse2">
-          <Tooltip overlay={<span>Log out</span>} placement="top" key={1}>
+          <Tooltip overlay={<span>Log out</span>} placement="bottom" key={1}>
             <Button variant="outline-*" onClick={() => handleClick()}>
               <ul className="mb-1 text-primary">
                 <li>
