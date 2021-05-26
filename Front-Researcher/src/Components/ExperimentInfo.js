@@ -258,7 +258,9 @@ class ExperimentInfo extends Component {
 
         <div className="mt-3">
           <Card className="bg-Light ">
-            <Card.Body style={{ overflowY: "scroll", height: "490px" }}>
+            <Card.Body
+              style={{ overflowY: "scroll", height: "470px", margin: "10px" }}
+            >
               <div className="bg-Light text-dark  ">
                 <ul className="p-3 mb-2">
                   <Row>
