@@ -328,11 +328,13 @@ class ExperimentInfo extends Component {
                     <Col>
                       <b>Last participation: </b>
                       {/* Today at 12:00 JRM */}
-                      {new Date(data.last_date).toLocaleDateString([], {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      {data.last_date !== null
+                        ? new Date(data.last_date).toLocaleDateString([], {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })
+                        : " ----- "}
                     </Col>
 
                     <Col>
