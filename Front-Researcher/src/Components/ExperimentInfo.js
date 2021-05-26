@@ -122,19 +122,48 @@ class ExperimentInfo extends Component {
     if (this.props.chosen.questionnaire_id === undefined) {
       return;
     }
-    console.log(event.target.checked);
-    let response = {
-      questionnaire_id: this.props.chosen.questionnaire_id, //
-      is_active: event.target.checked,
-    };
-    console.log(response);
-    API.putRequest(
-      "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
-      response
-    ).then((data) => {
-      console.log(data);
+    // console.log(event.target.checked);
+    // let response = {
+    //   questionnaire_id: this.props.chosen.questionnaire_id, //
+    //   is_active: event.target.checked,
+    // };
+    // console.log(response);
+    // API.putRequest(
+    //   "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
+    //   response
+    // ).then((data) => {
+    //   console.log(data);
+    // });
+    // window.location.reload(false);
+
+    const MySwal = withReactContent(Swal);
+
+    MySwal.fire({
+      title: "Are you sure?",
+      text: "The Experiment status will be changed!",
+      type: "warning",
+      showCloseButton: true,
+      showCancelButton: true,
+    }).then((willChange) => {
+      if (willChange.value) {
+        debugger;
+        const response = {
+          questionnaire_id: this.props.chosen.questionnaire_id, //
+          is_active: !event.target.checked,
+        };
+        console.log(response);
+        API.putRequest(
+          "questionnaire-preview-data/" + this.props.chosen.questionnaire_id,
+          response
+        ).then((data) => {
+          console.log(data);
+          window.location.reload(false);
+        });
+        return MySwal.fire("", "Your Experment status is changed!", "success");
+      } else {
+        return MySwal.fire("", "Your Experment status is safe!", "error");
+      }
     });
-    window.location.reload(false);
   }
 
   UNSAFE_componentWillMount() {

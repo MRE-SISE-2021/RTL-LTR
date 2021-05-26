@@ -191,25 +191,31 @@ class NavBar extends Component {
             className="nav navbar-nav navbar-center "
             className="navbar-collapse"
           >
-            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+            <span className="mr-2" style={{ color: "cornflowerblue" }}>
               ExpName:{" "}
-            </h5>
+            </span>
 
-            <h5 className="mr-4">{this.props.name}</h5>
+            <span className="mr-4" style={{ color: "black" }}>
+              {this.props.name}
+            </span>
 
-            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+            <span className="mr-2" style={{ color: "cornflowerblue" }}>
               Type:{" "}
-            </h5>
-            <h5 className="mr-4">{this.props.type}</h5>
+            </span>
+            <span className="mr-4" style={{ color: "black" }}>
+              {this.props.type}
+            </span>
 
-            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+            <span className="mr-2" style={{ color: "cornflowerblue" }}>
               Language:{" "}
-            </h5>
-            <h5 className=" mr-4">{this.getLangName()}</h5>
+            </span>
+            <span className=" mr-4" style={{ color: "black" }}>
+              {this.getLangName()}
+            </span>
 
-            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+            <span className="mr-2" style={{ color: "cornflowerblue" }}>
               Direction:{" "}
-            </h5>
+            </span>
             <Form.Group
               className=" mr-4"
               style={{
@@ -219,7 +225,13 @@ class NavBar extends Component {
               }}
               onChange={this.onDirectionChange}
             >
-              <Form.Control as="select" value={this.state.direction}>
+              <Form.Control
+                as="select"
+                value={this.state.direction}
+                style={{
+                  marginTop: "14%",
+                }}
+              >
                 <option value="RTL">RTL</option>
                 <option value="LTR">LTR</option>
                 <option value="Cntr">Cntr</option>
@@ -227,9 +239,9 @@ class NavBar extends Component {
               </Form.Control>
             </Form.Group>
 
-            <h5 className="mr-2" style={{ color: "cornflowerblue" }}>
+            <span className="mr-2" style={{ color: "cornflowerblue" }}>
               Status:{" "}
-            </h5>
+            </span>
             <Form.Group
               className=" mr-4"
               style={{
@@ -242,6 +254,9 @@ class NavBar extends Component {
               {this.state.is_active ? (
                 <Form.Control
                   as="select"
+                  style={{
+                    marginTop: "11%",
+                  }}
                   value={this.state.is_active ? "Active" : "Not-Active"}
                 >
                   <option value={"Active"}>Active</option>
@@ -251,6 +266,9 @@ class NavBar extends Component {
                 <Form.Control
                   as="select"
                   value={this.state.is_active ? "Active" : "Not-Active"}
+                  style={{
+                    marginTop: "11%",
+                  }}
                 >
                   <option value={"Not-Active"}>Not-Active</option>
                   <option value={"Active"}>Active</option>

@@ -138,7 +138,7 @@ class Task extends React.Component {
   // }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     let is_other = this.state.is_other;
     const Div = styled.div`
       padding: 10px;
@@ -165,7 +165,10 @@ class Task extends React.Component {
     return (
       <ThemeProvider theme={theme}>
         <Div key={"task"}>
-          <h4>{this.state.task.order_key + ". " + this.state.task.label}</h4>
+          <h4>
+            {this.state.task.order_key + ". " + this.state.task.label}
+            {this.props.title !== undefined ? " in " + this.props.title : null}
+          </h4>
           <Form>
             {this.state.task.answers.length === 0 ? (
               <div key="age_1">
@@ -207,7 +210,11 @@ class Task extends React.Component {
                 <Form.Group key={index}>
                   <Row className="rows">
                     <Form.Control
-                      style={{ width: "16px", hight: "16px" }}
+                      style={{
+                        width: "16px",
+                        hight: "16px",
+                        position: "absolute",
+                      }}
                       type="checkbox"
                       key={index}
                       id={answer.answer_id} //answer_id
@@ -217,10 +224,17 @@ class Task extends React.Component {
                         this.setCheckboxTaskAnswer(e);
                       }}
                     />
+
                     <Form.Label
-                      style={{ position: "relative", padding: "6px" }}
+                      style={{
+                        position: "relative",
+                        padding: "6px",
+                        marginLeft: "15px",
+                        marginRight: "15px",
+                        marginTop: "1px",
+                      }}
                     >
-                      {"  " + answer.answer_content}
+                      {"          " + answer.answer_content}
                     </Form.Label>
                     {answer.value === "Other" ? (
                       <Form.Control
@@ -239,7 +253,11 @@ class Task extends React.Component {
                 <Form.Group key={index}>
                   <Row className="rows">
                     <Form.Control
-                      style={{ width: "16px", hight: "16px" }}
+                      style={{
+                        width: "16px",
+                        hight: "16px",
+                        position: "absolute",
+                      }}
                       type="radio"
                       key={index}
                       id={answer.answer_id} //answer_id
@@ -250,7 +268,13 @@ class Task extends React.Component {
                       }}
                     />
                     <Form.Label
-                      style={{ position: "relative", padding: "6px" }}
+                      style={{
+                        position: "relative",
+                        padding: "6px",
+                        marginLeft: "15px",
+                        marginRight: "15px",
+                        marginTop: "1px",
+                      }}
                     >
                       {"  " + answer.answer_content}
                     </Form.Label>

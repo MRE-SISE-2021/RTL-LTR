@@ -24,6 +24,12 @@ import rtl from "styled-components-rtl";
 ////---rtl
 import "./../../assets/scss/style.scss";
 
+////---notify
+import PNotify from "pnotify/dist/es/PNotify";
+import "pnotify/dist/es/PNotifyButtons";
+import "pnotify/dist/es/PNotifyConfirm";
+import "pnotify/dist/es/PNotifyCallbacks";
+
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 const Handle = Slider.Handle;
@@ -137,6 +143,12 @@ class FormsElements extends React.Component {
       this.setState({ taskId: data.task_id[0] });
     });
 
+    //notify user for saving answer
+    PNotify.success({
+      title: "Saved Successfully",
+      text: "to see changes go to preview!",
+    });
+
     ///show delete button
     this.setState({
       delete: false,
@@ -144,7 +156,7 @@ class FormsElements extends React.Component {
   };
 
   deleteData = () => {
-    //DELETE request -- delete task
+    // DELETE request -- delete task
     const { cookies } = this.props;
 
     //if the question was saved in DB -- > Delete from DB
@@ -161,6 +173,13 @@ class FormsElements extends React.Component {
         console.log(data); // JSON data parsed by `data.json()` call
       });
     }
+
+    //--notify
+    PNotify.notice({
+      title: "Deleted Successfully",
+      text: "to see changes go to preview!",
+    });
+
     //Call delete task from pareant component(Task)
     this.props.delete(this.state.keyOrder);
 
@@ -518,17 +537,22 @@ class FormsElements extends React.Component {
                         {/* <Col md={6}> */}
                         <Form.Group controlId="exampleForm.RangeInput">
                           <Rating
-                            initialRating={this.state.squareRating}
-                            emptySymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span>{n}</span>
-                              </span>
-                            ))}
-                            fullSymbol={[1, 2, 3, 4, 5].map((n) => (
-                              <span className="theme-bar-square">
-                                <span className="active">{n}</span>
-                              </span>
-                            ))}
+                            initialRating={4}
+                            stop={10}
+                            emptySymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+                              (n) => (
+                                <span className="theme-bar-square">
+                                  <span>{n}</span>
+                                </span>
+                              )
+                            )}
+                            fullSymbol={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+                              (n) => (
+                                <span className="theme-bar-square">
+                                  <span className="active">{n}</span>
+                                </span>
+                              )
+                            )}
                             onChange={(rate) =>
                               this.setState({ squareRating: rate })
                             }
@@ -650,7 +674,7 @@ class FormsElements extends React.Component {
                 </Col>
                 <ColStyled>
                   <Button
-                    style={{ border: "#00897B", backgroundColor: "#00897B" }}
+                    // style={{ border: "#00897B", backgroundColor: "#00897B" }}
                     variant="success"
                     onClick={this.sendData}
                     // disabled={this.state.deleteAll}

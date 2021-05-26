@@ -430,45 +430,42 @@ class PreviewPage extends Component {
           lang={this.state.lang}
           taskId={this.props.match.params.id}
         />
-
         <div className={mainClass.join(" ")}>
-          <Aux>
-            <Card
-              //border="primary"
-              style={{
-                //border: "2px solid ",
-                width: "90%",
-                marginTop: "8%",
-                marginLeft: "5%",
-                hight: "100%",
-              }}
-            >
-              <Card.Header className="text-center" style={{ fontSize: "30px" }}>
-                Preview
-              </Card.Header>
-              <Card.Body style={{ marginLeft: "3%", marginRight: "3%" }}>
-                <ListGroup.Item>
-                  {this.state.pageOfComponents.map((item, index) => (
-                    <div
-                      style={{
-                        marginBottom: "2%",
-                        padding: "1%",
-                      }}
-                      key={index}
-                    >
-                      {item}
-                    </div>
-                  ))}
-                  <Pagination
-                    items={this.state.inputList}
-                    onChangePage={this.onChangePage}
-                    pageSize={2}
-                    lang={this.state.lang}
-                  />
-                </ListGroup.Item>
-              </Card.Body>
-            </Card>
-          </Aux>
+          <Card
+            //border="primary"
+            style={{
+              //border: "2px solid ",
+              width: "90%",
+              marginTop: "8%",
+              marginLeft: "5%",
+              hight: "100%",
+            }}
+          >
+            <Card.Header className="text-center" style={{ fontSize: "30px" }}>
+              Preview
+            </Card.Header>
+            <Card.Body style={{ marginLeft: "3%", marginRight: "3%" }}>
+              <ListGroup.Item>
+                {this.state.pageOfComponents.map((item, index) => (
+                  <div
+                    style={{
+                      marginBottom: "2%",
+                      padding: "1%",
+                    }}
+                    key={index}
+                  >
+                    {item}
+                  </div>
+                ))}
+                <Pagination
+                  items={this.state.inputList}
+                  onChangePage={this.onChangePage}
+                  pageSize={2}
+                  lang={this.state.lang}
+                />
+              </ListGroup.Item>
+            </Card.Body>
+          </Card>
         </div>
       </Aux>
     );

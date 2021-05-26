@@ -42,12 +42,22 @@ span {
   /* left: 5%; */
 }
 p {
-  font-size: large;
+  font-size: 18px;
 }
-
-
-
+h4 {
+  font-size: 18px;
+  font-weight: bold;
+}
 .number {
   font-family: sans-serif;
   text-align: center;
+}
+
+Form.Control {
+  width: 100%;
+}
+Form.Label {
+  display: block;
+  overflow: hidden;
+  padding: 0 4px 0 6px;
 }
