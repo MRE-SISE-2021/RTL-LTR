@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import pandas as pd
 import collections
 import datetime as dt
 import random
@@ -7,9 +8,10 @@ import numpy as np
 
 from cryptography.fernet import Fernet
 from celery import shared_task
+from django.db import transaction
 
 from rtl_ltr.models import QuestionnaireParticipant, Answer, Proficiency, Participant, Questionnaire, Language, \
-    QuestionnaireTask, Image, Task, TaskImage, TaskAnswer
+    QuestionnaireTask, Image, Task, TaskImage, TaskAnswer, TaskParticipant
 from rtl_ltr.serializers import ParticipantSerializer, AnswerSerializer, ProficiencySerializer, \
     QuestionnaireParticipantSerializer, TaskParticipantSerializer, QuestionnaireSerializer, LanguageSerializer, \
     TaskSerializer, QuestionnaireTaskSerializer, ImageSerializer, TaskImageSerializer, TaskAnswerSerializer
@@ -18,6 +20,7 @@ from Back.settings import PROJECT_HOST
 
 
 @shared_task
+@transaction.atomic
 def get_questionnaires_table_task():
     try:
         queryset = Questionnaire.objects.all()
@@ -45,6 +48,7 @@ def get_questionnaires_table_task():
 
 
 @shared_task
+@transaction.atomic
 def get_questionnaire_by_hosted_link_task(request):
     try:
         fernet = Fernet(CRYPTO_KEY)
@@ -61,6 +65,7 @@ def get_questionnaire_by_hosted_link_task(request):
 
 
 @shared_task
+@transaction.atomic
 def get_questionnaire_task(questionnaire_id):
     participant_ids_list = []
 
@@ -68,7 +73,7 @@ def get_questionnaire_task(questionnaire_id):
     nums_dropped = 0
     ages = {}
     native_languages = {}
-    last_date = dt.datetime(1970, 1, 1)
+    last_date = None
 
     try:
         query_set = QuestionnaireParticipant.objects.filter(questionnaire_id=questionnaire_id)
@@ -82,7 +87,7 @@ def get_questionnaire_task(questionnaire_id):
                 nums_dropped += 1
             else:
                 test_completed = dt.datetime.strptime(quest_participant['test_completed'][:-1], '%Y-%m-%dT%H:%M:%S')
-                last_date = test_completed if test_completed > last_date else last_date
+                last_date = test_completed if last_date is not None and test_completed > last_date else last_date
             query_set = Participant.objects.filter(participant_id__in=participant_ids_list)
             data = ParticipantSerializer(query_set, many=True).data
 
@@ -139,6 +144,7 @@ def get_questionnaire_task(questionnaire_id):
 
 
 @shared_task
+@transaction.atomic
 def delete_task_from_questionnaire_task(data, id):
     try:
         # validate request
@@ -162,6 +168,7 @@ def delete_task_from_questionnaire_task(data, id):
 
 
 @shared_task
+@transaction.atomic
 def get_preview_data_task(language_id, questionnaire_id):
     try:
         questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=questionnaire_id)
@@ -193,6 +200,7 @@ def get_preview_data_task(language_id, questionnaire_id):
 
 
 @shared_task
+@transaction.atomic
 def insert_questionnaire_tasks_task(data):
     try:
         # lists of key-value {task_id: data}
@@ -280,6 +288,7 @@ def insert_questionnaire_tasks_task(data):
 
 
 @shared_task
+@transaction.atomic
 def update_questionnaire_tasks_task(data, questionnaire_id):
     try:
         # check if the questionnaire was already participated
@@ -375,6 +384,7 @@ def update_questionnaire_tasks_task(data, questionnaire_id):
 
 
 @shared_task
+@transaction.atomic
 def delete_questionnaire_tasks_task(questionnaire_id):
     try:
         # lists of key-value {task_id: data}
@@ -398,6 +408,7 @@ def delete_questionnaire_tasks_task(questionnaire_id):
 
 
 @shared_task
+@transaction.atomic
 def insert_participant_data_task(participant_id, data):
     try:
         rtl_counter = 0
@@ -638,7 +649,79 @@ def insert_participant_data_task(participant_id, data):
     return {"status": True}
 
 
+def get_csv_data_task():
+    dict = {}
+    # task_participant_query_set = TaskParticipant.objects.select_related('participant_id').select_related('participant_id')
+    # quest_participant_query_set = QuestionnaireParticipant.objects.select_related('participant_id')
+
+    query_set = Participant.objects.raw('select '
+                                        'Participant.ParticipantId as "ParticipantId", '
+                                        'Questionnaire.QuestionnaireName, '
+                                        'Task.Label as "TaskLabel", '
+                                        'Answer.AnswerContent, '
+                                        'TaskParticipant.SubmittedFreeAnswer, '
+                                        'Answer.Value, '
+                                        'ComponentType.ComponentType, '
+                                        'TaskParticipant.IsDemographic, '
+                                        'TaskParticipant.TaskDirection, '
+                                        'TaskParticipant.TaskClicks, '
+                                        'TaskParticipant.TaskErrors, '
+                                        'QuestionnaireParticipant.TestStarted, '
+                                        'QuestionnaireParticipant.TestCompleted, '
+                                        'QuestionnaireParticipant.TimeSpentSeconds, '
+                                        'Participant.QuestionnaireDirection as "QuestionnaireAligment", '
+                                        'Questionnaire.CreationDate, '
+                                        'Questionnaire.HostedLink, '
+                                        'Questionnaire.LanguageId as "Questionnaire_Language", '
+                                        'Questionnaire.QuestionnaireId, '
+                                        'TaskParticipant.TaskId, '
+                                        'TaskParticipant.AnswerId, '
+                                        'HciBackground.HciBackgroundDescription,'
+                                        'Participant.Age, '
+                                        'Participant.NativeLanguage, '
+                                        'Participant.LtrProficiency, '
+                                        'Participant.RtlProficiency, ' 
+                                        'Participant.DominantHandWriting, '
+                                        'Participant.DominantHandMobile, '
+                                        'Participant.DominantHandMouse, '
+                                        'Participant.DominantHandMode,'
+                                        'Participant.IsRtlSpeakers,'
+                                        'Participant.IsRtlInterface,'
+                                        'Participant.IsRtlPaperDocuments,'
+                                        'Participant.IsLtrSpeakers,'
+                                        'Participant.IsLtrInterface,'
+                                        'Participant.IsLtrPaperDocuments,'
+                                        'Participant.IsRtlAndLtrInterface,'
+                                        'Participant.OtherProfExperience,'
+                                        'Participant.IsRtlInterfacesExperience,'
+                                        'Participant.IsLtrInterfacesExperience,'
+                                        'Participant.OtherLanguageWorkingCharacteristics,'
+                                        'Participant.IsHciExperience,'
+                                        'Participant.Country,'
+                                        'Participant.OperatingSystem '
+                                        
+                                        'from Participant '
+                                        'inner join TaskParticipant on Participant.ParticipantId = TaskParticipant.ParticipantId '
+                                        'inner join QuestionnaireParticipant on QuestionnaireParticipant.ParticipantId = TaskParticipant.ParticipantId '
+                                        'inner join Task on TaskParticipant.TaskId = Task.TaskId '
+                                        'inner join Answer on TaskParticipant.AnswerId = Answer.AnswerId '
+                                        'inner join Questionnaire on QuestionnaireParticipant.QuestionnaireId = Questionnaire.QuestionnaireId '
+                                        'inner join ComponentType on ComponentType.ComponentTypeId = Task.ComponentTypeId '
+                                        'inner join HciBackground on HciBackground.HciBackgroundId = Participant.HciBackgroundId')
+
+    languages_raw = LanguageSerializer(Language.objects.filter(), many=True).data
+    languages = {}
+    for language in languages_raw:
+        languages[language['language_id']] = language['language_name']
+    df = pd.DataFrame([item.__dict__ for item in query_set])
+    df["Questionnaire_Language"].replace(languages, inplace=True)
+    df["native_language_id"].replace(languages, inplace=True)
+    df.drop(columns=['_state'], inplace=True)
+    return df
+
+
 @shared_task
+@transaction.atomic
 def insert_participant_task_data_task(request_data, id):
     task_participant_data = []
 
@@ -697,6 +780,7 @@ def insert_participant_task_data_task(request_data, id):
     return {"status": True}
 
 
+@transaction.atomic
 def insert_data_into_table(serializer, id_name=None):
     if serializer.is_valid():
         serializer.save()
@@ -709,6 +793,7 @@ def insert_data_into_table(serializer, id_name=None):
 
 # PUT QuestionnairePreviewAPIView
 # params: serializer
+@transaction.atomic
 def update_data_into_table(serializer):
     # update due serializer
     if serializer.is_valid():
@@ -735,6 +820,7 @@ def shuffle_tasks(tasks):
 
 # DELETE QuestionnairePreviewAPIView, delete_task_in_questionnaire
 # params: list of task ids
+@transaction.atomic
 def delete_tasks(task_ids):
     # lists of key-value {task_id: data}
     answer_ids = []
@@ -767,9 +853,12 @@ def delete_tasks(task_ids):
     except Exception as e:
         raise e
 
+    return {"status": True}
+
 
 # POST QuestionnairePreviewAPIView
 # insert answer and image to db and associate them with a task
+@transaction.atomic
 def insert_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer):
     try:
         # data exists in db
@@ -789,21 +878,12 @@ def insert_associate_task_data(association_task_id, data_list, data_id_name, ser
     except Exception as e:
         raise e
 
-
-# POST QuestionnairePreviewAPIView
-# params: serializer of a table and name of id field (to return the id of a new entity)
-def insert_data_into_table(serializer, id_name=None):
-    if serializer.is_valid():
-        serializer.save()
-    else:
-        raise Exception(serializer.errors)
-
-    # return id of new created entity if need
-    return serializer.data[id_name] if id_name is not None else -1
+    return {"status": True}
 
 
 # PUT QuestionnairePreviewAPIView
 # update answer and image in db or inset them and associate them with a task
+@transaction.atomic
 def update_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer,
                                model_name):
     data_id_list = []
@@ -862,9 +942,12 @@ def update_associate_task_data(association_task_id, data_list, data_id_name, ser
     except Exception as e:
         raise e
 
+    return {"status": True}
+
 
 # PUT QuestionnairePreviewAPIView
 # params: serializer
+@transaction.atomic
 def update_data_into_table(serializer):
     # update due serializer
     if serializer.is_valid():
