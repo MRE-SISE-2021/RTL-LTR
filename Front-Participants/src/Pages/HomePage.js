@@ -49,6 +49,7 @@ class HomePage extends Component {
       Div: "",
       const_theme: "",
       total_q4: 0,
+      is_free_answer: false,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onDemochange = this.onDemochange.bind(this);
@@ -164,7 +165,7 @@ class HomePage extends Component {
       }
     }
     if (order_key === 3) {
-      this.setDemoLangUI(checked, answer_id);
+      this.setDemoLangUI(checked, answer_id, free_answer);
     }
     if (order_key === 4) {
       this.onDemochange(task_id, order_key, answer_id, "check", true);
@@ -281,23 +282,30 @@ class HomePage extends Component {
   }
 
   //Question 4 according to question 3 answer
-  async setDemoLangUI(checked, answer_id) {
+  async setDemoLangUI(checked, answer_id, free_answer) {
     let value = "other";
-    await axiosInstance.get("/viewset/answer/" + answer_id).then(
-      (result) => {
-        console.log(result);
-        result = result.data;
-        value = result.answer_content;
-      },
-      (error) => {
-        console.log(error);
-        this.setState({
-          isLoaded: true,
-          error,
-        });
-      }
-    );
-    if (!checked) {
+    debugger;
+    if (answer_id > 0) {
+      await axiosInstance.get("/viewset/answer/" + answer_id).then(
+        (result) => {
+          console.log(result);
+          result = result.data;
+          value = result.answer_content;
+        },
+        (error) => {
+          console.log(error);
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        }
+      );
+    } else {
+      //not to duplicate q4 every change of free answer
+      this.setState({ is_free_answer: true });
+    }
+
+    if (!checked && checked !== undefined) {
       // debugger;
       var array = [...this.state.pageOfComponents]; // make a separate copy of the array
       var index = this.state.pageOfComponents.length;
@@ -320,7 +328,7 @@ class HomePage extends Component {
           total_q4: this.state.total_q4 - 1,
         });
       }
-    } else {
+    } else if (!this.state.is_free_answer) {
       // debugger;
       //add questions 3 to input list
       console.log("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
