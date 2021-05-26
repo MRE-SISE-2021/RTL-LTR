@@ -21,7 +21,9 @@ class ExperimentTable extends Component {
       isLoaded: false,
       items: [],
       isActive: null,
+      csvData: [],
     };
+    this.loadCsv = this.loadCsv.bind(this);
   }
 
   resize = () => {
@@ -61,6 +63,8 @@ class ExperimentTable extends Component {
         });
       }
     );
+    //Load Data of csv
+    this.loadCsv(this.state.chosen.questionnaire_id);
     this.resize();
     window.addEventListener("resize", this.resize);
     // this.handleClick();
@@ -87,8 +91,25 @@ class ExperimentTable extends Component {
     }
   };
 
-  sayHello() {
-    alert("Hello!");
+  async loadCsv(value) {
+    // load csv data
+    await axiosInstance.get(`/get-csv-data/${value}`).then(
+      (result) => {
+        console.log(result);
+        result = result.data;
+        this.setState({
+          isLoaded: true,
+          csvData: result,
+        });
+      },
+      (error) => {
+        console.log(error);
+        this.setState({
+          isLoaded: true,
+          error,
+        });
+      }
+    );
   }
 
   render() {
@@ -142,6 +163,9 @@ class ExperimentTable extends Component {
         }
       );
 
+      //Load Data of csv
+      this.loadCsv(value);
+
       //Remove the if statement if you don't want to unselect an already selected item
       if (index === this.state.isActive) {
         this.setState({
@@ -174,7 +198,10 @@ class ExperimentTable extends Component {
             overflowX: "hidden",
           }}
         >
-          <QuestionnaireInfo chosen={this.state.chosen} />
+          <QuestionnaireInfo
+            chosen={this.state.chosen}
+            csvData={this.state.csvData}
+          />
         </div>
 
         <div

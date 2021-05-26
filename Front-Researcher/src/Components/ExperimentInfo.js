@@ -11,9 +11,11 @@ import Aux from "../hoc/_Aux";
 import * as actionTypes from "../store/actions";
 import { withCookies } from "react-cookie";
 import copy from "copy-text-to-clipboard";
+import { CSVLink } from "react-csv";
 
 import "../styles/homePageStyle.css";
 import ComboChart from "./UI-Elements/ComboChart";
+import axiosInstance from "../axios";
 
 class ExperimentInfo extends Component {
   constructor(props) {
@@ -23,6 +25,7 @@ class ExperimentInfo extends Component {
       reload: false,
       edit: false,
       demographic: {},
+      csvData: [],
     };
     this.submitHandlerPreview = this.submitHandlerPreview.bind(this);
     this.submitHandlerDelete = this.submitHandlerDelete.bind(this);
@@ -225,8 +228,10 @@ class ExperimentInfo extends Component {
           </Col>
 
           <Col className="d-flex justify-content-lg-end" sm={4}>
-            <Button size="sm" variant="outline-*" disabled>
-              <MDBIcon icon="upload" />
+            <Button size="sm" variant="outline-*">
+              <CSVLink data={this.props.csvData}>
+                <MDBIcon icon="file-export" />
+              </CSVLink>
             </Button>
             <Button
               size="sm"
