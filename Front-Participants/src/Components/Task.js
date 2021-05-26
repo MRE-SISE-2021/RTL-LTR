@@ -167,7 +167,13 @@ class Task extends React.Component {
         <Div key={"task"}>
           <h4>
             {this.state.task.order_key + ". " + this.state.task.label}
-            {this.props.title !== undefined ? " in " + this.props.title : null}
+            {this.props.title !== undefined && this.props.lang === 2
+              ? " in " + this.props.title
+              : this.props.title !== undefined && this.props.lang === 4
+              ? " " + this.props.title
+              : this.props.title !== undefined
+              ? this.props.title
+              : null}
           </h4>
           <Form>
             {this.state.task.answers.length === 0 ? (

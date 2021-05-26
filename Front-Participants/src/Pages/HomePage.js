@@ -824,7 +824,7 @@ class HomePage extends Component {
                   </CompDiv>
                 ) : (
                   <Rating
-                    initialRating={4}
+                    // initialRating={4}
                     direction={compdirection}
                     id="rating"
                     stop={10}
