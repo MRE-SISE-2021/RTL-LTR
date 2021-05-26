@@ -578,7 +578,7 @@ class FormsElements extends React.Component {
                   <Form.Group>
                     <Form.Control
                       variant="primary"
-                      type="text"
+                      as="textarea"
                       placeholder={this.getLangQuestion()}
                       name="label"
                       value={this.state.label}

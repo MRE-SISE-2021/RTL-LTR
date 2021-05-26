@@ -49,7 +49,7 @@ class Input extends React.Component {
     }
     return (
       <Aux>
-        <Card title="Edit Page" isOption>
+        <Card title="Edit Page">
           {this.state.label === undefined ? (
             <AllCkEditor
               html={html}
