@@ -649,11 +649,7 @@ def insert_participant_data_task(participant_id, data):
     return {"status": True}
 
 
-def get_csv_data_task():
-    dict = {}
-    # task_participant_query_set = TaskParticipant.objects.select_related('participant_id').select_related('participant_id')
-    # quest_participant_query_set = QuestionnaireParticipant.objects.select_related('participant_id')
-
+def get_csv_data_task(quest_id):
     query_set = Participant.objects.raw('select '
                                         'Participant.ParticipantId as "ParticipantId", '
                                         'Questionnaire.QuestionnaireName, '
@@ -707,7 +703,8 @@ def get_csv_data_task():
                                         'inner join Answer on TaskParticipant.AnswerId = Answer.AnswerId '
                                         'inner join Questionnaire on QuestionnaireParticipant.QuestionnaireId = Questionnaire.QuestionnaireId '
                                         'inner join ComponentType on ComponentType.ComponentTypeId = Task.ComponentTypeId '
-                                        'inner join HciBackground on HciBackground.HciBackgroundId = Participant.HciBackgroundId')
+                                        'inner join HciBackground on HciBackground.HciBackgroundId = Participant.HciBackgroundId '
+                                        'where QuestionnaireParticipant.QuestionnaireId = %s', params=[quest_id])
 
     languages_raw = LanguageSerializer(Language.objects.filter(), many=True).data
     languages = {}

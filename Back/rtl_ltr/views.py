@@ -156,9 +156,9 @@ def get_questionnaire(request, id):
 # get list of questionnaire name for main page
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
-def get_csv_data(request):
+def get_csv_data(request, id):
     if request.method == "GET":
-        csv = get_csv_data_task()
+        csv = get_csv_data_task(id)
         csv_list = csv.values.tolist()
         csv_list.insert(0, list(csv.columns.values))
         return Response(csv_list, status=status.HTTP_200_OK)
