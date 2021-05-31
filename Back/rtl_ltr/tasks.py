@@ -676,7 +676,7 @@ def get_csv_data_task(quest_id):
                                         'Participant.Age, '
                                         'Participant.NativeLanguage, '
                                         'Participant.LtrProficiency, '
-                                        'Participant.RtlProficiency, ' 
+                                        'Participant.RtlProficiency, '
                                         'Participant.DominantHandWriting, '
                                         'Participant.DominantHandMobile, '
                                         'Participant.DominantHandMouse, '
@@ -695,7 +695,7 @@ def get_csv_data_task(quest_id):
                                         'Participant.IsHciExperience,'
                                         'Participant.Country,'
                                         'Participant.OperatingSystem '
-                                        
+
                                         'from Participant '
                                         'inner join TaskParticipant on Participant.ParticipantId = TaskParticipant.ParticipantId '
                                         'inner join QuestionnaireParticipant on QuestionnaireParticipant.ParticipantId = TaskParticipant.ParticipantId '
@@ -777,6 +777,18 @@ def insert_participant_task_data_task(request_data, id):
     return {"status": True}
 
 
+# POST QuestionnairePreviewAPIView
+# params: serializer of a table and name of id field (to return the id of a new entity)
+def insert_data_into_table(serializer, id_name=None):
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        raise Exception(serializer.errors)
+
+    # return id of new created entity if need
+    return serializer.data[id_name] if id_name is not None else -1
+
+
 @transaction.atomic
 def insert_data_into_table(serializer, id_name=None):
     if serializer.is_valid():
@@ -817,7 +829,6 @@ def shuffle_tasks(tasks):
 
 # DELETE QuestionnairePreviewAPIView, delete_task_in_questionnaire
 # params: list of task ids
-@transaction.atomic
 def delete_tasks(task_ids):
     # lists of key-value {task_id: data}
     answer_ids = []
@@ -850,12 +861,9 @@ def delete_tasks(task_ids):
     except Exception as e:
         raise e
 
-    return {"status": True}
-
 
 # POST QuestionnairePreviewAPIView
 # insert answer and image to db and associate them with a task
-@transaction.atomic
 def insert_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer):
     try:
         # data exists in db
@@ -875,12 +883,21 @@ def insert_associate_task_data(association_task_id, data_list, data_id_name, ser
     except Exception as e:
         raise e
 
-    return {"status": True}
+
+# POST QuestionnairePreviewAPIView
+# params: serializer of a table and name of id field (to return the id of a new entity)
+def insert_data_into_table(serializer, id_name=None):
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        raise Exception(serializer.errors)
+
+    # return id of new created entity if need
+    return serializer.data[id_name] if id_name is not None else -1
 
 
 # PUT QuestionnairePreviewAPIView
 # update answer and image in db or inset them and associate them with a task
-@transaction.atomic
 def update_associate_task_data(association_task_id, data_list, data_id_name, serializer, association_task_serializer,
                                model_name):
     data_id_list = []
@@ -939,12 +956,9 @@ def update_associate_task_data(association_task_id, data_list, data_id_name, ser
     except Exception as e:
         raise e
 
-    return {"status": True}
-
 
 # PUT QuestionnairePreviewAPIView
 # params: serializer
-@transaction.atomic
 def update_data_into_table(serializer):
     # update due serializer
     if serializer.is_valid():
