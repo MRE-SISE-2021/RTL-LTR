@@ -839,6 +839,7 @@ def delete_tasks(task_ids):
     # lists of key-value {task_id: data}
     answer_ids = []
     image_ids = []
+    participant_ids = []
 
     try:
         # get answer, image ids for the tasks
@@ -852,6 +853,10 @@ def delete_tasks(task_ids):
                 image_ids.append(ti.image_id_id)
                 ti.delete()
 
+            for tp in TaskParticipant.objects.filter(task_id=task_id):
+                participant_ids.append(tp.participant_id_id)
+                tp.delete()
+
             task_queryset = Task.objects.get(task_id=task_id)
             task_queryset.delete()
 
@@ -864,6 +869,11 @@ def delete_tasks(task_ids):
         for image_id in image_ids:
             for image_queryset in Image.objects.filter(image_id=image_id):
                 image_queryset.delete()
+
+        # for participant_id in participant_ids:
+        #     for participant_queryset in Participant.objects.filter(participant_id=participant_id):
+        #         participant_queryset.delete()
+
     except Exception as e:
         raise e
 
