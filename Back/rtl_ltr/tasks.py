@@ -11,7 +11,7 @@ from celery import shared_task
 from django.db import transaction
 
 from rtl_ltr.models import QuestionnaireParticipant, Answer, Proficiency, Participant, Questionnaire, Language, \
-    QuestionnaireTask, Image, Task, TaskImage, TaskAnswer, TaskParticipant
+    QuestionnaireTask, Image, Task, TaskImage, TaskAnswer, TaskParticipant, ParticipantLanguageProficiency
 from rtl_ltr.serializers import ParticipantSerializer, AnswerSerializer, ProficiencySerializer, \
     QuestionnaireParticipantSerializer, TaskParticipantSerializer, QuestionnaireSerializer, LanguageSerializer, \
     TaskSerializer, QuestionnaireTaskSerializer, ImageSerializer, TaskImageSerializer, TaskAnswerSerializer
@@ -391,11 +391,16 @@ def delete_questionnaire_tasks_task(questionnaire_id):
     try:
         # lists of key-value {task_id: data}
         task_ids = []
+        participant_ids = []
 
         # get queryset of questionnaire_task table by questionnaire_id
         for qt in QuestionnaireTask.objects.filter(questionnaire_id=questionnaire_id):
             task_ids.append(qt.task_id_id)
             qt.delete()
+
+        for qp in QuestionnaireParticipant.objects.filter(questionnaire_id=questionnaire_id):
+            participant_ids.append(qp.participant_id_id)
+            qp.delete()
 
         # get queryset of questionnaire table by questionnaire_id
         questionnaire_queryset = Questionnaire.objects.get(questionnaire_id=questionnaire_id)
@@ -403,6 +408,14 @@ def delete_questionnaire_tasks_task(questionnaire_id):
         # delete questionnaire by id from db Questionnaire table
         questionnaire_queryset.delete()
         delete_tasks(task_ids)
+
+        for participant_id in participant_ids:
+            for participant_queryset in ParticipantLanguageProficiency.objects.filter(participant_id=participant_id):
+                participant_queryset.delete()
+
+            # for participant_queryset in Participant.objects.filter(participant_id=participant_id):
+            #     participant_queryset.delete()
+
     except Exception as e:
         raise e
 
@@ -839,7 +852,6 @@ def delete_tasks(task_ids):
     # lists of key-value {task_id: data}
     answer_ids = []
     image_ids = []
-    participant_ids = []
 
     try:
         # get answer, image ids for the tasks
@@ -854,7 +866,6 @@ def delete_tasks(task_ids):
                 ti.delete()
 
             for tp in TaskParticipant.objects.filter(task_id=task_id):
-                participant_ids.append(tp.participant_id_id)
                 tp.delete()
 
             task_queryset = Task.objects.get(task_id=task_id)
@@ -869,10 +880,6 @@ def delete_tasks(task_ids):
         for image_id in image_ids:
             for image_queryset in Image.objects.filter(image_id=image_id):
                 image_queryset.delete()
-
-        # for participant_id in participant_ids:
-        #     for participant_queryset in Participant.objects.filter(participant_id=participant_id):
-        #         participant_queryset.delete()
 
     except Exception as e:
         raise e
