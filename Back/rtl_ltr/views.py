@@ -1,5 +1,8 @@
+from django.core.files.storage import FileSystemStorage
 from django.db import transaction
+from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
+from django.core import serializers as core_serializers
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -145,10 +148,20 @@ def get_questionnaire_by_hosted_link(request):
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
 def get_questionnaire(request, id):
-    questionnaire_data = {}
     if request.method == "GET":
         questionnaire_data = get_questionnaire_task(id)
         return Response(questionnaire_data, status=status.HTTP_200_OK)
+
+
+# get list of questionnaire name for main page
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def get_csv_data(request, id):
+    if request.method == "GET":
+        csv = get_csv_data_task(id)
+        csv_list = csv.values.tolist()
+        csv_list.insert(0, list(csv.columns.values))
+        return Response(csv_list, status=status.HTTP_200_OK)
 
 
 ####### DECORATORS DELETE #######
