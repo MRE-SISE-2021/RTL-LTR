@@ -87,7 +87,9 @@ def get_questionnaire_task(questionnaire_id):
                 nums_dropped += 1
             else:
                 test_completed = dt.datetime.strptime(quest_participant['test_completed'][:-1], '%Y-%m-%dT%H:%M:%S')
-                last_date = test_completed if last_date is not None and test_completed > last_date else last_date
+                if test_completed is not None and last_date is None:
+                    last_date = test_completed
+                last_date = test_completed if test_completed > last_date else last_date
             query_set = Participant.objects.filter(participant_id__in=participant_ids_list)
             data = ParticipantSerializer(query_set, many=True).data
 
@@ -711,9 +713,13 @@ def get_csv_data_task(quest_id):
     for language in languages_raw:
         languages[language['language_id']] = language['language_name']
     df = pd.DataFrame([item.__dict__ for item in query_set])
-    df["Questionnaire_Language"].replace(languages, inplace=True)
-    df["native_language_id"].replace(languages, inplace=True)
-    df.drop(columns=['_state'], inplace=True)
+
+    if "Questionnaire_Language" in df:
+        df["Questionnaire_Language"].replace(languages, inplace=True)
+    if "native_language_id" in df:
+        df["native_language_id"].replace(languages, inplace=True)
+    if "_state" in df:
+        df.drop(columns=['_state'], inplace=True)
     return df
 
 
