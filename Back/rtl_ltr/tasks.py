@@ -674,7 +674,7 @@ def get_csv_data_task(quest_id):
                                         'Questionnaire.QuestionnaireId, '
                                         'TaskParticipant.TaskId, '
                                         'TaskParticipant.AnswerId, '
-                                        'HciBackground.HciBackgroundDescription,'
+                                        #'HciBackground.HciBackgroundDescription,'
                                         'Participant.Age, '
                                         'Participant.NativeLanguage, '
                                         'Participant.LtrProficiency, '
@@ -705,7 +705,7 @@ def get_csv_data_task(quest_id):
                                         'inner join Answer on TaskParticipant.AnswerId = Answer.AnswerId '
                                         'inner join Questionnaire on QuestionnaireParticipant.QuestionnaireId = Questionnaire.QuestionnaireId '
                                         'inner join ComponentType on ComponentType.ComponentTypeId = Task.ComponentTypeId '
-                                        'inner join HciBackground on HciBackground.HciBackgroundId = Participant.HciBackgroundId '
+                                        # 'inner join HciBackground on HciBackground.HciBackgroundId = Participant.HciBackgroundId '
                                         'where QuestionnaireParticipant.QuestionnaireId = %s', params=[quest_id])
 
     languages_raw = LanguageSerializer(Language.objects.filter(), many=True).data
@@ -713,7 +713,7 @@ def get_csv_data_task(quest_id):
     for language in languages_raw:
         languages[language['language_id']] = language['language_name']
     df = pd.DataFrame([item.__dict__ for item in query_set])
-
+    df.fillna('', inplace=True)
     if "Questionnaire_Language" in df:
         df["Questionnaire_Language"].replace(languages, inplace=True)
     if "native_language_id" in df:
