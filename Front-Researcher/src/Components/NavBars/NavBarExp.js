@@ -192,7 +192,7 @@ class NavBar extends Component {
             className="navbar-collapse"
           >
             <span className="mr-2" style={{ color: "cornflowerblue" }}>
-              ExpName:{" "}
+              Name:{" "}
             </span>
 
             <span className="mr-4" style={{ color: "black" }}>

@@ -4,7 +4,10 @@ import NavBar from "./Components/NavBars/NavBar";
 
 function App() {
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={{ fontFamily: "Tahoma, Verdana, Segoe, sans-serif" }}
+    >
       <NavBar />
       <HomePage />
     </div>
