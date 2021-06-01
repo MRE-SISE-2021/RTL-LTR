@@ -77,7 +77,6 @@ class NewExperimentModal extends React.Component {
     }
     return (
       <Aux>
-        
         <Col className="d-flex justify-content-lg-end " sm={4}>
           <Button
             size="sm"
@@ -116,7 +115,7 @@ class NewExperimentModal extends React.Component {
               </Form.Group>
 
               <Form.Group controlId="formType">
-                <Form.Label>Direction</Form.Label>
+                <Form.Label>Alignment</Form.Label>
                 <Form.Control
                   as="select"
                   onChange={(event) =>
@@ -162,9 +161,8 @@ class NewExperimentModal extends React.Component {
                 </Col>
               </Form.Group>
               <Modal.Footer>
-                
                 <button
-                  style={{ border:"#1266F1" ,backgroundColor: "#1266F1"}}
+                  style={{ border: "#1266F1", backgroundColor: "#1266F1" }}
                   type="submit"
                   variant="success  "
                   className="btn btn-success   mr-auto"
