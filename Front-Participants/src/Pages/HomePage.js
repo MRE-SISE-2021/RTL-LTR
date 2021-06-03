@@ -50,7 +50,7 @@ class HomePage extends Component {
       const_theme: "",
       total_q4: 0,
       is_free_answer: false,
-      total_answer_comp: 2,
+      total_answer_comp: 2, //isrequired
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onDemochange = this.onDemochange.bind(this);
@@ -106,7 +106,7 @@ class HomePage extends Component {
     // update state with new page of items
     this.setState({
       pageOfComponents: pageOfComponents,
-      total_answer_comp: 0,
+      total_answer_comp: 0, //isrequired - updated every new page
     });
   }
 
@@ -151,7 +151,7 @@ class HomePage extends Component {
   }
   onUpdateDemoAnswer(answer) {
     this.setState({
-      total_answer_comp: 2,
+      total_answer_comp: 2, //isrequired -- not nedded for demographics
     });
     //input isnt correct?
     if (answer.isError !== undefined) {
