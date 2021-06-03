@@ -50,6 +50,7 @@ class HomePage extends Component {
       const_theme: "",
       total_q4: 0,
       is_free_answer: false,
+      total_answer_comp: 2,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onDemochange = this.onDemochange.bind(this);
@@ -103,7 +104,10 @@ class HomePage extends Component {
   }
   onChangePage(pageOfComponents) {
     // update state with new page of items
-    this.setState({ pageOfComponents: pageOfComponents });
+    this.setState({
+      pageOfComponents: pageOfComponents,
+      total_answer_comp: 0,
+    });
   }
 
   onCreateUser() {
@@ -146,6 +150,9 @@ class HomePage extends Component {
     });
   }
   onUpdateDemoAnswer(answer) {
+    this.setState({
+      total_answer_comp: 2,
+    });
     //input isnt correct?
     if (answer.isError !== undefined) {
       this.setState({ isError: answer.isError });
@@ -457,6 +464,10 @@ class HomePage extends Component {
   //value -- is answer id for (comp_type = checkbox/select/radio)
   onInputchange(id, type, value, direction, checked) {
     // debugger;
+
+    this.setState({
+      total_answer_comp: this.state.total_answer_comp + 1,
+    });
     //insert a question first vlaue
     if (this.state.answers[id] === undefined) {
       //answer_id -- radio + dropdown
@@ -991,7 +1002,9 @@ class HomePage extends Component {
                     pageSize={2}
                     is_next={
                       Object.keys(this.state.demo_answers).length ===
-                        this.state.total_answer && !this.state.isError
+                        this.state.total_answer &&
+                      !this.state.isError &&
+                      this.state.total_answer_comp >= 2
                     }
                     lang={this.state.lang}
                   />

@@ -206,15 +206,32 @@ class Pagination extends React.Component {
           </Button>
         ) : pager.currentPage < pager.totalPages - 1 ? (
           // <li>
-          <Button
-            style={{ width: "50%" }}
-            // className="item-page"
-            disabled={!this.props.is_next}
-            type="submit"
-            onClick={(e) => this.GetNextPage(e, pager)}
-          >
-            {this.getLangNext()}
-          </Button>
+          <div>
+            <Button
+              style={{ width: "50%" }}
+              // className="item-page"
+              disabled={!this.props.is_next}
+              type="submit"
+              onClick={(e) => this.GetNextPage(e, pager)}
+            >
+              {this.getLangNext()}
+            </Button>
+            {!this.props.is_next && this.props.lang === 1 ? (
+              <p style={{ color: "red" }}>
+                تأكد من إجابتك على جميع الأسئلة أعلاه!
+              </p>
+            ) : !this.props.is_next && this.props.lang === 2 ? (
+              <p style={{ color: "red" }}>
+                Make sure you answered all the questions above!
+              </p>
+            ) : !this.props.is_next && this.props.lang === 3 ? (
+              <p style={{ color: "red" }}>וודא כי ענית על כל השאלות לעיל!</p>
+            ) : !this.props.is_next && this.props.lang === 4 ? (
+              <p style={{ color: "red" }}>
+                Убедитесь, что ответили на все вопросы!
+              </p>
+            ) : null}
+          </div>
         ) : pager.currentPage < pager.totalPages ? (
           // </li>
           // <li>
