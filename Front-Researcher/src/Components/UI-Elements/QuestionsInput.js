@@ -63,6 +63,7 @@ class FormsElements extends React.Component {
       taskId: props.taskId,
       answersNum: 2,
       answers: props.answers || [],
+      images: props.images,
       settings: {
         is_direction_setting: props.is_direction_setting || "RTL",
         is_required_setting: props.is_required_setting || false,
@@ -103,7 +104,7 @@ class FormsElements extends React.Component {
             component_type_id: this.props.compTypeId,
             // direction: "RTL", ////////DELETE
             label: this.state.label,
-            images: [],
+            images: this.state.images,
             task_title: this.state.title,
             // is_required: true, ////////DELETE
             task_id: this.state.taskId,
@@ -123,7 +124,7 @@ class FormsElements extends React.Component {
             component_type_id: this.props.compTypeId,
             // direction: "RTL", ////////DELETE
             label: this.state.label,
-            images: [],
+            images: this.state.images,
             task_title: this.state.title,
             task_content: "", ////////?
             // is_required: true, ////////DELETE
@@ -592,6 +593,22 @@ class FormsElements extends React.Component {
                 </Col>
               </Row>
               {/* ///// */}
+              {this.state.settings.is_add_picture_setting ? (
+                <Row style={{ margin: "10px" }}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter the image URL"
+                    name="image"
+                    onChange={(event) =>
+                      this.setState({
+                        images: [{ image_url: event.target.value }],
+                      })
+                    }
+                    value={this.state.images}
+                  />
+                </Row>
+              ) : null}
+
               {this.props.compTypeId === 9 ||
               this.props.compTypeId === 10 ||
               this.props.compTypeId === 4 ||
@@ -623,20 +640,21 @@ class FormsElements extends React.Component {
                     checked={this.state.settings.is_direction_setting}
                   /> */}
                   <Form.Group
-                    // className=" mr-4"
-                    // style={{
-                    //   flexFlow: "inherit",
-                    //   marginTop: "1%",
-                    //   marginRight: "2%",
-                    // }}
-                    // onChange={this.onDirectionChange}
+                  // className=" mr-4"
+                  // style={{
+                  //   flexFlow: "inherit",
+                  //   marginTop: "1%",
+                  //   marginRight: "2%",
+                  // }}
+                  // onChange={this.onDirectionChange}
 
-                    onChange={this.setSettings}
+                  // onChange={this.setSettings}
                   >
                     <Form.Control
                       as="select"
                       value={this.state.settings.is_direction_setting}
                       id={"is_direction " + this.props.keyOrder}
+                      onChange={this.setSettings}
                     >
                       <option value="RTL">RTL</option>
                       <option value="LTR">LTR</option>
@@ -645,14 +663,14 @@ class FormsElements extends React.Component {
                   </Form.Group>
                 </Col>
                 <Col xs="auto">
-                  <Form.Check
+                  {/* <Form.Check
                     type="switch"
                     id={"is_required " + this.props.keyOrder}
                     label="is required"
                     // id="is_required"
                     onChange={this.setSettings}
                     checked={this.state.settings.is_required_setting}
-                  />
+                  /> */}
                   <Form.Check
                     type="switch"
                     id={"is_add_picture " + this.props.keyOrder}
