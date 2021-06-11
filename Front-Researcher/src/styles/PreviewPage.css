@@ -61,3 +61,7 @@ Form.Label {
   overflow: hidden;
   padding: 0 4px 0 6px;
 }
+img {
+  width: 200px;
+  height: 200px;
+}

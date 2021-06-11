@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./styles/Pagination.css";
 import { ProgressBar, Button } from "react-bootstrap";
-
+import GetByLang from "./langs/GetByLang";
 const propTypes = {
   items: PropTypes.array.isRequired,
   onChangePage: PropTypes.func.isRequired,
@@ -19,9 +19,6 @@ class Pagination extends React.Component {
   constructor(props) {
     super(props);
     this.state = { pager: {} };
-    this.getLangStart = this.getLangStart.bind(this);
-    this.getLangNext = this.getLangNext.bind(this);
-    this.getLangFinish = this.getLangFinish.bind(this);
   }
 
   componentWillMount() {
@@ -110,48 +107,6 @@ class Pagination extends React.Component {
       pages: pages,
     };
   }
-  getLangStart() {
-    switch (this.props.lang) {
-      case 1:
-        return "ابدأ";
-      case 2:
-        return "Start";
-      case 3:
-        return "להתחלה";
-      case 4:
-        return "Начать исследование";
-      default:
-        return "2";
-    }
-  }
-  getLangNext() {
-    switch (this.props.lang) {
-      case 1:
-        return "اكمل";
-      case 2:
-        return "Next";
-      case 3:
-        return "המשך";
-      case 4:
-        return "Далее";
-      default:
-        return "2";
-    }
-  }
-  getLangFinish() {
-    switch (this.props.lang) {
-      case 1:
-        return "انهاء";
-      case 2:
-        return "Finish";
-      case 3:
-        return "לסיום";
-      case 4:
-        return "Закончить";
-      default:
-        return "2";
-    }
-  }
   render() {
     var pager = this.state.pager;
     // console.log(pager);
@@ -166,37 +121,12 @@ class Pagination extends React.Component {
     return (
       <div>
         <div id="pagination">
-          {/* <ul id="pagination"> */}
-          {/* <li disabled={pager.currentPage === 1}>
-          <a className="item-page" onClick={() => this.setPage(1)}>
-            First
-          </a>
-        </li>
-        <li className={pager.currentPage === 1 ? "disabled" : ""}>
-          <a
-            className="item-page"
-            onClick={() => this.setPage(pager.currentPage - 1)}
-          >
-            Previous
-          </a>
-        </li> */}
-          {/* {pager.pages.map((page, index) => (
-          <li
-            key={index}
-            className={pager.currentPage === page ? "active" : ""}
-          >
-            <a className="item-page" onClick={() => this.setPage(page)}>
-              {page}
-            </a>
-          </li>
-        ))} */}
-
           {pager.currentPage === 1 ? (
             <Button
               style={{ width: "30%" }}
               onClick={() => this.setPage(pager.currentPage + 1)}
             >
-              {this.getLangStart()}
+              {GetByLang.getLangStart(this.props.lang)}
             </Button>
           ) : pager.currentPage < pager.totalPages - 1 ? (
             // <li>
@@ -205,7 +135,7 @@ class Pagination extends React.Component {
               // className="item-page"
               onClick={() => this.setPage(pager.currentPage + 1)}
             >
-              {this.getLangNext()}
+              {GetByLang.getLangNext(this.props.lang)}
             </Button>
           ) : pager.currentPage < pager.totalPages ? (
             // </li>
@@ -215,7 +145,7 @@ class Pagination extends React.Component {
               // className="item-page"
               onClick={() => this.setPage(pager.currentPage + 1)}
             >
-              {this.getLangFinish()}
+              {GetByLang.getLangFinish(this.props.lang)}
             </Button>
           ) : // </li>
           null}
@@ -242,29 +172,10 @@ class Pagination extends React.Component {
           label={`${Math.round(percentage)}%`}
           animated
         /> */}
-        {pager.currentPage > 2 &&
-        this.props.lang === 1 &&
-        pager.currentPage < pager.totalPages ? (
+        {pager.currentPage > 2 && pager.currentPage < pager.totalPages ? (
           <p style={{ textAlign: "center" }}>
-            صفحه {current} من {total - 1}
-          </p>
-        ) : pager.currentPage > 2 &&
-          this.props.lang === 2 &&
-          pager.currentPage < pager.totalPages ? (
-          <p style={{ textAlign: "center" }}>
-            Page {current} from {total - 1}
-          </p>
-        ) : pager.currentPage > 2 &&
-          this.props.lang === 3 &&
-          pager.currentPage < pager.totalPages ? (
-          <p style={{ textAlign: "center" }}>
-            עמוד {current} מתוך {total - 1}
-          </p>
-        ) : pager.currentPage > 2 &&
-          this.props.lang === 4 &&
-          pager.currentPage < pager.totalPages ? (
-          <p style={{ textAlign: "center" }}>
-            Страница {current} из {total - 1}
+            {GetByLang.getLangPage(this.props.lang)[0]} {current}{" "}
+            {GetByLang.getLangPage(this.props.lang)[1]} {total - 1}
           </p>
         ) : null}
       </div>
