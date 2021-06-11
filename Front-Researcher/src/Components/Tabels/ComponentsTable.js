@@ -65,7 +65,7 @@ class ComponentsTable extends Component {
             images={task.images}
           />
         );
-        // }
+        // }//sss
       });
     }
     this.setState({ inputList: inputListNew });
