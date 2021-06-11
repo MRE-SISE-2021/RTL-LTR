@@ -50,6 +50,7 @@ class HomePage extends Component {
       const_theme: "",
       total_q4: 0,
       is_free_answer: false,
+      total_answer_comp: 2, //isrequired
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onDemochange = this.onDemochange.bind(this);
@@ -103,7 +104,10 @@ class HomePage extends Component {
   }
   onChangePage(pageOfComponents) {
     // update state with new page of items
-    this.setState({ pageOfComponents: pageOfComponents });
+    this.setState({
+      pageOfComponents: pageOfComponents,
+      total_answer_comp: 0, //isrequired - updated every new page
+    });
   }
 
   onCreateUser() {
@@ -146,6 +150,9 @@ class HomePage extends Component {
     });
   }
   onUpdateDemoAnswer(answer) {
+    this.setState({
+      total_answer_comp: 2, //isrequired -- not nedded for demographics
+    });
     //input isnt correct?
     if (answer.isError !== undefined) {
       this.setState({ isError: answer.isError });
@@ -157,6 +164,7 @@ class HomePage extends Component {
     let task_id = parseInt(answer.task_id);
     let free_answer = answer.free_answer;
     let checked = answer.checked;
+    let lang_id = answer.lang_id;
     debugger;
     //value -- is answer id
     if (order_key === 9) {
@@ -168,7 +176,14 @@ class HomePage extends Component {
       this.setDemoLangUI(checked, answer_id, free_answer);
     }
     if (order_key === 4) {
-      this.onDemochange(task_id, order_key, answer_id, "check", true);
+      this.onDemochange(
+        task_id,
+        order_key,
+        answer_id,
+        "check-4",
+        true,
+        lang_id
+      );
       return;
     }
     //checkbox answer
@@ -198,7 +213,7 @@ class HomePage extends Component {
   }
 
   //change vlaue of demographics questions
-  onDemochange(id, order_key, value, type, checked) {
+  onDemochange(id, order_key, value, type, checked, lang_id) {
     //insert a question first vlaue
     if (this.state.demo_answers[id] === undefined) {
       //answer_id -- radio + dropdown
@@ -243,6 +258,22 @@ class HomePage extends Component {
         return;
       }
 
+      if (type === "check-4") {
+        this.setState({
+          demo_answers: {
+            ...this.state.demo_answers,
+            [id]: {
+              [lang_id]: {
+                // ...this.state.demo_answers[id][lang_id],
+                [value]: checked,
+              },
+              order_key: order_key,
+            },
+          },
+        });
+        return;
+      }
+
       //update regular questions
       this.setState({
         demo_answers: {
@@ -261,6 +292,9 @@ class HomePage extends Component {
         answers[id][value] = checked;
       } else if (type === "radio") {
         answers[id].answer_id = value;
+      }
+      if (type === "check-4") {
+        answers[id][lang_id] = { [value]: checked };
       } else {
         answers[id].submitted_free_answer = value;
       }
@@ -457,6 +491,10 @@ class HomePage extends Component {
   //value -- is answer id for (comp_type = checkbox/select/radio)
   onInputchange(id, type, value, direction, checked) {
     // debugger;
+
+    this.setState({
+      total_answer_comp: this.state.total_answer_comp + 1,
+    });
     //insert a question first vlaue
     if (this.state.answers[id] === undefined) {
       //answer_id -- radio + dropdown
@@ -758,6 +796,9 @@ class HomePage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"range" + index}>
                 <h4>{task.label}</h4>
+                {task.images[0] !== undefined ? (
+                  <img src={task.images[0].image_url} />
+                ) : null}
                 {task.component_type_id === 7 ? (
                   <CompDiv style={{ width: "35%" }}>
                     <Form.Control
@@ -872,6 +913,9 @@ class HomePage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
+                {task.images[0] !== undefined ? (
+                  <img src={task.images[0].image_url} />
+                ) : null}
                 <Form>
                   {task.answers.map((answer, index) => (
                     <CompDiv
@@ -920,6 +964,9 @@ class HomePage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
+                {task.images[0] !== undefined ? (
+                  <img src={task.images[0].image_url} />
+                ) : null}
                 {task.component_type_id === 9 ? (
                   <CompDiv style={{ width: "35%" }}>
                     <CounterInput
@@ -991,7 +1038,9 @@ class HomePage extends Component {
                     pageSize={2}
                     is_next={
                       Object.keys(this.state.demo_answers).length ===
-                        this.state.total_answer && !this.state.isError
+                        this.state.total_answer &&
+                      !this.state.isError &&
+                      this.state.total_answer_comp >= 2
                     }
                     lang={this.state.lang}
                   />

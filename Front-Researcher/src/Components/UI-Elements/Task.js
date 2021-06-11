@@ -90,6 +90,7 @@ class Task extends Component {
               is_required_setting={this.props.is_required_setting}
               lang={this.props.lang}
               delete={this.updateDelete}
+              images={this.props.images}
             />
           ),
         });

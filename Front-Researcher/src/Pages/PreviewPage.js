@@ -281,6 +281,9 @@ class PreviewPage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"range" + index}>
                 <h4>{task.label}</h4>
+                {task.images[0] !== undefined ? (
+                  <img src={task.images[0].image_url} />
+                ) : null}
                 {task.component_type_id === 7 ? (
                   <CompDiv style={{ width: "35%" }}>
                     <Form.Control as="select">
@@ -351,6 +354,9 @@ class PreviewPage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
+                {task.images[0] !== undefined ? (
+                  <img src={task.images[0].image_url} />
+                ) : null}
                 <Form>
                   {task.answers.map((answer, index) => (
                     <CompDiv
@@ -390,6 +396,9 @@ class PreviewPage extends Component {
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
                 <h4>{task.label}</h4>
+                {task.images[0] !== undefined ? (
+                  <img src={task.images[0].image_url} />
+                ) : null}
                 {task.component_type_id === 9 ? (
                   <CompDiv style={{ width: "35%" }}>
                     <CounterInput
