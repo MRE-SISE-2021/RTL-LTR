@@ -109,7 +109,6 @@ def get_questionnaire_task(questionnaire_id):
         other_lang = {}
         for key in native_languages:
             language_id = -1
-            # TODO: Change the architecture
             if key is None:
                 for language in languages:
                     if language['language_name'] == 'Other':
