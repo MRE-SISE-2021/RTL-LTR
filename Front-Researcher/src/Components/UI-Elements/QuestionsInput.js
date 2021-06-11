@@ -605,6 +605,7 @@ class FormsElements extends React.Component {
                       })
                     }
                     value={
+                      this.state.images !== undefined &&
                       this.state.images[0] !== undefined
                         ? this.state.images[0].image_url
                         : null
