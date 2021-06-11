@@ -1,0 +1,2 @@
+[run]
+omit = rtl_ltr/migrations/*, rtl_ltr/tests/*, rtl_ltr/urls.py
