@@ -214,7 +214,7 @@ class NavBar extends Component {
             </span>
 
             <span className="mr-2" style={{ color: "cornflowerblue" }}>
-              Direction:{" "}
+              Alignment:{" "}
             </span>
             <Form.Group
               className=" mr-4"
