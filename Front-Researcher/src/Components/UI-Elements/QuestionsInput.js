@@ -604,7 +604,11 @@ class FormsElements extends React.Component {
                         images: [{ image_url: event.target.value }],
                       })
                     }
-                    value={this.state.images}
+                    value={
+                      this.state.images[0] !== undefined
+                        ? this.state.images[0].image_url
+                        : null
+                    }
                   />
                 </Row>
               ) : null}

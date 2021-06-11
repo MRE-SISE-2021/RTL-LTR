@@ -62,12 +62,10 @@ class ComponentsTable extends Component {
             is_required_setting={task.is_required_setting}
             lang={this.props.lang}
             updateDelete={this.updateDelete}
-            images={
-              task.images[0] !== undefined ? task.images[0].image_url : []
-            }
+            images={task.images}
           />
         );
-        // }
+        // }//sss
       });
     }
     this.setState({ inputList: inputListNew });
