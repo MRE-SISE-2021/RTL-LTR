@@ -124,5 +124,5 @@ urlpatterns = [
     path('participant-data/<int:id>', ParticipantAPIView.as_view()),
 
     # for inserting demos to db
-    path('demo-task-post', demo_task_post),
+    # path('demo-task-post', demo_task_post),
 ]
