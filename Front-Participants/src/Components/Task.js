@@ -91,7 +91,7 @@ class Task extends React.Component {
       order_key: order_key,
       task_id: this.state.task_id,
       index: index,
-      lang_id: this.props.title,
+      lang_id: this.props.lang_id,
     });
   }
 

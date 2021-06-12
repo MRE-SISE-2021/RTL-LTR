@@ -318,6 +318,7 @@ class HomePage extends Component {
   //Question 4 according to question 3 answer
   async setDemoLangUI(checked, answer_id, free_answer) {
     let value = "other";
+    let lang_id = "1";
     debugger;
     if (answer_id > 0) {
       await axiosInstance.get("/viewset/answer/" + answer_id).then(
@@ -325,6 +326,7 @@ class HomePage extends Component {
           console.log(result);
           result = result.data;
           value = result.answer_content;
+          lang_id = result.value;
         },
         (error) => {
           console.log(error);
@@ -389,6 +391,7 @@ class HomePage extends Component {
                   onChange={this.onUpdateDemoAnswer}
                   answers={this.state.demo_answers}
                   title={value}
+                  lang_id={lang_id}
                 />
               </Div>
             </ThemeProvider>
