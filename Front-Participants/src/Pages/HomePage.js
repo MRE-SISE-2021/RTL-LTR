@@ -353,7 +353,7 @@ class HomePage extends Component {
         if (this.state.total_q4 == 1) {
           this.setState({
             pageOfComponents: array,
-            total_answer: this.state.total_answer - 1,
+            // total_answer: this.state.total_answer - 1,
             total_q4: this.state.total_q4 + 1,
           });
           return;
