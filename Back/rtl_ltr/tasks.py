@@ -12,7 +12,8 @@ from celery import shared_task
 from django.db import transaction
 from django.contrib.auth.models import User
 from rtl_ltr.models import QuestionnaireParticipant, Answer, Proficiency, Participant, Questionnaire, Language, \
-    QuestionnaireTask, Image, Task, TaskImage, TaskAnswer, TaskParticipant, ParticipantLanguageProficiency
+    QuestionnaireTask, Image, Task, TaskImage, TaskAnswer, TaskParticipant, ParticipantLanguageProficiency, \
+    UsersLoginLog
 from rtl_ltr.serializers import ParticipantSerializer, AnswerSerializer, ProficiencySerializer, \
     QuestionnaireParticipantSerializer, TaskParticipantSerializer, QuestionnaireSerializer, LanguageSerializer, \
     TaskSerializer, QuestionnaireTaskSerializer, ImageSerializer, TaskImageSerializer, TaskAnswerSerializer, \
@@ -23,7 +24,7 @@ from Back.settings import PROJECT_HOST
 
 @shared_task
 @transaction.atomic
-def get_questionnaires_table_task():
+def get_questionnaires_table_task(user):
     try:
         queryset = Questionnaire.objects.all()
         quest_data = list(QuestionnaireSerializer(queryset, many=True).data)
@@ -32,8 +33,8 @@ def get_questionnaires_table_task():
         quest_ids_counts_dict = {}
 
         # New user
-        # users = list(User.objects.all().order_by('last_login'))
-        # last_login = utc_to_local_datetime(users[-1].last_login.replace(tzinfo=None))
+        users = list(UsersLoginLog.objects.all().order_by('login_date'))
+        last_login = utc_to_local_datetime(users[-2].login_date.replace(tzinfo=None))
 
         for quest in quest_data:
             count_new_users = 0
@@ -41,18 +42,18 @@ def get_questionnaires_table_task():
             quest_ids_counts_dict[quest['questionnaire_id']] = [0, 0]
 
             # New Users
-            # query_set = QuestionnaireParticipant.objects.filter(questionnaire_id=quest['questionnaire_id'])
-            # quest_participants = QuestionnaireParticipantSerializer(query_set, many=True).data
-            # for quest_participant in quest_participants:
-            #     date_format = '%Y-%m-%dT%H:%M:%S.%f'
-            #     if '.' not in quest_participant['test_started'][:-1]:
-            #         date_format = '%Y-%m-%dT%H:%M:%S'
-            #     test_started = dt.datetime.strptime(quest_participant['test_started'][:-1], date_format)
-            #     if test_started is None or last_login is None:
-            #         continue
-            #     if test_started.replace(tzinfo=None) > last_login.replace(tzinfo=None):
-            #         count_new_users += 1
-            # quest_ids_counts_dict[quest['questionnaire_id']][1] = count_new_users
+            query_set = QuestionnaireParticipant.objects.filter(questionnaire_id=quest['questionnaire_id'])
+            quest_participants = QuestionnaireParticipantSerializer(query_set, many=True).data
+            for quest_participant in quest_participants:
+                date_format = '%Y-%m-%dT%H:%M:%S.%f'
+                if '.' not in quest_participant['test_started'][:-1]:
+                    date_format = '%Y-%m-%dT%H:%M:%S'
+                test_started = dt.datetime.strptime(quest_participant['test_started'][:-1], date_format)
+                if test_started is None or last_login is None:
+                    continue
+                if test_started.replace(tzinfo=None) > last_login.replace(tzinfo=None):
+                    count_new_users += 1
+            quest_ids_counts_dict[quest['questionnaire_id']][1] = count_new_users
 
         query_set = QuestionnaireParticipant.objects.filter(questionnaire_id__in=quest_ids_list)
         data = QuestionnaireParticipantSerializer(query_set, many=True).data
@@ -108,7 +109,10 @@ def get_questionnaire_task(questionnaire_id):
             if quest_participant['test_completed'] is None:
                 nums_dropped += 1
             else:
-                test_completed = dt.datetime.strptime(quest_participant['test_completed'][:-1], '%Y-%m-%dT%H:%M:%S')
+                date_format = '%Y-%m-%dT%H:%M:%S.%f'
+                if '.' not in quest_participant['test_completed']:
+                    date_format = '%Y-%m-%dT%H:%M:%S'
+                test_completed = dt.datetime.strptime(quest_participant['test_completed'][:-1], date_format)
                 if test_completed is not None and last_date is None:
                     last_date = test_completed
                 last_date = test_completed if test_completed > last_date else last_date

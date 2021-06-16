@@ -129,8 +129,13 @@ class TaskImageViewSet(viewsets.ModelViewSet):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_questionnaires_table(request):
+    try:
+        UsersLoginLog.objects.create(user_id=request.user.id.real, login_date=request.user.last_login)
+    except Exception:
+        pass
+
     if request.method == "GET":
-        quest_data = get_questionnaires_table_task()
+        quest_data = get_questionnaires_table_task(request.user)
         return Response(quest_data, status=status.HTTP_200_OK)
 
 
