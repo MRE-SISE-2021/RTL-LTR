@@ -203,7 +203,7 @@ class QuestionnaireParticipant(models.Model):
     participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
     test_started = models.DateTimeField(db_column='TestStarted')
     test_completed = models.DateTimeField(db_column='TestCompleted', null=True)
-    time_spent_seconds = models.IntegerField(db_column='TimeSpentSeconds', null=True)
+    time_spent_seconds = models.FloatField(db_column='TimeSpentSeconds', null=True)
     satisfaction = models.TextField(db_column='Satisfaction', null=True)
 
     class Meta:
@@ -239,3 +239,13 @@ class TaskAnswer(models.Model):
     class Meta:
         db_table = 'TaskAnswer'
         unique_together = (('task_id', 'answer_id'),)
+
+
+class UsersLoginLog(models.Model):
+    users_login_log_id = models.AutoField(db_column='UsersLoginLogId', primary_key=True)
+    user_id = models.IntegerField(db_column='UserId')
+    login_date = models.DateTimeField(db_column='LoginDate')
+
+    class Meta:
+        db_table = 'UsersLoginLog'
+        unique_together = (('user_id', 'login_date'),)
