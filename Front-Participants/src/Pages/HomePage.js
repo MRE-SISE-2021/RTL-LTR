@@ -43,7 +43,7 @@ class HomePage extends Component {
       demographic: props.data.demographic,
       demo_answers: {},
       answers: {},
-      total_answer: props.data.demographic_task.length - 4,
+      total_answer: props.data.demographic_task.length - 3,
       isError: true,
       statsInfo: {},
       Div: "",
@@ -96,7 +96,7 @@ class HomePage extends Component {
       direction: propsIncoming.data.direction,
       demographic_task: propsIncoming.data.demographic_task,
       demographic: propsIncoming.data.demographic,
-      total_answer: propsIncoming.data.demographic_task.length - 4,
+      total_answer: propsIncoming.data.demographic_task.length - 3,
     });
     console.log(this.state);
 
@@ -118,7 +118,7 @@ class HomePage extends Component {
       // questionnaire_id: "1", //
       statsInfo: this.state.statsInfo,
       hash: this.props.hosted_link,
-      test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
+      test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS"),
     };
     console.log(response);
     API.postRequest("participant-data", response).then((data) => {
@@ -137,7 +137,7 @@ class HomePage extends Component {
       // test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     if (final !== undefined) {
-      response.test_completed = format(new Date(), "yyyy-MM-dd kk:mm:ss");
+      response.test_completed = format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS");
     }
     this.setState({ answers: {} });
     console.log(response);
@@ -350,14 +350,14 @@ class HomePage extends Component {
         this.setState({
           demo_answers: this.deleteFromArray(this.state.demo_answers, 4),
         });
-        if (this.state.total_q4 == 1) {
-          this.setState({
-            pageOfComponents: array,
-            // total_answer: this.state.total_answer - 1,
-            total_q4: this.state.total_q4 + 1,
-          });
-          return;
-        }
+        // if (this.state.total_q4 == 1) {
+        //   this.setState({
+        //     pageOfComponents: array,
+        //     // total_answer: this.state.total_answer - 1,
+        //     total_q4: this.state.total_q4 + 1,
+        //   });
+        //   return;
+        // }
         this.setState({
           pageOfComponents: array,
           // total_answer: this.state.total_answer - 1,
@@ -404,7 +404,7 @@ class HomePage extends Component {
       // console.log(inputList);
 
       // 5. Set the state to our new copy
-      if (this.state.total_q4 > 0) {
+      if (this.state.total_q4 >= 0) {
         this.setState({
           pageOfComponents: new_inputList,
           // total_answer: this.state.total_answer + 1,
@@ -495,11 +495,11 @@ class HomePage extends Component {
   onInputchange(id, type, value, direction, checked) {
     // debugger;
 
-    this.setState({
-      total_answer_comp: this.state.total_answer_comp + 1,
-    });
     //insert a question first vlaue
     if (this.state.answers[id] === undefined) {
+      this.setState({
+        total_answer_comp: this.state.total_answer_comp + 1,
+      });
       //answer_id -- radio + dropdown
       if (type === 3 || type === 7) {
         this.setState({
@@ -510,6 +510,7 @@ class HomePage extends Component {
               answer_id: value,
               task_direction: direction,
               task_clicks: 1,
+              task_time: format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS"),
             },
           },
         });
@@ -526,6 +527,7 @@ class HomePage extends Component {
               [value]: checked,
               task_direction: direction,
               task_clicks: 1,
+              task_time: format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS"),
             },
           },
         });
@@ -541,6 +543,7 @@ class HomePage extends Component {
             submitted_free_answer: value,
             task_direction: direction,
             task_clicks: 1,
+            task_time: format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS"),
           },
         },
       });
@@ -550,6 +553,7 @@ class HomePage extends Component {
       answers[id].comp_type = type;
       answers[id].task_direction = direction;
       answers[id].task_clicks = answers[id].task_clicks + 1;
+      answers[id].task_time = format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS");
       if (type === 8) {
         answers[id][value] = checked;
       } else if (type === 3 || type === 7) {
@@ -1040,7 +1044,7 @@ class HomePage extends Component {
                     onUpdateUser={this.onUpdateUser}
                     pageSize={2}
                     is_next={
-                      Object.keys(this.state.demo_answers).length ===
+                      Object.keys(this.state.demo_answers).length >=
                         this.state.total_answer &&
                       !this.state.isError &&
                       this.state.total_answer_comp >= 2
