@@ -32,8 +32,8 @@ def get_questionnaires_table_task():
         quest_ids_counts_dict = {}
 
         # New user
-        users = list(User.objects.all().order_by('last_login'))
-        last_login = utc_to_local_datetime(users[-1].last_login.replace(tzinfo=None))
+        # users = list(User.objects.all().order_by('last_login'))
+        # last_login = utc_to_local_datetime(users[-1].last_login.replace(tzinfo=None))
 
         for quest in quest_data:
             count_new_users = 0
@@ -41,18 +41,18 @@ def get_questionnaires_table_task():
             quest_ids_counts_dict[quest['questionnaire_id']] = [0, 0]
 
             # New Users
-            query_set = QuestionnaireParticipant.objects.filter(questionnaire_id=quest['questionnaire_id'])
-            quest_participants = QuestionnaireParticipantSerializer(query_set, many=True).data
-            for quest_participant in quest_participants:
-                date_format = '%Y-%m-%dT%H:%M:%S.%f'
-                if '.' not in quest_participant['test_started'][:-1]:
-                    date_format = '%Y-%m-%dT%H:%M:%S'
-                test_started = dt.datetime.strptime(quest_participant['test_started'][:-1], date_format)
-                if test_started is None or last_login is None:
-                    continue
-                if test_started.replace(tzinfo=None) > last_login.replace(tzinfo=None):
-                    count_new_users += 1
-            quest_ids_counts_dict[quest['questionnaire_id']][1] = count_new_users
+            # query_set = QuestionnaireParticipant.objects.filter(questionnaire_id=quest['questionnaire_id'])
+            # quest_participants = QuestionnaireParticipantSerializer(query_set, many=True).data
+            # for quest_participant in quest_participants:
+            #     date_format = '%Y-%m-%dT%H:%M:%S.%f'
+            #     if '.' not in quest_participant['test_started'][:-1]:
+            #         date_format = '%Y-%m-%dT%H:%M:%S'
+            #     test_started = dt.datetime.strptime(quest_participant['test_started'][:-1], date_format)
+            #     if test_started is None or last_login is None:
+            #         continue
+            #     if test_started.replace(tzinfo=None) > last_login.replace(tzinfo=None):
+            #         count_new_users += 1
+            # quest_ids_counts_dict[quest['questionnaire_id']][1] = count_new_users
 
         query_set = QuestionnaireParticipant.objects.filter(questionnaire_id__in=quest_ids_list)
         data = QuestionnaireParticipantSerializer(query_set, many=True).data
