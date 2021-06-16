@@ -32,7 +32,9 @@ class NavBar extends Component {
     const handleClick = () => {
       this.setState({ toLogin: true });
       inMemoryToken.ereaseToken();
-      cookies.remove("refresh_token");
+      //debugger;
+      document.cookie = document.cookie.replace(/refresh_token=[^;\s]+/g, '')
+      //document.cookie.remove("refresh_token");
     };
 
     let headerClass = [

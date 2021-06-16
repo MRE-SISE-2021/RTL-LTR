@@ -13,112 +13,111 @@ from .tasks import *
 
 ####### MODEL VIEWSETS #######
 # Component
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class ComponentTypeViewSet(viewsets.ModelViewSet):
     serializer_class = ComponentTypeSerializer
     queryset = ComponentType.objects.all()
 
 
 # HciBackground
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class HciBackgroundViewSet(viewsets.ModelViewSet):
     serializer_class = HciBackgroundSerializer
     queryset = HciBackground.objects.all()
 
 
 # Image
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class ImageViewSet(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
 
 
 # Language
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class LanguageViewSet(viewsets.ModelViewSet):
     serializer_class = LanguageSerializer
     queryset = Language.objects.all()
 
 
 # QuestionnaireType
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class QuestionnaireTypeViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireTypeSerializer
     queryset = QuestionnaireType.objects.all()
 
 
 # Task
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
 
 # Participant
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class ParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = ParticipantSerializer
     queryset = Participant.objects.all()
 
 
 # Proficiency
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class ProficiencyViewSet(viewsets.ModelViewSet):
     serializer_class = ProficiencySerializer
     queryset = Proficiency.objects.all()
 
 
 # Answer
-# @permission_classes([IsAuthenticated])
 class AnswerViewSet(viewsets.ModelViewSet):
     serializer_class = AnswerSerializer
     queryset = Answer.objects.all()
 
 
 # TaskAnswer
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class TaskAnswerViewSet(viewsets.ModelViewSet):
     serializer_class = TaskAnswerSerializer
     queryset = TaskAnswer.objects.all()
 
 
 # ParticipantLanguageProficiency
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class ParticipantLanguageProficiencyViewSet(viewsets.ModelViewSet):
     serializer_class = ParticipantLanguageProficiencySerializer
     queryset = ParticipantLanguageProficiency.objects.all()
 
 
 # TaskParticipant
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class TaskParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = TaskParticipantSerializer
     queryset = TaskParticipant.objects.all()
 
 
 # Questionnaire
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class QuestionnaireViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireSerializer
     queryset = Questionnaire.objects.all()
 
 
 # QuestionnaireParticipant
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class QuestionnaireParticipantViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireParticipantSerializer
     queryset = QuestionnaireParticipant.objects.all()
 
 
 # QuestionnaireTask
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class QuestionnaireTaskViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionnaireTaskSerializer
     queryset = QuestionnaireTask.objects.all()
 
 
 # TaskImage
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 class TaskImageViewSet(viewsets.ModelViewSet):
     serializer_class = TaskImageSerializer
     queryset = TaskImage.objects.all()
@@ -128,7 +127,7 @@ class TaskImageViewSet(viewsets.ModelViewSet):
 
 # get list of questionnaire name for main page
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_questionnaires_table(request):
     if request.method == "GET":
         quest_data = get_questionnaires_table_task()
@@ -137,7 +136,6 @@ def get_questionnaires_table(request):
 
 # get list of questionnaire name for main page
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
 def get_questionnaire_by_hosted_link(request):
     if request.method == "GET":
         request_language_tuple = get_questionnaire_by_hosted_link_task(request)
@@ -146,7 +144,7 @@ def get_questionnaire_by_hosted_link(request):
 
 # get list of questionnaire name for main page
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_questionnaire(request, id):
     if request.method == "GET":
         questionnaire_data = get_questionnaire_task(id)
@@ -155,7 +153,7 @@ def get_questionnaire(request, id):
 
 # get list of questionnaire name for main page
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_csv_data(request, id):
     if request.method == "GET":
         csv = get_csv_data_task(id)
@@ -167,7 +165,7 @@ def get_csv_data(request, id):
 ####### DECORATORS DELETE #######
 # DELETE task from questionnaire
 @api_view(['DELETE'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def delete_task_from_questionnaire(request, id):
     delete_task_from_questionnaire_task(request.data, id)
     return Response(status=status.HTTP_204_NO_CONTENT)
@@ -175,10 +173,11 @@ def delete_task_from_questionnaire(request, id):
 
 ####### CLASS BASED VIEWS #######
 
-# @permission_classes([IsAuthenticated])
+
 class QuestionnairePreviewAPIView(APIView):
     # get preview data for home page of a questionnaire by questionnaire_id
     @staticmethod
+    @permission_classes([IsAuthenticated])
     def get(request, id):
         # get queryset of questionnaire table by questionnaire_id
         preview_data = get_preview_data_task(request.GET.get('language', ''), id)
@@ -186,6 +185,7 @@ class QuestionnairePreviewAPIView(APIView):
 
     # Save new questionnaire to db (with tasks, answers, images)
     @transaction.atomic
+    @permission_classes([IsAuthenticated])
     def post(self, request):
         questionnaire_id = insert_questionnaire_tasks_task(request.data)
         return Response({'questionnaire_id': questionnaire_id}, status=status.HTTP_201_CREATED)
@@ -197,6 +197,7 @@ class QuestionnairePreviewAPIView(APIView):
                          'task_id': ids_questionnaire_tasks_tuple[1]}, status=status.HTTP_200_OK)
 
     @transaction.atomic
+    @permission_classes([IsAuthenticated])
     def delete(self, request, id):
         delete_questionnaire_tasks_task(id)
         return Response(status=status.HTTP_204_NO_CONTENT)

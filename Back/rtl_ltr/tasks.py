@@ -9,7 +9,7 @@ import numpy as np
 from cryptography.fernet import Fernet
 from celery import shared_task
 from django.db import transaction
-
+from django.contrib.auth.models import User
 from rtl_ltr.models import QuestionnaireParticipant, Answer, Proficiency, Participant, Questionnaire, Language, \
     QuestionnaireTask, Image, Task, TaskImage, TaskAnswer, TaskParticipant, ParticipantLanguageProficiency
 from rtl_ltr.serializers import ParticipantSerializer, AnswerSerializer, ProficiencySerializer, \
@@ -29,9 +29,24 @@ def get_questionnaires_table_task():
 
         quest_ids_list = []
         quest_ids_counts_dict = {}
+
+        # New user
+        users = list(User.objects.all().order_by('last_login'))
+        last_login = users[-1].last_login
+
         for quest in quest_data:
+            count_new_users = 0
             quest_ids_list.append(quest['questionnaire_id'])
             quest_ids_counts_dict[quest['questionnaire_id']] = [0, 0]
+
+            # New Users
+            query_set = QuestionnaireParticipant.objects.filter(questionnaire_id=quest['questionnaire_id'])
+            quest_participants = QuestionnaireParticipantSerializer(query_set, many=True).data
+            for quest_participant in quest_participants:
+                test_started = dt.datetime.strptime(quest_participant['test_started'][:-1], '%Y-%m-%dT%H:%M:%S')
+                if test_started.replace(tzinfo=None) > last_login.replace(tzinfo=None):
+                    count_new_users += 1
+            quest['new_users'] = count_new_users
 
         query_set = QuestionnaireParticipant.objects.filter(questionnaire_id__in=quest_ids_list)
         data = QuestionnaireParticipantSerializer(query_set, many=True).data
@@ -420,7 +435,8 @@ def insert_participant_data_task(participant_id, data):
 
                 prof_id = ProficiencySerializer(
                     Proficiency.objects.get(proficiency_description='Native language')).data['proficiency_id']
-                language_id_proficiency_dict[int(answer['value'])] = prof_id
+                if answer['value'] != 'Other':
+                    language_id_proficiency_dict[int(answer['value'])] = prof_id
 
             elif order_key == 3:  # "What other languages do you know (you can choose several options)?"
                 answer_ids_by_order[order_key] = []
