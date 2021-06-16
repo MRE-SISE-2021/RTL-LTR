@@ -44,6 +44,8 @@ def get_questionnaires_table_task():
             quest_participants = QuestionnaireParticipantSerializer(query_set, many=True).data
             for quest_participant in quest_participants:
                 test_started = dt.datetime.strptime(quest_participant['test_started'][:-1], '%Y-%m-%dT%H:%M:%S')
+                if test_started is None or last_login is None:
+                    continue
                 if test_started.replace(tzinfo=None) > last_login.replace(tzinfo=None):
                     count_new_users += 1
             quest['new_users'] = count_new_users
@@ -736,8 +738,8 @@ def insert_participant_task_data_task(request_data, id):
                                                              participant_id=id)
 
             test_started = dt.datetime.strptime(QuestionnaireParticipantSerializer(query_set).data['test_started'][:-1],
-                                                '%Y-%m-%dT%H:%M:%S')
-            test_completed = dt.datetime.strptime(request_data['test_completed'], '%Y-%m-%d %H:%M:%S')
+                                                '%Y-%m-%dT%H:%M:%S.%f')
+            test_completed = dt.datetime.strptime(request_data['test_completed'], '%Y-%m-%d %H:%M:%S.%f')
 
             time_spent_seconds = (test_completed - test_started).total_seconds()
 
