@@ -218,7 +218,6 @@ class ParticipantAPIView(APIView):
         insert_participant_task_data_task(request.data, id)
         return Response(status=status.HTTP_201_CREATED)
 
-
 ########################################################################################################################
 
 

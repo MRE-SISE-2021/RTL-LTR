@@ -1,11 +1,12 @@
 from __future__ import absolute_import
 
+import time
+
 import pandas as pd
 import collections
 import datetime as dt
 import random
 import numpy as np
-
 from cryptography.fernet import Fernet
 from celery import shared_task
 from django.db import transaction
@@ -32,7 +33,7 @@ def get_questionnaires_table_task():
 
         # New user
         users = list(User.objects.all().order_by('last_login'))
-        last_login = users[-1].last_login
+        last_login = utc_to_local_datetime(users[-1].last_login.replace(tzinfo=None))
 
         for quest in quest_data:
             count_new_users = 0
@@ -51,7 +52,7 @@ def get_questionnaires_table_task():
                     continue
                 if test_started.replace(tzinfo=None) > last_login.replace(tzinfo=None):
                     count_new_users += 1
-            quest['new_users'] = count_new_users
+            quest_ids_counts_dict[quest['questionnaire_id']][1] = count_new_users
 
         query_set = QuestionnaireParticipant.objects.filter(questionnaire_id__in=quest_ids_list)
         data = QuestionnaireParticipantSerializer(query_set, many=True).data
@@ -955,3 +956,15 @@ def update_data_into_table(serializer):
         serializer.save()
     else:
         raise Exception(serializer.errors)
+
+
+EPOCH_DATETIME = dt.datetime(1970, 1, 1)
+SECONDS_PER_DAY = 24 * 60 * 60
+
+
+def utc_to_local_datetime(utc_datetime):
+    delta = utc_datetime - EPOCH_DATETIME
+    utc_epoch = SECONDS_PER_DAY * delta.days + delta.seconds
+    time_struct = time.localtime(utc_epoch)
+    dt_args = time_struct[:6] + (delta.microseconds,)
+    return dt.datetime(*dt_args)
