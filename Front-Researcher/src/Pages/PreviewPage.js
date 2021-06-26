@@ -280,7 +280,9 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"range" + index}>
-                <h4>{task.label}</h4>
+                <h4 style={{ direction: `${const_theme.dir}` }}>
+                  {task.label}
+                </h4>
                 {task.images[0] !== undefined ? (
                   <img src={task.images[0].image_url} />
                 ) : null}
@@ -353,7 +355,9 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
-                <h4>{task.label}</h4>
+                <h4 style={{ direction: `${const_theme.dir}` }}>
+                  {task.label}
+                </h4>
                 {task.images[0] !== undefined ? (
                   <img src={task.images[0].image_url} />
                 ) : null}
@@ -395,7 +399,9 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
-                <h4>{task.label}</h4>
+                <h4 style={{ direction: `${const_theme.dir}` }}>
+                  {task.label}
+                </h4>
                 {task.images[0] !== undefined ? (
                   <img src={task.images[0].image_url} />
                 ) : null}
