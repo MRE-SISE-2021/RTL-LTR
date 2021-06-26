@@ -118,7 +118,7 @@ class HomePage extends Component {
       // questionnaire_id: "1", //
       statsInfo: this.state.statsInfo,
       hash: this.props.hosted_link,
-      test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS"),
+      test_started: format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"),
     };
     console.log(response);
     API.postRequest("participant-data", response).then((data) => {
@@ -137,7 +137,7 @@ class HomePage extends Component {
       // test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     if (final !== undefined) {
-      response.test_completed = format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS");
+      response.test_completed = format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
     }
     this.setState({ answers: {} });
     console.log(response);
@@ -628,6 +628,7 @@ class HomePage extends Component {
 
       /// alighnment of pages -- not exp
       if (this.state.lang === 1 || this.state.lang === 3) {
+        debugger;
         const_theme = {
           dir: "rtl",
         };
@@ -733,14 +734,17 @@ class HomePage extends Component {
                   demoTasks={this.state.demographic_task}
                   lang={this.state.lang}
                 /> */}
-                <div
-                  style={{ textAlign: "center" }}
-                  key="11"
-                  dir={theme.dir}
-                  dangerouslySetInnerHTML={{
-                    __html: this.state.demographic_task[11].label,
-                  }}
-                ></div>
+
+                <ThemeProvider theme={const_theme}>
+                  <ConstDiv
+                    style={{ textAlign: "center" }}
+                    key={task.order_key}
+                    dir={const_theme.dir}
+                    dangerouslySetInnerHTML={{
+                      __html: this.state.demographic_task[11].label,
+                    }}
+                  ></ConstDiv>
+                </ThemeProvider>
                 {this.state.demographic_task.map((demo, i) => {
                   // console.log("Entered");
                   // console.log(this.state.demographic[i]);
@@ -802,7 +806,9 @@ class HomePage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"range" + index}>
-                <h4>{task.label}</h4>
+                <h4 style={{ direction: `${const_theme.dir}` }}>
+                  {task.label}
+                </h4>
                 {task.images[0] !== undefined ? (
                   <img src={task.images[0].image_url} />
                 ) : null}
@@ -919,7 +925,9 @@ class HomePage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
-                <h4>{task.label}</h4>
+                <h4 style={{ direction: `${const_theme.dir}` }}>
+                  {task.label}
+                </h4>
                 {task.images[0] !== undefined ? (
                   <img src={task.images[0].image_url} />
                 ) : null}
@@ -970,7 +978,9 @@ class HomePage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
-                <h4>{task.label}</h4>
+                <h4 style={{ direction: `${const_theme.dir}` }}>
+                  {task.label}
+                </h4>
                 {task.images[0] !== undefined ? (
                   <img src={task.images[0].image_url} />
                 ) : null}
