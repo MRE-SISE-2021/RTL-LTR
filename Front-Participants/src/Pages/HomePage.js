@@ -51,6 +51,7 @@ class HomePage extends Component {
       total_q4: 0,
       is_free_answer: false,
       total_answer_comp: 2, //isrequired
+      total_page_questions: 2,
     };
     this.onInputchange = this.onInputchange.bind(this);
     this.onDemochange = this.onDemochange.bind(this);
@@ -104,9 +105,22 @@ class HomePage extends Component {
   }
   onChangePage(pageOfComponents) {
     // update state with new page of items
+    if (
+      pageOfComponents[0].props.children === undefined ||
+      (pageOfComponents.length > 1 &&
+        pageOfComponents[1].props.children === undefined)
+    ) {
+      this.setState({
+        pageOfComponents: pageOfComponents,
+        total_answer_comp: 0, //isrequired - updated every new page
+        total_page_questions: 1,
+      });
+      return;
+    }
     this.setState({
       pageOfComponents: pageOfComponents,
       total_answer_comp: 0, //isrequired - updated every new page
+      total_page_questions: 2,
     });
   }
 
@@ -1057,7 +1071,8 @@ class HomePage extends Component {
                       Object.keys(this.state.demo_answers).length >=
                         this.state.total_answer &&
                       !this.state.isError &&
-                      this.state.total_answer_comp >= 2
+                      this.state.total_answer_comp >=
+                        this.state.total_page_questions
                     }
                     lang={this.state.lang}
                   />
