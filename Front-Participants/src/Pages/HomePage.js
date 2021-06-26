@@ -118,7 +118,7 @@ class HomePage extends Component {
       // questionnaire_id: "1", //
       statsInfo: this.state.statsInfo,
       hash: this.props.hosted_link,
-      test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS"),
+      test_started: format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"),
     };
     console.log(response);
     API.postRequest("participant-data", response).then((data) => {
@@ -137,7 +137,7 @@ class HomePage extends Component {
       // test_started: format(new Date(), "yyyy-MM-dd kk:mm:ss"),
     };
     if (final !== undefined) {
-      response.test_completed = format(new Date(), "yyyy-MM-dd kk:mm:ss.SSS");
+      response.test_completed = format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
     }
     this.setState({ answers: {} });
     console.log(response);
