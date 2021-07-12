@@ -20,6 +20,7 @@ class NewExperimentModal extends React.Component {
       expName: "exp",
       toDashboard: false,
       direction: "RTL",
+      type: "1",
       // expId: "1",
     };
     this.onInputchange = this.onInputchange.bind(this);
@@ -72,6 +73,19 @@ class NewExperimentModal extends React.Component {
             this.state.direction +
             "/0"
           }
+          to={{
+            pathname:
+              "/create/" +
+              this.state.expName +
+              "/exp/" +
+              this.getLangId() +
+              "/" +
+              this.state.direction +
+              "/0",
+            state: {
+              type: this.state.type,
+            },
+          }}
         />
       );
     }
@@ -109,8 +123,18 @@ class NewExperimentModal extends React.Component {
 
               <Form.Group controlId="formType">
                 <Form.Label>Type</Form.Label>
-                <Form.Control as="select">
-                  <option>Experiment</option>
+                <Form.Control
+                  as="select"
+                  onChange={(event) => {
+                    if (event.target.value === "Student Experiment") {
+                      this.setState({ type: 2 });
+                    } else {
+                      this.setState({ type: 1 });
+                    }
+                  }}
+                >
+                  <option id="1">Experiment</option>
+                  <option id="2">Student Experiment</option>
                 </Form.Control>
               </Form.Group>
 
