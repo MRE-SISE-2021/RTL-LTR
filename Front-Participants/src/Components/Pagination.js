@@ -125,9 +125,10 @@ class Pagination extends React.Component {
   }
 
   GetNextPage(event, pager) {
-    if (this.state.pager.currentPage > 2) {
+    // ------ TODO: check if student exp --> current ==3 else current ==2
+    if (this.state.pager.currentPage > 3) {
       this.props.onUpdateUser();
-    } else if (this.state.pager.currentPage === 2) {
+    } else if (this.state.pager.currentPage === 3) {
       this.props.onCreateUser();
     }
 
@@ -165,7 +166,7 @@ class Pagination extends React.Component {
             <Button
               style={{ width: "50%" }}
               // className="item-page"
-              disabled={!this.props.is_next}
+              disabled={!this.props.is_next && pager.currentPage !== 2}
               type="submit"
               onClick={(e) => this.GetNextPage(e, pager)}
             >
