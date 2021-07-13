@@ -237,6 +237,10 @@ class PreviewPage extends Component {
             </ThemeProvider>
           ),
         });
+        inputList = this.state.inputList;
+        this.setState({
+          inputList: inputList.concat(<div></div>),
+        });
       } else if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
@@ -264,6 +268,7 @@ class PreviewPage extends Component {
         });
         // if a student ???
         if (this.state.type === 2) {
+          // if (true) {
           inputList = this.state.inputList;
           this.setState({
             inputList: inputList.concat(
