@@ -19,7 +19,7 @@ import rtl from "styled-components-rtl";
 import Pagination from "../Components/Pagination";
 import "../styles/PreviewPage.css";
 import Task from "../Components/Task";
-
+import StudentInfo from "../Components/StudentInfo";
 import "../App.css";
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
@@ -61,6 +61,7 @@ class HomePage extends Component {
     this.onChangePage = this.onChangePage.bind(this);
     this.setDemoUI = this.setDemoUI.bind(this);
     this.deleteFromArray = this.deleteFromArray.bind(this);
+    this.onUpdateDemoAnswerStudent = this.onUpdateDemoAnswerStudent.bind(this);
   }
 
   componentDidMount() {
@@ -162,6 +163,42 @@ class HomePage extends Component {
       console.log(data); // JSON data parsed by `data.json()` call
       // this.setState({ expId: data.questionnaire_id });
     });
+  }
+  onUpdateDemoAnswerStudent(answer) {
+    //Student info
+    debugger;
+    if (answer.order_key === 50) {
+      // if (this.state.demo_answers.name === undefined) {
+      //   this.setState({
+      //     total_answer_comp: this.state.total_answer_comp + 1,
+      //   });
+      // }
+      if (answer.name !== undefined) {
+        this.setState({
+          demo_answers: {
+            ...this.state.demo_answers,
+            name: answer.name,
+          },
+        });
+      }
+
+      if (answer.id !== undefined) {
+        // if (this.state.demo_answers.id === undefined) {
+        //   this.setState({
+        //     total_answer_comp: this.state.total_answer_comp + 1,
+        //   });
+        // }
+        this.setState({
+          demo_answers: {
+            ...this.state.demo_answers,
+            id: answer.id,
+          },
+          total_answer_comp: this.state.total_answer_comp + 1,
+        });
+      }
+
+      return;
+    }
   }
   onUpdateDemoAnswer(answer) {
     this.setState({
@@ -737,6 +774,28 @@ class HomePage extends Component {
             </ThemeProvider>
           ),
         });
+        // if a student ???
+        // if (this.state.type === 2) {
+        if (true) {
+          inputList = this.state.inputList;
+          this.setState({
+            inputList: inputList.concat(
+              <ConstDiv dir={const_theme.dir}>
+                <StudentInfo
+                  onChange={this.onUpdateDemoAnswerStudent}
+                  answers={this.state.demo_answers}
+                  // title={value}
+                  // lang_id={lang_id}
+                />
+              </ConstDiv>
+            ),
+          });
+          inputList = this.state.inputList;
+          this.setState({
+            inputList: inputList.concat(<div></div>),
+          });
+        }
+        // -------------------------------------------------
         // Demographics -- question 1-3
         inputList = this.state.inputList;
         this.setState({
