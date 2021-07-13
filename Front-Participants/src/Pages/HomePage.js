@@ -750,7 +750,19 @@ class HomePage extends Component {
         const_theme: const_theme,
       });
       ///////////////---RTL support --- ///////////////
-      if (task.component_type_id === 11) {
+      if (task.component_type_id === 12) {
+        this.setState({
+          inputList: inputList.concat(
+            <ThemeProvider theme={const_theme}>
+              <ConstDiv
+                key="12"
+                dir={const_theme.dir}
+                dangerouslySetInnerHTML={{ __html: task.label }}
+              ></ConstDiv>
+            </ThemeProvider>
+          ),
+        });
+      } else if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={const_theme}>
@@ -775,8 +787,10 @@ class HomePage extends Component {
           ),
         });
         // if a student ???
-        // if (this.state.type === 2) {
-        if (true) {
+        if (this.state.type === 2) {
+          this.setState({
+            total_answer: this.state.total_answer + 2,
+          });
           inputList = this.state.inputList;
           this.setState({
             inputList: inputList.concat(
@@ -1125,6 +1139,7 @@ class HomePage extends Component {
                     onChangePage={this.onChangePage}
                     onCreateUser={this.onCreateUser}
                     onUpdateUser={this.onUpdateUser}
+                    type={this.state.type}
                     pageSize={2}
                     is_next={
                       Object.keys(this.state.demo_answers).length >=

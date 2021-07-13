@@ -125,10 +125,14 @@ class Pagination extends React.Component {
   }
 
   GetNextPage(event, pager) {
-    // ------ TODO: check if student exp --> current ==3 else current ==2
-    if (this.state.pager.currentPage > 3) {
+    // ------ if student --> demo will appear in page 3
+    let demoPage = 2;
+    if (this.props.type === 2) {
+      demoPage = 3;
+    }
+    if (this.state.pager.currentPage > demoPage) {
       this.props.onUpdateUser();
-    } else if (this.state.pager.currentPage === 3) {
+    } else if (this.state.pager.currentPage === demoPage) {
       this.props.onCreateUser();
     }
 
@@ -145,6 +149,7 @@ class Pagination extends React.Component {
       // don't display pager if there is only 1 page
       return null;
     }
+    debugger;
     const percentage = ((pager.currentPage - 1) / pager.totalPages) * 100;
     let current = pager.currentPage - 2;
     let total = pager.totalPages - 2;
@@ -163,15 +168,28 @@ class Pagination extends React.Component {
         ) : pager.currentPage < pager.totalPages - 1 ? (
           // <li>
           <div>
-            <Button
-              style={{ width: "50%" }}
-              // className="item-page"
-              disabled={!this.props.is_next && pager.currentPage !== 2}
-              type="submit"
-              onClick={(e) => this.GetNextPage(e, pager)}
-            >
-              {GetByLang.getLangNext(this.props.lang)}
-            </Button>
+            {this.props.type === 2 && pager.currentPage === 2 ? (
+              <Button
+                style={{ width: "50%" }}
+                // className="item-page"
+
+                type="submit"
+                onClick={(e) => this.GetNextPage(e, pager)}
+              >
+                {GetByLang.getLangNext(this.props.lang)}
+              </Button>
+            ) : (
+              <Button
+                style={{ width: "50%" }}
+                // className="item-page"
+                disabled={!this.props.is_next}
+                type="submit"
+                onClick={(e) => this.GetNextPage(e, pager)}
+              >
+                {GetByLang.getLangNext(this.props.lang)}
+              </Button>
+            )}
+
             {!this.props.is_next ? (
               <p style={{ color: "red" }}>
                 {GetByLang.getLangError(this.props.lang)}

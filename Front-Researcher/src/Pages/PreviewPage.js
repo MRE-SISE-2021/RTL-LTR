@@ -225,7 +225,19 @@ class PreviewPage extends Component {
         }
       }
       ///////////////---RTL support --- ///////////////
-      if (task.component_type_id === 11) {
+      if (task.component_type_id === 12) {
+        this.setState({
+          inputList: inputList.concat(
+            <ThemeProvider theme={const_theme}>
+              <ConstDiv
+                key="12"
+                dir={const_theme.dir}
+                dangerouslySetInnerHTML={{ __html: task.label }}
+              ></ConstDiv>
+            </ThemeProvider>
+          ),
+        });
+      } else if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={const_theme}>
@@ -251,8 +263,7 @@ class PreviewPage extends Component {
           ),
         });
         // if a student ???
-        // if (this.state.type === 2) {
-        if (true) {
+        if (this.state.type === 2) {
           inputList = this.state.inputList;
           this.setState({
             inputList: inputList.concat(
