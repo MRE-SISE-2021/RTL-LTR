@@ -220,7 +220,18 @@ def get_preview_data_task(language_id, questionnaire_id):
                 answer.append(other)
                 task['answers'] = answer
         data['demographic_task'] = demographic_tasks
-        data['tasks'] = shuffle_tasks(data['tasks'])
+
+        tasks = data['tasks']
+        tasks_without_instructions = []
+        instructions = []
+        for task in tasks:
+            if task['component_type_id'] == 12:
+                instructions.append(task)
+            else:
+                tasks_without_instructions.append(task)
+
+        tasks_without_instructions = shuffle_tasks(tasks_without_instructions)
+        data['tasks'] = instructions + tasks_without_instructions
     except Exception as e:
         raise e
 
