@@ -126,6 +126,16 @@ class Participant(models.Model):
         db_table = 'Participant'
 
 
+class Student(models.Model):
+    student_id = models.AutoField(db_column='StudentId', primary_key=True)
+    passport_id = models.IntegerField(db_column='PassportId')
+    student_name = models.TextField(db_column='StudentName')
+    participant_id = models.ForeignKey(Participant, models.DO_NOTHING, db_column='ParticipantId')
+
+    class Meta:
+        db_table = 'Student'
+
+
 class Proficiency(models.Model):
     proficiency_id = models.AutoField(db_column='ProficiencyId', primary_key=True)
     proficiency_description = models.TextField(db_column='ProficiencyDescription')

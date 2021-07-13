@@ -18,7 +18,7 @@ from rtl_ltr.models import QuestionnaireParticipant, Answer, Proficiency, Partic
 from rtl_ltr.serializers import ParticipantSerializer, AnswerSerializer, ProficiencySerializer, \
     QuestionnaireParticipantSerializer, TaskParticipantSerializer, QuestionnaireSerializer, LanguageSerializer, \
     TaskSerializer, QuestionnaireTaskSerializer, ImageSerializer, TaskImageSerializer, TaskAnswerSerializer, \
-    ParticipantLanguageProficiencySerializer
+    ParticipantLanguageProficiencySerializer, StudentSerializer
 from Back.settings import CRYPTO_KEY
 from Back.settings import PROJECT_HOST
 
@@ -423,6 +423,12 @@ def insert_participant_data_task(participant_id, data):
 
         all_demo_answers = {}
         all_demo_answers_raw = AnswerSerializer(Answer.objects.filter(is_demographic=True), many=True).data
+
+        if 'id' in demo_answers:
+            insert_data_into_table(StudentSerializer(data={'passport_id': demo_answers.pop('id'),
+                                                           'student_name': demo_answers.pop('name'),
+                                                           'participant_id': participant_id}))
+
         for all_demo_answer in all_demo_answers_raw:
             all_demo_answers[all_demo_answer['answer_id']] = all_demo_answer
 
