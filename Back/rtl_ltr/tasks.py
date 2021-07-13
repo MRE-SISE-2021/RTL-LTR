@@ -229,9 +229,10 @@ def get_preview_data_task(language_id, questionnaire_id):
                 instructions.append(task)
             else:
                 tasks_without_instructions.append(task)
-
         tasks_without_instructions = shuffle_tasks(tasks_without_instructions)
-        data['tasks'] = instructions + tasks_without_instructions
+        for i in range(1, len(instructions) + 1):
+            tasks_without_instructions.insert(i, instructions[i-1])
+        data['tasks'] = tasks_without_instructions
     except Exception as e:
         raise e
 
