@@ -251,8 +251,8 @@ class PreviewPage extends Component {
           ),
         });
         // if a student ???
-        if (this.state.type === 2) {
-          // if (true) {
+        // if (this.state.type === 2) {
+        if (true) {
           inputList = this.state.inputList;
           this.setState({
             inputList: inputList.concat(
