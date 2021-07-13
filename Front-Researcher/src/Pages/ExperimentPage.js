@@ -71,7 +71,7 @@ class ExperimentPage extends Component {
       hosted_link: "", //
       is_active: this.state.is_active,
       language_id: this.props.match.params.language,
-      questionnaire_type_id: "1", //
+      questionnaire_type_id: this.props.location.state.type, //
       demographic: this.state.demographic,
       task_type_id: "1",
     };

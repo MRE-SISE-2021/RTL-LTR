@@ -44,7 +44,7 @@ class Input extends React.Component {
       `;
     }
 
-    if (this.state.compTypeId === 11) {
+    if (this.state.compTypeId === 11 || this.state.compTypeId === 12) {
       html = "";
     }
     return (
