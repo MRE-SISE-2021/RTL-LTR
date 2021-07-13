@@ -111,6 +111,8 @@ urlpatterns = [
     path('get-questionnaire/<int:id>', get_questionnaire),
     # GET questionnaire metrics
     path('get-csv-data/<int:id>', get_csv_data),
+    # GET questionnaire metrics
+    path('get-csv-student/<int:id>', get_csv_student),
     # DELETE task from questionnaire by id. id: questionnaire_id, task_id in JSON
     path('delete-task-from-questionnaire/<int:id>', delete_task_from_questionnaire),
 

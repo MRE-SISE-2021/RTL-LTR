@@ -708,6 +708,28 @@ def get_csv_data_task(quest_id):
     return df
 
 
+def get_csv_student_task(quest_id):
+    query_set = Participant.objects.raw('SELECT '
+                                        'Student.PassportId, '
+                                        'Student.StudentName, '
+                                        'QuestionnaireParticipant.TestStarted, '
+                                        'QuestionnaireParticipant.TestCompleted, '
+                                        'Questionnaire.QuestionnaireName, '
+                                        'QuestionnaireParticipant.QuestionnaireId, '
+                                        'Student.ParticipantId '
+                                        'FROM Student '
+                                        'inner join QuestionnaireParticipant '
+                                        'on QuestionnaireParticipant.ParticipantId = Student.ParticipantId '
+                                        'inner join Questionnaire '
+                                        'on Questionnaire.QuestionnaireId = QuestionnaireParticipant.QuestionnaireId '
+                                        'where QuestionnaireParticipant.QuestionnaireId = %s', params=[quest_id])
+
+    df = pd.DataFrame([item.__dict__ for item in query_set])
+    df.fillna('', inplace=True)
+    if "_state" in df:
+        df.drop(columns=['_state'], inplace=True)
+    return df
+
 @shared_task
 @transaction.atomic
 def insert_participant_task_data_task(request_data, id):
