@@ -168,7 +168,8 @@ class Pagination extends React.Component {
         ) : pager.currentPage < pager.totalPages - 1 ? (
           // <li>
           <div>
-            {this.props.type === 2 && pager.currentPage === 2 ? (
+            {this.props.type === 2 &&
+            (pager.currentPage === 2 || pager.currentPage === 4) ? (
               <Button
                 style={{ width: "50%" }}
                 // className="item-page"

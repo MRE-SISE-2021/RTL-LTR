@@ -64,7 +64,7 @@ class StudentInfo extends React.Component {
             </Form.Label>
             <Form.Control
               style={{ width: "200px" }}
-              type="text"
+              type="number"
               name="id"
               id="student_id"
               value={this.state.id}
