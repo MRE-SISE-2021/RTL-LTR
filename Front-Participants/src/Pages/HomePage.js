@@ -762,6 +762,10 @@ class HomePage extends Component {
             </ThemeProvider>
           ),
         });
+        inputList = this.state.inputList;
+        this.setState({
+          inputList: inputList.concat(<div></div>),
+        });
       } else if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
