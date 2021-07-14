@@ -20,6 +20,7 @@ import CounterInput from "react-counter-input";
 import axiosInstance from "../axios";
 import "../styles/PreviewPage.css";
 import Demographics from "../Components/UI-Elements/Demographics";
+import StudentInfo from "../Components/UI-Elements/StudentInfo";
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
@@ -125,8 +126,8 @@ class PreviewPage extends Component {
       //////// ----- add in a new page ----- //////////
       if (
         task.is_new_page_setting ||
-        task.component_type_id === 1 ||
-        task.component_type_id === 11
+        task.component_type_id === 11 ||
+        task.component_type_id === 1
       ) {
         this.setState({
           inputList: inputList.concat(<div></div>),
@@ -224,7 +225,23 @@ class PreviewPage extends Component {
         }
       }
       ///////////////---RTL support --- ///////////////
-      if (task.component_type_id === 11) {
+      if (task.component_type_id === 12) {
+        this.setState({
+          inputList: inputList.concat(
+            <ThemeProvider theme={const_theme}>
+              <ConstDiv
+                key="12"
+                dir={const_theme.dir}
+                dangerouslySetInnerHTML={{ __html: task.label }}
+              ></ConstDiv>
+            </ThemeProvider>
+          ),
+        });
+        inputList = this.state.inputList;
+        this.setState({
+          inputList: inputList.concat(<div></div>),
+        });
+      } else if (task.component_type_id === 11) {
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={const_theme}>
@@ -237,6 +254,7 @@ class PreviewPage extends Component {
           ),
         });
       } else if (task.component_type_id === 1) {
+        inputList = this.state.inputList;
         this.setState({
           inputList: inputList.concat(
             <ThemeProvider theme={const_theme}>
@@ -248,6 +266,23 @@ class PreviewPage extends Component {
             </ThemeProvider>
           ),
         });
+        // if a student ???
+        if (this.state.type === 2) {
+          // if (true) {
+          inputList = this.state.inputList;
+          this.setState({
+            inputList: inputList.concat(
+              <ConstDiv dir={const_theme.dir}>
+                <StudentInfo />
+              </ConstDiv>
+            ),
+          });
+          inputList = this.state.inputList;
+          this.setState({
+            inputList: inputList.concat(<div></div>),
+          });
+        }
+        // -------------------------------------------------
         inputList = this.state.inputList;
         this.setState({
           inputList: inputList.concat(

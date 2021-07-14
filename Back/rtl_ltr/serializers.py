@@ -73,18 +73,15 @@ class ProficiencySerializer(DynamicFieldsModelSerializer):
 
 
 class ParticipantSerializer(DynamicFieldsModelSerializer):
-    # hci_background_id = HciBackgroundSerializer()
     class Meta:
         model = Participant
         fields = '__all__'
-        # fields = ['participant_id', 'sex', 'age', 'mother_tongue', 'ltr_proficiency', 'ltr_proficiency',
-        #           'rtl_proficiency', 'dominant_hand_writing', 'dominant_hand_mobile', 'dominant_hand_web',
-        #           'dominant_hand_mode', 'is_rtl_speakers', 'is_rtl_interface', 'is_rtl_paper_documents',
-        #           'is_ltr_speakers', 'is_ltr_interface', 'is_ltr_paper_documents', 'is_rtl_and_ltr_interface',
-        #           'other_prof_experience', 'hci_experience', 'hci_background_id', 'is_rtl_interfaces_experience',
-        #           'is_ltr_interfaces_experience', 'other_language_working_characteristics', 'questionnaire_version',
-        #           'country', 'operating_system', 'browser_type', 'mother_tongue'
-        #           ]
+
+
+class StudentSerializer(DynamicFieldsModelSerializer):
+    class Meta:
+        model = Student
+        fields = '__all__'
 
 
 class AnswerSerializer(DynamicFieldsModelSerializer):

@@ -18,7 +18,7 @@ from rtl_ltr.models import QuestionnaireParticipant, Answer, Proficiency, Partic
 from rtl_ltr.serializers import ParticipantSerializer, AnswerSerializer, ProficiencySerializer, \
     QuestionnaireParticipantSerializer, TaskParticipantSerializer, QuestionnaireSerializer, LanguageSerializer, \
     TaskSerializer, QuestionnaireTaskSerializer, ImageSerializer, TaskImageSerializer, TaskAnswerSerializer, \
-    ParticipantLanguageProficiencySerializer
+    ParticipantLanguageProficiencySerializer, StudentSerializer
 from Back.settings import CRYPTO_KEY
 from Back.settings import PROJECT_HOST
 
@@ -220,7 +220,19 @@ def get_preview_data_task(language_id, questionnaire_id):
                 answer.append(other)
                 task['answers'] = answer
         data['demographic_task'] = demographic_tasks
-        data['tasks'] = shuffle_tasks(data['tasks'])
+
+        tasks = data['tasks']
+        tasks_without_instructions = []
+        instructions = []
+        for task in tasks:
+            if task['component_type_id'] == 12:
+                instructions.append(task)
+            else:
+                tasks_without_instructions.append(task)
+        tasks_without_instructions = shuffle_tasks(tasks_without_instructions)
+        for i in range(1, len(instructions) + 1):
+            tasks_without_instructions.insert(i, instructions[i-1])
+        data['tasks'] = tasks_without_instructions
     except Exception as e:
         raise e
 
@@ -423,6 +435,12 @@ def insert_participant_data_task(participant_id, data):
 
         all_demo_answers = {}
         all_demo_answers_raw = AnswerSerializer(Answer.objects.filter(is_demographic=True), many=True).data
+
+        if 'id' in demo_answers:
+            insert_data_into_table(StudentSerializer(data={'passport_id': demo_answers.pop('id'),
+                                                           'student_name': demo_answers.pop('name'),
+                                                           'participant_id': participant_id}))
+
         for all_demo_answer in all_demo_answers_raw:
             all_demo_answers[all_demo_answer['answer_id']] = all_demo_answer
 
@@ -701,6 +719,28 @@ def get_csv_data_task(quest_id):
         df.drop(columns=['_state'], inplace=True)
     return df
 
+
+def get_csv_student_task(quest_id):
+    query_set = Participant.objects.raw('SELECT '
+                                        'Student.PassportId, '
+                                        'Student.StudentName, '
+                                        'QuestionnaireParticipant.TestStarted, '
+                                        'QuestionnaireParticipant.TestCompleted, '
+                                        'Questionnaire.QuestionnaireName, '
+                                        'QuestionnaireParticipant.QuestionnaireId, '
+                                        'Student.ParticipantId '
+                                        'FROM Student '
+                                        'inner join QuestionnaireParticipant '
+                                        'on QuestionnaireParticipant.ParticipantId = Student.ParticipantId '
+                                        'inner join Questionnaire '
+                                        'on Questionnaire.QuestionnaireId = QuestionnaireParticipant.QuestionnaireId '
+                                        'where QuestionnaireParticipant.QuestionnaireId = %s', params=[quest_id])
+
+    df = pd.DataFrame([item.__dict__ for item in query_set])
+    df.fillna('', inplace=True)
+    if "_state" in df:
+        df.drop(columns=['_state'], inplace=True)
+    return df
 
 @shared_task
 @transaction.atomic
