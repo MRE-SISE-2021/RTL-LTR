@@ -228,8 +228,22 @@ class ExperimentInfo extends Component {
           </Col>
 
           <Col className="d-flex justify-content-lg-end" sm={4}>
+            {this.props.chosen.questionnaire_type_id === 2 ? (
+              <Button size="sm" variant="outline-*">
+                <CSVLink
+                  data={this.props.studentCsvData}
+                  filename={`Students-Experiment-${this.props.chosen.questionnaire_name}.csv`}
+                >
+                  <MDBIcon icon="award" />
+                </CSVLink>
+              </Button>
+            ) : null}
+
             <Button size="sm" variant="outline-*">
-              <CSVLink data={this.props.csvData}>
+              <CSVLink
+                data={this.props.csvData}
+                filename={`Experiment-${this.props.chosen.questionnaire_name}.csv`}
+              >
                 <MDBIcon icon="file-export" />
               </CSVLink>
             </Button>
