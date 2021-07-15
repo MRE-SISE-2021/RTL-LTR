@@ -152,6 +152,13 @@ class PreviewPage extends Component {
         direction: ltr;
         `};
       `;
+
+      const H4 = styled.h4`
+        ${rtl`
+      margin-left: -10px;
+      direction: ltr;
+      `};
+      `;
       let theme = {
         dir: "ltr",
       };
@@ -390,9 +397,9 @@ class PreviewPage extends Component {
           inputList: inputList.concat(
             <ThemeProvider theme={theme}>
               <Div key={"task" + index}>
-                <h4 style={{ direction: `${const_theme.dir}` }}>
+                <H4 style={{ direction: `${const_theme.dir}` }}>
                   {task.label}
-                </h4>
+                </H4>
                 {task.images[0] !== undefined ? (
                   <img src={task.images[0].image_url} />
                 ) : null}
