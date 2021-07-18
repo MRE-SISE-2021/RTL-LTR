@@ -31,13 +31,13 @@ function getLangPage(lang) {
 function getLangError(lang) {
   switch (lang) {
     case 1:
-      return "!تأكد من إجابتك على جميع الأسئلة أعلاه";
+      return "!يجب الإجابة على جميع الأسئلة قبل الانتقال إلى الصفحه التالية";
     case 2:
-      return "Make sure you answered all the questions above!";
+      return "All questions must be answered before moving on to the next step!";
     case 3:
-      return "! וודא כי ענית על כל השאלות לעיל";
+      return "!יש לענות על כל השאלות לפני המעבר לשלב הבא";
     case 4:
-      return "Убедитесь, что ответили на все вопросы!";
+      return "Нужно ответить на все вопросы перед тем, как продолжить!";
     default:
       return "2";
   }
