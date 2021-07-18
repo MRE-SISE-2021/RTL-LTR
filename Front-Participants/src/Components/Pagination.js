@@ -179,6 +179,21 @@ class Pagination extends React.Component {
               >
                 {GetByLang.getLangNext(this.props.lang)}
               </Button>
+            ) : !this.props.is_next ? (
+              <div>
+                <Button
+                  style={{ width: "50%" }}
+                  // className="item-page"
+                  disabled={!this.props.is_next}
+                  type="submit"
+                  onClick={(e) => this.GetNextPage(e, pager)}
+                >
+                  {GetByLang.getLangNext(this.props.lang)}
+                </Button>
+                <p style={{ color: "red" }}>
+                  {GetByLang.getLangError(this.props.lang)}
+                </p>
+              </div>
             ) : (
               <Button
                 style={{ width: "50%" }}
@@ -191,11 +206,11 @@ class Pagination extends React.Component {
               </Button>
             )}
 
-            {!this.props.is_next ? (
+            {/* {!this.props.is_next ? (
               <p style={{ color: "red" }}>
                 {GetByLang.getLangError(this.props.lang)}
               </p>
-            ) : null}
+            ) : null} */}
           </div>
         ) : pager.currentPage < pager.totalPages ? (
           // </li>

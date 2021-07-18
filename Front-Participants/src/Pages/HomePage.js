@@ -1032,7 +1032,7 @@ class HomePage extends Component {
                   {task.answers.map((answer, index) => (
                     <CompDiv
                       key={task.order_key + " " + index}
-                      style={{ width: "35%" }}
+                      // style={{ width: "35%" }}
                     >
                       <Form.Group key={index}>
                         <Row>
