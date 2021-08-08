@@ -644,6 +644,9 @@ def insert_participant_data_task(participant_id, data):
 
 
 def get_csv_data_task(quest_id):
+    if not isinstance(quest_id, int):
+        return
+
     query_set = Participant.objects.raw('select '
                                         'Participant.ParticipantId as "ParticipantId", '
                                         'Questionnaire.QuestionnaireName, '
@@ -666,7 +669,6 @@ def get_csv_data_task(quest_id):
                                         'Questionnaire.QuestionnaireId, '
                                         'TaskParticipant.TaskId, '
                                         'TaskParticipant.AnswerId, '
-                                        # 'HciBackground.HciBackgroundDescription,'
                                         'Participant.Age, '
                                         'Participant.NativeLanguage, '
                                         'Participant.LtrProficiency, '
@@ -693,14 +695,13 @@ def get_csv_data_task(quest_id):
                                         'ParticipantLanguageProficiency.ProficiencyId as Proficiency '
 
                                         'from Participant '
-                                        'inner join TaskParticipant on Participant.ParticipantId = TaskParticipant.ParticipantId '
-                                        'inner join QuestionnaireParticipant on QuestionnaireParticipant.ParticipantId = TaskParticipant.ParticipantId '
-                                        'inner join Task on TaskParticipant.TaskId = Task.TaskId '
-                                        'inner join Answer on TaskParticipant.AnswerId = Answer.AnswerId '
-                                        'inner join Questionnaire on QuestionnaireParticipant.QuestionnaireId = Questionnaire.QuestionnaireId '
-                                        'inner join ComponentType on ComponentType.ComponentTypeId = Task.ComponentTypeId '
-                                        # 'inner join HciBackground on HciBackground.HciBackgroundId = Participant.HciBackgroundId '
-                                        'inner join ParticipantLanguageProficiency on ParticipantLanguageProficiency.ParticipantId = Participant.ParticipantId '
+                                        'left join TaskParticipant on Participant.ParticipantId = TaskParticipant.ParticipantId '
+                                        'left join QuestionnaireParticipant on QuestionnaireParticipant.ParticipantId = TaskParticipant.ParticipantId '
+                                        'left join Task on TaskParticipant.TaskId = Task.TaskId '
+                                        'left join Answer on TaskParticipant.AnswerId = Answer.AnswerId '
+                                        'left join Questionnaire on QuestionnaireParticipant.QuestionnaireId = Questionnaire.QuestionnaireId '
+                                        'left join ComponentType on ComponentType.ComponentTypeId = Task.ComponentTypeId '
+                                        'left join ParticipantLanguageProficiency on ParticipantLanguageProficiency.ParticipantId = Participant.ParticipantId '
                                         'where QuestionnaireParticipant.QuestionnaireId = %s', params=[quest_id])
 
     languages_raw = LanguageSerializer(Language.objects.filter(), many=True).data
@@ -721,6 +722,9 @@ def get_csv_data_task(quest_id):
 
 
 def get_csv_student_task(quest_id):
+    if not isinstance(quest_id, int):
+        return
+
     query_set = Participant.objects.raw('SELECT '
                                         'Student.PassportId, '
                                         'Student.StudentName, '
